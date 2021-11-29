@@ -27,9 +27,9 @@ def qs(request):
                 b.append(aa)
             elif x.type==3:
                 c.append(aa)
-            print(a)
-            print(b)
-            print(c)
+            # print(a)
+            # print(b)
+            # print(c)
 
                 
     return JsonResponse({'easy':a,'medium':b,'hard':c},safe=False)

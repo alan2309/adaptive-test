@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 function TestScreen() {
   const [hard, setHard] = useState([]);
@@ -24,121 +25,23 @@ function TestScreen() {
       ],
     },
   ]);
+  const [total,setTotal] = useState(0);
   const [ans, setAns] = useState([]);
   const [qsno, setQsno] = useState(0);
 
   useEffect(() => {
-    setHard([
-      ...hard,
-      {
-        ques: "This is hard qs",
-        options: [
-          {
-            opt: "this is option",
-            mrks: 5,
-          },
-          {
-            opt: "this is option 2",
-            mrks: 0,
-          },
-          {
-            opt: "this is option 3",
-            mrks: 0,
-          },
-        ],
-      },
-    ]);
-    setMedium([
-      ...medium,
-      {
-        ques: "This is medium level qs",
-        options: [
-          {
-            opt: "this is option",
-            mrks: 2,
-          },
-          {
-            opt: "this is option 2",
-            mrks: 0,
-          },
-          {
-            opt: "this is option 3",
-            mrks: 0,
-          },
-        ],
-      },
-      {
-        ques: "This is medium level qs 2",
-        options: [
-          {
-            opt: "this is option 21",
-            mrks: 2,
-          },
-          {
-            opt: "this is option 22",
-            mrks: 0,
-          },
-          {
-            opt: "this is option 23",
-            mrks: 0,
-          },
-        ],
-      },
-      {
-        ques: "This is medium level qs 3",
-        options: [
-          {
-            opt: "this is option 31",
-            mrks: 2,
-          },
-          {
-            opt: "this is option 32",
-            mrks: 0,
-          },
-          {
-            opt: "this is option 33",
-            mrks: 0,
-          },
-        ],
-      },
-      {
-        ques: "This is medium level qs 4",
-        options: [
-          {
-            opt: "this is option 41",
-            mrks: 2,
-          },
-          {
-            opt: "this is option 42",
-            mrks: 0,
-          },
-          {
-            opt: "this is option 43",
-            mrks: 0,
-          },
-        ],
-      },
-    ]);
-    setEasy([
-      ...easy,
-      {
-        ques: "This is easy qs",
-        options: [
-          {
-            opt: "this is option",
-            mrks: 1,
-          },
-          {
-            opt: "this is option 2",
-            mrks: 0,
-          },
-          {
-            opt: "this is option 3",
-            mrks: 0,
-          },
-        ],
-      },
-    ]);
+    const getData = async () =>
+      await axios
+        .get("http://127.0.0.1:8000/api/qs")
+        .then((res) => {
+          setEasy(res.data.easy);
+          setHard(res.data.hard);
+          setMedium(res.data.medium);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    getData();
   }, []);
 
   function getRandomInt(min, max) {
@@ -149,41 +52,43 @@ function TestScreen() {
 
   function click(e) {
     e.preventDefault();
+    var myans=0
     const formData = new FormData(e.target);
     for (var pair of formData.entries()) {
-      var myans = pair[1];
+     myans = pair[1];
     }
-var x;
+    setTotal(total+parseInt(myans));
+    var x;
+    console.log(myans)
     if (myans > 0) {
       if (current < 3) {
         setCurrent(current + 1);
-         x = current+1;
-      }
-      else{
-          x=3
+        x = current + 1;
+      } else {
+        x = 3;
       }
     } else {
       if (current > 1) {
         setCurrent(current - 1);
-        x = current-1;
-      }
-      else{
-          x=1
+        x = current - 1;
+      } else {
+        x = 1;
       }
     }
+    var index=0;
     switch (x) {
       case 1:
-        var index = getRandomInt(0, easy.length);
+        index = getRandomInt(0, easy.length);
         setQs([...qs, easy[index]]);
         easy.splice(index, 1);
         break;
       case 2:
-        var index = getRandomInt(0, medium.length);
+        index = getRandomInt(0, medium.length);
         setQs([...qs, medium[index]]);
         medium.splice(index, 1);
         break;
       case 3:
-        var index = getRandomInt(0, hard.length);
+        index = getRandomInt(0, hard.length);
         setQs([...qs, hard[index]]);
         hard.splice(index, 1);
         break;
@@ -191,15 +96,17 @@ var x;
     setQsno(qsno + 1);
     e.target.reset();
   }
+
   return (
     <div>
+      {qsno <= 5 && 
+      <>
       <form onSubmit={click}>
         <h1>{qs[qsno].ques}</h1>
         {qs[qsno].options.map((option, index) => {
           return (
-            <p>
+            <p key={index}>
               <input
-                key={index}
                 type="radio"
                 id={index}
                 name={qs[qsno].ques}
@@ -207,7 +114,7 @@ var x;
                 value={option.mrks}
                 required
               />
-              <label for={index} class="option" id="option-one-label">
+              <label class="option" id="option-one-label">
                 {option.opt}
               </label>
             </p>
@@ -215,8 +122,16 @@ var x;
         })}
 
         <button type="submit">Next Question</button>
-      </form>
-    </div>
+      </form> 
+      </>
+      }
+      {qsno>5 && 
+      <>
+      <h1>Test completed</h1>
+      <h3>Your Score : {total} </h3>
+      </>
+      }
+         </div>
   );
 }
 
