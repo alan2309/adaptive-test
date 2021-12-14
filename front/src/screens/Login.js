@@ -36,7 +36,7 @@ function Login() {
             </Row>
             <Row style={{marginTop:'70px'}}>
                 <Col>
-                <input className='rectangle'  type='text' placeholder='Name' style={{width:'100%'}} ></input>
+                <input className='rectangle'  type='text' placeholder='Username' style={{width:'100%'}} ></input>
                 </Col>
             </Row>
             <Row style={{marginTop:'25px'}}>
