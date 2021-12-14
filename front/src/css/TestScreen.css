@@ -16,3 +16,21 @@
   text-align: center;
   padding: 5px 0 0 0 !important;
 }
+input{
+  border: 0px !important;
+}
+input:focus{
+  border:0px !important;
+}
+.field-icon {
+  float: right;
+  margin-right: 10px;
+  margin-top: -43px;
+  position: relative;
+  z-index: 2;
+  color: #bbb5b5;
+}
+.field-icon:hover{
+  cursor: pointer;
+}
+
