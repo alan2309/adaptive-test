@@ -1,0 +1,18 @@
+.rectangle {
+    min-height: 60px;
+    padding: 10px;
+    margin-bottom: 5px;
+    background-color: #f8f9fa !important;
+    border-radius: 14px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+.navigatorBox{
+  background-color: #081466;
+  height: 35px;
+  width: 35px;
+  margin-left: 32px;
+  margin-top: 25px;
+  color: white;
+  text-align: center;
+  padding: 5px 0 0 0 !important;
+}

@@ -4,6 +4,7 @@ import TestHeaderComp from "../components/TestScreeen/TestHeaderComp";
 import QuestionComp from "../components/TestScreeen/QuestionComp";
 import {Col,Row} from 'react-bootstrap';
 import QuestionNavigatorComp from "../components/TestScreeen/QuestionNavigatorComp";
+import '../css/TestScreen.css'
 
 function TestScreen() {
   const [hard, setHard] = useState([]);
@@ -104,19 +105,27 @@ function TestScreen() {
   return (
     <div>
       <div>
-        <Row>
+        <Row >
+          <Col md='9' >
+            <div className='rectangle'>
         <TestHeaderComp></TestHeaderComp>
-        </Row>
-        <Row>
-          <Col>
-        <QuestionComp></QuestionComp>
+        </div>
         </Col>
-        <Col>
+        </Row>
+        <Row style={{marginTop:'15px'}}>
+          <Col md='9' >
+            <div className='rectangle' style={{minHeight:'500px',backgroundColor:'black'}} >
+        <QuestionComp></QuestionComp>
+        </div>
+        </Col>
+        <Col md='3' >
+          <div className='rectangle' style={{minHeight:'500px',backgroundColor:'black'}}>
         <QuestionNavigatorComp></QuestionNavigatorComp>
+        </div>
         </Col>
         </Row>
         </div>
-      {qsno <= 5 && 
+      {/* {qsno <= 5 && 
       <>
       <form onSubmit={click}>
         <h1>{qs[qsno].ques}</h1>
@@ -147,7 +156,7 @@ function TestScreen() {
       <h1>Test completed</h1>
       <h3>Your Score : {total} </h3>
       </>
-      }
+      } */}
          </div>
   );
 }

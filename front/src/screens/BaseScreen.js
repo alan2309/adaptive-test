@@ -4,6 +4,7 @@ import Home from './Home';
 import logo from '../img/logo.png'
 import {Col,Row} from 'react-bootstrap';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from './Login';
 
 function BaseScreen() {
     return (
@@ -33,8 +34,9 @@ function BaseScreen() {
            <Col style={{padding:'10px 90px'}} >
            <Router>
         <Routes>
-        <Route path='/TestScreen' exact element={<TestScreen/>}/>
+        <Route path='/testScreen' exact element={<TestScreen/>}/>
         <Route path='/' exact element={<Home/>} />
+        <Route path='/login' exact element={<Login/>} />
         </Routes>
         </Router>
             
