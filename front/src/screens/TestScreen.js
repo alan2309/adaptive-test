@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import TestHeaderComp from "../components/TestScreeen/TestHeaderComp";
+import QuestionComp from "../components/TestScreeen/QuestionComp";
+import {Col,Row} from 'react-bootstrap';
+import QuestionNavigatorComp from "../components/TestScreeen/QuestionNavigatorComp";
 
 function TestScreen() {
   const [hard, setHard] = useState([]);
@@ -99,6 +103,19 @@ function TestScreen() {
 
   return (
     <div>
+      <div>
+        <Row>
+        <TestHeaderComp></TestHeaderComp>
+        </Row>
+        <Row>
+          <Col>
+        <QuestionComp></QuestionComp>
+        </Col>
+        <Col>
+        <QuestionNavigatorComp></QuestionNavigatorComp>
+        </Col>
+        </Row>
+        </div>
       {qsno <= 5 && 
       <>
       <form onSubmit={click}>

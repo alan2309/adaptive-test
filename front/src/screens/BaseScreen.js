@@ -2,7 +2,7 @@ import React from 'react'
 import TestScreen from './TestScreen'
 import Home from './Home';
 import logo from '../img/logo.png'
-import {Col,Container,Row} from 'react-bootstrap';
+import {Col,Row} from 'react-bootstrap';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function BaseScreen() {
