@@ -1,7 +1,7 @@
 import React from 'react'
 import {Col,Row} from 'react-bootstrap';
 
-function QuestionComp() {
+function QuestionComp({question,options}) {
     return (
         <div>
             <Row>
@@ -21,83 +21,29 @@ function QuestionComp() {
             </Row>
             <Row>
                 <Col>
-            A man got Rs. 130 less, as simple interest, when he invested Rs. 2000 for 4 years as compared to investing Rs. 2250 for same duration. What is the rate of interest?
+          {question}
           </Col>
             </Row>
             <div style={{padding:'10px 0'}}>
-            <form >
-            <Row>
-                <Row>
-                <Col>
-
-                <p >
+           
+            {options.map((option, index) => {
+          return (
+            <p key={index}>
               <input
                 type="radio"
+                id={index}
+                name={question}
                 class="radio"
+                value={option.mrks}
                 required
               />
               <label class="option" id="option-one-label">
-               asdas
+                {option.opt}
               </label>
-            </p>    
-
-      
-          </Col>
-          </Row>
-                <Row>
-                <Col>
-
-                <p >
-              <input
-                type="radio"
-                class="radio"
-                required
-              />
-              <label class="option" id="option-one-label">
-               asdas
-              </label>
-            </p>    
-
-      
-          </Col>
-          </Row>
-                <Row>
-                <Col>
-
-                <p >
-              <input
-                type="radio"
-                class="radio"
-                required
-              />
-              <label class="option" id="option-one-label">
-               asdas
-              </label>
-            </p>    
-
-      
-          </Col>
-          </Row>
-                <Row>
-                <Col>
-
-                <p >
-              <input
-                type="radio"
-                class="radio"
-                required
-              />
-              <label class="option" id="option-one-label">
-               asdas
-              </label>
-            </p>    
-
-      
-          </Col>
-          </Row>
-            </Row>
+            </p>
+          );
+         })}
             <button type="submit">Next Question</button>
-      </form> 
       </div>
         </div>
     )

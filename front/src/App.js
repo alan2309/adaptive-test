@@ -3,7 +3,7 @@ import TestScreen from './screens/TestScreen'
 import Home from './screens/Home'
 import logo from './img/logo.png'
 import {Col,Row} from 'react-bootstrap';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Login from './screens/Login';
 
 function App() {
@@ -21,7 +21,7 @@ function App() {
            className="d-inline-block align-middle mr-2"
          />
          </Col>
-         <Col md={11} style={{paddingTop:'10px',paddingLeft:'40px',paddingRight:'0px'}}>
+         <Col md={9} style={{paddingTop:'10px',paddingLeft:'40px',paddingRight:'0px'}}>
              <Row style={{margin:'0px'}}>
          DJSCE INFORMATION TECHNOLOGY
          </Row>
@@ -29,6 +29,10 @@ function App() {
          Placement Portal
          </Row>
          </Col>
+         <Col md='1'> <a href="/login">Login
+         </a></Col>
+         <Col md='1'> <a href="/testScreen">Test
+         </a></Col>
          </Row>
          <Row style={{margin:'0px'}}>
 

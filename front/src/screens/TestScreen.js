@@ -115,7 +115,9 @@ function TestScreen() {
         <Row style={{marginTop:'15px'}}>
           <Col md='9' >
             <div className='rectangle' style={{minHeight:'500px',backgroundColor:'black'}} >
-        <QuestionComp></QuestionComp>
+            <form onSubmit={click}>
+        <QuestionComp question={qs[qsno].ques} options={qs[qsno].options}></QuestionComp>
+        </form> 
         </div>
         </Col>
         <Col md='3' >
@@ -125,7 +127,7 @@ function TestScreen() {
         </Col>
         </Row>
         </div>
-      {/* {qsno <= 5 && 
+       {/* {qsno <= 5 && 
       <>
       <form onSubmit={click}>
         <h1>{qs[qsno].ques}</h1>
