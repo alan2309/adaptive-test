@@ -111,6 +111,9 @@ function TestScreen() {
         <TestHeaderComp></TestHeaderComp>
         </div>
         </Col>
+        <Col md='3'>
+          <button style={{backgroundColor:'#081466',width:'100%',height:'60px',borderRadius:'14px',color:'white',boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'}} >FINISH TEST</button>
+        </Col>
         </Row>
         <Row style={{marginTop:'15px'}}>
           <Col md='9' >

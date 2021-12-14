@@ -3,7 +3,7 @@ import {Col,Row} from 'react-bootstrap';
 
 function QuestionComp({question,options}) {
     return (
-        <div>
+        <div style={{padding:'10px 20px'}}>
             <Row>
                 <Col >
                     <div style={{float:'right'}}>
@@ -13,7 +13,7 @@ function QuestionComp({question,options}) {
             </Row>
             <Row>
             <Col >
-                    <div >
+                    <div style={{padding:'10px 0 20px 0'}}>
                     Question 3
                </div>
              </Col>
@@ -21,14 +21,16 @@ function QuestionComp({question,options}) {
             </Row>
             <Row>
                 <Col>
+                <div style={{padding:'5px 0 20px 0px'}}>
           {question}
+          </div>
           </Col>
             </Row>
-            <div style={{padding:'10px 0'}}>
+            <div style={{padding:'15px 0 10px 0'}}>
            
             {options.map((option, index) => {
           return (
-            <p key={index}>
+            <p key={index} style={{padding:'5px 0'}}>
               <input
                 type="radio"
                 id={index}
@@ -43,7 +45,7 @@ function QuestionComp({question,options}) {
             </p>
           );
          })}
-            <button type="submit">Next Question</button>
+            <button type="submit" className='btn nextQsBtn'>Next Question</button>
       </div>
         </div>
     )

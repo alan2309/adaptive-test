@@ -33,4 +33,10 @@ input:focus{
 .field-icon:hover{
   cursor: pointer;
 }
+.nextQsBtn{
+  width: 235px;
+  background-color: #10B65C;
+  margin-top: 40px;
+  margin-left: 360px;
+}
 
