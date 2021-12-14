@@ -1,10 +1,9 @@
-import './App.css';
-import TestScreen from "./screens/TestScreen";
+import BaseScreen from './screens/BaseScreen';
 
 function App() {
   return (
     <div className="App">
-      <TestScreen/>
+      <BaseScreen/>
     </div>
   );
 }
