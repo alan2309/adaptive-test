@@ -2,7 +2,7 @@ import React from 'react'
 import {Col,Row} from 'react-bootstrap';
 
 
-function QuestionNavigatorComp() {
+function QuestionNavigatorComp({attempted}) {
     return (
         <div>
             <Row>
@@ -12,15 +12,16 @@ function QuestionNavigatorComp() {
                 </div>
                 </Col>
             </Row>
+            {attempted.length === 0 && <p style={{textAlign:'center'}}>0 questions attempted</p>}
+            {attempted.length !== 0 &&
             <Row>
                 <Row style={{paddingTop:'20px'}}>
-                    <Col md='4' sm='6'> <div className='navigatorBox'>1</div></Col>
-                    <Col md='4' sm='6'> <div className='navigatorBox'>2</div></Col>
-                    <Col md='4' sm='6'> <div className='navigatorBox'>3</div></Col>
-                    <Col md='4' sm='6'> <div className='navigatorBox'>4</div></Col>
-                    <Col md='4' sm='6'> <div className='navigatorBox'>5</div></Col>
+                    {attempted.map((x,index)=>{
+                      return <Col key={index} md='4' sm='6'> <div style={{backgroundColor:x>0?'#39FF14':'red'}} className='navigatorBox'>{index+1}</div></Col>
+                    })}
                 </Row>
             </Row>
+}
         </div>
     )
 }

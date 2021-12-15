@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef} from "react";
 import axios from "axios";
 import TestHeaderComp from "../components/TestScreeen/TestHeaderComp";
 import QuestionComp from "../components/TestScreeen/QuestionComp";
@@ -30,6 +30,51 @@ function TestScreen() {
       ],
     },
   ]);
+  const Ref = useRef(null);
+  const [timer, setTimer] = useState('00:00:00');
+
+
+  const getTimeRemaining = (e) => {
+      const total = Date.parse(e) - Date.parse(new Date());
+      const seconds = Math.floor((total / 1000) % 60);
+      const minutes = Math.floor((total / 1000 / 60) % 60);
+      const hours = Math.floor((total / 1000 * 60 * 60) % 24);
+      return {
+          total, hours, minutes, seconds
+      };
+  }
+
+
+  const startTimer = (e) => {
+      let { total, hours, minutes, seconds } 
+                  = getTimeRemaining(e);
+      if (total >= 0) {
+          // update the timer
+          // check if less than 10 then we need to 
+          // add '0' at the begining of the variable
+          setTimer(
+              (hours > 9 ? hours : '0' + hours) + ':' +
+              (minutes > 9 ? minutes : '0' + minutes) + ':'
+              + (seconds > 9 ? seconds : '0' + seconds)
+          )
+      }
+  }
+
+
+  const clearTimer = (e) => {
+      setTimer('01:00:00');
+      if (Ref.current) clearInterval(Ref.current);
+      const id = setInterval(() => {
+          startTimer(e);
+      }, 1000)
+      Ref.current = id;
+  }
+
+  const getDeadTime = () => {
+      let deadline = new Date();
+      deadline.setSeconds(deadline.getSeconds() + 720000);
+      return deadline;
+  }
   const [total,setTotal] = useState(0);
   const [ans, setAns] = useState([]);
   const [qsno, setQsno] = useState(0);
@@ -47,6 +92,7 @@ function TestScreen() {
           console.log(e);
         });
     getData();
+    clearTimer(getDeadTime());
   }, []);
 
   function getRandomInt(min, max) {
@@ -64,7 +110,7 @@ function TestScreen() {
     }
     setTotal(total+parseInt(myans));
     var x;
-    console.log(myans)
+    setAns([...ans, parseInt(myans)]);
     if (myans > 0) {
       if (current < 3) {
         setCurrent(current + 1);
@@ -104,11 +150,11 @@ function TestScreen() {
 
   return (
     <div>
-      <div>
+      {timer !== '00:00:00' && <div>
         <Row >
           <Col md='9' >
             <div className='rectangle'>
-        <TestHeaderComp></TestHeaderComp>
+        <TestHeaderComp timer={timer} ></TestHeaderComp>
         </div>
         </Col>
         <Col md='3'>
@@ -116,20 +162,21 @@ function TestScreen() {
         </Col>
         </Row>
         <Row style={{marginTop:'15px'}}>
-          <Col md='9' >
+          <Col md='9'>
             <div className='rectangle' style={{minHeight:'500px',backgroundColor:'black'}} >
             <form onSubmit={click}>
-        <QuestionComp question={qs[qsno].ques} options={qs[qsno].options}></QuestionComp>
+        <QuestionComp qsno={qsno} level={current} question={qs[qsno].ques} options={qs[qsno].options}></QuestionComp>
         </form> 
         </div>
         </Col>
         <Col md='3' >
           <div className='rectangle' style={{minHeight:'500px',backgroundColor:'black'}}>
-        <QuestionNavigatorComp></QuestionNavigatorComp>
+        <QuestionNavigatorComp attempted = {ans}></QuestionNavigatorComp>
         </div>
         </Col>
         </Row>
-        </div>
+        </div>}
+        {timer === '00:00:00'&& <h2>Time's up</h2>}
        {/* {qsno <= 5 && 
       <>
       <form onSubmit={click}>

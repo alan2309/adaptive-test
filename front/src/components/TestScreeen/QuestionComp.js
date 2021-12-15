@@ -1,20 +1,20 @@
 import React from 'react'
 import {Col,Row} from 'react-bootstrap';
 
-function QuestionComp({question,options}) {
+function QuestionComp({question,options,level,qsno}) {
     return (
         <div style={{padding:'10px 20px'}}>
             <Row>
                 <Col >
                     <div style={{float:'right'}}>
-               Difficulty Level : Easy
+               Difficulty Level : {level===2?'Medium':level=== 3?'Hard':'Easy'}
                </div>
              </Col>
             </Row>
             <Row>
             <Col >
                     <div style={{padding:'10px 0 20px 0'}}>
-                    Question 3
+                    Question {qsno+1}
                </div>
              </Col>
                
@@ -37,7 +37,6 @@ function QuestionComp({question,options}) {
                 name={question}
                 class="radio"
                 value={option.mrks}
-                required
               />
               <label class="option" id="option-one-label">
                 {option.opt}
