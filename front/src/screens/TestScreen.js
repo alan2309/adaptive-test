@@ -5,6 +5,14 @@ import QuestionComp from "../components/TestScreeen/QuestionComp";
 import {Col,Row} from 'react-bootstrap';
 import QuestionNavigatorComp from "../components/TestScreeen/QuestionNavigatorComp";
 import '../css/TestScreen.css'
+import { useNavigate } from "react-router";
+import { isExpired, decodeToken } from "react-jwt";
+
+
+  
+
+
+
 
 function TestScreen() {
   const [hard, setHard] = useState([]);
@@ -78,8 +86,20 @@ function TestScreen() {
   const [total,setTotal] = useState(0);
   const [ans, setAns] = useState([]);
   const [qsno, setQsno] = useState(0);
+  const navigate = useNavigate()
 
   useEffect(() => {
+    
+const token = localStorage.getItem('access_token');
+const isMyTokenExpired = isExpired(token);
+console.log(isMyTokenExpired)
+
+if(isMyTokenExpired){
+    navigate('/login')
+    }
+    else{
+      console.log('jwt exists')
+    }
     const getData = async () =>
       await axios
         .get("http://127.0.0.1:8000/api/qs")

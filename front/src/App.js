@@ -6,6 +6,7 @@ import logo from './img/logo.png'
 import {Col,Navbar,Button,Row} from 'react-bootstrap';
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Login from './screens/Login';
+import Logout from './screens/logout';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
        <Route path='/testScreen' exact element={<TestScreen/>}/>
        <Route path='/' exact element={<Home/>} />
        <Route path='/login' exact element={<Login/>} />
+       <Route path='/logout' exact element={<Logout/>} />
        </Routes>
        </Router>
            

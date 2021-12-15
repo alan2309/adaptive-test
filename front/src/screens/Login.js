@@ -1,21 +1,52 @@
-import React from 'react'
+import React,{ useState } from 'react'
 import {Col,Row} from 'react-bootstrap';
-import '../css/TestScreen.css'
+import axiosInstance from '../axios';
+import { useNavigate } from 'react-router-dom';
+import '../css/TestScreen.css';
 
 function showHide(e){
     console.log(e)
    
 
-        // $(e.target).toggleClass("fa-eye fa-eye-slash");
-        // var input = $($(e.target).attr("toggle"));
-        // if (input.attr("type") == "password") {
-        //   input.attr("type", "text");
-        // } else {
-        //   input.attr("type", "password");
-        // }
+        $(e.target).toggleClass("fa-eye fa-eye-slash");
+        var input = $($(e.target).attr("toggle"));
+        if (input.attr("type") == "password") {
+          input.attr("type", "text");
+        } else {
+          input.attr("type", "password");
+        }
 }
 
 function Login() {
+    const navigate = useNavigate()
+    const initialFormData=Object.freeze({
+        username:'',
+        password:''
+    })
+    const [formData,updateFormData]=useState(initialFormData);
+    const handleChange=(e)=>{
+        console.log(e.target.name)
+        console.log(e.target.value)
+        updateFormData({
+            ...formData,
+            [e.target.name]:e.target.value
+        });
+    }
+
+    const handleSubmit=(e)=>{
+        e.preventDefault();
+        axiosInstance.post('token/',{
+            username:formData.username,
+            password:formData.password
+        })
+        .then((res)=>{
+            console.log(res)
+            localStorage.setItem('access_token',res.data.access);
+            localStorage.setItem('refresh_token',res.data.refresh);
+            axiosInstance.defaults.headers['Authorization']='JWT '+localStorage.getItem('access_token');
+            navigate('/testScreen')
+        })
+    }
     return (
         <div>
         <Row>
@@ -34,23 +65,25 @@ function Login() {
                 </div>
                 </Col>
             </Row>
+            <form onSubmit={(e)=>handleSubmit(e)}>
             <Row style={{marginTop:'70px'}}>
                 <Col>
-                <input className='rectangle'  type='text' placeholder='Username' style={{width:'100%'}} ></input>
+                <input className='rectangle'onChange={handleChange}  name='username'  type='text' placeholder='Username' style={{width:'100%'}} ></input>
                 </Col>
             </Row>
             <Row style={{marginTop:'25px'}}>
                 <Col>
                 
-                <input className='rectangle' id='password-field' type='password' placeholder='Password' style={{width:'100%'}} ></input>
+                <input className='rectangle' onChange={handleChange} id='password-field' name='password' type='password' placeholder='Password' style={{width:'100%'}} ></input>
                 <span toggle="#password-field" className="fa fa-fw fa-eye field-icon toggle-password" onClick={(e)=>showHide(e)}></span>
                 </Col>
             </Row>
             <Row style={{marginTop:'35px',paddingLeft:'200px'}}>
                  <Col>
-                <button style={{backgroundColor:'#10B65C',width:'150px'}} className='btn btn-primary'>Start Test</button>
+                <button style={{backgroundColor:'#10B65C',width:'150px'}} type='submit' className='btn btn-primary'>Start Test</button>
                 </Col>
             </Row>
+            </form>
            
         </div>
         </Col>

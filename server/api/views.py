@@ -1,6 +1,11 @@
 from django.shortcuts import render
 from django.http.response import HttpResponse, JsonResponse
+from rest_framework.views import APIView
 from api.models import Questions,Options
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework import status
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
 
 # Create your views here.
 def qs(request):
@@ -33,3 +38,15 @@ def qs(request):
 
                 
     return JsonResponse({'easy':a,'medium':b,'hard':c},safe=False)
+
+class BlackListTokenView(APIView):
+    permission_classes=[AllowAny]
+
+    def post(self,request):
+        try:
+            refresh_token=request.data['refresh_token']
+            token=RefreshToken(refresh_token)
+            token.blacklist()
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
