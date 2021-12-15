@@ -1,8 +1,9 @@
+
 import React from 'react'
 import TestScreen from './screens/TestScreen'
 import Home from './screens/Home'
 import logo from './img/logo.png'
-import {Col,Row} from 'react-bootstrap';
+import {Col,Navbar,Button,Row} from 'react-bootstrap';
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Login from './screens/Login';
 
@@ -10,31 +11,21 @@ function App() {
   return (
     <div className="App">
        <div>
+       <Navbar style={{backgroundColor:"#fff",boxShadow:"0px 4px 4px rgba(0, 0, 0, 0.25)",color:"black",paddingTop:"0px",paddingBottom:"0px"}} expand="xl">
+               
+               <Navbar.Brand className="navBrand">
+                   <img className="logoImage" height="80px" width="80px" alt="logo" src={logo}></img>
+                       <div className="logoTitle">
+                           <h5 className="djsce">DJSCE</h5>
+                           <h5 className="it">INFORMATION TECHNOLOGY</h5>
+                       </div>
+               </Navbar.Brand>
+               <Navbar.Toggle aria-controls="basic-navbar-nav" />
            
-
-
-           <Row style={{height:'100px',margin:'0px'}}>
-               <Col md={1}>
-           <img style={{ width:"60px",height:"75px",marginLeft:'56px'}}
-           src={logo}
-           alt="logo"
-           className="d-inline-block align-middle mr-2"
-         />
-         </Col>
-         <Col md={9} style={{paddingTop:'10px',paddingLeft:'40px',paddingRight:'0px'}}>
-             <Row style={{margin:'0px'}}>
-         DJSCE INFORMATION TECHNOLOGY
-         </Row>
-         <Row style={{margin:'0px'}}>
-         Placement Portal
-         </Row>
-         </Col>
-         <Col md='1'> <a href="/login">Login
-         </a></Col>
-         <Col md='1'> <a href="/testScreen">Test
-         </a></Col>
-         </Row>
-         <Row style={{margin:'0px'}}>
+        
+           </Navbar>
+           
+         <Row style={{margin:'20px 0 0 0'}}>
 
           <Col style={{padding:'10px 90px'}} >
           <Router>
@@ -53,3 +44,4 @@ function App() {
 }
 
 export default App;
+
