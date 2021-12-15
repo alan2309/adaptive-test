@@ -91,6 +91,8 @@ function TestScreen() {
         .catch((e) => {
           console.log(e);
         });
+        var ar = new Array(10).fill(-1)
+        setAns(ar)
     getData();
     clearTimer(getDeadTime());
   }, []);
@@ -103,14 +105,15 @@ function TestScreen() {
 
   function click(e) {
     e.preventDefault();
-    var myans=0
+    var myans=-1;
     const formData = new FormData(e.target);
     for (var pair of formData.entries()) {
      myans = pair[1];
     }
     setTotal(total+parseInt(myans));
     var x;
-    setAns([...ans, parseInt(myans)]);
+    ans[qsno] = parseInt(myans);
+    setAns(ans);
     if (myans > 0) {
       if (current < 3) {
         setCurrent(current + 1);
