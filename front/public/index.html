@@ -63,11 +63,9 @@
     <script>
       document.onkeydown = function(e){
         if(e.keyCode == 116 || e.keyCode== 16 || e.keyCode == 82 || e.keyCode == 27){
-          alert("hi")
-          return false;
+          e.preventDefault();
         }
       }
-      
       function preventBack(){
         window.history.forward()
       }
