@@ -107,9 +107,6 @@ function TestScreen() {
       test['currentLevel']='Medium'
       localStorage.setItem('test',JSON.stringify(test))
     }
-   
-    
-  
 
 if(isMyTokenExpired){
     navigate('/login')
@@ -124,27 +121,48 @@ if(isMyTokenExpired){
           setEasy(res.data.easy);
           setHard(res.data.hard);
           setMedium(res.data.medium);
+
+          let ar = new Array(10).fill(-1)
+          setAns(ar)
           }else{
             var test=JSON.parse(localStorage.getItem('test'))
 
-            console.log(test['question'])
-            console.log(res.data)
-             
+            var qss = test['question']
             //  Alankrit
+            var x=res.data.easy
+            var y=res.data.medium
+            var z=res.data.hard
 
+            for(let i=0;i<qss.length;i++){
 
+              if(x.map(function(e) { return e.ques; }).indexOf(qss[i].ques)!== -1){
+                let a = x.map(function(e) { return e.ques; }).indexOf(qss[i].ques);
+                x.splice(a,1)
+              }
+              else if(y.map(function(e) { return e.ques; }).indexOf(qss[i].ques)!== -1){
+                let b = y.map(function(e) { return e.ques; }).indexOf(qss[i].ques);
+                y.splice(b,1)
+              }
+              else if(z.map(function(e) { return e.ques; }).indexOf(qss[i].ques)!== -1){
+                let c = z.map(function(e) { return e.ques; }).indexOf(qss[i].ques);
+                z.splice(c,1)
+              }
+            }
+            setEasy(x);
+          setHard(z);
+          setMedium(y);
+          console.log(test['marks'])
+          // var ar = test['marks']
+          // setAns(ar)
+          // setQsno(test['currentQsNo'])
+          // setQs(test['question'])
           }
         })
         .catch((e) => {
           console.log(e);
         });
-        var ar = new Array(10).fill(-1)
-        setAns(ar)
     getData();
     clearTimer(getDeadTime());
-   
-    
-   
     }
    
   }, []);
