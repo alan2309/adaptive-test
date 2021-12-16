@@ -60,5 +60,19 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script>
+      document.onkeydown = function(e){
+        if(e.keyCode == 116 || e.keyCode== 16 || e.keyCode == 82 || e.keyCode == 27){
+          alert("hi")
+          return false;
+        }
+      }
+      
+      function preventBack(){
+        window.history.forward()
+      }
+      setTimeout("preventBack()",0);
+      window.onunload = function(){null};
+    </script>
   </body>
 </html>
