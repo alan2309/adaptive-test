@@ -2,7 +2,7 @@ import React, { useState, useEffect,useRef} from "react";
 import axios from "axios";
 import TestHeaderComp from "../components/TestScreeen/TestHeaderComp";
 import QuestionComp from "../components/TestScreeen/QuestionComp";
-import {Col,Row} from 'react-bootstrap';
+import {Col,Modal,Button,Row} from 'react-bootstrap';
 import QuestionNavigatorComp from "../components/TestScreeen/QuestionNavigatorComp";
 import '../css/TestScreen.css'
 import { useNavigate } from "react-router";
@@ -87,20 +87,27 @@ function TestScreen() {
   const [ans, setAns] = useState([]);
   const [qsno, setQsno] = useState(0);
   const navigate = useNavigate()
-
+  const [show, setShow] = useState(true);
+  const [reload, isReload] = useState(false);
+  const handleClose = () => setShow(false);
+  
   useEffect(() => {
+    if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+      console.info( "This page is reloaded" );
+      isReload(true)
+    } 
+   
     
-const token = localStorage.getItem('access_token');
-const isMyTokenExpired = isExpired(token);
-console.log(isMyTokenExpired)
+  const token = localStorage.getItem('access_token');
+  const isMyTokenExpired = isExpired(token);
+  console.log(isMyTokenExpired)
 
 if(isMyTokenExpired){
     navigate('/login')
     }
     else{
       console.log('jwt exists')
-    }
-    const getData = async () =>
+      const getData = async () =>
       await axios
         .get("http://127.0.0.1:8000/api/qs")
         .then((res) => {
@@ -115,7 +122,35 @@ if(isMyTokenExpired){
         setAns(ar)
     getData();
     clearTimer(getDeadTime());
+   
+    }
+   
   }, []);
+  function GoInFullscreen(element) {
+    console.log(document.fullscreenElement)
+    if (document.fullscreenElement === null) {
+      
+          if(element.requestFullscreen)
+          element.requestFullscreen();
+        else if(element.mozRequestFullScreen)
+          element.mozRequestFullScreen();
+        else if(element.webkitRequestFullscreen)
+          element.webkitRequestFullscreen();
+        else if(element.msRequestFullscreen)
+          element.msRequestFullscreen();
+        
+    } 
+    
+  }
+  document.addEventListener('fullscreenchange', function() {
+    var full_screen_element = document.fullscreenElement;
+  
+    if(full_screen_element === null){
+      setShow(true)
+      isReload(true)
+    }
+}
+  );
 
   function getRandomInt(min, max) {
     min = Math.ceil(min);
@@ -173,6 +208,22 @@ if(isMyTokenExpired){
 
   return (
     <div>
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header>
+          <Modal.Title>Enter FullScreeen</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+       { reload ? 'Please Enter Full Screen or Test will get auto submitted in 10 sec (timer from local storage) and you might get disqualified':'Please enter Full Screen mode'}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary"  onClick={(e)=>{handleClose(e);GoInFullscreen(document.querySelector('#element'))}}>Enter Full Screeen</Button>
+        </Modal.Footer>
+      </Modal>
       {timer !== '00:00:00' && <div>
         <Row >
           <Col md='9' >
