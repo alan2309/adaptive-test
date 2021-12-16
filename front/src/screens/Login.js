@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import '../css/TestScreen.css';
 
 function showHide(e){
-    console.log(e)
    
 
         // $(e.target).toggleClass("fa-eye fa-eye-slash");
@@ -25,8 +24,6 @@ function Login() {
     })
     const [formData,updateFormData]=useState(initialFormData);
     const handleChange=(e)=>{
-        console.log(e.target.name)
-        console.log(e.target.value)
         updateFormData({
             ...formData,
             [e.target.name]:e.target.value
@@ -40,11 +37,12 @@ function Login() {
             password:formData.password
         })
         .then((res)=>{
-            console.log(res)
             localStorage.setItem('access_token',res.data.access);
             localStorage.setItem('refresh_token',res.data.refresh);
+            localStorage.setItem("test", JSON.stringify({'username':formData.username,'STime':Date(),'FSTimer':'10','question':[],'currentQsNo':1}));
             axiosInstance.defaults.headers['Authorization']='JWT '+localStorage.getItem('access_token');
             navigate('/testScreen')
+
         })
     }
     return (

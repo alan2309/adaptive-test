@@ -40,6 +40,13 @@ function TestScreen() {
   ]);
   const Ref = useRef(null);
   const [timer, setTimer] = useState('00:00:00');
+  const [total,setTotal] = useState(0);
+  const [ans, setAns] = useState([]);
+  const [qsno, setQsno] = useState(0);
+  const navigate = useNavigate()
+  const [show, setShow] = useState(true);
+  const [reload, isReload] = useState(false);
+  const handleClose = () => setShow(false);
 
 
   const getTimeRemaining = (e) => {
@@ -83,37 +90,50 @@ function TestScreen() {
       deadline.setSeconds(deadline.getSeconds() + 720000);
       return deadline;
   }
-  const [total,setTotal] = useState(0);
-  const [ans, setAns] = useState([]);
-  const [qsno, setQsno] = useState(0);
-  const navigate = useNavigate()
-  const [show, setShow] = useState(true);
-  const [reload, isReload] = useState(false);
-  const handleClose = () => setShow(false);
+
   
   useEffect(() => {
+    var test=JSON.parse(localStorage.getItem('test'))
+    const token = localStorage.getItem('access_token');
+  const isMyTokenExpired = isExpired(token);
+
     if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
       console.info( "This page is reloaded" );
       isReload(true)
-    } 
+    }else{
+      console.log(',,,')
+      console.log(qs[0].ques)
+      test['question'].push(qs[0])
+      test['currentLevel']='Medium'
+      localStorage.setItem('test',JSON.stringify(test))
+    }
    
     
-  const token = localStorage.getItem('access_token');
-  const isMyTokenExpired = isExpired(token);
-  console.log(isMyTokenExpired)
+  
 
 if(isMyTokenExpired){
     navigate('/login')
     }
     else{
-      console.log('jwt exists')
       const getData = async () =>
       await axios
         .get("http://127.0.0.1:8000/api/qs")
         .then((res) => {
+
+          if (performance.navigation.type !== performance.navigation.TYPE_RELOAD) {
           setEasy(res.data.easy);
           setHard(res.data.hard);
           setMedium(res.data.medium);
+          }else{
+            var test=JSON.parse(localStorage.getItem('test'))
+
+            console.log(test['question'])
+            console.log(res.data)
+             
+            //  Alankrit
+
+
+          }
         })
         .catch((e) => {
           console.log(e);
@@ -122,6 +142,8 @@ if(isMyTokenExpired){
         setAns(ar)
     getData();
     clearTimer(getDeadTime());
+   
+    
    
     }
    
@@ -169,6 +191,9 @@ if(isMyTokenExpired){
     var x;
     ans[qsno] = parseInt(myans);
     setAns(ans);
+    var test=JSON.parse(localStorage.getItem('test'))
+    
+    
     if (myans > 0) {
       if (current < 3) {
         setCurrent(current + 1);
@@ -189,20 +214,30 @@ if(isMyTokenExpired){
       case 1:
         index = getRandomInt(0, easy.length);
         setQs([...qs, easy[index]]);
+        test['question'].push(easy[index])
+        test['currentLevel']='Easy'
         easy.splice(index, 1);
         break;
       case 2:
         index = getRandomInt(0, medium.length);
         setQs([...qs, medium[index]]);
+        test['question'].push(medium[index])
+        test['currentLevel']='Medium'
         medium.splice(index, 1);
         break;
       case 3:
         index = getRandomInt(0, hard.length);
         setQs([...qs, hard[index]]);
+        test['question'].push(hard[index])
+        test['currentLevel']='Hard'
         hard.splice(index, 1);
         break;
     }
+    
+    test['marks']=ans;
     setQsno(qsno + 1);
+    test['currentQsNo']=test['currentQsNo']+1
+    localStorage.setItem('test',JSON.stringify(test))
     e.target.reset();
   }
 
@@ -221,6 +256,7 @@ if(isMyTokenExpired){
        { reload ? 'Please Enter Full Screen or Test will get auto submitted in 10 sec (timer from local storage) and you might get disqualified':'Please enter Full Screen mode'}
         </Modal.Body>
         <Modal.Footer>
+          <a href='/logout'>Logout</a>
           <Button variant="primary"  onClick={(e)=>{handleClose(e);GoInFullscreen(document.querySelector('#element'))}}>Enter Full Screeen</Button>
         </Modal.Footer>
       </Modal>

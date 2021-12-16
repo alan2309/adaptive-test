@@ -19,6 +19,7 @@ function App() {
                        <div className="logoTitle">
                            <h5 className="djsce">DJSCE</h5>
                            <h5 className="it">INFORMATION TECHNOLOGY</h5>
+                           <a href='/logout'>Logout</a>
                        </div>
                </Navbar.Brand>
                <Navbar.Toggle aria-controls="basic-navbar-nav" />
