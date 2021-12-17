@@ -73,6 +73,23 @@ function TestScreen() {
     var test=JSON.parse(localStorage.getItem('test'))
     const token = localStorage.getItem('access_token');
   const isMyTokenExpired = isExpired(token);
+  const channel = new BroadcastChannel('tab');
+  console.log(channel)
+
+  channel.postMessage('another-tab');
+  // note that listener is added after posting the message
+  console.log(channel)
+
+
+
+  channel.addEventListener('message', (msg) => {
+    if (msg.data === 'another-tab') {
+      // message received from 2nd tab
+      alert('Cannot open multiple instances');
+      navigate('/error')
+      
+    }
+  });
 
   if(test){
     if (test['question'].length!==0) {

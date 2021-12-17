@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Login from './screens/Login';
 import Logout from './screens/logout';
 import Result from './screens/Result';
+import Error from './screens/Error';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
        <Route path='/login' exact element={<Login/>} />
        <Route path='/result' exact element={<Result/>} />
        <Route path='/logout' exact element={<Logout/>} />
+       <Route path='/error' exact element={<Error/>} />
        </Routes>
        </Router>
            
