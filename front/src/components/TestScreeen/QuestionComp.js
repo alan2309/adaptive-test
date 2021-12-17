@@ -4,7 +4,9 @@ import {Col,Row} from 'react-bootstrap';
 function QuestionComp({question,options,level,qsno}) {
     return (
         <div style={{padding:'10px 20px'}}>
-            <Row>
+          {qsno<6 && 
+          <>
+          <Row>
                 <Col >
                     <div style={{float:'right'}}>
                Difficulty Level : {level===2?'Medium':level=== 3?'Hard':'Easy'}
@@ -46,6 +48,9 @@ function QuestionComp({question,options,level,qsno}) {
          })}
             <button type="submit" className='btn nextQsBtn'>Next Question</button>
       </div>
+          </>
+          }
+{qsno>=6 && <h3>Click finish Test</h3>}
         </div>
     )
 }

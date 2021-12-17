@@ -19,3 +19,6 @@ class Results(models.Model):
     endTime = models.TimeField(blank=True,null=True)
     marks = models.IntegerField(default=0)
     student = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.student.username

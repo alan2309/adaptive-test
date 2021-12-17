@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http.response import HttpResponse, JsonResponse
+from django.http.response import JsonResponse
 from rest_framework.views import APIView
 from api.models import Questions,Options,Results
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -58,11 +58,13 @@ class BlackListTokenView(APIView):
 @csrf_exempt
 def results(request,name):
     if request.method == 'POST':
-        user = User.objects.get(username = name)
+        user = User.objects.get(username = name) 
         if(user):
             d = datetime.datetime.now()
-            Results.objects.get(student = user).delete()
-
+            try:
+                Results.objects.get(student = user).delete()
+            except Results.DoesNotExist:    
+                print('No previous entry')
             result = Results.objects.create(student = user,startTime = d.time())
             result.save()
             return JsonResponse("Result entry created",safe=False)

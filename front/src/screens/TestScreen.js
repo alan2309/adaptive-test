@@ -9,11 +9,6 @@ import { useNavigate } from "react-router";
 import { isExpired, decodeToken } from "react-jwt";
 
 
-  
-
-
-
-
 function TestScreen() {
   const [hard, setHard] = useState([]);
   const [medium, setMedium] = useState([]);
@@ -79,21 +74,25 @@ function TestScreen() {
     const token = localStorage.getItem('access_token');
   const isMyTokenExpired = isExpired(token);
 
+  if(test){
     if (test['question'].length!==0) {
       console.info( "This page is reloaded" );
       isReload(true)
     }
-
+  }
     if(isMyTokenExpired){
       navigate('/login')
+      return
     }
     else{
+      if(localStorage.getItem('result')){
+        navigate('/result')
+      }
+      else{
       const getData = async () =>
       await axios
         .get("http://127.0.0.1:8000/api/qs")
         .then((res) => {
-          
-
           if (test['question'].length===0) {
           setEasy(res.data.easy);
           setHard(res.data.hard);
@@ -108,7 +107,8 @@ function TestScreen() {
           setAns(ar)
           test['marks']=ar
           localStorage.setItem('test',JSON.stringify(test))
-          }else{
+          }
+          else{
             var qss = test['question']
             var x=res.data.easy
             var y=res.data.medium
@@ -144,7 +144,7 @@ function TestScreen() {
     getData();
     clearTimer(getDeadTime());
     }
-   
+  }
   }, []);
   function GoInFullscreen(element) {
     console.log(document.fullscreenElement)
@@ -265,7 +265,7 @@ function TestScreen() {
         </div>
         </Col>
         <Col md='3'>
-          <button style={{backgroundColor:'#081466',width:'100%',height:'60px',borderRadius:'14px',color:'white',boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'}} >FINISH TEST</button>
+          <button onClick={(e)=>{navigate('/result')}} style={{backgroundColor:'#081466',width:'100%',height:'60px',borderRadius:'14px',color:'white',boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'}} >FINISH TEST</button>
         </Col>
         </Row>
         <Row style={{marginTop:'15px'}}>

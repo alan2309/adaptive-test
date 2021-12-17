@@ -1,8 +1,9 @@
-import React,{ useState } from 'react'
+import React,{ useState,useEffect } from 'react'
 import {Col,Row} from 'react-bootstrap';
 import axiosInstance from '../axios';
 import { useNavigate } from 'react-router-dom';
 import '../css/TestScreen.css';
+import { isExpired, decodeToken } from "react-jwt";
 
 function showHide(e){
    
@@ -18,6 +19,20 @@ function showHide(e){
 
 function Login() {
     const navigate = useNavigate()
+    useEffect(()=>{
+        const token = localStorage.getItem('access_token');
+        const isMyTokenExpired = isExpired(token);
+
+        if(!isMyTokenExpired){
+            if(localStorage.getItem('result')){
+                navigate('/result')
+            }
+            else{
+                navigate('/testScreen')
+            }
+          }
+    },[])
+    
     const initialFormData=Object.freeze({
         username:'',
         password:''
@@ -37,12 +52,12 @@ function Login() {
             password:formData.password
         })
         .then((res)=>{
+            axiosInstance.post(`api/results/${formData.username}`)
             localStorage.setItem('access_token',res.data.access);
             localStorage.setItem('refresh_token',res.data.refresh);
             localStorage.setItem("test", JSON.stringify({'username':formData.username,'STime':Date(),'FSTimer':'10','question':[],'currentQsNo':1}));
             axiosInstance.defaults.headers['Authorization']='JWT '+localStorage.getItem('access_token');
             navigate('/testScreen')
-
         })
     }
     return (
