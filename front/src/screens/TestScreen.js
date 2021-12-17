@@ -19,25 +19,7 @@ function TestScreen() {
   const [medium, setMedium] = useState([]);
   const [easy, setEasy] = useState([]);
   const [current, setCurrent] = useState(2);
-  const [qs, setQs] = useState([
-    {
-      ques: "This is medium level qs default",
-      options: [
-        {
-          opt: "this is option d1",
-          mrks: 2,
-        },
-        {
-          opt: "this is option d2",
-          mrks: 0,
-        },
-        {
-          opt: "this is option d3",
-          mrks: 0,
-        },
-      ],
-    },
-  ]);
+  const [qs, setQs] = useState([]);
   const Ref = useRef(null);
   const [timer, setTimer] = useState('00:00:00');
   const [total,setTotal] = useState(0);
@@ -97,42 +79,40 @@ function TestScreen() {
     const token = localStorage.getItem('access_token');
   const isMyTokenExpired = isExpired(token);
 
-    if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+    if (test['question'].length!==0) {
       console.info( "This page is reloaded" );
       isReload(true)
-    }else{
-      console.log(',,,')
-      console.log(qs[0].ques)
-      test['question'].push(qs[0])
-      test['currentLevel']='Medium'
-      localStorage.setItem('test',JSON.stringify(test))
     }
 
-if(isMyTokenExpired){
-    navigate('/login')
+    if(isMyTokenExpired){
+      navigate('/login')
     }
     else{
       const getData = async () =>
       await axios
         .get("http://127.0.0.1:8000/api/qs")
         .then((res) => {
+          
 
-          if (performance.navigation.type !== performance.navigation.TYPE_RELOAD) {
+          if (test['question'].length===0) {
           setEasy(res.data.easy);
           setHard(res.data.hard);
-          setMedium(res.data.medium);
-
+          var mediumArrRes=res.data.medium
+          var index = getRandomInt(0, res.data.medium.length);
+          setQs([...qs, mediumArrRes[index]]);
+          test['question'].push(mediumArrRes[index])
+          test['currentLevel']=2
+          mediumArrRes.splice(index, 1);
+          setMedium(mediumArrRes);
           let ar = new Array(10).fill(-1)
           setAns(ar)
+          test['marks']=ar
+          localStorage.setItem('test',JSON.stringify(test))
           }else{
-            var test=JSON.parse(localStorage.getItem('test'))
-
             var qss = test['question']
-            //  Alankrit
             var x=res.data.easy
             var y=res.data.medium
             var z=res.data.hard
-
             for(let i=0;i<qss.length;i++){
 
               if(x.map(function(e) { return e.ques; }).indexOf(qss[i].ques)!== -1){
@@ -152,10 +132,10 @@ if(isMyTokenExpired){
           setHard(z);
           setMedium(y);
           console.log(test['marks'])
-          // var ar = test['marks']
-          // setAns(ar)
-          // setQsno(test['currentQsNo'])
-          // setQs(test['question'])
+          var ar = test['marks']
+          setAns(ar)
+          setQsno(test['currentQsNo']-1)
+          setQs(test['question'])
           }
         })
         .catch((e) => {
@@ -233,21 +213,21 @@ if(isMyTokenExpired){
         index = getRandomInt(0, easy.length);
         setQs([...qs, easy[index]]);
         test['question'].push(easy[index])
-        test['currentLevel']='Easy'
+        test['currentLevel']=1
         easy.splice(index, 1);
         break;
       case 2:
         index = getRandomInt(0, medium.length);
         setQs([...qs, medium[index]]);
         test['question'].push(medium[index])
-        test['currentLevel']='Medium'
+        test['currentLevel']=2
         medium.splice(index, 1);
         break;
       case 3:
         index = getRandomInt(0, hard.length);
         setQs([...qs, hard[index]]);
         test['question'].push(hard[index])
-        test['currentLevel']='Hard'
+        test['currentLevel']=3
         hard.splice(index, 1);
         break;
     }
@@ -274,7 +254,6 @@ if(isMyTokenExpired){
        { reload ? 'Please Enter Full Screen or Test will get auto submitted in 10 sec (timer from local storage) and you might get disqualified':'Please enter Full Screen mode'}
         </Modal.Body>
         <Modal.Footer>
-          <a href='/logout'>Logout</a>
           <Button variant="primary"  onClick={(e)=>{handleClose(e);GoInFullscreen(document.querySelector('#element'))}}>Enter Full Screeen</Button>
         </Modal.Footer>
       </Modal>
@@ -292,8 +271,9 @@ if(isMyTokenExpired){
         <Row style={{marginTop:'15px'}}>
           <Col md='9'>
             <div className='rectangle' style={{minHeight:'500px',backgroundColor:'black'}} >
-            <form onSubmit={click}>
-        <QuestionComp qsno={qsno} level={current} question={qs[qsno].ques} options={qs[qsno].options}></QuestionComp>
+            <form onSubmit={click}>              
+              {qs !==undefined && qsno !==undefined && qs[qsno]!==undefined &&
+        <QuestionComp qsno={qsno} level={current} question={qs[qsno].ques} options={qs[qsno].options}></QuestionComp>}  
         </form> 
         </div>
         </Col>
