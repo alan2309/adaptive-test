@@ -284,7 +284,7 @@ function TestScreen() {
         </Col>
         </Row>
         </div>}
-        {timer === '00:00:00'&& <h2>Time's up</h2>}
+        {timer === '00:00:00'&& navigate('/result')}
        {/* {qsno <= 5 && 
       <>
       <form onSubmit={click}>
