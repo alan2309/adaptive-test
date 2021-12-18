@@ -17,6 +17,7 @@ function TestScreen() {
   const [qs, setQs] = useState([]);
   const Ref = useRef(null);
   const [timer, setTimer] = useState('00:00:00');
+  const [timerT, setTimerT] = useState();
   const [total,setTotal] = useState(0);
   const [ans, setAns] = useState([]);
   const [qsno, setQsno] = useState(0);
@@ -27,6 +28,7 @@ function TestScreen() {
   const [FSSeconds, setFSSeconds] =useState(10);
   var timeLeft=10;
   var xtimer;
+  var timmer;
 
 
   const getTimeRemaining = (e) => {
@@ -78,6 +80,14 @@ function TestScreen() {
       clearInterval(xtimer)
     }
   };
+  function countdownT() {
+    timmer--;
+    console.log(timmer)
+    setTimerT(timmer)
+    if (timmer <= 0) {
+      // clearInterval(xtimer)
+    }
+  };
   
   useEffect(() => {
     var test=JSON.parse(localStorage.getItem('test'))
@@ -85,6 +95,13 @@ function TestScreen() {
   const isMyTokenExpired = isExpired(token);
   const channel = new BroadcastChannel('tab');
   console.log(channel)
+
+
+  //Alankrit
+  setTimerT(7200)
+  timmer=7200
+  setInterval(countdownT, 1000);
+  //Alankrit
 
   channel.postMessage('another-tab');
   // note that listener is added after posting the message
@@ -200,8 +217,18 @@ function TestScreen() {
     }
       xtimer=setInterval(countdown, 1000);
     }
+});
+String.prototype.toHHMMSS = function () {
+  var sec_num = parseInt(this, 10); // don't forget the second param
+  var hours   = Math.floor(sec_num / 3600);
+  var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+  var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+  if (hours   < 10) {hours   = "0"+hours;}
+  if (minutes < 10) {minutes = "0"+minutes;}
+  if (seconds < 10) {seconds = "0"+seconds;}
+  return hours + ':' + minutes + ':' + seconds;
 }
-  );
 
   function getRandomInt(min, max) {
     min = Math.ceil(min);
@@ -282,7 +309,7 @@ function TestScreen() {
           <Modal.Title>Enter FullScreeen</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-       { reload ? `Please Enter Full Screen or Test will get auto submitted in ${FSSeconds} sec and you might get disqualified`:'Please enter Full Screen mode'}
+       { reload ? `Please Enter Full Screen or Test will get auto submitted in ${FSSeconds.toString().toHHMMSS()}  sec and you might get disqualified`:'Please enter Full Screen mode'}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary"  onClick={(e)=>{handleClose(e);GoInFullscreen(document.querySelector('#element'))}}>Enter Full Screeen</Button>
@@ -292,7 +319,7 @@ function TestScreen() {
         <Row >
           <Col md='9' >
             <div className='rectangle'>
-        <TestHeaderComp timer={timer} ></TestHeaderComp>
+        <TestHeaderComp timer={timerT.toString().toHHMMSS()} ></TestHeaderComp>
         </div>
         </Col>
         <Col md='3'>
