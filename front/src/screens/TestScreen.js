@@ -24,11 +24,14 @@ function TestScreen() {
   const [show, setShow] = useState(true);
   const [reload, isReload] = useState(false);
   const handleClose = () => setShow(false);
+  const [FSSeconds, setFSSeconds] =useState(10);
+  var timeLeft=10;
+  var xtimer;
 
 
   const getTimeRemaining = (e) => {
       const total = Date.parse(e) - Date.parse(new Date());
-      const seconds = Math.floor((total / 1000) % 60);
+      const seconds = Math.floor((total / 1000) % 60);  
       const minutes = Math.floor((total / 1000 / 60) % 60);
       const hours = Math.floor((total / 1000 * 60 * 60) % 24);
       return {
@@ -68,6 +71,13 @@ function TestScreen() {
       return deadline;
   }
 
+  function countdown() {
+    timeLeft--;
+    setFSSeconds(String( timeLeft ))
+    if (timeLeft <= 0) {
+      clearInterval(xtimer)
+    }
+  };
   
   useEffect(() => {
     var test=JSON.parse(localStorage.getItem('test'))
@@ -164,9 +174,7 @@ function TestScreen() {
   }
   }, []);
   function GoInFullscreen(element) {
-    console.log(document.fullscreenElement)
     if (document.fullscreenElement === null) {
-      
           if(element.requestFullscreen)
           element.requestFullscreen();
         else if(element.mozRequestFullScreen)
@@ -185,6 +193,12 @@ function TestScreen() {
     if(full_screen_element === null){
       setShow(true)
       isReload(true)
+      if (xtimer) {
+        clearInterval(xtimer);
+        timeLeft=10
+        setFSSeconds(String( timeLeft ))
+    }
+      xtimer=setInterval(countdown, 1000);
     }
 }
   );
@@ -268,7 +282,7 @@ function TestScreen() {
           <Modal.Title>Enter FullScreeen</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-       { reload ? 'Please Enter Full Screen or Test will get auto submitted in 10 sec (timer from local storage) and you might get disqualified':'Please enter Full Screen mode'}
+       { reload ? `Please Enter Full Screen or Test will get auto submitted in ${FSSeconds} sec and you might get disqualified`:'Please enter Full Screen mode'}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary"  onClick={(e)=>{handleClose(e);GoInFullscreen(document.querySelector('#element'))}}>Enter Full Screeen</Button>
