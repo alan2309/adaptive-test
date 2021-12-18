@@ -3,7 +3,7 @@ import {Col,Row} from 'react-bootstrap';
 import Countdown from 'react-countdown';
 
 
-function TestHeaderComp({timer}) {
+function TestHeaderComp({timer,totalKey,totalValue}) {
     return (
         <div>
             <Row>
@@ -11,7 +11,7 @@ function TestHeaderComp({timer}) {
                 <Col md='8' style={{textAlign:'center'}}>
                     Time: {timer}
                     </Col>
-                <Col md='2' style={{textAlign:'center'}}>Total: 12</Col>
+                <Col md='2' style={{textAlign:'center'}}>{totalKey} : {totalValue}</Col>
             </Row>
         </div>
     )
