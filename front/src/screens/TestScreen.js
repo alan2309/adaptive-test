@@ -222,6 +222,7 @@ String.prototype.toHHMMSS = function () {
 
   function click(e) {
     e.preventDefault();
+   
     var myans=-1;
     const formData = new FormData(e.target);
     for (var pair of formData.entries()) {
@@ -308,7 +309,18 @@ String.prototype.toHHMMSS = function () {
         </div>
         </Col>
         <Col md='3'>
-          <button onClick={(e)=>{navigate('/result')}} style={{backgroundColor:'#081466',width:'100%',height:'60px',borderRadius:'14px',color:'white',boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'}} >FINISH TEST</button>
+          <button onClick={(e)=>{navigate('/result');
+           if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
+        
+        }} style={{backgroundColor:'#081466',width:'100%',height:'60px',borderRadius:'14px',color:'white',boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'}} >FINISH TEST</button>
         </Col>
         </Row>
         <Row style={{marginTop:'15px'}}>
