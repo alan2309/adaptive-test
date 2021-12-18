@@ -116,12 +116,47 @@ function Result() {
       }]
       });
     },[])
+
+    function timeleft(){
+      var test=JSON.parse(localStorage.getItem('test'))
+     var diff = 0;
+     const nowd = new Date()
+  const nowh = nowd.getHours()
+  const nowm = nowd.getMinutes()
+  const nows = nowd.getSeconds()
+
+  console.log(nowh+":"+nowm+":"+nows)
+
+  let myar = test['STime'].split(" ")
+  let stime = myar[4].split(":")
+  console.log(stime[0]+":"+stime[1]+":"+stime[2])
+ if(nowh>stime[0]){
+   diff = diff+(nowh-stime[1])*3600
+ }
+ if(nowm>stime[1]){
+   diff= diff+((nowm-stime[1])*60)
+ }
+ else{
+   diff = diff - ((stime[1]-nowm)*60)
+ }
+
+ if(nows>stime[2]){
+   diff = diff+(nows-stime[2])
+ }
+ else{
+   diff = diff - (stime[2]-nows)
+ }
+ let hours = parseInt(diff / 3600);
+let minutes = parseInt((diff % 3600) / 60);
+let seconds = parseInt(diff % 60);
+ return (`${hours}:${minutes}:${seconds}`);
+  }
     return (
         <div>
             <Row >
           <Col md='12' >
             <div className='rectangle'>
-        <TestHeaderComp timer={'69'} totalKey={'Total Questions Attempted'} marks={mrks} totalValue={`${done}/${notDone+done}`}></TestHeaderComp>
+        <TestHeaderComp timer={timeleft()} totalKey={'Total Questions Attempted'} marks={mrks} totalValue={`${done}/${notDone+done}`}></TestHeaderComp>
         </div>
         </Col>
         </Row>

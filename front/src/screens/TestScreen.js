@@ -34,6 +34,7 @@ function TestScreen() {
     setFSSeconds(String( timeLeft ))
     if (timeLeft <= 0) {
       clearInterval(xtimer)
+      navigate('/result')
     }
   };
   function countdownT() {
