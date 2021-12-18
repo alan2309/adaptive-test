@@ -191,15 +191,16 @@ function TestScreen() {
   }
   document.addEventListener('fullscreenchange', function() {
     var full_screen_element = document.fullscreenElement;
+    if (xtimer) {
+      clearInterval(xtimer);
+      timeLeft=10
+      setFSSeconds(String( timeLeft ))
+  }
   
     if(full_screen_element === null){
       setShow(true)
       isReload(true)
-      if (xtimer) {
-        clearInterval(xtimer);
-        timeLeft=10
-        setFSSeconds(String( timeLeft ))
-    }
+
       xtimer=setInterval(countdown, 1000);
     }
 });
