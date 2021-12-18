@@ -50,6 +50,7 @@ function Result() {
         <div>
             <h2>Marks Scored :- {mrks}</h2>
             <p>Attempted:{done} and Not attempted:{notDone}</p>
+            <button onClick={()=>navigate('/logout')}>Logout</button>
         </div>
     )
 }

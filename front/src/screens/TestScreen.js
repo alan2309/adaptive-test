@@ -16,7 +16,6 @@ function TestScreen() {
   const [current, setCurrent] = useState(2);
   const [qs, setQs] = useState([]);
   const Ref = useRef(null);
-  const [timer, setTimer] = useState('00:00:00');
   const [timerT, setTimerT] = useState();
   const [total,setTotal] = useState(0);
   const [ans, setAns] = useState([]);
@@ -30,49 +29,6 @@ function TestScreen() {
   var xtimer;
   var timmer;
 
-
-  const getTimeRemaining = (e) => {
-      const total = Date.parse(e) - Date.parse(new Date());
-      const seconds = Math.floor((total / 1000) % 60);  
-      const minutes = Math.floor((total / 1000 / 60) % 60);
-      const hours = Math.floor((total / 1000 * 60 * 60) % 24);
-      return {
-          total, hours, minutes, seconds
-      };
-  }
-
-
-  const startTimer = (e) => {
-      let { total, hours, minutes, seconds } 
-                  = getTimeRemaining(e);
-      if (total >= 0) {
-          // update the timer
-          // check if less than 10 then we need to 
-          // add '0' at the begining of the variable
-          setTimer(
-              (hours > 9 ? hours : '0' + hours) + ':' +
-              (minutes > 9 ? minutes : '0' + minutes) + ':'
-              + (seconds > 9 ? seconds : '0' + seconds)
-          )
-      }
-  }
-
-
-  const clearTimer = (e) => {
-      setTimer('01:00:00');
-      if (Ref.current) clearInterval(Ref.current);
-      const id = setInterval(() => {
-          startTimer(e);
-      }, 1000)
-      Ref.current = id;
-  }
-
-  const getDeadTime = () => {
-      let deadline = new Date();
-      deadline.setSeconds(deadline.getSeconds() + 720000);
-      return deadline;
-  }
-
   function countdown() {
     timeLeft--;
     setFSSeconds(String( timeLeft ))
@@ -85,7 +41,7 @@ function TestScreen() {
     console.log(timmer)
     setTimerT(timmer)
     if (timmer <= 0) {
-      // clearInterval(xtimer)
+      navigate('/result')
     }
   };
   
@@ -98,8 +54,9 @@ function TestScreen() {
 
 
   //Alankrit
-  setTimerT(7200)
-  timmer=7200
+
+  setTimerT(10)
+  timmer=10
   setInterval(countdownT, 1000);
   //Alankrit
 
@@ -186,7 +143,6 @@ function TestScreen() {
           console.log(e);
         });
     getData();
-    clearTimer(getDeadTime());
     }
   }
   }, []);
@@ -315,7 +271,8 @@ String.prototype.toHHMMSS = function () {
           <Button variant="primary"  onClick={(e)=>{handleClose(e);GoInFullscreen(document.querySelector('#element'))}}>Enter Full Screeen</Button>
         </Modal.Footer>
       </Modal>
-      {timer !== '00:00:00' && <div>
+      {timerT !== undefined && <div>
+      <div>
         <Row >
           <Col md='9' >
             <div className='rectangle'>
@@ -341,40 +298,8 @@ String.prototype.toHHMMSS = function () {
         </div>
         </Col>
         </Row>
+        </div>
         </div>}
-        {timer === '00:00:00'&& navigate('/result')}
-       {/* {qsno <= 5 && 
-      <>
-      <form onSubmit={click}>
-        <h1>{qs[qsno].ques}</h1>
-        {qs[qsno].options.map((option, index) => {
-          return (
-            <p key={index}>
-              <input
-                type="radio"
-                id={index}
-                name={qs[qsno].ques}
-                class="radio"
-                value={option.mrks}
-                required
-              />
-              <label class="option" id="option-one-label">
-                {option.opt}
-              </label>
-            </p>
-          );
-        })}
-
-        <button type="submit">Next Question</button>
-      </form> 
-      </>
-      }
-      {qsno>5 && 
-      <>
-      <h1>Test completed</h1>
-      <h3>Your Score : {total} </h3>
-      </>
-      } */}
          </div>
   );
 }
