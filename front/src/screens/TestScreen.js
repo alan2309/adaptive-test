@@ -25,6 +25,8 @@ function TestScreen() {
   const [reload, isReload] = useState(false);
   const handleClose = () => setShow(false);
   const [FSSeconds, setFSSeconds] =useState(10);
+  const [countWindowAway, setCountWindowAway] =useState(0);
+  const [countWindowAwayModal, setCountWindowAwayModal] =useState(false);
   var timeLeft=10;
   var xtimer;
   var timmer;
@@ -190,7 +192,7 @@ function TestScreen() {
     
   }
   document.addEventListener('fullscreenchange', function() {
-    var full_screen_element = document.fullscreenElement;
+     var full_screen_element = document.fullscreenElement;
     if (xtimer) {
       clearInterval(xtimer);
       timeLeft=10
@@ -204,6 +206,29 @@ function TestScreen() {
       xtimer=setInterval(countdown, 1000);
     }
 });
+document.addEventListener("visibilitychange", function() {
+  if(document.hidden){windowAway()};
+});
+function windowAway(){
+  var ccount=countWindowAway+1
+  setCountWindowAway(countWindowAway+1)
+  if(ccount<3){
+    setCountWindowAwayModal(true)
+    if (document.fullscreenElement !== null) {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+    } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+    }
+}
+}else{
+  navigate('/result')
+}
+}
 String.prototype.toHHMMSS = function () {
   var sec_num = parseInt(this, 10); // don't forget the second param
   var hours   = Math.floor(sec_num / 3600);
@@ -221,6 +246,7 @@ String.prototype.toHHMMSS = function () {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
   }
+ 
 
   function click(e) {
     e.preventDefault();
@@ -283,6 +309,10 @@ String.prototype.toHHMMSS = function () {
     localStorage.setItem('test',JSON.stringify(test))
     e.target.reset();
   }
+  function handleCloseSChange(e){
+    GoInFullscreen(document.querySelector('#element'));
+    setCountWindowAwayModal(false)
+  }
 
   return (
     <div>
@@ -302,12 +332,28 @@ String.prototype.toHHMMSS = function () {
           <Button variant="primary"  onClick={(e)=>{handleClose(e);GoInFullscreen(document.querySelector('#element'))}}>Enter Full Screeen</Button>
         </Modal.Footer>
       </Modal>
+      <Modal
+        show={countWindowAwayModal}
+        onHide={handleCloseSChange}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header>
+          <Modal.Title></Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+      Screen changed detected.Test will get auto submitted if you try to change screen again  !!
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary"  onClick={(e)=>{handleCloseSChange(e)}}>Okay</Button>
+        </Modal.Footer>
+      </Modal>
       {timerT !== undefined && <div>
       <div>
         <Row >
           <Col md='9' >
             <div className='rectangle'>
-        <TestHeaderComp timer={timerT.toString().toHHMMSS()} ></TestHeaderComp>
+        <TestHeaderComp timer={timerT.toString().toHHMMSS()} totalKey='Total' totalValue={10}></TestHeaderComp>
         </div>
         </Col>
         <Col md='3'>
