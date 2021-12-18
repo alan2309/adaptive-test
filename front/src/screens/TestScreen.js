@@ -309,7 +309,7 @@ String.prototype.toHHMMSS = function () {
           <Modal.Title>Enter FullScreeen</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-       { reload ? `Please Enter Full Screen or Test will get auto submitted in ${FSSeconds.toString().toHHMMSS()}  sec and you might get disqualified`:'Please enter Full Screen mode'}
+       { reload ? `Please Enter Full Screen or Test will get auto submitted in ${FSSeconds}  sec and you might get disqualified`:'Please enter Full Screen mode'}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary"  onClick={(e)=>{handleClose(e);GoInFullscreen(document.querySelector('#element'))}}>Enter Full Screeen</Button>
