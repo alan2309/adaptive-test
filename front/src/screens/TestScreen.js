@@ -38,7 +38,7 @@ function TestScreen() {
   };
   function countdownT() {
     timmer--;
-    console.log(timmer)
+    // console.log(timmer)
     setTimerT(timmer)
     if (timmer <= 0) {
       navigate('/result')
@@ -50,19 +50,48 @@ function TestScreen() {
     const token = localStorage.getItem('access_token');
   const isMyTokenExpired = isExpired(token);
   const channel = new BroadcastChannel('tab');
-  console.log(channel)
+  // console.log(channel)
 
 
   //Alankrit
+  var diff = 0;
+  if(test){
+  const nowd = new Date()
+  const nowh = nowd.getHours()
+  const nowm = nowd.getMinutes()
+  const nows = nowd.getSeconds()
 
-  setTimerT(10)
-  timmer=10
+  console.log(nowh+":"+nowm+":"+nows)
+
+  let myar = test['STime'].split(" ")
+  let stime = myar[4].split(":")
+  console.log(stime[0]+":"+stime[1]+":"+stime[2])
+ if(nowh>stime[0]){
+   diff = diff+(nowh-stime[1])*3600
+ }
+ if(nowm>stime[1]){
+   diff= diff+((nowm-stime[1])*60)
+ }
+ else{
+   diff = diff - ((stime[1]-nowm)*60)
+ }
+
+ if(nows>stime[2]){
+   diff = diff+(nows-stime[2])
+ }
+ else{
+   diff = diff - (stime[2]-nows)
+ }
+  }
+  console.log(diff)
+  setTimerT(3600-diff)
+  timmer=3600-diff
   setInterval(countdownT, 1000);
   //Alankrit
 
   channel.postMessage('another-tab');
   // note that listener is added after posting the message
-  console.log(channel)
+  // console.log(channel)
 
 
 
@@ -132,7 +161,6 @@ function TestScreen() {
             setEasy(x);
           setHard(z);
           setMedium(y);
-          console.log(test['marks'])
           var ar = test['marks']
           setAns(ar)
           setQsno(test['currentQsNo']-1)
