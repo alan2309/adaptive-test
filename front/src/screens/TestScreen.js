@@ -213,7 +213,7 @@ function windowAway(){
   var ccount=countWindowAway+1
   setCountWindowAway(countWindowAway+1)
   if(ccount<3){
-    setCountWindowAwayModal(true)
+   
     if (document.fullscreenElement !== null) {
       if (document.exitFullscreen) {
         document.exitFullscreen();
@@ -225,6 +225,7 @@ function windowAway(){
         document.msExitFullscreen();
     }
 }
+setCountWindowAwayModal(true)
 }else{
   navigate('/result')
 }
@@ -310,8 +311,9 @@ String.prototype.toHHMMSS = function () {
     e.target.reset();
   }
   function handleCloseSChange(e){
-    GoInFullscreen(document.querySelector('#element'));
+   
     setCountWindowAwayModal(false)
+    GoInFullscreen(document.querySelector('#element'));
   }
 
   return (
@@ -339,7 +341,7 @@ String.prototype.toHHMMSS = function () {
         keyboard={false}
       >
         <Modal.Header>
-          <Modal.Title></Modal.Title>
+          <Modal.Title>Screen Change Detected !! {countWindowAwayModal===1?'1st':'LAST'} WARNING</Modal.Title>
         </Modal.Header>
         <Modal.Body>
       Screen changed detected.Test will get auto submitted if you try to change screen again  !!
