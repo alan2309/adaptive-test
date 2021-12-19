@@ -213,18 +213,6 @@ function windowAway(){
   var ccount=countWindowAway+1
   setCountWindowAway(countWindowAway+1)
   if(ccount<3){
-   
-    if (document.fullscreenElement !== null) {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-    } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
-    } else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
-    } else if (document.msExitFullscreen) {
-        document.msExitFullscreen();
-    }
-}
 setCountWindowAwayModal(true)
 }else{
   navigate('/result')
@@ -334,23 +322,7 @@ String.prototype.toHHMMSS = function () {
           <Button variant="primary"  onClick={(e)=>{handleClose(e);GoInFullscreen(document.querySelector('#element'))}}>Enter Full Screeen</Button>
         </Modal.Footer>
       </Modal>
-      <Modal
-        show={countWindowAwayModal}
-        onHide={handleCloseSChange}
-        backdrop="static"
-        keyboard={false}
-      >
-        <Modal.Header>
-          <Modal.Title>Screen Change Detected !! {countWindowAwayModal===1?'1st':'LAST'} WARNING</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-      Screen changed detected.Test will get auto submitted if you try to change screen again  !!
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary"  onClick={(e)=>{handleCloseSChange(e)}}>Okay</Button>
-        </Modal.Footer>
-      </Modal>
-      {timerT !== undefined && <div>
+      { timerT !== undefined && <div>
       <div>
         <Row >
           <Col md='9' >
@@ -377,8 +349,13 @@ String.prototype.toHHMMSS = function () {
           <Col md='9'>
             <div className='rectangle' style={{minHeight:'500px',backgroundColor:'black'}} >
             <form onSubmit={click}>              
-              {qs !==undefined && qsno !==undefined && qs[qsno]!==undefined &&
-        <QuestionComp qsno={qsno} level={current} question={qs[qsno].ques} options={qs[qsno].options}></QuestionComp>}  
+              {qs !==undefined && qsno !==undefined && qs[qsno]!==undefined &&(!countWindowAwayModal)&&
+      <QuestionComp qsno={qsno} level={current} question={qs[qsno].ques} options={qs[qsno].options}></QuestionComp>}  
+      {countWindowAwayModal&&(<>
+      <h1 style={{color:'red'}}>Screen Change Detected !! {countWindowAway===1?'1st':'LAST'} WARNING</h1>
+      <h3>Screen changed detected.Test will get auto submitted if you try to change screen again  !!</h3>
+      <button className="btn btn-secondary" onClick={(e)=>handleCloseSChange(e)}>OKay</button>
+      </>)}
         </form> 
         </div>
         </Col>
