@@ -130,7 +130,10 @@ function Result() {
     },[])
 
     function timeleft(){
-      var test=JSON.parse(localStorage.getItem('test'))
+      if(localStorage.getItem("timetaken")){
+        return localStorage.getItem("timetaken");
+      }
+      else{var test=JSON.parse(localStorage.getItem('test'))
      var diff = 0;
      const nowd = new Date()
   const nowh = nowd.getHours()
@@ -161,7 +164,8 @@ function Result() {
  let hours = parseInt(diff / 3600);
 let minutes = parseInt((diff % 3600) / 60);
 let seconds = parseInt(diff % 60);
- return (`${hours}:${minutes}:${seconds}`);
+localStorage.setItem("timetaken",`${hours}:${minutes}:${seconds}`);
+ return (`${hours}:${minutes}:${seconds}`);}
   }
     return (
         <div>
