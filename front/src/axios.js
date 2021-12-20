@@ -23,7 +23,7 @@ axiosInstance.interceptors.response.use(
 		const originalRequest = error.config;
 
 		if (typeof error.response === 'undefined') {
-			alert(
+			console.log(
 				'A server/network error occurred. ' +
 					'Looks like CORS might be the problem. ' +
 					'Sorry about this - we will get it fixed shortly.'
@@ -53,7 +53,7 @@ axiosInstance.interceptors.response.use(
 
 				// exp date in token is expressed in seconds, while now() returns milliseconds:
 				const now = Math.ceil(Date.now() / 1000);
-				console.log(tokenParts.exp);
+				
 
 				if (tokenParts.exp > now) {
 					return axiosInstance
@@ -84,7 +84,7 @@ axiosInstance.interceptors.response.use(
         if(error.response.data.detail==='No active account found with the given credentials'){
             alert('username/password invalid')
         }
-        console.log('kk')
+       
 
 		// specific error handling done elsewhere
 		return Promise.reject(error);

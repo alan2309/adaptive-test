@@ -41,7 +41,6 @@ function TestScreen() {
   };
   function countdownT() {
     timmer--;
-    // console.log(timmer)
     setTimerT(timmer)
     if (timmer <= 0) {
       navigate('/result')
@@ -53,10 +52,8 @@ function TestScreen() {
     const token = localStorage.getItem('access_token');
   const isMyTokenExpired = isExpired(token);
   const channel = new BroadcastChannel('tab');
-  // console.log(channel)
 
 
-  //Alankrit
   var diff = 0;
   if(test){
   const nowd = new Date()
@@ -64,11 +61,9 @@ function TestScreen() {
   const nowm = nowd.getMinutes()
   const nows = nowd.getSeconds()
 
-  console.log(nowh+":"+nowm+":"+nows)
 
   let myar = test['STime'].split(" ")
   let stime = myar[4].split(":")
-  console.log(stime[0]+":"+stime[1]+":"+stime[2])
  if(nowh>stime[0]){
    diff = diff+(nowh-stime[1])*3600
  }
@@ -86,17 +81,12 @@ function TestScreen() {
    diff = diff - (stime[2]-nows)
  }
   }
-  console.log(diff)
   setTimerT(3600-diff)
   timmer=3600-diff
   setInterval(countdownT, 1000);
-  //Alankrit
 
   channel.postMessage('another-tab');
   // note that listener is added after posting the message
-  // console.log(channel)
-
-
 
   channel.addEventListener('message', (msg) => {
     if (msg.data === 'another-tab') {
@@ -327,7 +317,7 @@ String.prototype.toHHMMSS = function () {
         <Row >
           <Col md='9' >
             <div className='rectangle'>
-        <TestHeaderComp timer={timerT.toString().toHHMMSS()} totalKey='Total' totalValue={10}></TestHeaderComp>
+        <TestHeaderComp timer={timerT.toString().toHHMMSS()} timeKey='Time' totalKey='Total' totalValue={10}></TestHeaderComp>
         </div>
         </Col>
         <Col md='3'>
@@ -342,13 +332,14 @@ String.prototype.toHHMMSS = function () {
             document.msExitFullscreen();
         }
         
-        }} style={{backgroundColor:'#081466',width:'100%',height:'60px',borderRadius:'14px',color:'white',boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'}} >FINISH TEST</button>
+        }} style={{backgroundColor:'#081466',fontWeight:'500',textAlign:'center',width:'100%',height:'60px',borderRadius:'14px',color:'white',boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'}} >FINISH TEST</button>
         </Col>
         </Row>
         <Row style={{marginTop:'15px'}}>
           <Col md='9'>
-            <div className='rectangle' style={{minHeight:'500px',backgroundColor:'black'}} >
+            <div className='rectangle' style={{minHeight:'550px',backgroundColor:'black'}} >
             <form onSubmit={click}>              
+
               {qs !==undefined && qsno !==undefined && qs[qsno]!==undefined &&(!countWindowAwayModal)&&
       <QuestionComp qsno={qsno} level={current} question={qs[qsno].ques} options={qs[qsno].options}></QuestionComp>}  
       {countWindowAwayModal&&(<>
@@ -360,7 +351,7 @@ String.prototype.toHHMMSS = function () {
         </div>
         </Col>
         <Col md='3' >
-          <div className='rectangle' style={{minHeight:'500px',backgroundColor:'black'}}>
+          <div className='rectangle' style={{minHeight:'550px',backgroundColor:'black'}}>
         <QuestionNavigatorComp attempted = {ans}></QuestionNavigatorComp>
         </div>
         </Col>

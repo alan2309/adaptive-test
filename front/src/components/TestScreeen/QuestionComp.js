@@ -3,19 +3,19 @@ import {Col,Row} from 'react-bootstrap';
 
 function QuestionComp({question,options,level,qsno}) {
     return (
-        <div style={{padding:'10px 20px'}}>
+        <div id='quesComp' style={{padding:'10px 20px'}}>
           {qsno<6 && 
           <>
           <Row>
                 <Col >
-                    <div style={{float:'right'}}>
+                    <div style={{float:'right',fontWeight:'500'}}>
                Difficulty Level : {level===2?'Medium':level=== 3?'Hard':'Easy'}
                </div>
              </Col>
             </Row>
             <Row>
             <Col >
-                    <div style={{padding:'10px 0 20px 0'}}>
+                    <div style={{padding:'10px 0 20px 0',fontWeight:'600'}}>
                     Question {qsno+1}
                </div>
              </Col>
@@ -23,7 +23,7 @@ function QuestionComp({question,options,level,qsno}) {
             </Row>
             <Row>
                 <Col>
-                <div style={{padding:'5px 0 20px 0px'}}>
+                <div style={{padding:'5px 0 20px 0px',fontWeight:'400'}}>
           {question}
           </div>
           </Col>
@@ -39,14 +39,15 @@ function QuestionComp({question,options,level,qsno}) {
                 name={question}
                 class="radio"
                 value={option.mrks}
+                style={{height:'13px'}}
               />
-              <label class="option" id="option-one-label">
+              <label class="option" id="option-one-label" style={{marginLeft:'15px',fontWeight:'400'}}>
                 {option.opt}
               </label>
             </p>
           );
          })}
-            <button type="submit" className='btn nextQsBtn'>Next Question</button>
+            <button type="submit" style={{color:'white'}} className='btn nextQsBtn'>Next Question</button>
       </div>
           </>
           }

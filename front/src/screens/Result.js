@@ -2,10 +2,8 @@ import React,{useEffect,useState} from 'react'
 import { isExpired, decodeToken } from "react-jwt";
 import { useNavigate } from "react-router";
 import axiosInstance from '../axios';
-import {Col,Modal,Button,Row} from 'react-bootstrap';
-import QuestionComp from "../components/TestScreeen/QuestionComp";
+import {Col,Row} from 'react-bootstrap';
 import TestHeaderComp from "../components/TestScreeen/TestHeaderComp";
-import QuestionNavigatorComp from "../components/TestScreeen/QuestionNavigatorComp";
 import Chart from 'react-apexcharts';
 import '../css/ResultScreen.css'
 
@@ -140,11 +138,9 @@ function Result() {
   const nowm = nowd.getMinutes()
   const nows = nowd.getSeconds()
 
-  console.log(nowh+":"+nowm+":"+nows)
 
   let myar = test['STime'].split(" ")
   let stime = myar[4].split(":")
-  console.log(stime[0]+":"+stime[1]+":"+stime[2])
  if(nowh>stime[0]){
    diff = diff+(nowh-stime[1])*3600
  }
@@ -172,22 +168,19 @@ localStorage.setItem("timetaken",`${hours}:${minutes}:${seconds}`);
             <Row >
           <Col md='12' >
             <div className='rectangle'>
-        <TestHeaderComp timer={timeleft()} totalKey={'Total Questions Attempted'} marks={mrks} totalValue={`${done}/${notDone+done}`}></TestHeaderComp>
+        <TestHeaderComp timer={timeleft()} timeKey='Time Taken' totalKey={'Questions Attempted'} marks={mrks} totalValue={`${done}/${notDone+done}`}></TestHeaderComp>
         </div>
         </Col>
         </Row>
         <Row style={{marginTop:'15px'}}>
-          <Col md='9'>
-            <div className='rectangle' style={{minHeight:'500px',backgroundColor:'black'}} >
-            <h3 style={{paddingLeft:'20px'}}>Analysis</h3>
+          <Col md='12'>
+            <div className='rectangle' style={{minHeight:'500px',color:'#788094'}} >
+            <h3 style={{paddingLeft:'20px',fontWeight: '600',
+fontSize: '24px',lineHeight: '36px',color: '#293E6F'}}>Analysis</h3>
             <Chart series={[right,wrong,notDone]}  options={opt} type='donut' height={`400px`}/> 
         </div>
         </Col>
-        <Col md='3' >
-          <div className='rectangle' style={{minHeight:'500px',backgroundColor:'black'}}>
-        <QuestionNavigatorComp attempted = {[5,5,5,5,5]}></QuestionNavigatorComp>
-        </div>
-        </Col>
+        
         </Row>
             
         </div>

@@ -64,7 +64,7 @@ function Login() {
         })
     }
     return (
-        <div>
+        <div style={{color:'#788094'}}>
         <Row>
             <Col>
         <div style={{margin:'60px 60px'}} >
@@ -104,7 +104,7 @@ function Login() {
         </div>
         </Col>
         <Col>
-        <div className='rectangle' style={{minHeight:'500px',padding:'30px 35px',margin:'0 40px'}}>
+        <div className='rectangle' style={{minHeight:'550px',padding:'30px 35px',margin:'0 40px'}}>
             <Row style={{textAlign:'center',margin:'30px 0px'}}>
                 <Col>
                 <div id='instruc'>

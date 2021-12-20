@@ -14,22 +14,15 @@
   box-shadow: 1px 1px 7px 2px rgba(0, 0, 0, 0.25);
   border-radius: 14px;
 }
-*{
-font-family: Poppins;
-font-style: normal;
-font-weight: 500;
-text-align: justify;
-color: #788094;
-}
+
 .navigatorBox{
-background-color: #081466;
 height: 35px;
 width: 35px;
 margin-left: 32px;
 margin-top: 25px;
 color: white;
 text-align: center;
-padding: 5px 0 0 0 !important;
+padding: 1px 0 0px 0 !important;
 }
 input{
 border: 0px !important;
@@ -164,3 +157,21 @@ color: #293E6F;
 	margin: 0;
 }
 
+#testHeaderComp {
+    padding: 5px 20px 0 20px;
+    color: #081466 !important;
+    font-weight: bolder !important;
+    font-size: 24px;
+    line-height: 26px;
+
+}
+#questionNavComp{
+    color: #293E6F;
+    font-weight: 600;
+font-size: 24px;
+line-height: 36px;
+}
+
+#quesComp{
+   color: #293E6F !important;
+}

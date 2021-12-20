@@ -3,12 +3,14 @@ import React from 'react'
 import TestScreen from './screens/TestScreen'
 import Home from './screens/Home'
 import logo from './img/logo.png'
-import {Col,Navbar,Button,Row} from 'react-bootstrap';
+import {Col,Navbar,Row} from 'react-bootstrap';
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Login from './screens/Login';
 import Logout from './screens/logout';
 import Result from './screens/Result';
 import Error from './screens/Error';
+import './css/App.css'
+
 
 function App() {
   return (

@@ -1,17 +1,16 @@
-import React,{useRef,useState,useEffect} from 'react'
+import React from 'react'
 import {Col,Row} from 'react-bootstrap';
-import Countdown from 'react-countdown';
 
 
-function TestHeaderComp({timer,totalKey,totalValue}) {
+function TestHeaderComp({timer,totalKey,timeKey,totalValue}) {
     return (
-        <div>
-            <Row>
-                <Col md='2'  style={{textAlign:'center'}}>Aptitude Test</Col>
-                <Col md='8' style={{textAlign:'center'}}>
-                    Time: {timer}
+        <div id='testHeaderComp' >
+            <Row >
+                <Col md='4'  style={{textAlign:'center'}}><div >Aptitude Test</div></Col>
+                <Col md='5' style={{textAlign:'center'}}>
+                {timeKey}: {timer}
                     </Col>
-                <Col md='2' style={{textAlign:'center'}}>{totalKey} : {totalValue}</Col>
+                <Col md='3' style={{textAlign:'center'}}>{totalKey} : {totalValue}</Col>
             </Row>
         </div>
     )
