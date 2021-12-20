@@ -4,17 +4,20 @@ import axiosInstance from '../axios';
 import { useNavigate } from 'react-router-dom';
 import '../css/TestScreen.css';
 import { isExpired, decodeToken } from "react-jwt";
+import $ from 'jquery'; 
+import '../css/LoginScreen.css'
+
 
 function showHide(e){
    
 
-        // $(e.target).toggleClass("fa-eye fa-eye-slash");
-        // var input = $($(e.target).attr("toggle"));
-        // if (input.attr("type") == "password") {
-        //   input.attr("type", "text");
-        // } else {
-        //   input.attr("type", "password");
-        // }
+        $(e.target).toggleClass("fa-eye fa-eye-slash");
+        var input = $($(e.target).attr("toggle"));
+        if (input.attr("type") == "password") {
+          input.attr("type", "text");
+        } else {
+          input.attr("type", "password");
+        }
 }
 
 function Login() {
@@ -67,13 +70,13 @@ function Login() {
         <div style={{margin:'60px 60px'}} >
             <Row>
                 <Col>
-                <div style={{textAlign:'center'}}>
+                <div id='title'>
                 Placement Aptitude Portal
                 </div></Col>
             </Row>
             <Row>
                 <Col>
-                 <div style={{textAlign:'center',marginTop:'15px'}}>
+                 <div id='subTitle'>
                 Dwarkadas J. Sanghvi College of Engineering
                 </div>
                 </Col>
@@ -104,7 +107,8 @@ function Login() {
         <div className='rectangle' style={{minHeight:'500px',padding:'30px 35px',margin:'0 40px'}}>
             <Row style={{textAlign:'center',margin:'30px 0px'}}>
                 <Col>
-            Instructions
+                <div id='instruc'>
+            Instructions</div>
             </Col>
                 </Row>
                 <Row>
