@@ -113,18 +113,26 @@ function Login() {
                 </Row>
                 <Row>
                     <Col>
-        1.  Students are not supposed to close/refresh the exam portal during the test. If done do the student will not be allowed to reappear for the test.
+        1. Only full-screen mode is available for students to give tests.
        </Col>
         </Row>
-                <Row style={{marginTop:'20px'}}>
+                <Row style={{marginTop:'10px'}}>
                     <Col>
-                    2. This an adaptive test. Adaptive tests are designed to adjust their level of difficulty—based on the responses provided—to match the knowledge and ability of a test taker. If a student gives a wrong answer, the computer follows up with an easier question; if the student answers correctly, the next question will be more difficult.  </Col>
+                    2. If a student attempts to reduce the screen, a message will appear stating that the student has only 10 seconds to return to full-screen mode before the test is auto-submitted and the result page is presented.  </Col>
         </Row>
-                <Row style={{marginTop:'20px'}}>
+                <Row style={{marginTop:'10px'}}>
                     <Col>
-                    3. After completition and submission of the test, the students should not exit the portal. </Col>
+                    3. If a student refreshes the screen by accident, his progress is not lost. The progress will be saved, and the timer will be reset to where it was before being refreshed. </Col>
         </Row>
-                <Row style={{marginTop:'35px'}}>
+        <Row style={{marginTop:'10px'}}>
+                    <Col>
+                    4. If a student tries to switch tabs, desktops, or browsers during the test, a warning will appear twice, indicating that the screen has been changed. If the student continues to try to move the tab despite multiple warnings, his test will be auto-submitted. </Col>
+        </Row>
+        <Row style={{marginTop:'10px'}}>
+                    <Col>
+                    5. A student cannot take more than one test at the same time. If he tries to open the same test in a different tab, he will be instantly logged out of the one he just closed. </Col>
+        </Row>
+                <Row style={{marginTop:'25px'}}>
                     <Col>
                     print(“ALL THE BEST”)           
                     </Col>
