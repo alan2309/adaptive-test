@@ -20,3 +20,34 @@
 font-size: 24px;
 line-height: 36px;
 }
+
+
+
+
+input[type='radio']:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -2px;
+    left: -1px;
+    position: relative;
+    background-color: red;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
+}
+
+input[type='radio']:checked:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -2px;
+    left: -1px;
+    position: relative;
+    background-color: #10B65C;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
+}
