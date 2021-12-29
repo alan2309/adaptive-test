@@ -88,3 +88,23 @@ def marks(request):
                 return JsonResponse("Restart Test",safe=False)    
         else:
             return JsonResponse("User Doesn't exist",safe=False)     
+@csrf_exempt        
+def addQs(request):
+    if request.method == 'POST':
+        data=JSONParser().parse(request)['data']
+        print(data)
+        return JsonResponse("saved",safe=False)
+
+        # d = datetime.datetime.now()
+        # user = User.objects.get(username = data['username'])
+        # if(user):
+        #     result = Results.objects.get(student = user)
+        #     if(result):
+        #         result.endTime = d.time()
+        #         result.marks = data['marks']
+        #         result.save()
+        #         return JsonResponse("Marks stored",safe=False)
+        #     else:
+        #         return JsonResponse("Restart Test",safe=False)    
+        # else:
+        #     return JsonResponse("User Doesn't exist",safe=False)     

@@ -5,4 +5,7 @@ urlpatterns = [
    path('api/qs',views.qs),
    path('api/results/<str:name>',views.results),
    path('api/marks',views.marks),
+
+   # admin
+   path('api/admin/addQs',views.addQs)
 ]
