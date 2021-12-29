@@ -92,9 +92,31 @@ def marks(request):
 def addQs(request):
     if request.method == 'POST':
         data=JSONParser().parse(request)['data']
+        f=Questions(title=data['question'],type=data['type'])
+        f.save()
+        optionData = {x: data[x] for x in data if 'option' in x}
         print(data)
+        print(data['correctOpt'])
+        print(optionData)
+        
+        for z in optionData:
+            print(z)
+            print(z==data['correctOpt'])
+            if z==data['correctOpt']:
+                if data['type']==str(1):
+                    marks=1
+                elif data['type']==str(2):
+                    marks=2
+                elif data['type']==str(3):
+                    marks=5
+            else:
+                marks=0
+            print(marks)
+            ff=Options(question=f,marks=marks,title=optionData[z])
+            ff.save()
         return JsonResponse("saved",safe=False)
-
+        
+ 
         # d = datetime.datetime.now()
         # user = User.objects.get(username = data['username'])
         # if(user):

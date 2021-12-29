@@ -37,8 +37,8 @@ function AdminAddQs() {
         <Col xs={12}>
         
         <div class="form-check"   >
-            <input class="form-check-input" name="correctOpt" type="radio" value={`option${countOpt+1}`} id="flexCheckDefault" required/>
-            <label  style={{width:'100%'}} for="flexCheckDefault">
+            <input class="form-check-input" name="correctOpt" type="radio" value={`option${countOpt+1}`} id={`flexCheckDefault${countOpt+1}`} />
+            <label  style={{width:'100%'}} for={`flexCheckDefault${countOpt+1}`} >
             <input className='rectangle'  name={`option${countOpt+1}`}  style={{width:'100%'}}  type='text' placeholder={`Add option${countOpt+1}`} required></input>
 
             </label>
@@ -68,8 +68,8 @@ function AdminAddQs() {
                 <Col xs={12}>
                 
                 <div class="form-check"   >
-                    <input class="form-check-input" name="correctOpt" type="radio" value="option1" id="flexCheckDefault" required/>
-                    <label  style={{width:'100%'}} for="flexCheckDefault">
+                    <input class="form-check-input" name="correctOpt" type="radio" value="option1" id="flexCheckDefault1" required/>
+                    <label  style={{width:'100%'}} for="flexCheckDefault1">
                     <input className='rectangle'  name='option1'  style={{width:'100%'}}  type='text' placeholder='Add option1' required></input>
 
                     </label>
@@ -80,9 +80,9 @@ function AdminAddQs() {
             <Row style={{marginTop:'25px'}}>
                 <Col xs={12}>
                 
-                <div class="form-check"   >
-                    <input class="form-check-input" name="correctOpt" type="radio" value="option2" id="flexCheckDefault" required/>
-                    <label  style={{width:'100%'}} for="flexCheckDefault">
+                <div class="form-check">
+                    <input class="form-check-input" name="correctOpt" type="radio" value="option21" id="flexCheckDefault2"/>
+                    <label  style={{width:'100%'}} for="flexCheckDefault2">
                     <input className='rectangle'  name='option2'  style={{width:'100%'}}  type='text' placeholder='Add option2' required></input>
 
                     </label>
