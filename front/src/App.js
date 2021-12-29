@@ -10,6 +10,8 @@ import Logout from './screens/logout';
 import Result from './screens/Result';
 import Error from './screens/Error';
 import './css/App.css'
+import AdminHome from './screens/AdminHome';
+import AdminAddQs from './screens/AdminAddQs';
 
 
 function App() {
@@ -41,6 +43,8 @@ function App() {
        <Route path='/result' exact element={<Result/>} />
        <Route path='/logout' exact element={<Logout/>} />
        <Route path='/error' exact element={<Error/>} />
+       <Route path='/admin/home' exact element={<AdminHome/>} />
+       <Route path='/admin/addQs' exact element={<AdminAddQs/>} />
        </Routes>
        </Router>
            
