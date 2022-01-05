@@ -21,7 +21,8 @@ const formatOptionLabel = ({ value, label, customAbbreviation }) => (
 
 function CustomSelect() {
     return (
-        <Select
+
+        <Select className='basicRec'
     defaultValue={options[0]}
     formatOptionLabel={formatOptionLabel}
     options={options}

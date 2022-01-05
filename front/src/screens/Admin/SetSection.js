@@ -2,6 +2,7 @@ import React,{useEffect} from 'react'
 import { Col, Row } from 'react-bootstrap';
 import { useLocation} from 'react-router-dom';
 import { useNavigate } from "react-router";
+import Clock from '../../img/Clock.svg'
 import '../../css/AdminHomeScreen.css'
 
 function SetSection(props) {
@@ -40,7 +41,7 @@ function SetSection(props) {
            <Row><Col><div className='basicRec easyMedHard' style={{padding:'11px 10px'}} >Hard</div></Col></Row>
            </Col>
            </Row>
-           <Row style={{margin:'44px 0'}}> <Col style={{padding:'0px'}}><div className='basicRec easyMedHard' style={{marginBottom:'28px',width: '90%'}}></div></Col>
+           <Row style={{margin:'44px 0'}}> <Col><div className='basicRec easyMedHard' style={{marginBottom:'28px',width: '90%',padding:'11px 10px'}}>60 : 00 : 00 <img style={{height:'25px',float:'right'}} alt="logo" src={Clock}></img>  </div></Col>           
            <Col style={{padding:'0px'}}>
            <div className='basicRec secNm' style={{marginBottom:'28px',padding:'11px 10px'}}>Total number of questions</div>
            </Col>
@@ -49,7 +50,7 @@ function SetSection(props) {
 
             </div>
             <Row style={{float:'right'}}>
-           <button style={{color:'white'}} className='btn scTest'>Save</button><button style={{color:'white'}} className='btn scTest'>Set Question</button>
+           <button style={{color:'white'}} className='btn scTest'>Save</button><button style={{color:'white'}} className='btn scTest' onClick={(e)=>{navigate('/admin/setQs')}}>Set Question</button>
 
            </Row>
            

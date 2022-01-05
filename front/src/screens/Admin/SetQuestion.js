@@ -2,9 +2,11 @@ import React from 'react'
 import { Col, Row } from 'react-bootstrap'
 import CustomSelect from '../../components/Admin/CustomSelect'
 import QuestionNavigatorComp from '../../components/TestScreeen/QuestionNavigatorComp'
+import { useNavigate } from "react-router";
 import '../../css/AdminHomeScreen.css'
 
 function SetQuestion() {
+    const navigate = useNavigate()
     return (
         <div >
             <Row >
@@ -50,7 +52,8 @@ function SetQuestion() {
                 </Col>
             </Row>
             <Row style={{paddingTop:'20px',paddingLeft:'450px'}}>
-           <button style={{color:'white'}} className='btn scTest'>Save</button><button style={{color:'white'}} className='btn scTest'>Set Question</button>
+           <button style={{color:'white'}} className='btn scTest'>Save</button>
+           <button style={{color:'white'}} className='btn scTest'>Reset</button>
 
            </Row>
             
