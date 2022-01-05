@@ -1,10 +1,12 @@
 import React,{useState} from 'react'
 import {Col,Row} from 'react-bootstrap';
-import axiosInstance from '../axios';
+import axiosInstance from '../../axios';
 import { useNavigate } from "react-router";
-import '../css/LoginScreen.css'
+import '../../css/AdminAddQsScreen.css'
+
 
 function AdminAddQs() {
+
     
     const [optionArray, addOptionArray] = useState([]);
     const [countOpt, setCountOpt] = useState(2);
@@ -37,9 +39,9 @@ function AdminAddQs() {
         <Col xs={12}>
         
         <div class="form-check"   >
-            <input name="correctOpt" type="radio" value={`option${countOpt+1}`} id={`flexCheckDefault${countOpt+1}`} />
+            <input className="correctOpt" type="radio" value={`option${countOpt+1}`} id={`flexCheckDefault${countOpt+1}`} />
             <label  style={{width:'100%'}} for={`flexCheckDefault${countOpt+1}`} >
-            <input className='rectangle'  name={`option${countOpt+1}`}  style={{width:'100%'}}  type='text' placeholder={`Add option${countOpt+1}`} required></input>
+            <input className='rectangleInput'  name={`option${countOpt+1}`}  style={{width:'100%'}}  type='text' placeholder={`Add option${countOpt+1}`} required></input>
 
             </label>
             </div>                
