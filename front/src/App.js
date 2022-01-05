@@ -13,6 +13,7 @@ import './css/App.css'
 import AdminHome from './screens/Admin/Home';
 import AdminAddQs from './screens/Admin/AddQs';
 import AdminSetSection from './screens/Admin/SetSection';
+import SetQuestion from './screens/Admin/SetQuestion';
 
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
        <Route path='/admin/home' exact element={<AdminHome/>} />
        <Route path='/admin/addQs' exact element={<AdminAddQs/>} />
        <Route path='/admin/setSection' exact element={<AdminSetSection/>} />
+       <Route path='/admin/setQs' exact element={<SetQuestion/>} />
        </Routes>
        </Router>
            

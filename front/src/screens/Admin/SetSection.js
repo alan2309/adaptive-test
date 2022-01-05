@@ -1,14 +1,22 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { Col, Row } from 'react-bootstrap';
-import {useLocation} from 'react-router-dom';
+import { useLocation} from 'react-router-dom';
+import { useNavigate } from "react-router";
 import '../../css/AdminHomeScreen.css'
 
 function SetSection(props) {
     const location = useLocation();
+    const navigate = useNavigate()
+    useEffect(() => {
+        console.log('yes')
+        if(location.state===null){
+            navigate('/admin/home')
+        }
+     }, []);
     return (
         <div className='mainRec'>
             <div className='AdminSetSection'>
-            <div className='basicRec secNm'>{location.state.sectionName}</div>
+            <div className='basicRec secNm'>{location.state!==null?location.state.sectionName:null}</div>
            
            <Row style={{margin:'44px 0',padding:'0px 0px'}}> 
            <Col style={{padding:'0px'}}><div className='basicRec avQs' >
