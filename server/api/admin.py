@@ -1,7 +1,8 @@
 from django.contrib import admin
-from .models import (Questions,Options,Results)
+from .models import (Questions,Options,Results,Subject)
 
 # Register your models here.
 admin.site.register(Questions)
 admin.site.register(Options)
 admin.site.register(Results)
+admin.site.register(Subject)

@@ -1,7 +1,8 @@
+from django.db.models import manager
 from django.shortcuts import render
 from django.http.response import JsonResponse
 from rest_framework.views import APIView
-from api.models import Questions,Options,Results
+from api.models import Questions,Options,Results,Subject
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 from rest_framework.permissions import AllowAny
@@ -10,6 +11,35 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 import datetime
 from rest_framework.parsers import JSONParser
+from .serializers import SubjectSerializer,QuestionSerializer 
+
+@csrf_exempt
+def subqs(request,subject=0):
+   if request.method == 'GET': 
+       a=[]
+       b=[]
+       c=[]
+       sub =Subject.objects.get(id=subject)
+       qs = Questions.objects.filter(subject=sub)
+       for x in qs:
+            aa={}
+            aaOption=[]
+            aa['ques']=x.title
+            ans = Options.objects.filter(question=x)
+            for asss in ans:
+                aaaOpt={}
+                aaaOpt['opt']=asss.title
+                aaaOpt['mrks']=asss.marks
+                aaOption.append(aaaOpt)
+            
+            aa['options']=aaOption
+            if x.type==1:
+                a.append(aa)
+            elif x.type==2:
+                b.append(aa)
+            elif x.type==3:
+                c.append(aa)
+       return JsonResponse({'qs':sub.sub_qs,'time':sub.sub_time,'easy':a,'medium':b,'hard':c},safe=False)
 
 # Create your views here.
 def qs(request):

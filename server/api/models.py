@@ -1,7 +1,15 @@
 from django.db import models
 from django.conf import settings
 
+class Subject(models.Model):
+   sub_name = models.CharField(max_length=255)
+   sub_time = models.TimeField()
+   sub_qs = models.IntegerField()
+   def __str__(self):
+        return self.sub_name
+
 class Questions(models.Model):
+    subject = models.ForeignKey(Subject,on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     type = models.IntegerField()
     def __str__(self):
