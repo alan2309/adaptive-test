@@ -122,7 +122,7 @@ def marks(request):
 def addQs(request):
     if request.method == 'POST':
         data=JSONParser().parse(request)['data']
-        f=Questions(title=data['question'],type=data['type'])
+        f=Questions(subject=Subject.objects.get(sub_name=data['sectionName']),title=data['question'],type=data['type'])
         f.save()
         optionData = {x: data[x] for x in data if 'option' in x}
         print(data)

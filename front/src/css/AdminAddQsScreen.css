@@ -1,3 +1,36 @@
 .rectangleInput{
+    min-height: 30px;
+    padding: 10px;
+    margin-bottom: 5px;
+    background-color: #f8f9fa !important;
+    border-radius: 14px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
+}
+input[type='radio']:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -5px;
+    left: -1px;
+    position: relative;
+    background-color: red;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
+}
+
+input[type='radio']:checked:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -5px;
+    left: -1px;
+    position: relative;
+    background-color: #10B65C;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
 }
