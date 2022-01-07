@@ -74,6 +74,13 @@ function SetQuestion() {
       });
     });
   }
+  function delOpt(e){
+      
+    setOpt(opt.filter(function(item,index){
+        console.log(index+1)
+        console.log(opt.length)
+        return opt.length !== index+1}));
+  }
   function addOpt(e) {
     setCountOpt(countOpt + 1);
     console.log("Add opt clicked");
@@ -210,7 +217,8 @@ function SetQuestion() {
                     return (
                       <>
                         <p style={{ padding: "5px 0", margin: "10px 0px" }}>
-                          <div class="form-check">
+                          <div class="form-check" style={{paddingLeft:'0'}}>
+                          
                             <input
                               type="radio"
                               name="correctOpt"
@@ -225,7 +233,7 @@ function SetQuestion() {
                               style={{
                                 marginLeft: "15px",
                                 fontWeight: "400",
-                                width: "96%",
+                                width: "90%",
                               }}
                               for={`flexCheckDefault${index + 1}`}
                             >
@@ -315,6 +323,7 @@ function SetQuestion() {
                 )}
                 {optionArray}
               </div>
+              {isUpdate&&<>
               <button
                 class="btn"
                 type="button"
@@ -328,6 +337,20 @@ function SetQuestion() {
               >
                 <i class="fa fa-add" style={{ color: "white" }}></i>
               </button>
+              <button
+                class="btn"
+                type="button"
+                onClick={(e)=>delOpt(e)}
+                style={{
+                  backgroundColor: "#10B65C",
+                  borderRadius: "100px",
+                  marginLeft: "5%",
+                  marginBottom: "10px",
+                }}
+              >
+                <i class="fa fa-trash" style={{ color: "white" }}></i>
+              </button>
+              </>}
               {isUpdate ? (
                 <button
                   class="btn"
