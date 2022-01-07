@@ -25,10 +25,12 @@ def subqs(request,subject=0):
             aa={}
             aaOption=[]
             aa['ques']=x.title
+            aa['id']=x.id
             ans = Options.objects.filter(question=x)
             for asss in ans:
                 aaaOpt={}
                 aaaOpt['opt']=asss.title
+                aaaOpt['id']=asss.id
                 aaaOpt['mrks']=asss.marks
                 aaOption.append(aaaOpt)
             
@@ -122,41 +124,38 @@ def marks(request):
 def addQs(request):
     if request.method == 'POST':
         data=JSONParser().parse(request)['data']
-        f=Questions(subject=Subject.objects.get(sub_name=data['sectionName']),title=data['question'],type=data['type'])
-        f.save()
-        optionData = {x: data[x] for x in data if 'option' in x}
         print(data)
-        print(data['correctOpt'])
-        print(optionData)
-        
+        if data['action']=='Save':
+            f=Questions(subject=Subject.objects.get(sub_name=data['sectionName']),title=data['questionNew'],type=data['type'])
+            f.save()
+              
+        elif data['action']=='Update':
+            print('update')
+            qData = {x: data[x] for x in data if 'question' in x}
+            print(qData)
+            for qs in qData:
+                f=Questions.objects.get(id=qs.split('question')[1])
+                f.title=qData[qs]
+                f.save()
+
+                print(f)
+                print(qData[qs])
+                Options.objects.filter(question=f).delete()
+        optionData = {x: data[x] for x in data if 'Option' in x}
+        print(data)
         for z in optionData:
             print(z)
-            print(z==data['correctOpt'])
-            if z==data['correctOpt']:
-                if data['type']==str(1):
+            print(z==data['rightOpt'])
+            if z==data['rightOpt']:
+                if data['type']==1:
                     marks=1
-                elif data['type']==str(2):
+                elif data['type']==2:
                     marks=2
-                elif data['type']==str(3):
+                elif data['type']==3:
                     marks=5
             else:
                 marks=0
             print(marks)
             ff=Options(question=f,marks=marks,title=optionData[z])
             ff.save()
-        return JsonResponse("saved",safe=False)
-        
- 
-        # d = datetime.datetime.now()
-        # user = User.objects.get(username = data['username'])
-        # if(user):
-        #     result = Results.objects.get(student = user)
-        #     if(result):
-        #         result.endTime = d.time()
-        #         result.marks = data['marks']
-        #         result.save()
-        #         return JsonResponse("Marks stored",safe=False)
-        #     else:
-        #         return JsonResponse("Restart Test",safe=False)    
-        # else:
-        #     return JsonResponse("User Doesn't exist",safe=False)     
+        return JsonResponse("Done",safe=False) 

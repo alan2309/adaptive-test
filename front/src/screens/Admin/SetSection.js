@@ -55,9 +55,9 @@ function SetSection(props) {
                </Row>
                </div></Col>
            <Col style={{padding:'0px'}}>
-           <Row><Col><div className='basicRec easyMedHard'  style={{marginBottom:'28px',padding:'11px 10px'}} onClick={(e)=>{navigate('/admin/setQs',{state:{type:'Easy',sectionName:`${location.state!==null?location.state.sectionName:null}`,sid:location.state.sid}})}}>Easy</div></Col></Row>
-           <Row><Col><div className='basicRec easyMedHard' style={{marginBottom:'28px',padding:'11px 10px'}} onClick={(e)=>{navigate('/admin/setQs',{state:{type:'Medium',sectionName:`${location.state!==null?location.state.sectionName:null}`,sid:location.state.sid}})}}>Medium</div></Col></Row>
-           <Row><Col><div className='basicRec easyMedHard' style={{padding:'11px 10px'}} onClick={(e)=>{navigate('/admin/setQs',{state:{type:'Hard',sectionName:`${location.state!==null?location.state.sectionName:null}`,sid:location.state.sid}})}}>Hard</div></Col></Row>
+           <Row><Col><div className='basicRec easyMedHard'  style={{marginBottom:'28px',padding:'11px 10px'}} onClick={(e)=>{navigate('/admin/setQs',{state:{type:'Easy',sectionName:`${location.state!==null?location.state.sectionName:null}`,sid:location.state.sid,navArr:easy}})}}>Easy</div></Col></Row>
+           <Row><Col><div className='basicRec easyMedHard' style={{marginBottom:'28px',padding:'11px 10px'}} onClick={(e)=>{navigate('/admin/setQs',{state:{type:'Medium',sectionName:`${location.state!==null?location.state.sectionName:null}`,sid:location.state.sid,navArr:med}})}}>Medium</div></Col></Row>
+           <Row><Col><div className='basicRec easyMedHard' style={{padding:'11px 10px'}} onClick={(e)=>{navigate('/admin/setQs',{state:{type:'Hard',sectionName:`${location.state!==null?location.state.sectionName:null}`,sid:location.state.sid,navArr:hard}})}}>Hard</div></Col></Row>
            </Col>
            </Row>
            <Row style={{margin:'44px 0'}}> <Col><div className='basicRec easyMedHard' style={{marginBottom:'28px',width: '90%',padding:'11px 10px'}}>{time} <img style={{height:'25px',float:'right'}} alt="logo" src={Clock}></img>  </div></Col>           
