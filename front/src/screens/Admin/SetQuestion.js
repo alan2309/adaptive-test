@@ -10,7 +10,6 @@ import axiosInstance from "../../axios";
 function SetQuestion() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [optionArray, addOptionArray] = useState([]);
   const [navArray, setNavArray] = useState([]);
   const [countOpt, setCountOpt] = useState(2);
 
@@ -65,8 +64,9 @@ function SetQuestion() {
     }
     console.log(dictionary);
     axiosInstance.post("api/admin/addQs", { data: dictionary }).then((res) => {
-      console.log("saved to db");
+      //Alankrit
 
+      //after saving add value to --->navArray
       navigate("/admin/setSection", {
         state: {
           sectionName: location.state.sectionName,
@@ -150,6 +150,14 @@ function SetQuestion() {
       }
     });
   }
+
+  function delQuestion(e){
+    //Alankrit
+
+    //array to del from  ---> navArray
+
+
+  }
   function fillData(e){
     console.log(e)
     document.getElementById('sbForm').reset();
@@ -183,11 +191,7 @@ function SetQuestion() {
             >
               <div style={{ padding: "20px 36px 0 36px" }}>
                 <div style={{ marginBottom: "30px" }}>
-                  <div class="form-group">
-                    <label for="selectSetQs">
-                      Qs NO :   {currentQsNo}
-                    </label>
-                  </div>
+                  
 
                   <div class="form-group">
                     <label for="selectSetQs">Type :</label>
@@ -352,6 +356,7 @@ function SetQuestion() {
             </div>
           </Col>
           <Col md={3}> 
+
             {isUpdate ? (
 
                
@@ -375,20 +380,14 @@ function SetQuestion() {
                       </>
                   )
               })}
+             { (navArray!==undefined&& navArray.length===0 )?(setIsNew(true),
+                setIsUpdate(true),
+                setNavArray((prev) => [...prev, -1]),
+                setCurrentQsNo(navArray.length + 1),
+                setCurrentQsID('New'),
+                setOpt([])):null}
+
                </div>
-              
-              
-               
-                {/* <QuestionNavigatorComp
-                  isUpdate={isUpdate}
-                  setCurrentQsNo={setCurrentQsNo}
-                  setCurrentQsID={setCurrentQsID}
-                  setCurrentQs={setCurrentQs}
-                  setOpt={setOpt}
-                  attempted={navArray}
-                  disabled={false}
-                ></QuestionNavigatorComp> */}
-               
               </div>
             ) : (
                 <div className="basicRec" id="wrapper" >
@@ -410,24 +409,19 @@ function SetQuestion() {
                       </>
                   )
               })}
+
+                        { navArray!==undefined&& navArray.length===0 && <h5>Add question to view</h5>}
+
+               </div>       
+     
                </div>
-               
-                
-                 {/* <QuestionNavigatorComp
-                   isUpdate={isUpdate}
-                   setCurrentQsNo={setCurrentQsNo}
-                   setCurrentQsID={setCurrentQsID}
-                   setCurrentQs={setCurrentQs}
-                   setOpt={setOpt}
-                   attempted={navArray}
-                   disabled={false}
-                 ></QuestionNavigatorComp> */}
-                
-               </div>
+
             )}
+
+
           </Col>
         </Row>
-        <Row style={{ paddingTop: "20px", paddingLeft: "450px" }}>
+        <Row style={{ paddingTop: "20px", paddingLeft: "10%" }}>
           <button
             style={{ color: "white" }}
             type="button"
@@ -445,6 +439,7 @@ function SetQuestion() {
           </button>
 
           {(isUpdate || navArray.length === 0) && (
+            <>
             <button
               style={{ color: "white" }}
               type="submit"
@@ -456,7 +451,17 @@ function SetQuestion() {
                 ? "Save"
                 : "Update"}
             </button>
+            <button
+              style={{ color: "white" }}
+              type="submit"
+              className="btn scTest"
+              onClick={delQuestion}
+            >
+            Delete
+            </button>
+            </>
           )}
+
           {!isNew && !isUpdate && navArray.length !== 0 && (
             <button
               style={{ color: "white" }}
