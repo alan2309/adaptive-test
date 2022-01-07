@@ -108,4 +108,48 @@
     color: #293E6F;
 
 }
-    
+.scrollbar
+{
+
+  background: #F5F5F5;
+  overflow-y: auto;
+}
+
+
+
+#style-4::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,0.3);
+  background-color: #F5F5F5;
+}
+
+#style-4::-webkit-scrollbar
+{
+  width: 10px;
+  background-color: #F5F5F5;
+}
+
+#style-4::-webkit-scrollbar-thumb
+{
+  background-color: #adb5bd;
+}
+
+.ff{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 4; /* number of lines to show */
+            line-clamp: 4; 
+    -webkit-box-orient: vertical;
+ }
+
+ @keyframes blinkingFrames {
+    0% {opacity: 1.00;}
+    50% {opacity: 0.00;}
+    100% {opacity: 1.00;}
+}
+
+.blinking {
+    animation-name: blinkingFrames;
+    animation-duration: 2s;
+    animation-iteration-count: 10;
+}

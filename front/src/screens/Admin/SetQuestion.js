@@ -4,6 +4,7 @@ import QuestionNavigatorComp from "../../components/TestScreeen/QuestionNavigato
 import { useNavigate } from "react-router";
 import "../../css/AdminHomeScreen.css";
 import { useLocation } from "react-router-dom";
+import $ from 'jquery'; 
 import axiosInstance from "../../axios";
 
 function SetQuestion() {
@@ -149,6 +150,15 @@ function SetQuestion() {
       }
     });
   }
+  function fillData(e){
+    console.log(e)
+    document.getElementById('sbForm').reset();
+
+    setCurrentQs(navArray[e.target.id].ques)
+    setCurrentQsID(navArray[e.target.id].id)
+    setOpt(navArray[e.target.id].options)
+    setCurrentQsNo(`${parseInt(e.target.id)+1}`)
+}
   return (
     <div>
       <form onSubmit={(e) => handleSubmit(e)} id="sbForm">
@@ -167,7 +177,7 @@ function SetQuestion() {
             <div
               className="basicRec SetQuestion"
               style={{
-                minHeight: window.screen.height - 360,
+                height: window.screen.height - 360,
                 margin: "0px 50px",
               }}
             >
@@ -210,8 +220,15 @@ function SetQuestion() {
                     ></textarea>
                   </div>
                 </Row>
+                 <div class="scrollbar" style={{
+                    maxHeight: '225px',
+                      margin: "5px",
+                      maxWidth:'100%',
+                      backgroundColor: "white",
+                      
+                    }} id="style-4">
 
-                {(!isNew || currentQsNo !== navArray.length) &&
+                 {
                   opt !== undefined &&
                   opt.map((x, index) => {
                     return (
@@ -252,76 +269,13 @@ function SetQuestion() {
                         </p>
                       </>
                     );
-                  })}
+                  })
+                  }
 
-                {((isNew && currentQsNo === navArray.length) ||
-                  navArray.length == 0) && (
-                  <>
-                    <p style={{ padding: "5px 0", margin: "10px 0px" }}>
-                      <div class="form-check">
-                        <input
-                          type="radio"
-                          name="correctOpt"
-                          disabled={!isUpdate}
-                          value="Option1"
-                          id="flexCheckDefault1"
-                          required
-                        />
-                        <label
-                          class="form-check-label"
-                          style={{
-                            marginLeft: "15px",
-                            fontWeight: "400",
-                            width: "96%",
-                          }}
-                          for="flexCheckDefault1"
-                        >
-                          <input
-                            type="text"
-                            class="form-control"
-                            disabled={!isUpdate}
-                            name="Option1"
-                            placeholder="Enter Option 1"
-                            id="Option1"
-                            required
-                          />
-                        </label>
-                      </div>
-                    </p>
-                    <p style={{ padding: "5px 0", margin: "10px 0px" }}>
-                      <div class="form-check">
-                        <input
-                          type="radio"
-                          name="correctOpt"
-                          disabled={!isUpdate}
-                          value="Option2"
-                          id="flexCheckDefault2"
-                          required
-                        />
-                        <label
-                          class="form-check-label"
-                          style={{
-                            marginLeft: "15px",
-                            fontWeight: "400",
-                            width: "96%",
-                          }}
-                          for="flexCheckDefault2"
-                        >
-                          <input
-                            type="text"
-                            disabled={!isUpdate}
-                            class="form-control"
-                            name="Option2"
-                            placeholder="Enter Option 2"
-                            id="Option2"
-                            required
-                          />
-                        </label>
-                      </div>
-                    </p>
-                  </>
-                )}
-                {optionArray}
+             
+                 </div>
+               
+
               </div>
               {isUpdate&&<>
               <button
@@ -358,9 +312,13 @@ function SetQuestion() {
                   onClick={(e) => {
                     if (window.confirm("Do you want to update ?")) {
                       // Save it!
-                      console.log("Thing was saved to the database.");
+                      var ele=document.getElementById('actionBut')
+                      ele.focus();
+                      ele.classList.toggle('blinking')
                     } else {
                       setIsUpdate(!isUpdate);
+                      
+    
                     }
                   }}
                   style={{
@@ -390,20 +348,38 @@ function SetQuestion() {
                 </button>
               )}
 
-              {/* // :}                    */}
+           
             </div>
           </Col>
-          <Col>
+          <Col md={3}> 
             {isUpdate ? (
-              <div
-                className="basicRec"
-                style={{
-                  height: "100%",
-                  paddingTop: "45px",
-                  backgroundColor: "#e9ecef",
-                }}
-              >
-                <QuestionNavigatorComp
+
+               
+              
+                   <div className="basicRec" id="wrapper" >
+               
+               <div class="scrollbar" style={{
+                     height: window.screen.height - 360,
+                       padding: "5px",
+                       maxWidth:'100%',
+                       backgroundColor: "#e9ecef",
+                       
+                     }} id="style-4">
+                {navArray!==undefined&& navArray.map((ittr, index) => {
+                  return (
+                      <>
+                      {console.log(ittr)}
+                      <button className='ff btn btn-secondary' disabled={isUpdate} id={index} type="button" style={{boxShadow: `rgba(0, 0, 0, 0.02) 0 1px 3px 0`,minHeight:'30px',
+  boxSizing: `border-box`,width:'100%',marginBottom:'2px',
+  color: `rgba(0, 0, 0, 0.85)`}} onClick={fillData}>{ittr.ques||'New Qs'}</button>
+                      </>
+                  )
+              })}
+               </div>
+              
+              
+               
+                {/* <QuestionNavigatorComp
                   isUpdate={isUpdate}
                   setCurrentQsNo={setCurrentQsNo}
                   setCurrentQsID={setCurrentQsID}
@@ -411,27 +387,43 @@ function SetQuestion() {
                   setOpt={setOpt}
                   attempted={navArray}
                   disabled={false}
-                ></QuestionNavigatorComp>
+                ></QuestionNavigatorComp> */}
+               
               </div>
             ) : (
-              <div
-                className="basicRec"
-                style={{
-                  height: "100%",
-                  paddingTop: "45px",
-                  backgroundColor: "white",
-                }}
-              >
-                <QuestionNavigatorComp
-                  isUpdate={isUpdate}
-                  setCurrentQsNo={setCurrentQsNo}
-                  setCurrentQsID={setCurrentQsID}
-                  setCurrentQs={setCurrentQs}
-                  setOpt={setOpt}
-                  attempted={navArray}
-                  disabled={false}
-                ></QuestionNavigatorComp>
-              </div>
+                <div className="basicRec" id="wrapper" >
+               
+               <div class="scrollbar" style={{
+                     height: window.screen.height - 360,
+                       padding: "5px",
+                       maxWidth:'100%',
+                       backgroundColor: "white",
+                       
+                     }} id="style-4">
+                {navArray!==undefined&& navArray.map((ittr, index) => {
+                  return (
+                      <>
+                      {console.log(ittr)}
+                      <button type='button' className='ff btn btn-secondary' id={index} style={{boxShadow: `rgba(0, 0, 0, 0.02) 0 1px 3px 0`,backgroundColor:'#e9ecef',minHeight:'30px',
+  boxSizing: `border-box`,width:'100%',marginBottom:'2px',
+  color: `rgba(0, 0, 0, 0.85)`}} onClick={fillData}>{ittr.ques||'New Qs'}</button>
+                      </>
+                  )
+              })}
+               </div>
+               
+                
+                 {/* <QuestionNavigatorComp
+                   isUpdate={isUpdate}
+                   setCurrentQsNo={setCurrentQsNo}
+                   setCurrentQsID={setCurrentQsID}
+                   setCurrentQs={setCurrentQs}
+                   setOpt={setOpt}
+                   attempted={navArray}
+                   disabled={false}
+                 ></QuestionNavigatorComp> */}
+                
+               </div>
             )}
           </Col>
         </Row>
@@ -456,7 +448,8 @@ function SetQuestion() {
             <button
               style={{ color: "white" }}
               type="submit"
-              className="btn scTest"
+              className="btn scTest flashBut"
+              id='actionBut'
             >
               {(isNew && currentQsNo == navArray.length) ||
               navArray.length === 0
@@ -475,6 +468,7 @@ function SetQuestion() {
                 setNavArray((prev) => [...prev, -1]);
                 setCurrentQsNo(navArray.length + 1);
                 setCurrentQsID('New')
+                setOpt([])
               }}
             >
               Add new Question
