@@ -24,6 +24,7 @@ function TestScreen() {
   const handleClose = () => setShow(false);
   const [countWindowAway, setCountWindowAway] = useState(0);
   const [countWindowAwayModal, setCountWindowAwayModal] = useState(false);
+  const [testFinshBool, setTestFinishBool] = useState(false);
   useEffect(() => {
     var test = JSON.parse(localStorage.getItem("test"));
     const token = localStorage.getItem("access_token");
@@ -254,6 +255,7 @@ function TestScreen() {
             <CustomTimer
               msg={`Please Enter Full Screen or Test will get auto submitted in`}
               onlyS={true}
+              reset={testFinshBool}
               time={10}
               start={show}
             ></CustomTimer>
@@ -281,6 +283,8 @@ function TestScreen() {
                 <div className="TestHeaderComp">
                   <TestHeaderComp
                     timer={10000}
+                    start={!testFinshBool}
+                    reset={testFinshBool}
                     timeKey="Time"
                     totalKey="Total"
                     totalValue={10}
@@ -290,6 +294,7 @@ function TestScreen() {
               <Col md="3">
                 <button
                   onClick={(e) => {
+                    setTestFinishBool(true);setShow(false);
                     navigate("/result");
                     if (document.exitFullscreen) {
                       document.exitFullscreen();
