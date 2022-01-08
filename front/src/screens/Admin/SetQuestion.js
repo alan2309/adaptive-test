@@ -4,7 +4,7 @@ import QuestionNavigatorComp from "../../components/TestScreeen/QuestionNavigato
 import { useNavigate } from "react-router";
 import "../../css/AdminHomeScreen.css";
 import { useLocation } from "react-router-dom";
-import $ from 'jquery'; 
+import $ from "jquery";
 import axiosInstance from "../../axios";
 
 function SetQuestion() {
@@ -38,12 +38,11 @@ function SetQuestion() {
     var dictionary = {};
     dictionary[document.getElementById("qsSetQs").name] =
       document.getElementById("qsSetQs").value;
-    var rightOpt=document.querySelector(
-        'input[name="correctOpt"]:checked'
-      )
+    var rightOpt = document.querySelector('input[name="correctOpt"]:checked');
 
-      if(rightOpt!==null){
-    dictionary["rightOpt"] = rightOpt.value;}
+    if (rightOpt !== null) {
+      dictionary["rightOpt"] = rightOpt.value;
+    }
     for (var x = 0; x < e.target.length; x++) {
       if (
         e.target[x] instanceof HTMLInputElement ||
@@ -75,12 +74,14 @@ function SetQuestion() {
       });
     });
   }
-  function delOpt(e){
-      
-    setOpt(opt.filter(function(item,index){
-        console.log(index+1)
-        console.log(opt.length)
-        return opt.length !== index+1}));
+  function delOpt(e) {
+    setOpt(
+      opt.filter(function (item, index) {
+        console.log(index + 1);
+        console.log(opt.length);
+        return opt.length !== index + 1;
+      })
+    );
   }
   function addOpt(e) {
     setCountOpt(countOpt + 1);
@@ -93,7 +94,7 @@ function SetQuestion() {
             <div class="form-check">
               <input
                 type="radio"
-                name="correctOpt"
+                name="correctOpt setQsRadio"
                 disabled={!isUpdate}
                 value={`Option${countOpt + 1}`}
                 id={`flexCheckDefault${countOpt + 1}`}
@@ -123,7 +124,7 @@ function SetQuestion() {
             <div class="form-check">
               <input
                 type="radio"
-                name="correctOpt"
+                name="correctOpt setQsRadio"
                 disabled={!isUpdate}
                 value={`Option${countOpt + 1}`}
                 id={`flexCheckDefault${countOpt + 1}`}
@@ -151,22 +152,19 @@ function SetQuestion() {
     });
   }
 
-  function delQuestion(e){
+  function delQuestion(e) {
     //Alankrit
-
     //array to del from  ---> navArray
-
-
   }
-  function fillData(e){
-    console.log(e)
-    document.getElementById('sbForm').reset();
+  function fillData(e) {
+    console.log(e);
+    document.getElementById("sbForm").reset();
 
-    setCurrentQs(navArray[e.target.id].ques)
-    setCurrentQsID(navArray[e.target.id].id)
-    setOpt(navArray[e.target.id].options)
-    setCurrentQsNo(`${parseInt(e.target.id)+1}`)
-}
+    setCurrentQs(navArray[e.target.id].ques);
+    setCurrentQsID(navArray[e.target.id].id);
+    setOpt(navArray[e.target.id].options);
+    setCurrentQsNo(`${parseInt(e.target.id) + 1}`);
+  }
   return (
     <div>
       <form onSubmit={(e) => handleSubmit(e)} id="sbForm">
@@ -191,8 +189,6 @@ function SetQuestion() {
             >
               <div style={{ padding: "20px 36px 0 36px" }}>
                 <div style={{ marginBottom: "30px" }}>
-                  
-
                   <div class="form-group">
                     <label for="selectSetQs">Type :</label>
                     <select
@@ -224,91 +220,91 @@ function SetQuestion() {
                     ></textarea>
                   </div>
                 </Row>
-                 <div class="scrollbar" style={{
-                    maxHeight: '225px',
-                      margin: "5px",
-                      maxWidth:'100%',
-                      backgroundColor: "white",
-                      
-                    }} id="style-4">
-
-                 {
-                  opt !== undefined &&
-                  opt.map((x, index) => {
-                    return (
-                      <>
-                        <p style={{ padding: "5px 0", margin: "10px 0px" }}>
-                          <div class="form-check" style={{paddingLeft:'0'}}>
-                          
-                            <input
-                              type="radio"
-                              name="correctOpt"
-                              disabled={!isUpdate}
-                              checked={x.mrks !== 0 ? true : null}
-                              value={`Option${index + 1}`}
-                              id={`flexCheckDefault${index + 1}`}
-                              required
-                            />
-                            <label
-                              class="form-check-label"
-                              style={{
-                                marginLeft: "15px",
-                                fontWeight: "400",
-                                width: "90%",
-                              }}
-                              for={`flexCheckDefault${index + 1}`}
+                <div
+                  class="scrollbar"
+                  style={{
+                    maxHeight: "225px",
+                    margin: "5px",
+                    maxWidth: "100%",
+                    backgroundColor: "white",
+                  }}
+                  id="style-4"
+                >
+                  {opt !== undefined &&
+                    opt.map((x, index) => {
+                      return (
+                        <>
+                          <p style={{ padding: "5px 0", margin: "10px 0px" }}>
+                            <div
+                              class="form-check"
+                              style={{ paddingLeft: "0" }}
                             >
                               <input
-                                type="text"
-                                class="form-control"
+                                type="radio setQsRadio"
+                                name="correctOpt"
                                 disabled={!isUpdate}
-                                defaultValue={x.opt}
-                                name={`Option${index + 1}`}
-                                placeholder={`Enter Option ${index + 1}`}
-                                id={`Option${index + 1}`}
+                                checked={x.mrks !== 0 ? true : null}
+                                value={`Option${index + 1}`}
+                                id={`flexCheckDefault${index + 1}`}
                                 required
                               />
-                            </label>
-                          </div>
-                        </p>
-                      </>
-                    );
-                  })
-                  }
-
-             
-                 </div>
-               
-
+                              <label
+                                class="form-check-label"
+                                style={{
+                                  marginLeft: "15px",
+                                  fontWeight: "400",
+                                  width: "90%",
+                                }}
+                                for={`flexCheckDefault${index + 1}`}
+                              >
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  disabled={!isUpdate}
+                                  defaultValue={x.opt}
+                                  name={`Option${index + 1}`}
+                                  placeholder={`Enter Option ${index + 1}`}
+                                  id={`Option${index + 1}`}
+                                  required
+                                />
+                              </label>
+                            </div>
+                          </p>
+                        </>
+                      );
+                    })}
+                </div>
               </div>
-              {isUpdate&&<>
-              <button
-                class="btn"
-                type="button"
-                onClick={(e) => addOpt(e)}
-                style={{
-                  backgroundColor: "#10B65C",
-                  borderRadius: "100px",
-                  marginLeft: "5%",
-                  marginBottom: "10px",
-                }}
-              >
-                <i class="fa fa-add" style={{ color: "white" }}></i>
-              </button>
-              <button
-                class="btn"
-                type="button"
-                onClick={(e)=>delOpt(e)}
-                style={{
-                  backgroundColor: "#10B65C",
-                  borderRadius: "100px",
-                  marginLeft: "5%",
-                  marginBottom: "10px",
-                }}
-              >
-                <i class="fa fa-trash" style={{ color: "white" }}></i>
-              </button>
-              </>}
+              {isUpdate && (
+                <>
+                  <button
+                    class="btn"
+                    type="button"
+                    onClick={(e) => addOpt(e)}
+                    style={{
+                      backgroundColor: "#10B65C",
+                      borderRadius: "100px",
+                      marginLeft: "5%",
+                      marginBottom: "10px",
+                    }}
+                  >
+                    <i class="fa fa-add" style={{ color: "white" }}></i>
+                  </button>
+                  <button
+                    class="btn"
+                    type="button"
+                    onClick={(e) => delOpt(e)}
+                    style={{
+                      backgroundColor: "#10B65C",
+                      borderRadius: "100px",
+                      marginLeft: "5%",
+                      marginBottom: "10px",
+                    }}
+                  >
+                    <i class="fa fa-trash" style={{ color: "white" }}></i>
+                  </button>
+                </>
+              )}
               {isUpdate ? (
                 <button
                   class="btn"
@@ -316,13 +312,11 @@ function SetQuestion() {
                   onClick={(e) => {
                     if (window.confirm("Do you want to update ?")) {
                       // Save it!
-                      var ele=document.getElementById('actionBut')
+                      var ele = document.getElementById("actionBut");
                       ele.focus();
-                      ele.classList.toggle('blinking')
+                      ele.classList.toggle("blinking");
                     } else {
                       setIsUpdate(!isUpdate);
-                      
-    
                     }
                   }}
                   style={{
@@ -351,74 +345,100 @@ function SetQuestion() {
                   <i class="fa fa-edit" style={{ color: "white" }}></i>
                 </button>
               )}
-
-           
             </div>
           </Col>
-          <Col md={3}> 
-
+          <Col md={3}>
             {isUpdate ? (
-
-               
-              
-                   <div className="basicRec" id="wrapper" >
-               
-               <div class="scrollbar" style={{
-                     height: window.screen.height - 360,
-                       padding: "5px",
-                       maxWidth:'100%',
-                       backgroundColor: "#e9ecef",
-                       
-                     }} id="style-4">
-                {navArray!==undefined&& navArray.map((ittr, index) => {
-                  return (
-                      <>
-                      {console.log(ittr)}
-                      <button className='ff btn btn-secondary' disabled={isUpdate} id={index} type="button" style={{boxShadow: `rgba(0, 0, 0, 0.02) 0 1px 3px 0`,minHeight:'30px',
-  boxSizing: `border-box`,width:'100%',marginBottom:'2px',
-  color: `rgba(0, 0, 0, 0.85)`}} onClick={fillData}>{ittr.ques||'New Qs'}</button>
-                      </>
-                  )
-              })}
-             { (navArray!==undefined&& navArray.length===0 )?(setIsNew(true),
-                setIsUpdate(true),
-                setNavArray((prev) => [...prev, -1]),
-                setCurrentQsNo(navArray.length + 1),
-                setCurrentQsID('New'),
-                setOpt([])):null}
-
-               </div>
+              <div className="basicRec" id="wrapper">
+                <div
+                  class="scrollbar"
+                  style={{
+                    height: window.screen.height - 360,
+                    padding: "5px",
+                    maxWidth: "100%",
+                    backgroundColor: "#e9ecef",
+                  }}
+                  id="style-4"
+                >
+                  {navArray !== undefined &&
+                    navArray.map((ittr, index) => {
+                      return (
+                        <>
+                          {console.log(ittr)}
+                          <button
+                            className="ff btn btn-secondary"
+                            disabled={isUpdate}
+                            id={index}
+                            type="button"
+                            style={{
+                              boxShadow: `rgba(0, 0, 0, 0.02) 0 1px 3px 0`,
+                              minHeight: "30px",
+                              boxSizing: `border-box`,
+                              width: "100%",
+                              marginBottom: "2px",
+                              color: `rgba(0, 0, 0, 0.85)`,
+                            }}
+                            onClick={fillData}
+                          >
+                            {ittr.ques || "New Qs"}
+                          </button>
+                        </>
+                      );
+                    })}
+                  {navArray !== undefined && navArray.length === 0
+                    ? (setIsNew(true),
+                      setIsUpdate(true),
+                      setNavArray((prev) => [...prev, -1]),
+                      setCurrentQsNo(navArray.length + 1),
+                      setCurrentQsID("New"),
+                      setOpt([]))
+                    : null}
+                </div>
               </div>
             ) : (
-                <div className="basicRec" id="wrapper" >
-               
-               <div class="scrollbar" style={{
-                     height: window.screen.height - 360,
-                       padding: "5px",
-                       maxWidth:'100%',
-                       backgroundColor: "white",
-                       
-                     }} id="style-4">
-                {navArray!==undefined&& navArray.map((ittr, index) => {
-                  return (
-                      <>
-                      {console.log(ittr)}
-                      <button type='button' className='ff btn btn-secondary' id={index} style={{boxShadow: `rgba(0, 0, 0, 0.02) 0 1px 3px 0`,backgroundColor:'#e9ecef',minHeight:'30px',
-  boxSizing: `border-box`,width:'100%',marginBottom:'2px',
-  color: `rgba(0, 0, 0, 0.85)`}} onClick={fillData}>{ittr.ques||'New Qs'}</button>
-                      </>
-                  )
-              })}
+              <div className="basicRec" id="wrapper">
+                <div
+                  class="scrollbar"
+                  style={{
+                    height: window.screen.height - 360,
+                    padding: "5px",
+                    maxWidth: "100%",
+                    backgroundColor: "white",
+                  }}
+                  id="style-4"
+                >
+                  {navArray !== undefined &&
+                    navArray.map((ittr, index) => {
+                      return (
+                        <>
+                          {console.log(ittr)}
+                          <button
+                            type="button"
+                            className="ff btn btn-secondary"
+                            id={index}
+                            style={{
+                              boxShadow: `rgba(0, 0, 0, 0.02) 0 1px 3px 0`,
+                              backgroundColor: "#e9ecef",
+                              minHeight: "30px",
+                              boxSizing: `border-box`,
+                              width: "100%",
+                              marginBottom: "2px",
+                              color: `rgba(0, 0, 0, 0.85)`,
+                            }}
+                            onClick={fillData}
+                          >
+                            {ittr.ques || "New Qs"}
+                          </button>
+                        </>
+                      );
+                    })}
 
-                        { navArray!==undefined&& navArray.length===0 && <h5>Add question to view</h5>}
-
-               </div>       
-     
-               </div>
-
+                  {navArray !== undefined && navArray.length === 0 && (
+                    <h5>Add question to view</h5>
+                  )}
+                </div>
+              </div>
             )}
-
-
           </Col>
         </Row>
         <Row style={{ paddingTop: "20px", paddingLeft: "10%" }}>
@@ -440,25 +460,25 @@ function SetQuestion() {
 
           {(isUpdate || navArray.length === 0) && (
             <>
-            <button
-              style={{ color: "white" }}
-              type="submit"
-              className="btn scTest flashBut"
-              id='actionBut'
-            >
-              {(isNew && currentQsNo == navArray.length) ||
-              navArray.length === 0
-                ? "Save"
-                : "Update"}
-            </button>
-            <button
-              style={{ color: "white" }}
-              type="submit"
-              className="btn scTest"
-              onClick={delQuestion}
-            >
-            Delete
-            </button>
+              <button
+                style={{ color: "white" }}
+                type="submit"
+                className="btn scTest flashBut"
+                id="actionBut"
+              >
+                {(isNew && currentQsNo == navArray.length) ||
+                navArray.length === 0
+                  ? "Save"
+                  : "Update"}
+              </button>
+              <button
+                style={{ color: "white" }}
+                type="submit"
+                className="btn scTest"
+                onClick={delQuestion}
+              >
+                Delete
+              </button>
             </>
           )}
 
@@ -472,8 +492,8 @@ function SetQuestion() {
                 setIsUpdate(true);
                 setNavArray((prev) => [...prev, -1]);
                 setCurrentQsNo(navArray.length + 1);
-                setCurrentQsID('New')
-                setOpt([])
+                setCurrentQsID("New");
+                setOpt([]);
               }}
             >
               Add new Question

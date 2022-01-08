@@ -1,5 +1,6 @@
 import React from 'react'
 import {Col,Row} from 'react-bootstrap';
+import CustomTimer from '../../screens/Admin/CustomTimer';
 
 
 function TestHeaderComp({timer,totalKey,timeKey,totalValue}) {
@@ -7,10 +8,10 @@ function TestHeaderComp({timer,totalKey,timeKey,totalValue}) {
         <div id='testHeaderComp' >
             <Row >
                 <Col md='4'  style={{textAlign:'center'}}><div >Aptitude Test</div></Col>
-                <Col md='5' style={{textAlign:'center'}}>
-                {timeKey}: {timer}
+                <Col md='6' style={{whiteSpace: 'nowrap',display:'inline-block'}}>
+                {timeKey}:<CustomTimer time={timer} ></CustomTimer>
                     </Col>
-                <Col md='3' style={{textAlign:'center'}}>{totalKey} : {totalValue}</Col>
+                <Col md='2' style={{textAlign:'center'}}>{totalKey} : {totalValue}</Col>
             </Row>
         </div>
     )

@@ -26,7 +26,7 @@ function QuestionComp({question,options,level,qsno}) {
                 <div style={{padding:'5px 0 20px 0px',fontWeight:'400'}}>
           {question}
           </div>
-          </Col>
+          </Col>       
             </Row>
             <div style={{padding:'15px 0 10px 0'}}>
            
@@ -37,7 +37,7 @@ function QuestionComp({question,options,level,qsno}) {
                 type="radio"
                 id={index}
                 name={question}
-                class="radio"
+                class="radio qsRadio"
                 value={option.mrks}
                 style={{height:'13px'}}
               />

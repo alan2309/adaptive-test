@@ -125,14 +125,17 @@ function Result() {
       }
   
   }
+  localStorage.clear()
     },[])
 
     function timeleft(){
       if(localStorage.getItem("timetaken")){
         return localStorage.getItem("timetaken");
       }
-      else{var test=JSON.parse(localStorage.getItem('test'))
-     var diff = 0;
+      else{
+        var test=JSON.parse(localStorage.getItem('test'))
+    if(test!==null){
+      var diff = 0;
      const nowd = new Date()
   const nowh = nowd.getHours()
   const nowm = nowd.getMinutes()
@@ -162,7 +165,8 @@ let minutes = parseInt((diff % 3600) / 60);
 let seconds = parseInt(diff % 60);
 localStorage.setItem("timetaken",`${hours}:${minutes}:${seconds}`);
  return (`${hours}:${minutes}:${seconds}`);}
-  }
+}
+}
     return (
         <div>
             <Row >
@@ -175,13 +179,13 @@ localStorage.setItem("timetaken",`${hours}:${minutes}:${seconds}`);
         <Row style={{marginTop:'15px'}}>
           <Col md='12'>
             <div className='rectangle' style={{minHeight:'500px',color:'#788094'}} >
-            <h3 style={{paddingLeft:'20px',fontWeight: '600',
-fontSize: '24px',lineHeight: '36px',color: '#293E6F'}}>Analysis</h3>
+            <h3 style={{paddingLeft:'20px',fontWeight: '600',fontSize: '24px',lineHeight: '36px',color: '#293E6F'}}>Analysis</h3>
             <Chart series={[right,wrong,notDone]}  options={opt} type='donut' height={`400px`}/> 
         </div>
         </Col>
         
         </Row>
+        <button type='button' className='btn btn-secondary' onClick={(e)=>navigate('/logout')}>Logout</button>
             
         </div>
     )

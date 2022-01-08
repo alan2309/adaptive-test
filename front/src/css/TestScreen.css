@@ -6,6 +6,33 @@
   border-radius: 14px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+.TestHeaderComp{
+    height: 100%;
+    padding-top: 10px;
+    background-color: #f8f9fa !important;
+    border-radius: 14px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+}
+.QuestionComp{
+    height: 100%;
+    width: 100%;
+    padding-top: 10px;
+    background-color: #f8f9fa !important;
+    border-radius: 14px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+}
+.QuestionNavigatorComp{
+    color: cyan;
+    height: 100%;
+    width: 100%;
+    padding-top: 10px;
+    background-color: #f8f9fa !important;
+    border-radius: 14px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+}
 .rectangleInstuc {
   min-height: 60px;
   padding: 10px;
@@ -168,10 +195,38 @@ color: #293E6F;
 #questionNavComp{
     color: #293E6F;
     font-weight: 600;
-font-size: 24px;
-line-height: 36px;
+    font-size: 24px;
+    line-height: 36px;
 }
 
 #quesComp{
    color: #293E6F !important;
+}
+
+.qsRadio:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -17px;
+    left: -1px;
+    position: relative;
+    background-color: red;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
+}
+
+.qsRadio:checked:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -17px;
+    left: -1px;
+    position: relative;
+    background-color: #10B65C;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
 }

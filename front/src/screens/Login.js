@@ -2,7 +2,6 @@ import React,{ useState,useEffect } from 'react'
 import {Col,Row} from 'react-bootstrap';
 import axiosInstance from '../axios';
 import { useNavigate } from 'react-router-dom';
-import '../css/TestScreen.css';
 import { isExpired, decodeToken } from "react-jwt";
 import $ from 'jquery'; 
 import '../css/LoginScreen.css'
@@ -64,7 +63,7 @@ function Login() {
         })
     }
     return (
-        <div style={{color:'#788094'}}>
+        <div style={{color:'#788094'}}>        
         <Row>
             <Col>
         <div style={{margin:'60px 60px'}} >
@@ -84,13 +83,13 @@ function Login() {
             <form onSubmit={(e)=>handleSubmit(e)}>
             <Row style={{marginTop:'70px'}}>
                 <Col>
-                <input className='rectangle'onChange={handleChange}  name='username'  type='text' placeholder='Username' style={{width:'100%'}} ></input>
+                <input className='loginInpRec'onChange={handleChange}  name='username'  type='text' placeholder='Username' style={{width:'100%'}} ></input>
                 </Col>
             </Row>
             <Row style={{marginTop:'25px'}}>
                 <Col>
                 
-                <input className='rectangle' onChange={handleChange} id='password-field' name='password' type='password' placeholder='Password' style={{width:'100%'}} ></input>
+                <input className='loginInpRec' onChange={handleChange} id='password-field' name='password' type='password' placeholder='Password' style={{width:'100%'}} ></input>
                 <span toggle="#password-field" className="fa fa-fw fa-eye field-icon toggle-password" onClick={(e)=>showHide(e)}></span>
                 </Col>
             </Row>
@@ -103,8 +102,8 @@ function Login() {
            
         </div>
         </Col>
-        <Col>
-        <div className='rectangle' style={{minHeight:'550px',padding:'30px 35px',margin:'0 40px'}}>
+        <Col style={{padding:'0',margin:'0'}}>
+        <div className='rectangleInstuc' style={{minHeight:'550px',padding:'5px 35px 30px 35px',margin:'0 40px'}}>
             <Row style={{textAlign:'center',margin:'30px 0px'}}>
                 <Col>
                 <div id='instruc'>
