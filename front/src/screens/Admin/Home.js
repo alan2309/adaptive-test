@@ -12,19 +12,21 @@ import axios from 'axios';
 
 
 function AdminHome() {
-    const[subs,setSubs] = useState([]);
+    useEffect(() => {
+        if(localStorage.getItem('isNewTestReload')!==undefined){
+            
+            localStorage.removeItem('isNewTestReload')
+        }
+    }, [])
     const navigate = useNavigate()
     function navigateTo(e,sectionName,sid){
-        navigate('/admin/setSection', {
-            state: {
-                sectionName: sectionName,
-                sid:sid,
-            }
-          })
+        
 
     }
     return (
         <div>
+            
+            <button style={{color:'white'}} className='btn scTest' onClick={(e)=>navigate('/admin/newTest',{state:{'sid':0}})}>New Test</button>
             <button style={{color:'white'}} className='btn scTest'>Scheduled Test</button>
 
             <Row>
@@ -64,7 +66,7 @@ function AdminHome() {
                 <h5 className="secName">Personality</h5>
                     </Col>
                 <Col>
-                <div className='rectangle' onClick={(e)=>navigateTo(e,'Analytical Writing',5)}>
+                <div className='rectangle' >
                 <img className="carbonImage" alt="logo" src={AnalyticalWr}></img>
                 </div>
                 <h5 className="secName1">Analytical Writing</h5>

@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
-import QuestionNavigatorComp from "../../components/TestScreeen/QuestionNavigatorComp";
 import { useNavigate } from "react-router";
 import "../../css/AdminHomeScreen.css";
 import { useLocation } from "react-router-dom";
-import $ from "jquery";
 import axiosInstance from "../../axios";
 
 function SetQuestion() {
@@ -20,6 +18,8 @@ function SetQuestion() {
   const [isNew, setIsNew] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   useEffect(() => {
+    
+    localStorage.removeItem('isNewTestReload')
     console.log(location.state.navArr);
     var temp = location.state.navArr;
     setNavArray(temp);
@@ -66,12 +66,7 @@ function SetQuestion() {
       //Alankrit
 
       //after saving add value to --->navArray
-      navigate("/admin/setSection", {
-        state: {
-          sectionName: location.state.sectionName,
-          sid: location.state.sid,
-        },
-      });
+      navigate("/admin/newTest",{state:{'sid':location.state.sid}});
     });
   }
   function delOpt(e) {
@@ -446,12 +441,7 @@ function SetQuestion() {
             style={{ color: "white" }}
             type="button"
             onClick={(e) =>
-              navigate("/admin/setSection", {
-                state: {
-                  sectionName: location.state.sectionName,
-                  sid: location.state.sid,
-                },
-              })
+              navigate("/admin/newTest",{state:{'sid':location.state.sid-1}})
             }
             className="btn scTest"
           >

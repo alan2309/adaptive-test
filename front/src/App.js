@@ -12,9 +12,8 @@ import Error from './screens/Error';
 import './css/App.css'
 import AdminHome from './screens/Admin/Home';
 import AdminAddQs from './screens/Admin/AddQs';
-import AdminSetSection from './screens/Admin/SetSection';
 import SetQuestion from './screens/Admin/SetQuestion';
-import NextSection from './screens/Admin/NextSection';
+import NewTest from './screens/Admin/NewTest';
 
 
 function App() {
@@ -48,9 +47,8 @@ function App() {
        <Route path='/error' exact element={<Error/>} />
        <Route path='/admin/home' exact element={<AdminHome/>} />
        <Route path='/admin/addQs' exact element={<AdminAddQs/>} />
-       <Route path='/admin/setSection' exact element={<AdminSetSection/>} />
        <Route path='/admin/setQs' exact element={<SetQuestion/>} />
-       <Route path='/admin/nextSection' exact element={<NextSection/>} />
+       <Route path='/admin/newTest' exact element={<NewTest/>} />
        </Routes>
        </Router>
            

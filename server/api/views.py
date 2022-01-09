@@ -14,34 +14,45 @@ from rest_framework.parsers import JSONParser
 from .serializers import SubjectSerializer,QuestionSerializer 
 
 @csrf_exempt
-def subqs(request,subject=0):
+def subqs(request):
    if request.method == 'GET': 
-       a=[]
-       b=[]
-       c=[]
-       sub =Subject.objects.get(id=subject)
-       qs = Questions.objects.filter(subject=sub)
-       for x in qs:
-            aa={}
-            aaOption=[]
-            aa['ques']=x.title
-            aa['id']=x.id
-            ans = Options.objects.filter(question=x)
-            for asss in ans:
-                aaaOpt={}
-                aaaOpt['opt']=asss.title
-                aaaOpt['id']=asss.id
-                aaaOpt['mrks']=asss.marks
-                aaOption.append(aaaOpt)
-            
-            aa['options']=aaOption
-            if x.type==1:
-                a.append(aa)
-            elif x.type==2:
-                b.append(aa)
-            elif x.type==3:
-                c.append(aa)
-       return JsonResponse({'qs':sub.sub_qs,'time':sub.sub_time,'easy':a,'medium':b,'hard':c},safe=False)
+       f=[]
+       
+       sub =Subject.objects.all()
+       for s in sub:
+           ff={}
+           a=[]
+           b=[]
+           c=[]
+           qs = Questions.objects.filter(subject=s)
+           for x in qs:
+               aa={}
+               aaOption=[]
+               aa['ques']=x.title
+               aa['id']=x.id
+               ans = Options.objects.filter(question=x)
+               for asss in ans:
+                   aaaOpt={}
+                   aaaOpt['opt']=asss.title
+                   aaaOpt['id']=asss.id
+                   aaaOpt['mrks']=asss.marks
+                   aaOption.append(aaaOpt)
+                   aa['options']=aaOption
+                   if x.type==1:
+                       a.append(aa)
+                   elif x.type==2:
+                       b.append(aa)
+                   elif x.type==3:
+                       c.append(aa)
+           ff['section']=s.sub_name
+           ff['qs']=s.sub_qs
+           ff['time']=s.sub_time
+           ff['easy']=a
+           ff['medium']=b
+           ff['hard']=c
+           f.append(ff)
+       print(f)
+       return JsonResponse({'data':f},safe=False)
 
 # Create your views here.
 def qs(request):
