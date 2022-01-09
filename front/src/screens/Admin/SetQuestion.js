@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useNavigate } from "react-router";
-import "../../css/AdminHomeScreen.css";
+import "../../css/AdminAddQsScreen.css";
 import { useLocation } from "react-router-dom";
 import axiosInstance from "../../axios";
 
@@ -66,7 +66,7 @@ function SetQuestion() {
       //Alankrit
 
       //after saving add value to --->navArray
-      navigate("/admin/newTest",{state:{'sid':location.state.sid}});
+      navigate("/admin/newTest",{state:{'sid':location.state.sid-1}});
     });
   }
   function delOpt(e) {
@@ -89,8 +89,9 @@ function SetQuestion() {
             <div class="form-check">
               <input
                 type="radio"
-                name="correctOpt setQsRadio"
+                name="correctOpt"
                 disabled={!isUpdate}
+                className="setQsRadio"
                 value={`Option${countOpt + 1}`}
                 id={`flexCheckDefault${countOpt + 1}`}
                 required
@@ -119,8 +120,9 @@ function SetQuestion() {
             <div class="form-check">
               <input
                 type="radio"
-                name="correctOpt setQsRadio"
+                name="correctOpt"
                 disabled={!isUpdate}
+                className="setQsRadio"
                 value={`Option${countOpt + 1}`}
                 id={`flexCheckDefault${countOpt + 1}`}
                 required
@@ -235,7 +237,8 @@ function SetQuestion() {
                               style={{ paddingLeft: "0" }}
                             >
                               <input
-                                type="radio setQsRadio"
+                                type="radio"
+                                className="setQsRadio"
                                 name="correctOpt"
                                 disabled={!isUpdate}
                                 checked={x.mrks !== 0 ? true : null}
