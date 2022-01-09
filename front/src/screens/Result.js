@@ -125,7 +125,7 @@ function Result() {
       }
   
   }
-  localStorage.clear()
+ // localStorage.clear()
     },[])
 
     function timeleft(){

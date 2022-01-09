@@ -18,7 +18,7 @@ function CustomTimer({ time, start,reset=false, msg, onlyS = false }) {
           return timer - 1;
         } else {
           clearInterval(increment.current);
-          navigate("/result");
+          navigate("/result123");
         }
       });
     }, 1000);

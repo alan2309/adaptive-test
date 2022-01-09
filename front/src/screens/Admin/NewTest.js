@@ -6,6 +6,7 @@ import Clock from '../../img/Clock.svg'
 import '../../css/AdminHomeScreen.css';
 import $ from "jquery";
 import axios from 'axios';
+import sidFunc from './sidFunc';
 
 function NewTest() {
     //Current Sec Data
@@ -14,7 +15,7 @@ function NewTest() {
     const[hard,setHard] = useState([])
     const[qs,setQs] = useState(0)
     const[time,setTime] = useState('00:00:00')
-    const[axData,setAxData] = useState([])
+    const[axData,setAxData] = useState({})
     const[sectionName,setSectionName] = useState([])
     const[sid,setSid] = useState(0)
     //
@@ -24,15 +25,16 @@ function NewTest() {
 
     function secOnCLick(e,index){
         console.log(e.target.innerText)
-        console.log(axData[index])
-        var chngSec=axData[index]
-        setSectionName(chngSec.section)
-            setEasy(chngSec.easy)
-            setHard(chngSec.hard)
-            setMed(chngSec.medium)
-            setQs(chngSec.qs)
-            setTime(chngSec.time)
-            setSid(index+1)
+        var d=axData
+        var Wssid=sidFunc(index)
+        setSid(index+1)
+           console.log(d[Wssid])
+            setSectionName(Wssid)
+            setEasy(d[Wssid].easy)
+            setHard(d[Wssid].hard)
+            setMed(d[Wssid].medium)
+            setQs(d[Wssid].qs)
+            setTime(d[Wssid].time)
 
         $(e.target).addClass('sectionOnCLickToggle')
 
@@ -62,7 +64,7 @@ function NewTest() {
         }else{
             localStorage.setItem('isNewTestReload',false)
             ssid=location.state.sid
-            setSid(parseInt(ssid+1))
+            setSid(ssid+1)
         }
         
         
@@ -73,13 +75,14 @@ function NewTest() {
             setAxData(d)
         
             //For Aptitude
-            
-            setSectionName(d[ssid].section)
-            setEasy(d[ssid].easy)
-            setHard(d[ssid].hard)
-            setMed(d[ssid].medium)
-            setQs(d[ssid].qs)
-            setTime(d[ssid].time)
+           var Wssid=sidFunc(ssid)
+           console.log(d[Wssid])
+            setSectionName(Wssid)
+            setEasy(d[Wssid].easy)
+            setHard(d[Wssid].hard)
+            setMed(d[Wssid].medium)
+            setQs(d[Wssid].qs)
+            setTime(d[Wssid].time)
             
         })
         .catch(e=>{
@@ -103,10 +106,10 @@ function NewTest() {
                 <Col md={12}><div className='sectionClick' onClick={(e)=>secOnCLick(e,3)}>Personality</div></Col>
             </Row>
             <Row>
-                <Col md={12}><div className='sectionClick' onClick={(e)=>secOnCLick(e,4)}>Analytical Writing</div></Col>
+                <Col md={12}><div className='sectionClick' onClick={(e)=>secOnCLick(e,4)}>Coding</div></Col>
             </Row>
             <Row>
-                <Col md={12}><div className='sectionClick' onClick={(e)=>secOnCLick(e,5)}>Coding</div></Col>
+                <Col md={12}><div className='sectionClick' onClick={(e)=>secOnCLick(e,5)}>Analytical Writing</div></Col>
             </Row>
             
           

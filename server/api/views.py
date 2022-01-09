@@ -15,44 +15,37 @@ from .serializers import SubjectSerializer,QuestionSerializer
 
 @csrf_exempt
 def subqs(request):
-   if request.method == 'GET': 
-       f=[]
-       
-       sub =Subject.objects.all()
-       for s in sub:
-           ff={}
-           a=[]
-           b=[]
-           c=[]
-           qs = Questions.objects.filter(subject=s)
-           for x in qs:
-               aa={}
-               aaOption=[]
-               aa['ques']=x.title
-               aa['id']=x.id
-               ans = Options.objects.filter(question=x)
-               for asss in ans:
-                   aaaOpt={}
-                   aaaOpt['opt']=asss.title
-                   aaaOpt['id']=asss.id
-                   aaaOpt['mrks']=asss.marks
-                   aaOption.append(aaaOpt)
-                   aa['options']=aaOption
-                   if x.type==1:
-                       a.append(aa)
-                   elif x.type==2:
-                       b.append(aa)
-                   elif x.type==3:
-                       c.append(aa)
-           ff['section']=s.sub_name
-           ff['qs']=s.sub_qs
-           ff['time']=s.sub_time
-           ff['easy']=a
-           ff['medium']=b
-           ff['hard']=c
-           f.append(ff)
-       print(f)
-       return JsonResponse({'data':f},safe=False)
+    if request.method == 'GET':
+        f={}
+        subs=Subject.objects.all()
+        for sub in subs:
+            f[sub.sub_name]={}
+            f[sub.sub_name]['easy']=[]
+            f[sub.sub_name]['medium']=[]
+            f[sub.sub_name]['hard']=[]
+            f[sub.sub_name]['qs']=sub.sub_qs
+            f[sub.sub_name]['time']=sub.sub_time
+        qs=Questions.objects.all()
+        for q in qs:
+            a={}
+            a['ques']=q.title
+            a['id']=q.id
+            a['options']=[]
+            opts=Options.objects.filter(question=q)
+            for opt in opts:
+                o={}
+                o['opt']=opt.title
+                o['id']=opt.id
+                o['mrks']=opt.marks
+                a['options'].append(o)
+            if q.type==1:
+                f[str(q.subject)]['easy'].append(a)
+            if q.type==2:
+                f[str(q.subject)]['medium'].append(a)
+            elif q.type==3:
+                f[str(q.subject)]['hard'].append(a)
+    return JsonResponse({'data':f},safe=False)
+    
 
 # Create your views here.
 def qs(request):
