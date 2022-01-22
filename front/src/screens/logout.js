@@ -14,6 +14,9 @@ export default function Logout() {
 		localStorage.removeItem('test');
 		localStorage.removeItem('result')
 		localStorage.removeItem('timetaken')
+		localStorage.removeItem('test2');
+		localStorage.removeItem('test2');
+		localStorage.clear()
 		axiosInstance.defaults.headers['Authorization'] = null;
 		navigate('/login');
 	});

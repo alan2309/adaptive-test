@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import TestHeaderComp from "../components/TestScreeen/TestHeaderComp";
-import QuestionComp from "../components/TestScreeen/QuestionComp";
+import TestHeaderComp from "../../components/TestScreeen/TestHeaderComp";
+import QuestionComp from "../../components/TestScreeen/QuestionComp";
 import { Col, Modal, Button, Row } from "react-bootstrap";
-import QuestionNavigatorComp from "../components/TestScreeen/QuestionNavigatorComp";
-import "../css/TestScreen.css";
+import QuestionNavigatorComp from "../../components/TestScreeen/QuestionNavigatorComp";
+import '../../css/TestScreen.css'
 import { useNavigate } from "react-router";
 import { isExpired, decodeToken } from "react-jwt";
-import CustomTimer from "./Admin/CustomTimer";
+import CustomTimer from "../Admin/CustomTimer";
+import getCurrentTime from "../../components/TestScreeen/dateCalc";
 
-function TestScreen() {
+function DTestScreen() {
   const [hard, setHard] = useState([]);
   const [medium, setMedium] = useState([]);
   const [easy, setEasy] = useState([]);
@@ -19,18 +20,28 @@ function TestScreen() {
   const [ans, setAns] = useState([]);
   const [qsno, setQsno] = useState(0);
   const navigate = useNavigate();
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(false);
   const [reload, isReload] = useState(false);
-  const handleClose = () => setShow(false);
+  const handleClose = () => {setShow(false);setMd(true);}
   const [countWindowAway, setCountWindowAway] = useState(0);
   const [countWindowAwayModal, setCountWindowAwayModal] = useState(false);
   const [testFinshBool, setTestFinishBool] = useState(false);
   const[time,setTime] = useState();
+  const[md,setMd] = useState(false);
   const [newScreen, setNewScreen] = useState(false);
   const [timeFF, setTimeFF] = useState();
-  
+
   useEffect(() => {
-    var test = JSON.parse(localStorage.getItem("test"));
+    if(!localStorage.getItem("test5")){
+      let ax = JSON.parse(localStorage.getItem("test"));
+      let user = ax['username']
+      let txx = getCurrentTime();
+      let hh = txx.hh;
+      let mm = txx.mm;
+      let ss = txx.ss;
+      localStorage.setItem("test5", JSON.stringify({'username':user,'STime':Date(),'FSTimer':'10','question':[],'strtTime':+ hh + ':' + mm+':'+ss,'currentQsNo':1}));
+    }
+    var test = JSON.parse(localStorage.getItem("test5"));
     const token = localStorage.getItem("access_token");
     const isMyTokenExpired = isExpired(token);
     const channel = new BroadcastChannel("tab");
@@ -52,6 +63,7 @@ function TestScreen() {
       if (test["question"].length !== 0) {
         console.info("This page is reloaded");
         isReload(true);
+        setShow(true)
       }
     }
     if (isMyTokenExpired) {
@@ -63,7 +75,7 @@ function TestScreen() {
       } else {
         const getData = async () =>
           await axios
-            .get("http://127.0.0.1:8000/api/subs/1")
+            .get("http://127.0.0.1:8000/api/subs/3")
             .then((res) => {
               let a = converttime(res.data.time)
               var tf=a;
@@ -81,7 +93,7 @@ function TestScreen() {
                 let ar = new Array(res.data.qs).fill(-1);
                 setAns(ar);
                 test["marks"] = ar;
-                localStorage.setItem("test", JSON.stringify(test));
+                localStorage.setItem("test5", JSON.stringify(test));
               } else {
                 var qss = test["question"];
                 var x = res.data.easy;
@@ -136,7 +148,8 @@ function TestScreen() {
                 setAns(ar);
                 setQsno(test["currentQsNo"] - 1);
                 setQs(test["question"]);
-                var ob=new Date()
+
+              var ob=new Date()
         console.log(test['strtTime'])
         console.log(ob.toLocaleTimeString())
       var h = (ob.getHours()<10?'0':'') + ob.getHours();
@@ -174,6 +187,7 @@ function TestScreen() {
 
     if (full_screen_element === null) {
       setShow(true);
+      setMd(false);
       isReload(true);
     }
   });
@@ -198,6 +212,7 @@ function TestScreen() {
     secs = secs +(parseInt(x[0])*3600)+(parseInt(x[1])*60)+(parseInt(x[2])) 
     return secs;
   }
+
   function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -216,7 +231,7 @@ function TestScreen() {
     var x;
     ans[qsno] = parseInt(myans);
     setAns(ans);
-    var test = JSON.parse(localStorage.getItem("test"));
+    var test = JSON.parse(localStorage.getItem("test5"));
 
     if (myans > 0) {
       if (current < 3) {
@@ -261,7 +276,7 @@ function TestScreen() {
     test["marks"] = ans;
     setQsno(qsno + 1);
     test["currentQsNo"] = test["currentQsNo"] + 1;
-    localStorage.setItem("test", JSON.stringify(test));
+    localStorage.setItem("test5", JSON.stringify(test));
     e.target.reset();
   }
   function handleCloseSChange(e) {
@@ -285,9 +300,10 @@ function TestScreen() {
             <CustomTimer
               msg={`Please Enter Full Screen or Test will get auto submitted in`}
               onlyS={true}
-              reset={testFinshBool}
+              reset={md}
               time={10}
               start={show}
+              setMd = {setMd}
               nextpage={"result"}
             ></CustomTimer>
           ) : (
@@ -319,15 +335,16 @@ function TestScreen() {
                     timeKey="Time"
                     totalKey="Total"
                     totalValue={10}
-                    header='Aptitude'
-                    nextpage={'admin/computer'}
+                    header='Domain'
+                    nextpage={'admin/personality'}
+                    setMd = {setMd}
                   ></TestHeaderComp>}
                 </div>
               </Col>
               <Col md="3">
                 <button
                   onClick={(e) => {
-                    setTestFinishBool(true);setShow(false);
+                    setTestFinishBool(true);setShow(false);setMd(true);
                     navigate("/result");
                     if (document.exitFullscreen) {
                       document.exitFullscreen();
@@ -412,4 +429,4 @@ function TestScreen() {
   );
 }
 
-export default TestScreen;
+export default DTestScreen;

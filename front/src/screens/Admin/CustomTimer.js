@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 
-function CustomTimer({ time, start,reset=false, msg, onlyS = false }) {
+function CustomTimer({ time, start,reset=false, msg, onlyS = false,nextpage='',setMd=0}) {
   const [timer, setTimer] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -13,12 +13,14 @@ function CustomTimer({ time, start,reset=false, msg, onlyS = false }) {
     setIsPaused(true);
     increment.current = setInterval(() => {
       setTimer(function (timer) {
-        console.log("ll");
+        // console.log("ll");
         if (timer > 0) {
           return timer - 1;
-        } else {
+        }else {
           clearInterval(increment.current);
-          navigate("/result123");
+          if(setMd!==0)setMd(true);
+          navigate(`/${nextpage}`);
+          // navigate("/result");
         }
       });
     }, 1000);
@@ -37,7 +39,7 @@ function CustomTimer({ time, start,reset=false, msg, onlyS = false }) {
   };
 
   const handleReset = () => {
-    alert('reset')
+    // alert('reset')
     clearInterval(increment.current);
     setIsActive(false);
     setIsPaused(false);

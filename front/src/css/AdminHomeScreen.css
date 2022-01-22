@@ -101,9 +101,9 @@
 }
 .scrollbar
 {
-
   background: #F5F5F5;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 
@@ -127,11 +127,15 @@
 
 .ff{
     overflow: hidden;
-    text-overflow: ellipsis;
-    -webkit-line-clamp: 4; /* number of lines to show */
-            line-clamp: 4; 
-    -webkit-box-orient: vertical;
+    text-overflow: ellipsis !important;
+    max-height: 35px;
+    -webkit-box-orient: vertical !important;
  }
+
+
+.qsNavBut:hover{
+    cursor: pointer;
+}
 
  @keyframes blinkingFrames {
     0% {opacity: 1.00;}

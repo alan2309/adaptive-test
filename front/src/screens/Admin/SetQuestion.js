@@ -17,8 +17,10 @@ function SetQuestion() {
   const [opt, setOpt] = useState([]);
   const [isNew, setIsNew] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
+  const [windowHeight, setWindowHeight] = useState(window.screen.height);
   useEffect(() => {
-    
+    var divHeight=document.querySelector('#SETQS').clientHeight
+    setWindowHeight(divHeight)
     localStorage.removeItem('isNewTestReload')
     console.log(location.state.navArr);
     var temp = location.state.navArr;
@@ -155,15 +157,25 @@ function SetQuestion() {
   }
   function fillData(e) {
     console.log(e);
-    document.getElementById("sbForm").reset();
+    console.log('acacsasc');
+    console.log(e.target.id);
+    console.log('acacsasc');    document.getElementById("sbForm").reset();
 
     setCurrentQs(navArray[e.target.id].ques);
     setCurrentQsID(navArray[e.target.id].id);
     setOpt(navArray[e.target.id].options);
     setCurrentQsNo(`${parseInt(e.target.id) + 1}`);
   }
+  function reportWindowSize(e){
+    alert('lol')
+    console.log(e)
+    setWindowHeight(window.screen.height)
+  }
+
   return (
     <div>
+  
+    
       <form onSubmit={(e) => handleSubmit(e)} id="sbForm">
         <input name="sectionName" value={location.state.sectionName} hidden />
         <input
@@ -178,9 +190,9 @@ function SetQuestion() {
         <Row>
           <Col md={9}>
             <div
+            id='SETQS'
               className="basicRec SetQuestion"
               style={{
-                height: window.screen.height - 360,
                 margin: "0px 50px",
               }}
             >
@@ -205,15 +217,15 @@ function SetQuestion() {
                       class="form-control form-field"
                       disabled={!isUpdate}
                       defaultValue={
-                        isNew && currentQsNo == navArray.length ? "" : currentQs
+                        isNew && currentQsNo == navArray.length ? "" :currentQs
                       }
                       form="sbForm"
                       name={`question${currentQsID}`}
-                      id="qsSetQs"
+                      id="style-4"
                       placeholder="Enter Question"
-                      rows="2"
+                      rows="8"
                       style={{ maxWidth: "100%", resize: "none" }}
-                      required
+                      required 
                     ></textarea>
                   </div>
                 </Row>
@@ -346,12 +358,27 @@ function SetQuestion() {
             </div>
           </Col>
           <Col md={3}>
+            <div className="basicRec" id="wrapper">
+             
+          
+
             {isUpdate ? (
-              <div className="basicRec" id="wrapper">
+              <>
+               <div style={{justifyContent:'space-between',display: 'flex',padding:'10px 10px 0 10px'}}>  Question Navigator 
+               <button
+                     class="btn"
+                     type="button"
+                     style={{padding:'0'}}
+                     onClick={(e) => {
+                     }}
+                   
+                   >
+                     <i class="fa fa-trash" style={{ color: "red" }}></i>
+                   </button></div>
                 <div
                   class="scrollbar"
                   style={{
-                    height: window.screen.height - 360,
+                    height: windowHeight,
                     padding: "5px",
                     maxWidth: "100%",
                     backgroundColor: "#e9ecef",
@@ -363,23 +390,23 @@ function SetQuestion() {
                       return (
                         <>
                           {console.log(ittr)}
-                          <button
-                            className="ff btn btn-secondary"
-                            disabled={isUpdate}
-                            id={index}
-                            type="button"
-                            style={{
+                          <div style={{
                               boxShadow: `rgba(0, 0, 0, 0.02) 0 1px 3px 0`,
-                              minHeight: "30px",
+                              backgroundColor: "#e9ecef",
+                              minHeight: "40px",
+                              padding:'10px 5px 10px 5px',
                               boxSizing: `border-box`,
                               width: "100%",
                               marginBottom: "2px",
                               color: `rgba(0, 0, 0, 0.85)`,
-                            }}
-                            onClick={fillData}
-                          >
-                            {ittr.ques || "New Qs"}
-                          </button>
+                            }}><Row>
+                            <Col md={1}>
+                              <input class="styled-checkbox" id={`styled-checkbox-${index}`} type="checkbox" onClick={(e)=>{}} value={`value${index}`}/>
+                              </Col>
+                            <Col md={11 }>
+                            <div id={index} className="qsNavBut" onClick={fillData} style={{textOverflow:'ellipsis',whiteSpace:'nowrap',overflow:'hidden'}}>{ittr.ques || "New Qs"}</div> 
+                            </Col>
+                          </Row></div>
                         </>
                       );
                     })}
@@ -392,13 +419,24 @@ function SetQuestion() {
                       setOpt([]))
                     : null}
                 </div>
-              </div>
+                </>
             ) : (
-              <div className="basicRec" id="wrapper">
+              <>
+               <div style={{justifyContent:'space-between',display: 'flex',padding:'10px 10px 0 10px'}}>  Question Navigator 
+            <button
+                  class="btn"
+                  type="button"
+                  style={{padding:'0'}}
+                  onClick={(e) => {
+                  }}
+                
+                >
+                  <i class="fa fa-trash" style={{ color: "red" }}></i>
+                </button></div>
                 <div
                   class="scrollbar"
                   style={{
-                    height: window.screen.height - 360,
+                    height: windowHeight,
                     padding: "5px",
                     maxWidth: "100%",
                     backgroundColor: "white",
@@ -410,33 +448,35 @@ function SetQuestion() {
                       return (
                         <>
                           {console.log(ittr)}
-                          <button
-                            type="button"
-                            className="ff btn btn-secondary"
-                            id={index}
-                            style={{
+                          <div style={{
                               boxShadow: `rgba(0, 0, 0, 0.02) 0 1px 3px 0`,
                               backgroundColor: "#e9ecef",
-                              minHeight: "30px",
+                              minHeight: "40px",
+                              padding:'10px 5px 10px 5px',
                               boxSizing: `border-box`,
                               width: "100%",
                               marginBottom: "2px",
                               color: `rgba(0, 0, 0, 0.85)`,
-                            }}
-                            onClick={fillData}
-                          >
-                            {ittr.ques || "New Qs"}
-                          </button>
+                            }}><Row>
+                            <Col md={1}>
+                              <input class="styled-checkbox" id={`styled-checkbox-${index}`} type="checkbox" onClick={(e)=>{}} value={`value${index}`}/>
+                              </Col>
+                            <Col md={11 }>
+                            <div id={index} className="qsNavBut" onClick={fillData} style={{textOverflow:'ellipsis',whiteSpace:'nowrap',overflow:'hidden'}}>{ittr.ques || "New Qs"}</div> 
+                            </Col>
+                          </Row></div>
+                          
                         </>
+                      
                       );
-                    })}
-
+                    }  )}
                   {navArray !== undefined && navArray.length === 0 && (
                     <h5>Add question to view</h5>
                   )}
                 </div>
-              </div>
+                </>
             )}
+            </div>
           </Col>
         </Row>
         <Row style={{ paddingTop: "20px", paddingLeft: "10%" }}>
@@ -495,6 +535,7 @@ function SetQuestion() {
         </Row>
       </form>
     </div>
+   
   );
 }
 

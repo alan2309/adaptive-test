@@ -15,6 +15,14 @@ import AdminAddQs from './screens/Admin/AddQs';
 import SetQuestion from './screens/Admin/SetQuestion';
 import NewTest from './screens/Admin/NewTest';
 
+import CFTestScreen from './screens/Test/CFTestScreen';
+
+import PTestScreen from './screens/Test/PTestScreen';
+import DTestScreen from './screens/Test/DTestScreen';
+
+import CTestScreen from './screens/Test/CTestScreen';
+import ATestScreen from './screens/Test/ATestScreen';
+
 
 function App() {
   return (
@@ -49,6 +57,12 @@ function App() {
        <Route path='/admin/addQs' exact element={<AdminAddQs/>} />
        <Route path='/admin/setQs' exact element={<SetQuestion/>} />
        <Route path='/admin/newTest' exact element={<NewTest/>} />
+
+       <Route path='/admin/personality' exact element={<PTestScreen/>} />
+       <Route path='/admin/computer' exact element={<CFTestScreen/>} />
+       <Route path='/admin/domain' exact element={<DTestScreen/>} />
+       <Route path='/admin/analytical' exact element={<ATestScreen/>} />
+       <Route path='/admin/coding' exact element={<CTestScreen/>} />
        </Routes>
        </Router>
            

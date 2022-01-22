@@ -14,7 +14,36 @@ from rest_framework.parsers import JSONParser
 from .serializers import SubjectSerializer,QuestionSerializer 
 
 @csrf_exempt
-def subqs(request):
+def subqs(request,subject=0):
+   if request.method == 'GET': 
+       a=[]
+       b=[]
+       c=[]
+       sub =Subject.objects.get(id=subject)
+       qs = Questions.objects.filter(subject=sub)
+       for x in qs:
+            aa={}
+            aaOption=[]
+            aa['ques']=x.title
+            aa['id']=x.id
+            ans = Options.objects.filter(question=x)
+            for asss in ans:
+                aaaOpt={}
+                aaaOpt['opt']=asss.title
+                aaaOpt['id']=asss.id
+                aaaOpt['mrks']=asss.marks
+                aaOption.append(aaaOpt)
+
+            aa['options']=aaOption
+            if x.type==1:
+                a.append(aa)
+            elif x.type==2:
+                b.append(aa)
+            elif x.type==3:
+                c.append(aa)
+       return JsonResponse({'qs':sub.sub_qs,'time':sub.sub_time,'easy':a,'medium':b,'hard':c},safe=False)
+@csrf_exempt
+def subs(request):
     if request.method == 'GET':
         f={}
         subs=Subject.objects.all()
@@ -45,6 +74,8 @@ def subqs(request):
             elif q.type==3:
                 f[str(q.subject)]['hard'].append(a)
     return JsonResponse({'data':f},safe=False)
+
+
     
 
 # Create your views here.

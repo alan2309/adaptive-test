@@ -54,10 +54,14 @@ function Login() {
             password:formData.password
         })
         .then((res)=>{
+            var ob=new Date()
+             var h = (ob.getHours()<10?'0':'') + ob.getHours();
+   var m = (ob.getMinutes()<10?'0':'') + ob.getMinutes();
+   var s = (ob.getMinutes()<10?'0':'') + ob.getSeconds();
             axiosInstance.post(`api/results/${formData.username}`)
             localStorage.setItem('access_token',res.data.access);
             localStorage.setItem('refresh_token',res.data.refresh);
-            localStorage.setItem("test", JSON.stringify({'username':formData.username,'STime':Date(),'FSTimer':'10','question':[],'currentQsNo':1}));
+            localStorage.setItem("test", JSON.stringify({'username':formData.username,'STime':Date(),'strtTime':+ h + ':' + m+':'+s,'FSTimer':'10','question':[],'currentQsNo':1}));
             axiosInstance.defaults.headers['Authorization']='JWT '+localStorage.getItem('access_token');
             navigate('/testScreen')
         })
