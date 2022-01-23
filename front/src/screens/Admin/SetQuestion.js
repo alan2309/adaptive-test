@@ -4,6 +4,8 @@ import { useNavigate } from "react-router";
 import "../../css/AdminAddQsScreen.css";
 import { useLocation } from "react-router-dom";
 import axiosInstance from "../../axios";
+import $ from "jquery";
+
 
 function SetQuestion() {
   const navigate = useNavigate();
@@ -154,6 +156,27 @@ function SetQuestion() {
   function delQuestion(e) {
     //Alankrit
     //array to del from  ---> navArray
+    var elCheckBox= document.getElementsByClassName('styled-checkbox')
+    console.log(elCheckBox)
+
+    if(false){
+    var a=[]
+    var $boxes = $('input[name=styleCheckBox]:checked');
+    $boxes.each(function(item){
+      // Do stuff here with this
+      var val=$boxes[item].value
+      val=val.split('CheckBox')[1]
+      console.log(val)
+      a.push(parseInt(val))
+      
+  });
+  axiosInstance.post("api/admin/delQs", { delQs: a }).then((res) => {
+   navigate("/admin/newTest",{state:{'sid':location.state.sid-1}});
+  });
+}else{
+
+}
+  
   }
   function fillData(e) {
     console.log(e);
@@ -221,7 +244,7 @@ function SetQuestion() {
                       }
                       form="sbForm"
                       name={`question${currentQsID}`}
-                      id="style-4"
+                      id="qsSetQs"
                       placeholder="Enter Question"
                       rows="8"
                       style={{ maxWidth: "100%", resize: "none" }}
@@ -373,7 +396,7 @@ function SetQuestion() {
                      }}
                    
                    >
-                     <i class="fa fa-trash" style={{ color: "red" }}></i>
+                     <i class="fa fa-trash" style={{ color: "grey" }}></i>
                    </button></div>
                 <div
                   class="scrollbar"
@@ -401,10 +424,10 @@ function SetQuestion() {
                               color: `rgba(0, 0, 0, 0.85)`,
                             }}><Row>
                             <Col md={1}>
-                              <input class="styled-checkbox" id={`styled-checkbox-${index}`} type="checkbox" onClick={(e)=>{}} value={`value${index}`}/>
+                              <input class="styled-checkbox" disabled id={`styled-checkbox-${index}`} type="checkbox" onClick={(e)=>{}} value={`value${index}`}/>
                               </Col>
                             <Col md={11 }>
-                            <div id={index} className="qsNavBut" onClick={fillData} style={{textOverflow:'ellipsis',whiteSpace:'nowrap',overflow:'hidden'}}>{ittr.ques || "New Qs"}</div> 
+                            <div id={index}  className="qsNavButt"  style={{textOverflow:'ellipsis',whiteSpace:'nowrap',overflow:'hidden'}}>{ittr.ques || "New Qs"}</div> 
                             </Col>
                           </Row></div>
                         </>
@@ -427,8 +450,7 @@ function SetQuestion() {
                   class="btn"
                   type="button"
                   style={{padding:'0'}}
-                  onClick={(e) => {
-                  }}
+                  onClick={(e) => delQuestion(e)}
                 
                 >
                   <i class="fa fa-trash" style={{ color: "red" }}></i>
@@ -459,7 +481,7 @@ function SetQuestion() {
                               color: `rgba(0, 0, 0, 0.85)`,
                             }}><Row>
                             <Col md={1}>
-                              <input class="styled-checkbox" id={`styled-checkbox-${index}`} type="checkbox" onClick={(e)=>{}} value={`value${index}`}/>
+                              <input className="styled-checkbox" name='styleCheckBox' id={`styled-checkbox-${index}`} type="checkbox" onClick={(e)=>{}} value={`valueCheckBox${ittr.id}`}/>
                               </Col>
                             <Col md={11 }>
                             <div id={index} className="qsNavBut" onClick={fillData} style={{textOverflow:'ellipsis',whiteSpace:'nowrap',overflow:'hidden'}}>{ittr.ques || "New Qs"}</div> 
@@ -504,14 +526,7 @@ function SetQuestion() {
                   ? "Save"
                   : "Update"}
               </button>
-              <button
-                style={{ color: "white" }}
-                type="submit"
-                className="btn scTest"
-                onClick={delQuestion}
-              >
-                Delete
-              </button>
+            
             </>
           )}
 

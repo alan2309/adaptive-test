@@ -9,5 +9,6 @@ urlpatterns = [
    path('api/subs/<str:subject>',views.subqs),
 
    # admin
-   path('api/admin/addQs',views.addQs)
+   path('api/admin/addQs',views.addQs),
+   path('api/admin/delQs',views.delQs),
 ]

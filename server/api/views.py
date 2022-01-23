@@ -194,3 +194,13 @@ def addQs(request):
             ff=Options(question=f,marks=marks,title=optionData[z])
             ff.save()
         return JsonResponse("Done",safe=False) 
+
+@csrf_exempt
+def delQs(request):
+    if request.method == 'POST':
+        data=JSONParser().parse(request)['delQs']
+        print(data)
+        for x in data:
+            Questions.objects.get(id=x).delete()
+        return JsonResponse('success',safe=False)
+
