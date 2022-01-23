@@ -157,11 +157,16 @@ function SetQuestion() {
     //Alankrit
     //array to del from  ---> navArray
     var elCheckBox= document.getElementsByClassName('styled-checkbox')
-    console.log(elCheckBox)
-
-    if(false){
-    var a=[]
     var $boxes = $('input[name=styleCheckBox]:checked');
+
+    if(elCheckBox[0].style.display!=='none'){
+      if($boxes.length===0){
+      for(var x=0;x<elCheckBox.length;x++){
+        elCheckBox[x].style.display='none'
+      }  
+  }else{
+    if (window.confirm("Do you want to delete ?")) {
+      var a=[]
     $boxes.each(function(item){
       // Do stuff here with this
       var val=$boxes[item].value
@@ -173,9 +178,15 @@ function SetQuestion() {
   axiosInstance.post("api/admin/delQs", { delQs: a }).then((res) => {
    navigate("/admin/newTest",{state:{'sid':location.state.sid-1}});
   });
+    } 
+  }
 }else{
-
+  
+  for(var x=0;x<elCheckBox.length;x++){
+    elCheckBox[x].style.display='inline-block'
+  }
 }
+    
   
   }
   function fillData(e) {
@@ -424,7 +435,7 @@ function SetQuestion() {
                               color: `rgba(0, 0, 0, 0.85)`,
                             }}><Row>
                             <Col md={1}>
-                              <input class="styled-checkbox" disabled id={`styled-checkbox-${index}`} type="checkbox" onClick={(e)=>{}} value={`value${index}`}/>
+                              <input class="styled-checkbox" style={{display:'none'}} disabled id={`styled-checkbox-${index}`} type="checkbox" onClick={(e)=>{}} value={`value${index}`}/>
                               </Col>
                             <Col md={11 }>
                             <div id={index}  className="qsNavButt"  style={{textOverflow:'ellipsis',whiteSpace:'nowrap',overflow:'hidden'}}>{ittr.ques || "New Qs"}</div> 
@@ -481,7 +492,7 @@ function SetQuestion() {
                               color: `rgba(0, 0, 0, 0.85)`,
                             }}><Row>
                             <Col md={1}>
-                              <input className="styled-checkbox" name='styleCheckBox' id={`styled-checkbox-${index}`} type="checkbox" onClick={(e)=>{}} value={`valueCheckBox${ittr.id}`}/>
+                              <input className="styled-checkbox" style={{display:'none'}} name='styleCheckBox' id={`styled-checkbox-${index}`} type="checkbox" onClick={(e)=>{}} value={`valueCheckBox${ittr.id}`}/>
                               </Col>
                             <Col md={11 }>
                             <div id={index} className="qsNavBut" onClick={fillData} style={{textOverflow:'ellipsis',whiteSpace:'nowrap',overflow:'hidden'}}>{ittr.ques || "New Qs"}</div> 
