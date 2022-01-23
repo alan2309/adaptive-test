@@ -9,6 +9,7 @@ import { useNavigate } from "react-router";
 import { isExpired, decodeToken } from "react-jwt";
 import CustomTimer from "../Admin/CustomTimer";
 import getCurrentTime from "../../components/TestScreeen/dateCalc";
+import axiosInstance from "../../axios";
 
 function DTestScreen() {
   const [hard, setHard] = useState([]);
@@ -39,8 +40,25 @@ function DTestScreen() {
       setMd(false);
       isReload(true);
     }    if(!localStorage.getItem("test5")){
-      let ax = JSON.parse(localStorage.getItem("test"));
+      
+      let ax = JSON.parse(localStorage.getItem("test4"));
       let user = ax['username']
+      let ar = ax['marks']
+      let total = 0;
+      for(let i=0;i<ar.length;i++){
+          if(ar[i] !== -1)
+            total = total+ar[i]
+    }
+      axiosInstance.post('api/marks/3',{
+        data:{
+            username:user,
+            marks:total
+        }
+  }).then((res)=>{
+    console.log("done")
+      // localStorage.setItem('result',total)
+  })
+  .catch((e)=>console.log(e))
       let txx = getCurrentTime();
       let hh = txx.hh;
       let mm = txx.mm;
@@ -283,13 +301,15 @@ function DTestScreen() {
         hard.splice(index, 1);
         break;
     }
+    test["marks"] = ans;
     if(ans.length-1===qsno){
       navigate('/admin/personality')
+      localStorage.setItem("test5", JSON.stringify(test));
     }else{
-      test["marks"] = ans;
+     
       setQsno(qsno + 1);
       test["currentQsNo"] = test["currentQsNo"] + 1;
-      localStorage.setItem("test", JSON.stringify(test));
+      localStorage.setItem("test5", JSON.stringify(test));
       e.target.reset();
     }
   }

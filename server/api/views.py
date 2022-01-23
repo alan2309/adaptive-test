@@ -130,31 +130,48 @@ def results(request,name):
             d = datetime.datetime.now()
             try:
                 Results.objects.get(student = user).delete()
-            except Results.DoesNotExist:    
+            except Results.DoesNotExist:
                 print('No previous entry')
-            result = Results.objects.create(student = user,startTime = d.time())
+            result = Results.objects.create(student = user,startTime = d.time(),
+            marks={"ap":0,'cf':0,'c':0,'d':0,'p':0,'a':0}
+            )
             result.save()
             return JsonResponse("Result entry created",safe=False)
         else:
-            return JsonResponse("User Doesn't exist",safe=False)  
+            return JsonResponse("User Doesn't exist",safe=False) 
 
 @csrf_exempt        
-def marks(request):
+def marks(request,sid=0):
     if request.method == 'POST':
         data=JSONParser().parse(request)['data']
+        sid = int(sid)
         d = datetime.datetime.now()
         user = User.objects.get(username = data['username'])
         if(user):
             result = Results.objects.get(student = user)
             if(result):
-                result.endTime = d.time()
-                result.marks = data['marks']
+                if sid == 1:
+                   result.marks['ap'] = data['marks']
+                elif sid == 2:
+                    result.marks['cf'] = data['marks']
+                elif sid == 3:
+                    result.marks['c'] = data['marks']
+                elif sid == 4:
+                    result.marks['d'] = data['marks']
+                elif sid == 5:
+                    result.marks['p'] = data['marks']
+                elif sid == 6:
+                    result.marks['a'] = data['marks'] 
+                    result.endTime = d.time()
+                else:
+                    print('**error**')
+                    return JsonResponse("Error",safe=False)
                 result.save()
                 return JsonResponse("Marks stored",safe=False)
             else:
-                return JsonResponse("Restart Test",safe=False)    
+                return JsonResponse("Restart Test",safe=False)
         else:
-            return JsonResponse("User Doesn't exist",safe=False)     
+            return JsonResponse("User Doesn't exist",safe=False)  
 @csrf_exempt        
 def addQs(request):
     if request.method == 'POST':

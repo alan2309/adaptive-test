@@ -9,6 +9,7 @@ import { useNavigate } from "react-router";
 import { isExpired, decodeToken } from "react-jwt";
 import CustomTimer from "../Admin/CustomTimer";
 import getCurrentTime from "../../components/TestScreeen/dateCalc";
+import axiosInstance from "../../axios";
 
 function CFTestScreen() {
   const [hard, setHard] = useState([]);
@@ -43,6 +44,22 @@ function CFTestScreen() {
     if(!localStorage.getItem("test2")){
       let ax = JSON.parse(localStorage.getItem("test"));
       let user = ax['username']
+      let ar = ax['marks']
+      let total = 0;
+      for(let i=0;i<ar.length;i++){
+          if(ar[i] !== -1)
+            total = total+ar[i]
+    }
+      axiosInstance.post('api/marks/1',{
+        data:{
+            username:user,
+            marks:total
+        }
+  }).then((res)=>{
+    console.log("done")
+      // localStorage.setItem('result',total)
+  })
+  .catch((e)=>console.log(e))
       let txx = getCurrentTime();
       let hh = txx.hh;
       let mm = txx.mm;
@@ -90,6 +107,7 @@ function CFTestScreen() {
               var totalQs=res.data.qs
               if(totalQs>0){
               if (test["question"].length === 0) {
+
                 setTimeFF(tf)
                 setEasy(res.data.easy);
                 setHard(res.data.hard);
@@ -158,7 +176,6 @@ function CFTestScreen() {
                 setAns(ar);
                 setQsno(test["currentQsNo"] - 1);
                 setQs(test["question"]);
-
               var ob=new Date()
         console.log(test['strtTime'])
         console.log(ob.toLocaleTimeString())
@@ -225,7 +242,6 @@ function CFTestScreen() {
     secs = secs +(parseInt(x[0])*3600)+(parseInt(x[1])*60)+(parseInt(x[2])) 
     return secs;
   }
-
   function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -285,13 +301,15 @@ function CFTestScreen() {
         hard.splice(index, 1);
         break;
     }
+    test["marks"] = ans;
     if(ans.length-1===qsno){
       navigate('/admin/coding')
+      localStorage.setItem("test2", JSON.stringify(test));
     }else{
-      test["marks"] = ans;
+      
       setQsno(qsno + 1);
       test["currentQsNo"] = test["currentQsNo"] + 1;
-      localStorage.setItem("test", JSON.stringify(test));
+      localStorage.setItem("test2", JSON.stringify(test));
       e.target.reset();
     }
   }

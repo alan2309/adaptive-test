@@ -25,7 +25,7 @@ class Options(models.Model):
 class Results(models.Model):
     startTime = models.TimeField()
     endTime = models.TimeField(blank=True,null=True)
-    marks = models.IntegerField(default=0)
+    marks = models.JSONField(null=True, blank=True)
     student = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
 
     def __str__(self):

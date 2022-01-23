@@ -263,10 +263,12 @@ function TestScreen() {
         hard.splice(index, 1);
         break;
     }
+    test["marks"] = ans;
     if(ans.length-1===qsno){
       navigate('/admin/computer')
+      localStorage.setItem("test", JSON.stringify(test));
     }else{
-      test["marks"] = ans;
+      
       setQsno(qsno + 1);
       test["currentQsNo"] = test["currentQsNo"] + 1;
       localStorage.setItem("test", JSON.stringify(test));

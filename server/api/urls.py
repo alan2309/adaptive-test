@@ -5,7 +5,7 @@ urlpatterns = [
    path('api/qs',views.qs),
    path('api/subs',views.subs),
    path('api/results/<str:name>',views.results),
-   path('api/marks',views.marks),
+   path('api/marks/<str:sid>',views.marks),
    path('api/subs/<str:subject>',views.subqs),
    
 
