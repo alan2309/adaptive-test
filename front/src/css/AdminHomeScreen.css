@@ -1,172 +1,167 @@
-.basicRec{
-    min-height: 30px;
-    min-width: 30px;
-    background: #FFFFFF;
-    box-shadow: 1px 1px 7px 2px rgba(0, 0, 0, 0.25);
-    border-radius: 14px;
-
-
+.basicRec {
+  min-height: 30px;
+  min-width: 30px;
+  background: #ffffff;
+  box-shadow: 1px 1px 7px 2px rgba(0, 0, 0, 0.25);
+  border-radius: 14px;
 }
 .mainRec {
-    padding: 10px;
-    width: 90%;
-    height: 500px;
-    margin: 0 40px 0 10%;
-    background-color: #FFFFFF !important;
-    box-shadow: 1px 1px 7px 2px rgba(0, 0, 0, 0.25);
-    border-radius: 14px;
+  padding: 10px;
+  width: 90%;
+  height: 500px;
+  margin: 0 40px 0 10%;
+  background-color: #ffffff !important;
+  box-shadow: 1px 1px 7px 2px rgba(0, 0, 0, 0.25);
+  border-radius: 14px;
 }
-.carbonImage{
-    margin: 10% 0 10% 40%;
-    height: 90px;
+.carbonImage {
+  margin: 10% 0 10% 40%;
+  height: 90px;
 }
-.scTest{
-    width: 234px;
-    background-color: #10B65C;
-    border-radius: 14px;
-    margin-bottom: 20px;
-    margin-right: 10px;
-    
-}
-
-.secName{
-    font-style: normal;
-    font-weight: normal;
-    font-size: 24px;
-    line-height: 36px;
-    color: #293E6F;
-    margin-left: 34%;
-    margin-top: 10px;
-}
-.secName1{
-    margin-top: 10px;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 24px;
-    line-height: 36px;
-    color: #293E6F;
-    margin-left: 22%;
-}
-.secNameBig{
-    margin-top: 10px;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 24px;
-    line-height: 36px;
-    color: #293E6F;
-    margin-left: 10%;
+.scTest {
+  width: 234px;
+  background-color: #10b65c;
+  border-radius: 14px;
+  margin-bottom: 20px;
+  margin-right: 10px;
 }
 
-.secNm{
-    width: 100%;
-    height: 53px;
-    
-    padding:14px 31px;
-    
+.secName {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 36px;
+  color: #293e6f;
+  margin-left: 34%;
+  margin-top: 10px;
 }
-.AdminSetSection{
-    margin-left: 10%;
-    margin-top: 50px;
-    margin-right: 10%;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 18px;
-    line-height: 27px;
-    color: #293E6F;
+.secName1 {
+  margin-top: 10px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 36px;
+  color: #293e6f;
+  margin-left: 22%;
 }
-.avQs{
-    text-align: center;
-    width: 90%;
-    height: 100%;
-    padding: 10px 20px 10px 20px;
+.secNameBig {
+  margin-top: 10px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 36px;
+  color: #293e6f;
+  margin-left: 10%;
 }
-.easyMedHard{
-    width: 100%;
-    min-height: 50px;
-}
-.remQs{
-    font-size: 50px;
-    line-height: 60px;
-}
-.SetQuestion{
-    margin-left: 10%;
-    margin-top: 50px;
-    margin-right: 10%;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 18px;
-    line-height: 27px;
-    color: #293E6F;
 
+.secNm {
+  width: 100%;
+  height: 53px;
+
+  padding: 14px 31px;
 }
-.scrollbar
-{
-  background: #F5F5F5;
+.AdminSetSection {
+  margin-left: 10%;
+  margin-top: 50px;
+  margin-right: 10%;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 27px;
+  color: #293e6f;
+}
+.avQs {
+  text-align: center;
+  width: 90%;
+  height: 100%;
+  padding: 10px 20px 10px 20px;
+}
+.easyMedHard {
+  width: 100%;
+  min-height: 50px;
+}
+.remQs {
+  font-size: 50px;
+  line-height: 60px;
+}
+.SetQuestion {
+  margin-left: 10%;
+  margin-top: 50px;
+  margin-right: 10%;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 27px;
+  color: #293e6f;
+}
+.scrollbar {
+  background: #f5f5f5;
   overflow-y: auto;
   overflow-x: hidden;
 }
 
-.timeFieldInput:focus{
-    outline: none;
+.timeFieldInput:focus {
+  outline: none;
 }
 
-
-#style-4::-webkit-scrollbar-track
-{
-  -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,0.3);
-  background-color: #F5F5F5;
+#style-4::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
+  background-color: #f5f5f5;
 }
 
-#style-4::-webkit-scrollbar
-{
+#style-4::-webkit-scrollbar {
   width: 10px;
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
 }
 
-#style-4::-webkit-scrollbar-thumb
-{
+#style-4::-webkit-scrollbar-thumb {
   background-color: #adb5bd;
 }
 
-.ff{
-    overflow: hidden;
-    text-overflow: ellipsis !important;
-    max-height: 35px;
-    -webkit-box-orient: vertical !important;
- }
-
-
-.qsNavBut:hover{
-    cursor: pointer;
+.ff {
+  overflow: hidden;
+  text-overflow: ellipsis !important;
+  max-height: 35px;
+  -webkit-box-orient: vertical !important;
 }
 
- @keyframes blinkingFrames {
-    0% {opacity: 1.00;}
-    50% {opacity: 0.00;}
-    100% {opacity: 1.00;}
+.qsNavBut:hover {
+  cursor: pointer;
+}
+
+@keyframes blinkingFrames {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .blinking {
-    animation-name: blinkingFrames;
-    animation-duration: 1.5s;
-    animation-iteration-count: 7;
+  animation-name: blinkingFrames;
+  animation-duration: 1.5s;
+  animation-iteration-count: 7;
 }
-.sectionClick{
-    height: 70px;
-    font-family: Poppins;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 27px;
-    padding-top: 20px;
-    cursor: pointer;
-    text-align: center;
-    color: #293E6F; 
-    font-weight: 500;
-    border-bottom: 3px solid #EFF2F7;
+.sectionClick {
+  height: 70px;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 27px;
+  padding-top: 20px;
+  cursor: pointer;
+  text-align: center;
+  color: #293e6f;
+  font-weight: 500;
+  border-bottom: 3px solid #eff2f7;
 }
 
-.sectionOnCLickToggle{
-    background: #293E6F;
-    color: #FFFFFF;
+.sectionOnCLickToggle {
+  background: #293e6f;
+  color: #ffffff;
 }
