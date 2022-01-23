@@ -22,7 +22,7 @@ import DTestScreen from './screens/Test/DTestScreen';
 
 import CTestScreen from './screens/Test/CTestScreen';
 import ATestScreen from './screens/Test/ATestScreen';
-
+import ScheduledTest from './screens/Admin/ScheduledTest';
 
 function App() {
   return (
@@ -63,6 +63,8 @@ function App() {
        <Route path='/admin/domain' exact element={<DTestScreen/>} />
        <Route path='/admin/analytical' exact element={<ATestScreen/>} />
        <Route path='/admin/coding' exact element={<CTestScreen/>} />
+
+       <Route path='/admin/scheduledTest' exact element={<ScheduledTest/>} />
        </Routes>
        </Router>
            

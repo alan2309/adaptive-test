@@ -27,7 +27,7 @@ function AdminHome() {
         <div>
             
             <button style={{color:'white'}} className='btn scTest' onClick={(e)=>navigate('/admin/newTest',{state:{'sid':0}})}>New Test</button>
-            <button style={{color:'white'}} className='btn scTest'>Scheduled Test</button>
+            <button style={{color:'white'}} className='btn scTest' onClick={(e)=>navigate('/admin/scheduledTest',)} >Scheduled Test</button>
 
             <Row>
                 <Col>
