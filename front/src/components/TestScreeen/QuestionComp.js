@@ -1,10 +1,10 @@
 import React from 'react'
 import {Col,Row} from 'react-bootstrap';
 
-function QuestionComp({question,options,level,qsno}) {
+function QuestionComp({ans,question,options,level,qsno}) {
     return (
         <div id='quesComp' style={{padding:'10px 20px'}}>
-          {qsno<6 && 
+          {qsno<=ans.length && 
           <>
           <Row>
                 <Col >
@@ -51,7 +51,6 @@ function QuestionComp({question,options,level,qsno}) {
       </div>
           </>
           }
-{qsno>=6 && <h3>Click finish Test</h3>}
         </div>
     )
 }

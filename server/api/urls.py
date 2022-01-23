@@ -7,8 +7,10 @@ urlpatterns = [
    path('api/results/<str:name>',views.results),
    path('api/marks',views.marks),
    path('api/subs/<str:subject>',views.subqs),
+   
 
    # admin
    path('api/admin/addQs',views.addQs),
    path('api/admin/delQs',views.delQs),
+   path('api/admin/saveTest',views.saveTest),
 ]

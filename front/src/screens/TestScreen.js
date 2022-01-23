@@ -67,7 +67,10 @@ function TestScreen() {
             .then((res) => {
               let a = converttime(res.data.time)
               var tf=a;
+              var totalQs=res.data.qs
+              if(totalQs>0){
               if (test["question"].length === 0) {
+                
                 setTimeFF(tf)
                 setEasy(res.data.easy);
                 setHard(res.data.hard);
@@ -151,6 +154,9 @@ function TestScreen() {
         console.log(hourDiff)
         console.log(tf)
         setTimeFF(tf-hourDiff)
+              }
+            }else{
+                navigate('/admin/computer')
               }
             })
             .catch((e) => {
@@ -257,12 +263,15 @@ function TestScreen() {
         hard.splice(index, 1);
         break;
     }
-
-    test["marks"] = ans;
-    setQsno(qsno + 1);
-    test["currentQsNo"] = test["currentQsNo"] + 1;
-    localStorage.setItem("test", JSON.stringify(test));
-    e.target.reset();
+    if(ans.length-1===qsno){
+      navigate('/admin/computer')
+    }else{
+      test["marks"] = ans;
+      setQsno(qsno + 1);
+      test["currentQsNo"] = test["currentQsNo"] + 1;
+      localStorage.setItem("test", JSON.stringify(test));
+      e.target.reset();
+    }
   }
   function handleCloseSChange(e) {
     setCountWindowAwayModal(false);
@@ -318,7 +327,7 @@ function TestScreen() {
                     reset={testFinshBool}
                     timeKey="Time"
                     totalKey="Total"
-                    totalValue={10}
+                    totalValue={ans.length}
                     header='Aptitude'
                     nextpage={'admin/computer'}
                   ></TestHeaderComp>}
@@ -367,6 +376,7 @@ function TestScreen() {
                       qs[qsno] !== undefined &&
                       !countWindowAwayModal && (
                         <QuestionComp
+                          ans={ans}
                           qsno={qsno}
                           level={current}
                           question={qs[qsno].ques}

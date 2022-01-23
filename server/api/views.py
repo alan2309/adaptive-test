@@ -203,4 +203,19 @@ def delQs(request):
         for x in data:
             Questions.objects.get(id=x).delete()
         return JsonResponse('success',safe=False)
+@csrf_exempt
+def saveTest(request):
+    if request.method == 'POST':
+        data=JSONParser().parse(request)['saveTest']
+        print(data)
+        print('---------------')
+        print(data[0]['sub'])
+        print('---------------')
+
+        for x in range(0,len(data)):
+            b=Subject.objects.get(sub_name=data[x]['sub'])
+            b.sub_qs=data[x]['totalQs']
+            b.sub_time=data[x]['time']
+            b.save()
+        return JsonResponse('success',safe=False)
 

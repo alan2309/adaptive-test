@@ -32,6 +32,13 @@ function PTestScreen() {
   const [timeFF, setTimeFF] = useState();
 
   useEffect(() => {
+    var full_screen_element = document.fullscreenElement;
+
+    if (full_screen_element === null) {
+      setShow(true);
+      setMd(false);
+      isReload(true);
+    }
     if(!localStorage.getItem("test6")){
       let ax = JSON.parse(localStorage.getItem("test"));
       let user = ax['username']
@@ -79,6 +86,8 @@ function PTestScreen() {
             .then((res) => {
               let a = converttime(res.data.time)
               var tf=a;
+              var totalQs=res.data.qs
+              if(totalQs>0){
               if (test["question"].length === 0) {
                 setTimeFF(tf)
                 setEasy(res.data.easy);
@@ -165,6 +174,9 @@ function PTestScreen() {
         console.log(tf)
         setTimeFF(tf-hourDiff)
               }
+            }else{
+              navigate('/admin/analytical')
+            }
             })
             .catch((e) => {
               console.log(e);
@@ -273,11 +285,15 @@ function PTestScreen() {
         break;
     }
 
-    test["marks"] = ans;
-    setQsno(qsno + 1);
-    test["currentQsNo"] = test["currentQsNo"] + 1;
-    localStorage.setItem("test6", JSON.stringify(test));
-    e.target.reset();
+    if(ans.length-1===qsno){
+      navigate('/admin/analytical')
+    }else{
+      test["marks"] = ans;
+      setQsno(qsno + 1);
+      test["currentQsNo"] = test["currentQsNo"] + 1;
+      localStorage.setItem("test", JSON.stringify(test));
+      e.target.reset();
+    }
   }
   function handleCloseSChange(e) {
     setCountWindowAwayModal(false);
@@ -334,7 +350,7 @@ function PTestScreen() {
                     reset={testFinshBool}
                     timeKey="Time"
                     totalKey="Total"
-                    totalValue={10}
+                    totalValue={ans.length}
                     header='Personality'
                     nextpage={'admin/analytical'}
                     setMd = {setMd}
@@ -384,6 +400,7 @@ function PTestScreen() {
                       qs[qsno] !== undefined &&
                       !countWindowAwayModal && (
                         <QuestionComp
+                        ans={ans}
                           qsno={qsno}
                           level={current}
                           question={qs[qsno].ques}

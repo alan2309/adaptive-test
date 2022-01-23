@@ -32,6 +32,14 @@ function CFTestScreen() {
   const [timeFF, setTimeFF] = useState();
 
   useEffect(() => {
+    var full_screen_element = document.fullscreenElement;
+
+    if (full_screen_element === null) {
+      setShow(true);
+      setMd(false);
+      isReload(true);
+    }
+
     if(!localStorage.getItem("test2")){
       let ax = JSON.parse(localStorage.getItem("test"));
       let user = ax['username']
@@ -79,6 +87,8 @@ function CFTestScreen() {
             .then((res) => {
               let a = converttime(res.data.time)
               var tf=a;
+              var totalQs=res.data.qs
+              if(totalQs>0){
               if (test["question"].length === 0) {
                 setTimeFF(tf)
                 setEasy(res.data.easy);
@@ -165,6 +175,9 @@ function CFTestScreen() {
         console.log(tf)
         setTimeFF(tf-hourDiff)
               }
+            }else{
+              navigate('/admin/coding')
+            }
             })
             .catch((e) => {
               console.log(e);
@@ -272,12 +285,15 @@ function CFTestScreen() {
         hard.splice(index, 1);
         break;
     }
-
-    test["marks"] = ans;
-    setQsno(qsno + 1);
-    test["currentQsNo"] = test["currentQsNo"] + 1;
-    localStorage.setItem("test2", JSON.stringify(test));
-    e.target.reset();
+    if(ans.length-1===qsno){
+      navigate('/admin/coding')
+    }else{
+      test["marks"] = ans;
+      setQsno(qsno + 1);
+      test["currentQsNo"] = test["currentQsNo"] + 1;
+      localStorage.setItem("test", JSON.stringify(test));
+      e.target.reset();
+    }
   }
   function handleCloseSChange(e) {
     setCountWindowAwayModal(false);
@@ -335,7 +351,7 @@ function CFTestScreen() {
                     reset={testFinshBool}
                     timeKey="Time"
                     totalKey="Total"
-                    totalValue={10}
+                    totalValue={ans.length}
                     header='Computer Fundamentals'
                     nextpage={'admin/coding'}
                     setMd = {setMd}
@@ -385,6 +401,7 @@ function CFTestScreen() {
                       qs[qsno] !== undefined &&
                       !countWindowAwayModal && (
                         <QuestionComp
+                        ans={ans}
                           qsno={qsno}
                           level={current}
                           question={qs[qsno].ques}

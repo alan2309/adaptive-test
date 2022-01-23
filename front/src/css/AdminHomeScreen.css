@@ -106,6 +106,9 @@
   overflow-x: hidden;
 }
 
+.timeFieldInput:focus{
+    outline: none;
+}
 
 
 #style-4::-webkit-scrollbar-track
