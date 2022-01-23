@@ -1,61 +1,61 @@
-.rectangleInput{
-    min-height: 30px;
-    padding: 10px;
-    margin-bottom: 5px;
-    background-color: #f8f9fa !important;
-    border-radius: 14px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-
+.rectangleInput {
+  min-height: 30px;
+  padding: 10px;
+  margin-bottom: 5px;
+  background-color: #f8f9fa !important;
+  border-radius: 14px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .setQsRadio:after {
-    width: 15px;
-    height: 15px;
-    border-radius: 15px;
-    top: -5px;
-    left: -1px;
-    position: relative;
-    background-color: red;
-    content: '';
-    display: inline-block;
-    visibility: visible;
-    border: 2px solid white;
+  width: 15px;
+  height: 15px;
+  border-radius: 15px;
+  top: -5px;
+  left: -1px;
+  position: relative;
+  background-color: red;
+  content: "";
+  display: inline-block;
+  visibility: visible;
+  border: 2px solid white;
 }
 
 .setQsRadio:checked:after {
-    width: 15px;
-    height: 15px;
-    border-radius: 15px;
-    top: -5px;
-    left: -1px;
-    position: relative;
-    background-color: #10B65C;
-    content: '';
-    display: inline-block;
-    visibility: visible;
-    border: 2px solid white;
+  width: 15px;
+  height: 15px;
+  border-radius: 15px;
+  top: -5px;
+  left: -1px;
+  position: relative;
+  background-color: #10b65c;
+  content: "";
+  display: inline-block;
+  visibility: visible;
+  border: 2px solid white;
 }
 .styled-checkbox:hover + label:before {
-    background: #f35429;
+  background: #f35429;
 }
 .styled-checkbox:focus + label:before {
-    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
 }
 .styled-checkbox:checked + label:before {
-    background: #f35429;
+  background: #f35429;
 }
 .styled-checkbox:disabled + label {
-    color: #b8b8b8;
-    cursor: auto;
+  color: #b8b8b8;
+  cursor: auto;
 }
 .styled-checkbox:disabled + label:before {
-    box-shadow: none;
-    background: #ddd;
+  box-shadow: none;
+  background: #ddd;
 }
 .styled-checkbox:checked + label:after {
-    content: '';
-    background: white;
-    width: 2px;
-    height: 2px;
-    box-shadow: 2px 0 0 white, 4px 0 0 white, 4px -2px 0 white, 4px -4px 0 white, 4px -6px 0 white, 4px -8px 0 white;
-    transform: rotate(45deg);
+  content: "";
+  background: white;
+  width: 2px;
+  height: 2px;
+  box-shadow: 2px 0 0 white, 4px 0 0 white, 4px -2px 0 white, 4px -4px 0 white,
+    4px -6px 0 white, 4px -8px 0 white;
+  transform: rotate(45deg);
 }

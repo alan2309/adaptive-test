@@ -25,17 +25,17 @@ function TestScreen() {
   const [countWindowAway, setCountWindowAway] = useState(0);
   const [countWindowAwayModal, setCountWindowAwayModal] = useState(false);
   const [testFinshBool, setTestFinishBool] = useState(false);
-  const[time,setTime] = useState();
+  const [time, setTime] = useState();
   const [newScreen, setNewScreen] = useState(false);
   const [timeFF, setTimeFF] = useState();
-  
+
   useEffect(() => {
     var test = JSON.parse(localStorage.getItem("test"));
     const token = localStorage.getItem("access_token");
     const isMyTokenExpired = isExpired(token);
     const channel = new BroadcastChannel("tab");
     const items = { ...localStorage };
-    console.log(items)
+    console.log(items);
 
     channel.postMessage("another-tab");
     // note that listener is added after posting the message
@@ -65,98 +65,107 @@ function TestScreen() {
           await axios
             .get("http://127.0.0.1:8000/api/subs/1")
             .then((res) => {
-              let a = converttime(res.data.time)
-              var tf=a;
-              var totalQs=res.data.qs
-              if(totalQs>0){
-              if (test["question"].length === 0) {
-                
-                setTimeFF(tf)
-                setEasy(res.data.easy);
-                setHard(res.data.hard);
-                var mediumArrRes = res.data.medium;
-                var index = getRandomInt(0, res.data.medium.length);
-                setQs([...qs, mediumArrRes[index]]);
-                test["question"].push(mediumArrRes[index]);
-                test["currentLevel"] = 2;
-                mediumArrRes.splice(index, 1);
-                setMedium(mediumArrRes);
-                let ar = new Array(res.data.qs).fill(-1);
-                setAns(ar);
-                test["marks"] = ar;
-                localStorage.setItem("test", JSON.stringify(test));
-              } else {
-                var qss = test["question"];
-                var x = res.data.easy;
-                var y = res.data.medium;
-                var z = res.data.hard;
-                for (let i = 0; i < qss.length; i++) {
-                  if (
-                    x
-                      .map(function (e) {
-                        return e.ques;
-                      })
-                      .indexOf(qss[i].ques) !== -1
-                  ) {
-                    let a = x
-                      .map(function (e) {
-                        return e.ques;
-                      })
-                      .indexOf(qss[i].ques);
-                    x.splice(a, 1);
-                  } else if (
-                    y
-                      .map(function (e) {
-                        return e.ques;
-                      })
-                      .indexOf(qss[i].ques) !== -1
-                  ) {
-                    let b = y
-                      .map(function (e) {
-                        return e.ques;
-                      })
-                      .indexOf(qss[i].ques);
-                    y.splice(b, 1);
-                  } else if (
-                    z
-                      .map(function (e) {
-                        return e.ques;
-                      })
-                      .indexOf(qss[i].ques) !== -1
-                  ) {
-                    let c = z
-                      .map(function (e) {
-                        return e.ques;
-                      })
-                      .indexOf(qss[i].ques);
-                    z.splice(c, 1);
+              let a = converttime(res.data.time);
+              var tf = a;
+              var totalQs = res.data.qs;
+              if (totalQs > 0) {
+                if (test["question"].length === 0) {
+                  setTimeFF(tf);
+                  setEasy(res.data.easy);
+                  setHard(res.data.hard);
+                  var mediumArrRes = res.data.medium;
+                  var index = getRandomInt(0, res.data.medium.length);
+                  setQs([...qs, mediumArrRes[index]]);
+                  test["question"].push(mediumArrRes[index]);
+                  test["currentLevel"] = 2;
+                  mediumArrRes.splice(index, 1);
+                  setMedium(mediumArrRes);
+                  let ar = new Array(res.data.qs).fill(-1);
+                  setAns(ar);
+                  test["marks"] = ar;
+                  localStorage.setItem("test", JSON.stringify(test));
+                } else {
+                  var qss = test["question"];
+                  var x = res.data.easy;
+                  var y = res.data.medium;
+                  var z = res.data.hard;
+                  for (let i = 0; i < qss.length; i++) {
+                    if (
+                      x
+                        .map(function (e) {
+                          return e.ques;
+                        })
+                        .indexOf(qss[i].ques) !== -1
+                    ) {
+                      let a = x
+                        .map(function (e) {
+                          return e.ques;
+                        })
+                        .indexOf(qss[i].ques);
+                      x.splice(a, 1);
+                    } else if (
+                      y
+                        .map(function (e) {
+                          return e.ques;
+                        })
+                        .indexOf(qss[i].ques) !== -1
+                    ) {
+                      let b = y
+                        .map(function (e) {
+                          return e.ques;
+                        })
+                        .indexOf(qss[i].ques);
+                      y.splice(b, 1);
+                    } else if (
+                      z
+                        .map(function (e) {
+                          return e.ques;
+                        })
+                        .indexOf(qss[i].ques) !== -1
+                    ) {
+                      let c = z
+                        .map(function (e) {
+                          return e.ques;
+                        })
+                        .indexOf(qss[i].ques);
+                      z.splice(c, 1);
+                    }
                   }
-                }
-                setEasy(x);
-                setHard(z);
-                setMedium(y);
-                var ar = test["marks"];
-                setAns(ar);
-                setQsno(test["currentQsNo"] - 1);
-                setQs(test["question"]);
-                var ob=new Date()
-        console.log(test['strtTime'])
-        console.log(ob.toLocaleTimeString())
-      var h = (ob.getHours()<10?'0':'') + ob.getHours();
-  var m = (ob.getMinutes()<10?'0':'') + ob.getMinutes();
-  var s = (ob.getSeconds()<10?'0':'') + ob.getSeconds();
+                  setEasy(x);
+                  setHard(z);
+                  setMedium(y);
+                  var ar = test["marks"];
+                  setAns(ar);
+                  setQsno(test["currentQsNo"] - 1);
+                  setQs(test["question"]);
+                  var ob = new Date();
+                  console.log(test["strtTime"]);
+                  console.log(ob.toLocaleTimeString());
+                  var h = (ob.getHours() < 10 ? "0" : "") + ob.getHours();
+                  var m = (ob.getMinutes() < 10 ? "0" : "") + ob.getMinutes();
+                  var s = (ob.getSeconds() < 10 ? "0" : "") + ob.getSeconds();
 
-        var timeStart = new Date(new Date().toLocaleDateString()+' ' + test['strtTime']);
-        var timeEnd = new Date(new Date().toLocaleDateString()+' ' + h + ':' + m+':'+s);
-        var hourDiff = (timeEnd - timeStart)/1000;
-        console.log(timeEnd)
-        console.log(timeStart)
-        console.log(hourDiff)
-        console.log(tf)
-        setTimeFF(tf-hourDiff)
-              }
-            }else{
-                navigate('/admin/computer')
+                  var timeStart = new Date(
+                    new Date().toLocaleDateString() + " " + test["strtTime"]
+                  );
+                  var timeEnd = new Date(
+                    new Date().toLocaleDateString() +
+                      " " +
+                      h +
+                      ":" +
+                      m +
+                      ":" +
+                      s
+                  );
+                  var hourDiff = (timeEnd - timeStart) / 1000;
+                  console.log(timeEnd);
+                  console.log(timeStart);
+                  console.log(hourDiff);
+                  console.log(tf);
+                  setTimeFF(tf - hourDiff);
+                }
+              } else {
+                navigate("/admin/computer");
               }
             })
             .catch((e) => {
@@ -198,10 +207,10 @@ function TestScreen() {
     }
   }
 
-  function converttime(timex){
+  function converttime(timex) {
     let secs = 0;
-    let x =timex.split(":")
-    secs = secs +(parseInt(x[0])*3600)+(parseInt(x[1])*60)+(parseInt(x[2])) 
+    let x = timex.split(":");
+    secs = secs + parseInt(x[0]) * 3600 + parseInt(x[1]) * 60 + parseInt(x[2]);
     return secs;
   }
   function getRandomInt(min, max) {
@@ -264,11 +273,10 @@ function TestScreen() {
         break;
     }
     test["marks"] = ans;
-    if(ans.length-1===qsno){
-      navigate('/admin/computer')
+    if (ans.length - 1 === qsno) {
+      navigate("/admin/computer");
       localStorage.setItem("test", JSON.stringify(test));
-    }else{
-      
+    } else {
       setQsno(qsno + 1);
       test["currentQsNo"] = test["currentQsNo"] + 1;
       localStorage.setItem("test", JSON.stringify(test));
@@ -323,22 +331,25 @@ function TestScreen() {
             <Row>
               <Col md="9">
                 <div className="TestHeaderComp">
-                  {timeFF!==undefined && <TestHeaderComp
-                    timer={timeFF}
-                    start={!testFinshBool}
-                    reset={testFinshBool}
-                    timeKey="Time"
-                    totalKey="Total"
-                    totalValue={ans.length}
-                    header='Aptitude'
-                    nextpage={'admin/computer'}
-                  ></TestHeaderComp>}
+                  {timeFF !== undefined && (
+                    <TestHeaderComp
+                      timer={timeFF}
+                      start={!testFinshBool}
+                      reset={testFinshBool}
+                      timeKey="Time"
+                      totalKey="Total"
+                      totalValue={ans.length}
+                      header="Aptitude"
+                      nextpage={"admin/computer"}
+                    ></TestHeaderComp>
+                  )}
                 </div>
               </Col>
               <Col md="3">
                 <button
                   onClick={(e) => {
-                    setTestFinishBool(true);setShow(false);
+                    setTestFinishBool(true);
+                    setShow(false);
                     navigate("/result");
                     if (document.exitFullscreen) {
                       document.exitFullscreen();

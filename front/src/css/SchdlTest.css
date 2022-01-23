@@ -1,15 +1,15 @@
-.SchdlTest{
-    font-family: Poppins;
-font-style: normal;
-font-weight: normal;
-font-size: 24px;
-line-height: 36px;
+.SchdlTest {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 36px;
 
-color: #293E6F !important;
+  color: #293e6f !important;
 }
 
-.lineThrough{
-    margin-top: 10px;
-    border: 2px solid #EFF2F7;
-transform: rotate(0.22deg);
+.lineThrough {
+  margin-top: 10px;
+  border: 2px solid #eff2f7;
+  transform: rotate(0.22deg);
 }

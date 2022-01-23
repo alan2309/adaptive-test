@@ -4,7 +4,7 @@ import TestHeaderComp from "../../components/TestScreeen/TestHeaderComp";
 import QuestionComp from "../../components/TestScreeen/QuestionComp";
 import { Col, Modal, Button, Row } from "react-bootstrap";
 import QuestionNavigatorComp from "../../components/TestScreeen/QuestionNavigatorComp";
-import '../../css/TestScreen.css'
+import "../../css/TestScreen.css";
 import { useNavigate } from "react-router";
 import { isExpired, decodeToken } from "react-jwt";
 import CustomTimer from "../Admin/CustomTimer";
@@ -23,12 +23,15 @@ function CTestScreen() {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [reload, isReload] = useState(false);
-  const handleClose = () => {setShow(false);setMd(true);}
+  const handleClose = () => {
+    setShow(false);
+    setMd(true);
+  };
   const [countWindowAway, setCountWindowAway] = useState(0);
   const [countWindowAwayModal, setCountWindowAwayModal] = useState(false);
   const [testFinshBool, setTestFinishBool] = useState(false);
-  const[time,setTime] = useState();
-  const[md,setMd] = useState(false);
+  const [time, setTime] = useState();
+  const [md, setMd] = useState(false);
   const [newScreen, setNewScreen] = useState(false);
   const [timeFF, setTimeFF] = useState();
 
@@ -40,37 +43,48 @@ function CTestScreen() {
       setMd(false);
       isReload(true);
     }
-    if(!localStorage.getItem("test4")){
+    if (!localStorage.getItem("test4")) {
       let ax = JSON.parse(localStorage.getItem("test2"));
-      let user = ax['username']
-      let ar = ax['marks']
+      let user = ax["username"];
+      let ar = ax["marks"];
       let total = 0;
-      for(let i=0;i<ar.length;i++){
-          if(ar[i] !== -1)
-            total = total+ar[i]
-    }
-      axiosInstance.post('api/marks/2',{
-        data:{
-            username:user,
-            marks:total
-        }
-  }).then((res)=>{
-    console.log("done")
-      // localStorage.setItem('result',total)
-  })
-  .catch((e)=>console.log(e))            
+      for (let i = 0; i < ar.length; i++) {
+        if (ar[i] !== -1) total = total + ar[i];
+      }
+      axiosInstance
+        .post("api/marks/2", {
+          data: {
+            username: user,
+            marks: total,
+          },
+        })
+        .then((res) => {
+          console.log("done");
+          // localStorage.setItem('result',total)
+        })
+        .catch((e) => console.log(e));
       let txx = getCurrentTime();
       let hh = txx.hh;
       let mm = txx.mm;
       let ss = txx.ss;
-      localStorage.setItem("test4", JSON.stringify({'username':user,'STime':Date(),'FSTimer':'10','question':[],'strtTime':+ hh + ':' + mm+':'+ss,'currentQsNo':1}));
+      localStorage.setItem(
+        "test4",
+        JSON.stringify({
+          username: user,
+          STime: Date(),
+          FSTimer: "10",
+          question: [],
+          strtTime: +hh + ":" + mm + ":" + ss,
+          currentQsNo: 1,
+        })
+      );
     }
     var test = JSON.parse(localStorage.getItem("test4"));
     const token = localStorage.getItem("access_token");
     const isMyTokenExpired = isExpired(token);
     const channel = new BroadcastChannel("tab");
     const items = { ...localStorage };
-    console.log(items)
+    console.log(items);
 
     channel.postMessage("another-tab");
     // note that listener is added after posting the message
@@ -87,7 +101,7 @@ function CTestScreen() {
       if (test["question"].length !== 0) {
         console.info("This page is reloaded");
         isReload(true);
-        setShow(true)
+        setShow(true);
       }
     }
     if (isMyTokenExpired) {
@@ -101,99 +115,109 @@ function CTestScreen() {
           await axios
             .get("http://127.0.0.1:8000/api/subs/6")
             .then((res) => {
-              let a = converttime(res.data.time)
-              var tf=a;
-              var totalQs=res.data.qs
-              if(totalQs>0){
-              if (test["question"].length === 0) {
-                setTimeFF(tf)
-                setEasy(res.data.easy);
-                setHard(res.data.hard);
-                var mediumArrRes = res.data.medium;
-                var index = getRandomInt(0, res.data.medium.length);
-                setQs([...qs, mediumArrRes[index]]);
-                test["question"].push(mediumArrRes[index]);
-                test["currentLevel"] = 2;
-                mediumArrRes.splice(index, 1);
-                setMedium(mediumArrRes);
-                let ar = new Array(res.data.qs).fill(-1);
-                setAns(ar);
-                test["marks"] = ar;
-                localStorage.setItem("test4", JSON.stringify(test));
-              } else {
-                var qss = test["question"];
-                var x = res.data.easy;
-                var y = res.data.medium;
-                var z = res.data.hard;
-                for (let i = 0; i < qss.length; i++) {
-                  if (
-                    x
-                      .map(function (e) {
-                        return e.ques;
-                      })
-                      .indexOf(qss[i].ques) !== -1
-                  ) {
-                    let a = x
-                      .map(function (e) {
-                        return e.ques;
-                      })
-                      .indexOf(qss[i].ques);
-                    x.splice(a, 1);
-                  } else if (
-                    y
-                      .map(function (e) {
-                        return e.ques;
-                      })
-                      .indexOf(qss[i].ques) !== -1
-                  ) {
-                    let b = y
-                      .map(function (e) {
-                        return e.ques;
-                      })
-                      .indexOf(qss[i].ques);
-                    y.splice(b, 1);
-                  } else if (
-                    z
-                      .map(function (e) {
-                        return e.ques;
-                      })
-                      .indexOf(qss[i].ques) !== -1
-                  ) {
-                    let c = z
-                      .map(function (e) {
-                        return e.ques;
-                      })
-                      .indexOf(qss[i].ques);
-                    z.splice(c, 1);
+              let a = converttime(res.data.time);
+              var tf = a;
+              var totalQs = res.data.qs;
+              if (totalQs > 0) {
+                if (test["question"].length === 0) {
+                  setTimeFF(tf);
+                  setEasy(res.data.easy);
+                  setHard(res.data.hard);
+                  var mediumArrRes = res.data.medium;
+                  var index = getRandomInt(0, res.data.medium.length);
+                  setQs([...qs, mediumArrRes[index]]);
+                  test["question"].push(mediumArrRes[index]);
+                  test["currentLevel"] = 2;
+                  mediumArrRes.splice(index, 1);
+                  setMedium(mediumArrRes);
+                  let ar = new Array(res.data.qs).fill(-1);
+                  setAns(ar);
+                  test["marks"] = ar;
+                  localStorage.setItem("test4", JSON.stringify(test));
+                } else {
+                  var qss = test["question"];
+                  var x = res.data.easy;
+                  var y = res.data.medium;
+                  var z = res.data.hard;
+                  for (let i = 0; i < qss.length; i++) {
+                    if (
+                      x
+                        .map(function (e) {
+                          return e.ques;
+                        })
+                        .indexOf(qss[i].ques) !== -1
+                    ) {
+                      let a = x
+                        .map(function (e) {
+                          return e.ques;
+                        })
+                        .indexOf(qss[i].ques);
+                      x.splice(a, 1);
+                    } else if (
+                      y
+                        .map(function (e) {
+                          return e.ques;
+                        })
+                        .indexOf(qss[i].ques) !== -1
+                    ) {
+                      let b = y
+                        .map(function (e) {
+                          return e.ques;
+                        })
+                        .indexOf(qss[i].ques);
+                      y.splice(b, 1);
+                    } else if (
+                      z
+                        .map(function (e) {
+                          return e.ques;
+                        })
+                        .indexOf(qss[i].ques) !== -1
+                    ) {
+                      let c = z
+                        .map(function (e) {
+                          return e.ques;
+                        })
+                        .indexOf(qss[i].ques);
+                      z.splice(c, 1);
+                    }
                   }
+                  setEasy(x);
+                  setHard(z);
+                  setMedium(y);
+                  var ar = test["marks"];
+                  setAns(ar);
+                  setQsno(test["currentQsNo"] - 1);
+                  setQs(test["question"]);
+
+                  var ob = new Date();
+                  console.log(test["strtTime"]);
+                  console.log(ob.toLocaleTimeString());
+                  var h = (ob.getHours() < 10 ? "0" : "") + ob.getHours();
+                  var m = (ob.getMinutes() < 10 ? "0" : "") + ob.getMinutes();
+                  var s = (ob.getSeconds() < 10 ? "0" : "") + ob.getSeconds();
+
+                  var timeStart = new Date(
+                    new Date().toLocaleDateString() + " " + test["strtTime"]
+                  );
+                  var timeEnd = new Date(
+                    new Date().toLocaleDateString() +
+                      " " +
+                      h +
+                      ":" +
+                      m +
+                      ":" +
+                      s
+                  );
+                  var hourDiff = (timeEnd - timeStart) / 1000;
+                  console.log(timeEnd);
+                  console.log(timeStart);
+                  console.log(hourDiff);
+                  console.log(tf);
+                  setTimeFF(tf - hourDiff);
                 }
-                setEasy(x);
-                setHard(z);
-                setMedium(y);
-                var ar = test["marks"];
-                setAns(ar);
-                setQsno(test["currentQsNo"] - 1);
-                setQs(test["question"]);
-
-              var ob=new Date()
-        console.log(test['strtTime'])
-        console.log(ob.toLocaleTimeString())
-      var h = (ob.getHours()<10?'0':'') + ob.getHours();
-  var m = (ob.getMinutes()<10?'0':'') + ob.getMinutes();
-  var s = (ob.getSeconds()<10?'0':'') + ob.getSeconds();
-
-        var timeStart = new Date(new Date().toLocaleDateString()+' ' + test['strtTime']);
-        var timeEnd = new Date(new Date().toLocaleDateString()+' ' + h + ':' + m+':'+s);
-        var hourDiff = (timeEnd - timeStart)/1000;
-        console.log(timeEnd)
-        console.log(timeStart)
-        console.log(hourDiff)
-        console.log(tf)
-        setTimeFF(tf-hourDiff)
+              } else {
+                navigate("/admin/domain");
               }
-            }else{
-              navigate('/admin/domain')
-            }
             })
             .catch((e) => {
               console.log(e);
@@ -235,10 +259,10 @@ function CTestScreen() {
     }
   }
 
-  function converttime(timex){
+  function converttime(timex) {
     let secs = 0;
-    let x =timex.split(":")
-    secs = secs +(parseInt(x[0])*3600)+(parseInt(x[1])*60)+(parseInt(x[2])) 
+    let x = timex.split(":");
+    secs = secs + parseInt(x[0]) * 3600 + parseInt(x[1]) * 60 + parseInt(x[2]);
     return secs;
   }
 
@@ -302,12 +326,10 @@ function CTestScreen() {
         break;
     }
     test["marks"] = ans;
-    if(ans.length-1===qsno){
+    if (ans.length - 1 === qsno) {
       localStorage.setItem("test4", JSON.stringify(test));
-      navigate('/admin/domain')
-
-    }else{
-      
+      navigate("/admin/domain");
+    } else {
       setQsno(qsno + 1);
       test["currentQsNo"] = test["currentQsNo"] + 1;
       localStorage.setItem("test4", JSON.stringify(test));
@@ -338,7 +360,7 @@ function CTestScreen() {
               reset={md}
               time={10}
               start={show}
-              setMd = {setMd}
+              setMd={setMd}
               nextpage={"result"}
             ></CustomTimer>
           ) : (
@@ -363,23 +385,27 @@ function CTestScreen() {
             <Row>
               <Col md="9">
                 <div className="TestHeaderComp">
-                  {timeFF!==undefined && <TestHeaderComp
-                    timer={timeFF}
-                    start={!testFinshBool}
-                    reset={testFinshBool}
-                    timeKey="Time"
-                    totalKey="Total"
-                    totalValue={ans.length}
-                    header='Coding'
-                    nextpage={'admin/domain'}
-                    setMd = {setMd}
-                  ></TestHeaderComp>}
+                  {timeFF !== undefined && (
+                    <TestHeaderComp
+                      timer={timeFF}
+                      start={!testFinshBool}
+                      reset={testFinshBool}
+                      timeKey="Time"
+                      totalKey="Total"
+                      totalValue={ans.length}
+                      header="Coding"
+                      nextpage={"admin/domain"}
+                      setMd={setMd}
+                    ></TestHeaderComp>
+                  )}
                 </div>
               </Col>
               <Col md="3">
                 <button
                   onClick={(e) => {
-                    setTestFinishBool(true);setShow(false);setMd(true);
+                    setTestFinishBool(true);
+                    setShow(false);
+                    setMd(true);
                     navigate("/result");
                     if (document.exitFullscreen) {
                       document.exitFullscreen();
@@ -419,7 +445,7 @@ function CTestScreen() {
                       qs[qsno] !== undefined &&
                       !countWindowAwayModal && (
                         <QuestionComp
-                        ans={ans}
+                          ans={ans}
                           qsno={qsno}
                           level={current}
                           question={qs[qsno].ques}

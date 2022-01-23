@@ -6,227 +6,222 @@
   border-radius: 14px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
-.TestHeaderComp{
-    height: 100%;
-    padding-top: 10px;
-    background-color: #f8f9fa !important;
-    border-radius: 14px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-
+.TestHeaderComp {
+  height: 100%;
+  padding-top: 10px;
+  background-color: #f8f9fa !important;
+  border-radius: 14px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
-.QuestionComp{
-    height: 100%;
-    width: 100%;
-    padding-top: 10px;
-    background-color: #f8f9fa !important;
-    border-radius: 14px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-
+.QuestionComp {
+  height: 100%;
+  width: 100%;
+  padding-top: 10px;
+  background-color: #f8f9fa !important;
+  border-radius: 14px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
-.QuestionNavigatorComp{
-    color: cyan;
-    height: 100%;
-    width: 100%;
-    padding-top: 10px;
-    background-color: #f8f9fa !important;
-    border-radius: 14px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-
+.QuestionNavigatorComp {
+  color: cyan;
+  height: 100%;
+  width: 100%;
+  padding-top: 10px;
+  background-color: #f8f9fa !important;
+  border-radius: 14px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .rectangleInstuc {
   min-height: 60px;
   padding: 10px;
   margin-bottom: 5px;
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: 1px 1px 7px 2px rgba(0, 0, 0, 0.25);
   border-radius: 14px;
 }
 
-.navigatorBox{
-height: 35px;
-width: 35px;
-margin-left: 32px;
-margin-top: 25px;
-color: white;
-text-align: center;
-padding: 1px 0 0px 0 !important;
+.navigatorBox {
+  height: 35px;
+  width: 35px;
+  margin-left: 32px;
+  margin-top: 25px;
+  color: white;
+  text-align: center;
+  padding: 1px 0 0px 0 !important;
 }
-input{
-border: 0px !important;
+input {
+  border: 0px !important;
 }
-input:focus{
-border:0px !important;
+input:focus {
+  border: 0px !important;
 }
 .field-icon {
-float: right;
-margin-right: 10px;
-margin-top: -43px;
-position: relative;
-z-index: 2;
-color: #bbb5b5;
+  float: right;
+  margin-right: 10px;
+  margin-top: -43px;
+  position: relative;
+  z-index: 2;
+  color: #bbb5b5;
 }
-.field-icon:hover{
-cursor: pointer;
+.field-icon:hover {
+  cursor: pointer;
 }
-.nextQsBtn{
-width: 235px;
-background-color: #10B65C;
-margin-top: 40px;
-margin-left: 360px;
+.nextQsBtn {
+  width: 235px;
+  background-color: #10b65c;
+  margin-top: 40px;
+  margin-left: 360px;
 }
-
-
 
 .navBrand {
-display: flex !important;
-align-items: center !important;
-margin-left: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+  margin-left: 40px !important;
 }
 
 .logoTitle {
-border-left: 3px solid #E5E5E5;
-padding-left: 15px;
-margin-left: 15px;
+  border-left: 3px solid #e5e5e5;
+  padding-left: 15px;
+  margin-left: 15px;
 }
 
 .navbar-light .navbar-toggler {
-border: none !important;
-color: #fff !important;
+  border: none !important;
+  color: #fff !important;
 }
 
 .navButtons {
-border: none !important;
-outline: none !important;
-background-color: #fff !important;
-color: #293E6F !important;
-font-weight: 500 !important;
-font-size: 17px !important;
-margin-left: 15px !important;
-margin-right: 15px !important;
-display: block !important;
+  border: none !important;
+  outline: none !important;
+  background-color: #fff !important;
+  color: #293e6f !important;
+  font-weight: 500 !important;
+  font-size: 17px !important;
+  margin-left: 15px !important;
+  margin-right: 15px !important;
+  display: block !important;
 }
 
-.btn-check:focus+.btn-primary, .btn-primary:focus {
-box-shadow: none !important;
+.btn-check:focus + .btn-primary,
+.btn-primary:focus {
+  box-shadow: none !important;
 }
 
 .djsce {
-font-size: 20px;
-line-height: 25px;
-font-weight: 500;
-font-family: "Poppins";
-color: #293E6F;
+  font-size: 20px;
+  line-height: 25px;
+  font-weight: 500;
+  font-family: "Poppins";
+  color: #293e6f;
 }
 
 .it {
-font-size: 20px;
-line-height: 25px;
-font-weight: 600;
-font-family: "Poppins";
-color: #293E6F;
+  font-size: 20px;
+  line-height: 25px;
+  font-weight: 600;
+  font-family: "Poppins";
+  color: #293e6f;
 }
 
-@media screen and ( max-width: 1198px) {
-.navBrand {
+@media screen and (max-width: 1198px) {
+  .navBrand {
     display: flex !important;
     align-items: center !important;
     margin-left: 0px !important;
-}
-.logoImage {
+  }
+  .logoImage {
     display: none !important;
-}
-.navbar {
+  }
+  .navbar {
     padding: 0px !important;
-}
-.logoTitle {
+  }
+  .logoTitle {
     border-left: none;
     padding-left: 0px;
     margin-left: 10px;
-}
-.navButtons {
+  }
+  .navButtons {
     text-align: start !important;
     width: 100% !important;
-    border-top: 1px solid #E5E5E5 !important;
+    border-top: 1px solid #e5e5e5 !important;
     margin-right: 0px !important;
     margin-left: 0px !important;
     padding-left: 15px !important;
-}
-.djsce {
+  }
+  .djsce {
     font-size: 15px;
-}
-.it {
+  }
+  .it {
     font-size: 15px;
-}
+  }
 }
 
 /* webkit requires explicit width, height = 100% of sceeen */
 /* webkit also takes margin into account in full screen also - so margin should be removed (otherwise black areas will be seen) */
 #element:-webkit-full-screen {
-	width: 100%;
-	height: 100%;
-	background-color: white;
-	margin: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  margin: 0;
 }
 
 #element:-moz-full-screen {
-	background-color: white;
-	margin: 0;
+  background-color: white;
+  margin: 0;
 }
 
 #element:-ms-fullscreen {
-	background-color: white;
-	margin: 0;
+  background-color: white;
+  margin: 0;
 }
 
 /* W3C proposal that will eventually come in all browsers */
-#element:fullscreen { 
-	background-color: white;
-	margin: 0;
+#element:fullscreen {
+  background-color: white;
+  margin: 0;
 }
 
 #testHeaderComp {
-    padding: 5px 20px 0 20px;
-    color: #081466 !important;
-    font-weight: bolder !important;
-    font-size: 24px;
-    line-height: 26px;
-
+  padding: 5px 20px 0 20px;
+  color: #081466 !important;
+  font-weight: bolder !important;
+  font-size: 24px;
+  line-height: 26px;
 }
-#questionNavComp{
-    color: #293E6F;
-    font-weight: 600;
-    font-size: 24px;
-    line-height: 36px;
+#questionNavComp {
+  color: #293e6f;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 36px;
 }
 
-#quesComp{
-   color: #293E6F !important;
+#quesComp {
+  color: #293e6f !important;
 }
 
 .qsRadio:after {
-    width: 15px;
-    height: 15px;
-    border-radius: 15px;
-    top: -17px;
-    left: -1px;
-    position: relative;
-    background-color: red;
-    content: '';
-    display: inline-block;
-    visibility: visible;
-    border: 2px solid white;
+  width: 15px;
+  height: 15px;
+  border-radius: 15px;
+  top: -17px;
+  left: -1px;
+  position: relative;
+  background-color: red;
+  content: "";
+  display: inline-block;
+  visibility: visible;
+  border: 2px solid white;
 }
 
 .qsRadio:checked:after {
-    width: 15px;
-    height: 15px;
-    border-radius: 15px;
-    top: -17px;
-    left: -1px;
-    position: relative;
-    background-color: #10B65C;
-    content: '';
-    display: inline-block;
-    visibility: visible;
-    border: 2px solid white;
+  width: 15px;
+  height: 15px;
+  border-radius: 15px;
+  top: -17px;
+  left: -1px;
+  position: relative;
+  background-color: #10b65c;
+  content: "";
+  display: inline-block;
+  visibility: visible;
+  border: 2px solid white;
 }

@@ -3,9 +3,9 @@ import ReactDOM from "react-dom";
 import Select from "react-select";
 
 const options = [
-  { value: "Question 1", label: "Question 1"},
+  { value: "Question 1", label: "Question 1" },
   { value: "Question 2", label: "Question 2" },
-  { value: "Question 3", label: "Question 3"}
+  { value: "Question 3", label: "Question 3" },
 ];
 
 const formatOptionLabel = ({ value, label, customAbbreviation }) => (
@@ -17,17 +17,15 @@ const formatOptionLabel = ({ value, label, customAbbreviation }) => (
   </div>
 );
 
-
-
 function CustomSelect() {
-    return (
-
-        <Select className='basicRec'
-    defaultValue={options[0]}
-    formatOptionLabel={formatOptionLabel}
-    options={options}
-  />
-    )
+  return (
+    <Select
+      className="basicRec"
+      defaultValue={options[0]}
+      formatOptionLabel={formatOptionLabel}
+      options={options}
+    />
+  );
 }
 
-export default CustomSelect
+export default CustomSelect;

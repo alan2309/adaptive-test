@@ -1,60 +1,55 @@
-#title{
-    font-style: normal;
-    font-weight: 500;
-    font-size: 24px;
-    line-height: 36px;
-    text-align:center;
+#title {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 36px;
+  text-align: center;
 }
-#subTitle{
-    font-style: normal;
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 27px;
-    text-align:center;
-    margin-top:15px;
+#subTitle {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 27px;
+  text-align: center;
+  margin-top: 15px;
 }
-#instruc{
-    
-    text-align: center;
-    font-weight: bold !important;
-font-size: 24px;
-line-height: 36px;
+#instruc {
+  text-align: center;
+  font-weight: bold !important;
+  font-size: 24px;
+  line-height: 36px;
 }
 .loginInpRec {
-    min-height: 20px;
-    padding: 10px;
-    margin-bottom: 5px;
-    background-color: #f8f9fa !important;
-    border-radius: 14px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  }
-  .rectangleInstuc {
-    min-height: 60px;
-    padding: 5px 5px 10px 10px;
-    margin-bottom: 5px;
-    background: #FFFFFF;
-    box-shadow: 1px 1px 7px 2px rgba(0, 0, 0, 0.25);
-    border-radius: 14px;
-  }
-  
-  input{
+  min-height: 20px;
+  padding: 10px;
+  margin-bottom: 5px;
+  background-color: #f8f9fa !important;
+  border-radius: 14px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.rectangleInstuc {
+  min-height: 60px;
+  padding: 5px 5px 10px 10px;
+  margin-bottom: 5px;
+  background: #ffffff;
+  box-shadow: 1px 1px 7px 2px rgba(0, 0, 0, 0.25);
+  border-radius: 14px;
+}
+
+input {
   border: 0px !important;
-  }
-  input:focus{
-  border:0px !important;
-  }
-  .field-icon {
+}
+input:focus {
+  border: 0px !important;
+}
+.field-icon {
   float: right;
   margin-right: 10px;
   margin-top: -35px;
   position: relative;
   z-index: 2;
   color: #bbb5b5;
-  }
-  .field-icon:hover{
+}
+.field-icon:hover {
   cursor: pointer;
-  }
-
-
-
-
+}

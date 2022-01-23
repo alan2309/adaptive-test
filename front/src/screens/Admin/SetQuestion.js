@@ -6,7 +6,6 @@ import { useLocation } from "react-router-dom";
 import axiosInstance from "../../axios";
 import $ from "jquery";
 
-
 function SetQuestion() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -21,9 +20,9 @@ function SetQuestion() {
   const [isUpdate, setIsUpdate] = useState(false);
   const [windowHeight, setWindowHeight] = useState(window.screen.height);
   useEffect(() => {
-    var divHeight=document.querySelector('#SETQS').clientHeight
-    setWindowHeight(divHeight)
-    localStorage.removeItem('isNewTestReload')
+    var divHeight = document.querySelector("#SETQS").clientHeight;
+    setWindowHeight(divHeight);
+    localStorage.removeItem("isNewTestReload");
     console.log(location.state.navArr);
     var temp = location.state.navArr;
     setNavArray(temp);
@@ -67,10 +66,7 @@ function SetQuestion() {
     }
     console.log(dictionary);
     axiosInstance.post("api/admin/addQs", { data: dictionary }).then((res) => {
-      //Alankrit
-
-      //after saving add value to --->navArray
-      navigate("/admin/newTest",{state:{'sid':location.state.sid-1}});
+      navigate("/admin/newTest", { state: { sid: location.state.sid - 1 } });
     });
   }
   function delOpt(e) {
@@ -156,60 +152,57 @@ function SetQuestion() {
   function delQuestion(e) {
     //Alankrit
     //array to del from  ---> navArray
-    var elCheckBox= document.getElementsByClassName('styled-checkbox')
-    var $boxes = $('input[name=styleCheckBox]:checked');
+    var elCheckBox = document.getElementsByClassName("styled-checkbox");
+    var $boxes = $("input[name=styleCheckBox]:checked");
 
-    if(elCheckBox[0].style.display!=='none'){
-      if($boxes.length===0){
-      for(var x=0;x<elCheckBox.length;x++){
-        elCheckBox[x].style.display='none'
-      }  
-  }else{
-    if (window.confirm("Do you want to delete ?")) {
-      var a=[]
-    $boxes.each(function(item){
-      // Do stuff here with this
-      var val=$boxes[item].value
-      val=val.split('CheckBox')[1]
-      console.log(val)
-      a.push(parseInt(val))
-      
-  });
-  axiosInstance.post("api/admin/delQs", { delQs: a }).then((res) => {
-   navigate("/admin/newTest",{state:{'sid':location.state.sid-1}});
-  });
-    } 
-  }
-}else{
-  
-  for(var x=0;x<elCheckBox.length;x++){
-    elCheckBox[x].style.display='inline-block'
-  }
-}
-    
-  
+    if (elCheckBox[0].style.display !== "none") {
+      if ($boxes.length === 0) {
+        for (var x = 0; x < elCheckBox.length; x++) {
+          elCheckBox[x].style.display = "none";
+        }
+      } else {
+        if (window.confirm("Do you want to delete ?")) {
+          var a = [];
+          $boxes.each(function (item) {
+            // Do stuff here with this
+            var val = $boxes[item].value;
+            val = val.split("CheckBox")[1];
+            console.log(val);
+            a.push(parseInt(val));
+          });
+          axiosInstance.post("api/admin/delQs", { delQs: a }).then((res) => {
+            navigate("/admin/newTest", {
+              state: { sid: location.state.sid - 1 },
+            });
+          });
+        }
+      }
+    } else {
+      for (var x = 0; x < elCheckBox.length; x++) {
+        elCheckBox[x].style.display = "inline-block";
+      }
+    }
   }
   function fillData(e) {
     console.log(e);
-    console.log('acacsasc');
+    console.log("acacsasc");
     console.log(e.target.id);
-    console.log('acacsasc');    document.getElementById("sbForm").reset();
+    console.log("acacsasc");
+    document.getElementById("sbForm").reset();
 
     setCurrentQs(navArray[e.target.id].ques);
     setCurrentQsID(navArray[e.target.id].id);
     setOpt(navArray[e.target.id].options);
     setCurrentQsNo(`${parseInt(e.target.id) + 1}`);
   }
-  function reportWindowSize(e){
-    alert('lol')
-    console.log(e)
-    setWindowHeight(window.screen.height)
+  function reportWindowSize(e) {
+    alert("lol");
+    console.log(e);
+    setWindowHeight(window.screen.height);
   }
 
   return (
     <div>
-  
-    
       <form onSubmit={(e) => handleSubmit(e)} id="sbForm">
         <input name="sectionName" value={location.state.sectionName} hidden />
         <input
@@ -224,7 +217,7 @@ function SetQuestion() {
         <Row>
           <Col md={9}>
             <div
-            id='SETQS'
+              id="SETQS"
               className="basicRec SetQuestion"
               style={{
                 margin: "0px 50px",
@@ -251,7 +244,7 @@ function SetQuestion() {
                       class="form-control form-field"
                       disabled={!isUpdate}
                       defaultValue={
-                        isNew && currentQsNo == navArray.length ? "" :currentQs
+                        isNew && currentQsNo == navArray.length ? "" : currentQs
                       }
                       form="sbForm"
                       name={`question${currentQsID}`}
@@ -259,7 +252,7 @@ function SetQuestion() {
                       placeholder="Enter Question"
                       rows="8"
                       style={{ maxWidth: "100%", resize: "none" }}
-                      required 
+                      required
                     ></textarea>
                   </div>
                 </Row>
@@ -393,122 +386,177 @@ function SetQuestion() {
           </Col>
           <Col md={3}>
             <div className="basicRec" id="wrapper">
-             
-          
-
-            {isUpdate ? (
-              <>
-               <div style={{justifyContent:'space-between',display: 'flex',padding:'10px 10px 0 10px'}}>  Question Navigator 
-               <button
-                     class="btn"
-                     type="button"
-                     style={{padding:'0'}}
-                     onClick={(e) => {
-                     }}
-                   
-                   >
-                     <i class="fa fa-trash" style={{ color: "grey" }}></i>
-                   </button></div>
-                <div
-                  class="scrollbar"
-                  style={{
-                    height: windowHeight,
-                    padding: "5px",
-                    maxWidth: "100%",
-                    backgroundColor: "#e9ecef",
-                  }}
-                  id="style-4"
-                >
-                  {navArray !== undefined &&
-                    navArray.map((ittr, index) => {
-                      return (
-                        <>
-                          {console.log(ittr)}
-                          <div style={{
-                              boxShadow: `rgba(0, 0, 0, 0.02) 0 1px 3px 0`,
-                              backgroundColor: "#e9ecef",
-                              minHeight: "40px",
-                              padding:'10px 5px 10px 5px',
-                              boxSizing: `border-box`,
-                              width: "100%",
-                              marginBottom: "2px",
-                              color: `rgba(0, 0, 0, 0.85)`,
-                            }}><Row>
-                            <Col md={1}>
-                              <input class="styled-checkbox" style={{display:'none'}} disabled id={`styled-checkbox-${index}`} type="checkbox" onClick={(e)=>{}} value={`value${index}`}/>
-                              </Col>
-                            <Col md={11 }>
-                            <div id={index}  className="qsNavButt"  style={{textOverflow:'ellipsis',whiteSpace:'nowrap',overflow:'hidden'}}>{ittr.ques || "New Qs"}</div> 
-                            </Col>
-                          </Row></div>
-                        </>
-                      );
-                    })}
-                  {navArray !== undefined && navArray.length === 0
-                    ? (setIsNew(true),
-                      setIsUpdate(true),
-                      setNavArray((prev) => [...prev, -1]),
-                      setCurrentQsNo(navArray.length + 1),
-                      setCurrentQsID("New"),
-                      setOpt([]))
-                    : null}
-                </div>
+              {isUpdate ? (
+                <>
+                  <div
+                    style={{
+                      justifyContent: "space-between",
+                      display: "flex",
+                      padding: "10px 10px 0 10px",
+                    }}
+                  >
+                    {" "}
+                    Question Navigator
+                    <button
+                      class="btn"
+                      type="button"
+                      style={{ padding: "0" }}
+                      onClick={(e) => {}}
+                    >
+                      <i class="fa fa-trash" style={{ color: "grey" }}></i>
+                    </button>
+                  </div>
+                  <div
+                    class="scrollbar"
+                    style={{
+                      height: windowHeight,
+                      padding: "5px",
+                      maxWidth: "100%",
+                      backgroundColor: "#e9ecef",
+                    }}
+                    id="style-4"
+                  >
+                    {navArray !== undefined &&
+                      navArray.map((ittr, index) => {
+                        return (
+                          <>
+                            {console.log(ittr)}
+                            <div
+                              style={{
+                                boxShadow: `rgba(0, 0, 0, 0.02) 0 1px 3px 0`,
+                                backgroundColor: "#e9ecef",
+                                minHeight: "40px",
+                                padding: "10px 5px 10px 5px",
+                                boxSizing: `border-box`,
+                                width: "100%",
+                                marginBottom: "2px",
+                                color: `rgba(0, 0, 0, 0.85)`,
+                              }}
+                            >
+                              <Row>
+                                <Col md={1}>
+                                  <input
+                                    class="styled-checkbox"
+                                    style={{ display: "none" }}
+                                    disabled
+                                    id={`styled-checkbox-${index}`}
+                                    type="checkbox"
+                                    onClick={(e) => {}}
+                                    value={`value${index}`}
+                                  />
+                                </Col>
+                                <Col md={11}>
+                                  <div
+                                    id={index}
+                                    className="qsNavButt"
+                                    style={{
+                                      textOverflow: "ellipsis",
+                                      whiteSpace: "nowrap",
+                                      overflow: "hidden",
+                                    }}
+                                  >
+                                    {ittr.ques || "New Qs"}
+                                  </div>
+                                </Col>
+                              </Row>
+                            </div>
+                          </>
+                        );
+                      })}
+                    {navArray !== undefined && navArray.length === 0
+                      ? (setIsNew(true),
+                        setIsUpdate(true),
+                        setNavArray((prev) => [...prev, -1]),
+                        setCurrentQsNo(navArray.length + 1),
+                        setCurrentQsID("New"),
+                        setOpt([]))
+                      : null}
+                  </div>
                 </>
-            ) : (
-              <>
-               <div style={{justifyContent:'space-between',display: 'flex',padding:'10px 10px 0 10px'}}>  Question Navigator 
-            <button
-                  class="btn"
-                  type="button"
-                  style={{padding:'0'}}
-                  onClick={(e) => delQuestion(e)}
-                
-                >
-                  <i class="fa fa-trash" style={{ color: "red" }}></i>
-                </button></div>
-                <div
-                  class="scrollbar"
-                  style={{
-                    height: windowHeight,
-                    padding: "5px",
-                    maxWidth: "100%",
-                    backgroundColor: "white",
-                  }}
-                  id="style-4"
-                >
-                  {navArray !== undefined &&
-                    navArray.map((ittr, index) => {
-                      return (
-                        <>
-                          {console.log(ittr)}
-                          <div style={{
-                              boxShadow: `rgba(0, 0, 0, 0.02) 0 1px 3px 0`,
-                              backgroundColor: "#e9ecef",
-                              minHeight: "40px",
-                              padding:'10px 5px 10px 5px',
-                              boxSizing: `border-box`,
-                              width: "100%",
-                              marginBottom: "2px",
-                              color: `rgba(0, 0, 0, 0.85)`,
-                            }}><Row>
-                            <Col md={1}>
-                              <input className="styled-checkbox" style={{display:'none'}} name='styleCheckBox' id={`styled-checkbox-${index}`} type="checkbox" onClick={(e)=>{}} value={`valueCheckBox${ittr.id}`}/>
-                              </Col>
-                            <Col md={11 }>
-                            <div id={index} className="qsNavBut" onClick={fillData} style={{textOverflow:'ellipsis',whiteSpace:'nowrap',overflow:'hidden'}}>{ittr.ques || "New Qs"}</div> 
-                            </Col>
-                          </Row></div>
-                          
-                        </>
-                      
-                      );
-                    }  )}
-                  {navArray !== undefined && navArray.length === 0 && (
-                    <h5>Add question to view</h5>
-                  )}
-                </div>
+              ) : (
+                <>
+                  <div
+                    style={{
+                      justifyContent: "space-between",
+                      display: "flex",
+                      padding: "10px 10px 0 10px",
+                    }}
+                  >
+                    {" "}
+                    Question Navigator
+                    <button
+                      class="btn"
+                      type="button"
+                      style={{ padding: "0" }}
+                      onClick={(e) => delQuestion(e)}
+                    >
+                      <i class="fa fa-trash" style={{ color: "red" }}></i>
+                    </button>
+                  </div>
+                  <div
+                    class="scrollbar"
+                    style={{
+                      height: windowHeight,
+                      padding: "5px",
+                      maxWidth: "100%",
+                      backgroundColor: "white",
+                    }}
+                    id="style-4"
+                  >
+                    {navArray !== undefined &&
+                      navArray.map((ittr, index) => {
+                        return (
+                          <>
+                            {console.log(ittr)}
+                            <div
+                              style={{
+                                boxShadow: `rgba(0, 0, 0, 0.02) 0 1px 3px 0`,
+                                backgroundColor: "#e9ecef",
+                                minHeight: "40px",
+                                padding: "10px 5px 10px 5px",
+                                boxSizing: `border-box`,
+                                width: "100%",
+                                marginBottom: "2px",
+                                color: `rgba(0, 0, 0, 0.85)`,
+                              }}
+                            >
+                              <Row>
+                                <Col md={1}>
+                                  <input
+                                    className="styled-checkbox"
+                                    style={{ display: "none" }}
+                                    name="styleCheckBox"
+                                    id={`styled-checkbox-${index}`}
+                                    type="checkbox"
+                                    onClick={(e) => {}}
+                                    value={`valueCheckBox${ittr.id}`}
+                                  />
+                                </Col>
+                                <Col md={11}>
+                                  <div
+                                    id={index}
+                                    className="qsNavBut"
+                                    onClick={fillData}
+                                    style={{
+                                      textOverflow: "ellipsis",
+                                      whiteSpace: "nowrap",
+                                      overflow: "hidden",
+                                    }}
+                                  >
+                                    {ittr.ques || "New Qs"}
+                                  </div>
+                                </Col>
+                              </Row>
+                            </div>
+                          </>
+                        );
+                      })}
+                    {navArray !== undefined && navArray.length === 0 && (
+                      <h5>Add question to view</h5>
+                    )}
+                  </div>
                 </>
-            )}
+              )}
             </div>
           </Col>
         </Row>
@@ -517,7 +565,9 @@ function SetQuestion() {
             style={{ color: "white" }}
             type="button"
             onClick={(e) =>
-              navigate("/admin/newTest",{state:{'sid':location.state.sid-1}})
+              navigate("/admin/newTest", {
+                state: { sid: location.state.sid - 1 },
+              })
             }
             className="btn scTest"
           >
@@ -537,7 +587,6 @@ function SetQuestion() {
                   ? "Save"
                   : "Update"}
               </button>
-            
             </>
           )}
 
@@ -561,7 +610,6 @@ function SetQuestion() {
         </Row>
       </form>
     </div>
-   
   );
 }
 
