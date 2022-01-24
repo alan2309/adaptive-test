@@ -12,6 +12,7 @@ from django.contrib.auth.models import User
 import datetime
 from rest_framework.parsers import JSONParser
 from .serializers import SubjectSerializer,QuestionSerializer 
+import math
 
 @csrf_exempt
 def subqs(request,subject=0):
@@ -124,8 +125,8 @@ class BlackListTokenView(APIView):
 
 @csrf_exempt
 def results(request,name):
+    user = User.objects.get(username = name) 
     if request.method == 'POST':
-        user = User.objects.get(username = name) 
         if(user):
             d = datetime.datetime.now()
             try:
@@ -138,7 +139,61 @@ def results(request,name):
             result.save()
             return JsonResponse("Result entry created",safe=False)
         else:
-            return JsonResponse("User Doesn't exist",safe=False) 
+            return JsonResponse("User Doesn't exist",safe=False)
+    elif request.method=='GET':
+        if user:
+            data=chartData(user)
+            
+            return JsonResponse(data,safe=False)
+
+def chartData(user):
+    totalQs=0
+    subs=Subject.objects.all()
+    a=[]
+    aa={}
+    mrksScored=[]
+    mrksScoredPercent=[]
+    for sub in subs:
+        totalQs+=sub.sub_qs
+        avgMarks=sub.sub_qs*2*0.7 # 70% average
+        avgMarks=math.ceil(avgMarks)
+        aa[sub.sub_name]=avgMarks
+    a=[aa['Aptitude'],aa['Computer Fundamentals'],aa['Domain'],aa['Personality'],aa['Coding'],aa['Analytical Writing']]
+    try:
+        resl=Results.objects.get(student = user)
+        apMax=1
+        cfMax=1
+        dMax=1
+        pMax=1
+        aMax=1
+        cMax=1
+        print('-----------')
+        if(sum(resl.marks['apMax'])>0):
+            apMax=sum(resl.marks['apMax'])
+        if(sum(resl.marks['cfMax'])>0):
+            cfMax=sum(resl.marks['cfMax'])
+        if(sum(resl.marks['dMax'])>0):
+            dMax=sum(resl.marks['dMax'])
+        if(sum(resl.marks['pMax'])>0):
+            pMax=sum(resl.marks['pMax'])
+        if(sum(resl.marks['cMax'])>0):
+            cMax=sum(resl.marks['cMax'])
+        if(sum(resl.marks['aMax'])>0):
+            aMax=sum(resl.marks['aMax'])
+        mrksScoredPercent=[round((resl.marks['ap']/apMax)*100,2),round((resl.marks['cf']/cfMax)*100,2),round((resl.marks['d']/dMax)*100,2),round((resl.marks['p']/pMax)*100,2),round((resl.marks['c']/cMax)*100,2),round((resl.marks['a']/aMax)*100,2)]
+        mrksScored=[resl.marks['ap'],resl.marks['cf'],resl.marks['d'],resl.marks['p'],resl.marks['c'],resl.marks['a']]
+        FMT = '%H:%M:%S'
+        s1 = "{}:{}:{}".format(str(resl.endTime.hour),str(resl.endTime.minute),str(resl.endTime.second))
+        s2 = "{}:{}:{}".format(str(resl.startTime.hour),str(resl.startTime.minute),str(resl.startTime.second))
+        tdelta = datetime.datetime.strptime(str(s1), FMT) - datetime.datetime.strptime(str(s2), FMT)
+
+        print(tdelta.seconds)
+    except Results.DoesNotExist:
+        print('No previous entry')
+        resl=0
+    return {'startTime':resl.startTime,'endTime':resl.endTime,'marks':resl.marks,'totalQs':totalQs,'avgMarksArr':a,'mrksScored':mrksScored,'mrksScoredPercent':mrksScoredPercent,'totalMarksScored':sum(mrksScored),'timeTaken':tdelta.seconds}
+
+         
 
 @csrf_exempt        
 def marks(request,sid=0):
@@ -184,7 +239,8 @@ def marks(request,sid=0):
                     return JsonResponse("Error",safe=False)
                 result.endTime = d.time()
                 result.save()
-                return JsonResponse({'resultMarks':result.marks,'startTime':result.startTime,'endTime':result.endTime,'student':result.student.username},safe=False)
+                data=chartData(user)
+                return JsonResponse(data,safe=False)
             else:
                 return JsonResponse("Restart Test",safe=False)
         else:

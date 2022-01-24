@@ -52,46 +52,45 @@ function Login() {
         password: formData.password,
       })
       .then(async (res) => {
-        let xx =await availabilty()
-        if(xx){
-
-        
-        var ob = new Date();
-        var h = (ob.getHours() < 10 ? "0" : "") + ob.getHours();
-        var m = (ob.getMinutes() < 10 ? "0" : "") + ob.getMinutes();
-        var s = (ob.getMinutes() < 10 ? "0" : "") + ob.getSeconds();
-        axiosInstance.post(`api/results/${formData.username}`);
-        localStorage.setItem("access_token", res.data.access);
-        localStorage.setItem("refresh_token", res.data.refresh);
-        localStorage.setItem(
-          "test",
-          JSON.stringify({
-            username: formData.username,
-            STime: Date(),
-            strtTime: +h + ":" + m + ":" + s,
-            FSTimer: "10",
-            question: [],
-            currentQsNo: 1,
-          })
-        );
-        axiosInstance.defaults.headers["Authorization"] =
-          "JWT " + localStorage.getItem("access_token");
-        navigate("/testScreen");
-      }else{
-          alert('test not available')
-      }
-    });
-    
+        let xx = await availabilty();
+        if (xx) {
+          var ob = new Date();
+          var h = (ob.getHours() < 10 ? "0" : "") + ob.getHours();
+          var m = (ob.getMinutes() < 10 ? "0" : "") + ob.getMinutes();
+          var s = (ob.getMinutes() < 10 ? "0" : "") + ob.getSeconds();
+          axiosInstance.post(`api/results/${formData.username}`);
+          localStorage.setItem("access_token", res.data.access);
+          localStorage.setItem("username", formData.username);
+          localStorage.setItem("refresh_token", res.data.refresh);
+          localStorage.setItem(
+            "test",
+            JSON.stringify({
+              username: formData.username,
+              STime: Date(),
+              strtTime: +h + ":" + m + ":" + s,
+              FSTimer: "10",
+              question: [],
+              currentQsNo: 1,
+            })
+          );
+          axiosInstance.defaults.headers["Authorization"] =
+            "JWT " + localStorage.getItem("access_token");
+          navigate("/testScreen");
+        } else {
+          alert("test not available");
+        }
+      });
   };
-  async function availabilty(){
+  async function availabilty() {
     let aa = 0;
-    await axios.get("http://127.0.0.1:8000/api/test")
-    .then(res=>{
-      aa = res.data
-    })
-    .catch(e=>{
-      console.log(e)
-    })
+    await axios
+      .get("http://127.0.0.1:8000/api/test")
+      .then((res) => {
+        aa = res.data;
+      })
+      .catch((e) => {
+        console.log(e);
+      });
     return aa;
   }
   return (
