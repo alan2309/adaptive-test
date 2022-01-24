@@ -54,6 +54,7 @@ function Login() {
       .then(async (res) => {
         let xx = await availabilty();
         if (xx !== -1) {
+          localStorage.setItem("testId", xx); //imp
           var ob = new Date();
           var h = (ob.getHours() < 10 ? "0" : "") + ob.getHours();
           var m = (ob.getMinutes() < 10 ? "0" : "") + ob.getMinutes();
@@ -64,6 +65,7 @@ function Login() {
           localStorage.setItem("access_token", res.data.access);
           localStorage.setItem("username", formData.username);
           localStorage.setItem("refresh_token", res.data.refresh);
+
           localStorage.setItem(
             "test",
             JSON.stringify({

@@ -145,11 +145,12 @@ def results(request,name):
             return JsonResponse("User Doesn't exist",safe=False)
     elif request.method=='GET':
         if user:
-            data=chartData(user)
+            testId=request.GET.get('testId')
+            data=chartData(user,testId)
             
             return JsonResponse(data,safe=False)
 
-def chartData(user):
+def chartData(user,testId=-1):
     totalQs=0
     subs=Subject.objects.all()
     a=[]
@@ -163,7 +164,7 @@ def chartData(user):
         aa[sub.sub_name]=avgMarks
     a=[aa['Aptitude'],aa['Computer Fundamentals'],aa['Domain'],aa['Personality'],aa['Coding'],aa['Analytical Writing']]
     try:
-        resl=Results.objects.get(student = user)
+        resl=Results.objects.get(student = user,test=Test.objects.get(id=testId))
         apMax=1
         cfMax=1
         dMax=1
@@ -223,7 +224,7 @@ def marks(request,sid=0):
         d = datetime.datetime.now()
         user = User.objects.get(username = data['username'])
         if(user):
-            result = Results.objects.get(student = user)
+            result = Results.objects.get(student = user,test=Test.objects.get(id=data['testId']))
             
             if(result):
                 if sid == 1:
@@ -259,7 +260,7 @@ def marks(request,sid=0):
                     return JsonResponse("Error",safe=False)
                 result.endTime = d.time()
                 result.save()
-                data=chartData(user)
+                data=chartData(user,data['testId'])
                 return JsonResponse(data,safe=False)
             else:
                 return JsonResponse("Restart Test",safe=False)

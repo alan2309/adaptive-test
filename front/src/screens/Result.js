@@ -73,6 +73,7 @@ function Result() {
             marks: total,
             maxMarks: maxMarks,
             gotMarks: gotMarks,
+            testId: localStorage.getItem("testId"),
           },
         })
         .then((res) => {
@@ -95,7 +96,11 @@ function Result() {
       var user = localStorage.getItem("username");
       if (user) {
         axiosInstance
-          .get(`api/results/${user}`)
+          .get(`api/results/${user}`, {
+            params: {
+              testId: localStorage.getItem("testId"),
+            },
+          })
           .then((res) => {
             console.log("done");
             console.log(res.data);

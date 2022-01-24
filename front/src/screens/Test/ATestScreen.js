@@ -47,8 +47,8 @@ function ATestScreen() {
       let ax = JSON.parse(localStorage.getItem("test6"));
       let user = ax["username"];
       let ar = ax["marks"];
-      let maxMarks=ax['maxMarks'];
-      let gotMarks=ax['marks'];
+      let maxMarks = ax["maxMarks"];
+      let gotMarks = ax["marks"];
       let total = 0;
       for (let i = 0; i < ar.length; i++) {
         if (ar[i] !== -1) total = total + ar[i];
@@ -58,13 +58,14 @@ function ATestScreen() {
           data: {
             username: user,
             marks: total,
-            maxMarks:maxMarks,
-            gotMarks:gotMarks
+            maxMarks: maxMarks,
+            gotMarks: gotMarks,
+            testId: localStorage.getItem("testId"),
           },
         })
         .then((res) => {
           console.log("done");
-          localStorage.removeItem('test6')
+          localStorage.removeItem("test6");
         })
         .catch((e) => console.log(e));
       let txx = getCurrentTime();
@@ -137,7 +138,7 @@ function ATestScreen() {
                   let ar = new Array(res.data.qs).fill(-1);
                   setAns(ar);
                   test["marks"] = ar;
-                  test['maxMarks']=[2]
+                  test["maxMarks"] = [2];
                   localStorage.setItem("test3", JSON.stringify(test));
                 } else {
                   var qss = test["question"];
@@ -313,7 +314,7 @@ function ATestScreen() {
         setQs([...qs, easy[index]]);
         test["question"].push(easy[index]);
         test["currentLevel"] = 1;
-        if (ans.length - 1 !== qsno) test['maxMarks'].push(1)
+        if (ans.length - 1 !== qsno) test["maxMarks"].push(1);
         easy.splice(index, 1);
         break;
       case 2:
@@ -321,7 +322,7 @@ function ATestScreen() {
         setQs([...qs, medium[index]]);
         test["question"].push(medium[index]);
         test["currentLevel"] = 2;
-        if (ans.length - 1 !== qsno) test['maxMarks'].push(2)
+        if (ans.length - 1 !== qsno) test["maxMarks"].push(2);
         medium.splice(index, 1);
         break;
       case 3:
@@ -329,7 +330,7 @@ function ATestScreen() {
         setQs([...qs, hard[index]]);
         test["question"].push(hard[index]);
         test["currentLevel"] = 3;
-        if (ans.length - 1 !== qsno) test['maxMarks'].push(5)
+        if (ans.length - 1 !== qsno) test["maxMarks"].push(5);
         hard.splice(index, 1);
         break;
     }
