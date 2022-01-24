@@ -1,9 +1,29 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import { Row, Col } from "react-bootstrap";
 import "../../css/SchdlTest.css";
 import { useNavigate } from "react-router-dom";
+import  axios  from "axios";
+
 function ScheduledTest() {
+  const [stests,setSTests] = useState([]);
+  const [utests,setUTests] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(()=>{
+    const data = async ()=>{
+      await axios.get('http://127.0.0.1:8000/api/admin/tests')
+      .then(res=>{
+        console.log(res.data)
+        setSTests(res.data.stests);
+        setUTests(res.data.utests);
+      })
+      .catch(e=>{
+        console.log(e)
+      })
+    }
+
+    data()
+  },[])
   return (
     <div className="SchdlTest">
       <button
@@ -24,6 +44,9 @@ function ScheduledTest() {
               Scheduled Test
             </h4>
             <div className="lineThrough"></div>
+            {stests.map((t,index)=>{
+              return <p key={index}>{t.test_name}</p>
+            })}
           </div>
         </Col>
         <Col md={6} style={{ marginRight: "0%" }}>
@@ -36,6 +59,9 @@ function ScheduledTest() {
               Upcoming Test
             </h4>
             <div className="lineThrough"></div>
+            {utests.map((t,index)=>{
+              return <p key={index}>{t.test_name}</p>
+            })}
           </div>
         </Col>
       </Row>

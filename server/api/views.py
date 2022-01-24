@@ -11,8 +11,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 import datetime
 from rest_framework.parsers import JSONParser
-from .serializers import SubjectSerializer,QuestionSerializer 
+from .serializers import SubjectSerializer,QuestionSerializer, TestSerializer 
 import math
+from django.db.models import Q
 
 @csrf_exempt
 def subqs(request,subject=0):
@@ -324,3 +325,13 @@ def tests(request):
         test = Test.objects.create(test_name=data['name'],test_start = datetime.datetime.now(),test_end=datetime.datetime.now())
         test.save()
         return JsonResponse('Created',safe=False)
+        
+def getTests(request):
+    if request.method == 'GET':
+        d = datetime.datetime.now()
+        stests = Test.objects.filter(Q(test_end__lte=d) | Q(test_start__lt=d))
+        utests = Test.objects.filter(test_start__gt=d) 
+        print(stests)
+        stestS = TestSerializer(stests,many=True)
+        utestS = TestSerializer(utests,many=True)
+        return JsonResponse({"stests":stestS.data,"utests":utestS.data},safe=False)

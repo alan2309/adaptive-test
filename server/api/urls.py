@@ -8,6 +8,7 @@ urlpatterns = [
    path('api/marks/<str:sid>',views.marks),
    path('api/subs/<str:subject>',views.subqs),
    path('api/test',views.tests),
+   path('api/admin/tests',views.getTests),
    
 
    # admin
