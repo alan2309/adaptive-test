@@ -8,7 +8,6 @@ import Personality from "../../img/Domain.svg";
 import AnalyticalWr from "../../img/Personality.svg";
 import CompFund from "../../img/CompFund.svg";
 import { useNavigate } from "react-router";
-import axios from "axios";
 
 function AdminHome() {
   useEffect(() => {
@@ -20,21 +19,25 @@ function AdminHome() {
   function navigateTo(e, sectionName, sid) {}
   return (
     <div>
-      <button
-        style={{ color: "white" }}
-        className="btn scTest"
-        onClick={(e) => navigate("/admin/newTest", { state: { sid: 0 } })}
-      >
-        New Test
-      </button>
-      <button
-        style={{ color: "white" }}
-        className="btn scTest"
-        onClick={(e) => navigate("/admin/scheduledTest")}
-      >
-        Scheduled Test
-      </button>
-
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div className="mainHeading">Our Test Modules :</div>
+        <div>
+          <button
+            style={{ color: "white" }}
+            className="btn scTest"
+            onClick={(e) => navigate("/admin/newTest", { state: { sid: 0 } })}
+          >
+            New Tests
+          </button>
+          <button
+            style={{ color: "white" }}
+            className="btn scTest"
+            onClick={(e) => navigate("/admin/scheduledTest")}
+          >
+            Scheduled Test
+          </button>
+        </div>
+      </div>
       <Row>
         <Col>
           <div

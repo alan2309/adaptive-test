@@ -202,7 +202,7 @@ input:focus {
   width: 15px;
   height: 15px;
   border-radius: 15px;
-  top: -17px;
+  top: -3px;
   left: -1px;
   position: relative;
   background-color: red;
@@ -216,7 +216,7 @@ input:focus {
   width: 15px;
   height: 15px;
   border-radius: 15px;
-  top: -17px;
+  top: -3px;
   left: -1px;
   position: relative;
   background-color: #10b65c;

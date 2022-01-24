@@ -165,3 +165,11 @@
   background: #293e6f;
   color: #ffffff;
 }
+
+.mainHeading {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: bolder;
+  font-size: 35px;
+  color: #293e6f;
+}
