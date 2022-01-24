@@ -7,6 +7,7 @@ urlpatterns = [
    path('api/results/<str:name>',views.results),
    path('api/marks/<str:sid>',views.marks),
    path('api/subs/<str:subject>',views.subqs),
+   path('api/test',views.tests),
    
 
    # admin

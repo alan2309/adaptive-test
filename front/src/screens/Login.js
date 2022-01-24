@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { isExpired, decodeToken } from "react-jwt";
 import $ from "jquery";
 import "../css/LoginScreen.css";
+import axios from "axios";
 
 function showHide(e) {
   $(e.target).toggleClass("fa-eye fa-eye-slash");
@@ -50,7 +51,11 @@ function Login() {
         username: formData.username,
         password: formData.password,
       })
-      .then((res) => {
+      .then(async (res) => {
+        let xx =await availabilty()
+        if(xx){
+
+        
         var ob = new Date();
         var h = (ob.getHours() < 10 ? "0" : "") + ob.getHours();
         var m = (ob.getMinutes() < 10 ? "0" : "") + ob.getMinutes();
@@ -72,8 +77,23 @@ function Login() {
         axiosInstance.defaults.headers["Authorization"] =
           "JWT " + localStorage.getItem("access_token");
         navigate("/testScreen");
-      });
+      }else{
+          alert('test not available')
+      }
+    });
+    
   };
+  async function availabilty(){
+    let aa = 0;
+    await axios.get("http://127.0.0.1:8000/api/test")
+    .then(res=>{
+      aa = res.data
+    })
+    .catch(e=>{
+      console.log(e)
+    })
+    return aa;
+  }
   return (
     <div style={{ color: "#788094" }}>
       <Row>

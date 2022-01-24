@@ -2,7 +2,7 @@ from django.db.models import manager
 from django.shortcuts import render
 from django.http.response import JsonResponse
 from rest_framework.views import APIView
-from api.models import Questions,Options,Results,Subject
+from api.models import Questions,Options,Results,Subject,Test
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 from rest_framework.permissions import AllowAny
@@ -253,3 +253,18 @@ def saveTest(request):
             b.save()
         return JsonResponse('success',safe=False)
 
+@csrf_exempt
+def tests(request):
+    if request.method == 'GET':
+        d = datetime.datetime.now()
+        if(Test.objects.filter(test_start__lte = d,test_end__gte=d)):
+            return JsonResponse(1,safe=False)
+        else:
+            return JsonResponse(0,safe=False)    
+
+    if request.method == 'POST':
+        data=JSONParser().parse(request)['data']
+        # test = Test.objects.create(test_name =data['name'],test_start=data['start'],test_end=data['end'])
+        test = Test.objects.create(test_name=data['name'],test_start = datetime.datetime.now(),test_end=datetime.datetime.now())
+        test.save()
+        return JsonResponse('Created',safe=False)
