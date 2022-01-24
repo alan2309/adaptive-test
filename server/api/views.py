@@ -133,7 +133,7 @@ def results(request,name):
             except Results.DoesNotExist:
                 print('No previous entry')
             result = Results.objects.create(student = user,startTime = d.time(),
-            marks={"ap":0,'cf':0,'c':0,'d':0,'p':0,'a':0}
+            marks={"ap":0,'cf':0,'c':0,'d':0,'p':0,'a':0,'apMax':[],'cfMax':[],'cMax':[],'dMax':[],'pMax':[],'aMax':[],'apGot':[],'cfGot':[],'cGot':[],'dGot':[],'pGot':[],'aGot':[]}
             )
             result.save()
             return JsonResponse("Result entry created",safe=False)
@@ -149,25 +149,42 @@ def marks(request,sid=0):
         user = User.objects.get(username = data['username'])
         if(user):
             result = Results.objects.get(student = user)
+            
             if(result):
                 if sid == 1:
                    result.marks['ap'] = data['marks']
+                   result.marks['apMax'] = data['maxMarks']
+                   result.marks['apGot'] = data['gotMarks']
+                   print('.................')
+                   print(data['maxMarks'])
+                   print('.................')
                 elif sid == 2:
                     result.marks['cf'] = data['marks']
+                    result.marks['cfMax'] = data['maxMarks']
+                    result.marks['cfGot'] = data['gotMarks']
                 elif sid == 3:
                     result.marks['c'] = data['marks']
+                    result.marks['cMax'] = data['maxMarks']
+                    result.marks['cGot'] = data['gotMarks']
                 elif sid == 4:
                     result.marks['d'] = data['marks']
+                    result.marks['dMax'] = data['maxMarks']
+                    result.marks['dGot'] = data['gotMarks']
                 elif sid == 5:
                     result.marks['p'] = data['marks']
+                    result.marks['pMax'] = data['maxMarks']
+                    result.marks['pGot'] = data['gotMarks']
                 elif sid == 6:
                     result.marks['a'] = data['marks'] 
-                    result.endTime = d.time()
+                    result.marks['aMax'] = data['maxMarks']
+                    result.marks['aGot'] = data['gotMarks']
+                    
                 else:
                     print('**error**')
                     return JsonResponse("Error",safe=False)
+                result.endTime = d.time()
                 result.save()
-                return JsonResponse("Marks stored",safe=False)
+                return JsonResponse({'resultMarks':result.marks,'startTime':result.startTime,'endTime':result.endTime,'student':result.student.username},safe=False)
             else:
                 return JsonResponse("Restart Test",safe=False)
         else:

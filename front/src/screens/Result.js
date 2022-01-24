@@ -15,101 +15,132 @@ function Result() {
   const [wrong, setWrong] = useState(0);
   const [notDone, setNotDone] = useState(0);
   const [opt, setOpt] = useState({});
+  const [opt1, setOpt1] = useState({});
 
   useEffect(() => {
-    var test = JSON.parse(localStorage.getItem("test"));
+    var t=localStorage.getItem('test')
+    var t2=localStorage.getItem('test2')
+    var t3=localStorage.getItem('test3')
+    var t4=localStorage.getItem('test4')
+    var t5=localStorage.getItem('test5')
+    var t6=localStorage.getItem('test6');
+
+    var current,apiId,tNo;
+    if(t3!==null){
+     current=t3;
+     apiId=6;
+     tNo=3
+    }else if(t!==null){
+      current=t;
+     apiId=1;
+     tNo=1;
+    
+    }else if(t2!==null){
+      current=t2;
+     apiId=2;
+     tNo=2;
+    }
+    else if(t4!==null){
+      current=t4;
+     apiId=3;
+     tNo=4;
+    }
+    else if(t5!==null){
+      current=t5;
+     apiId=4;
+     tNo=5;
+    }
+    else if(t6!==null){
+      current=t6;
+     apiId=5;
+     tNo=6;
+    }
+
+    let ax = JSON.parse(current);
+    let user = ax["username"];
+    let ar = ax["marks"];
+    let maxMarks=ax['maxMarks'];
+    let gotMarks=ax['marks'];
+    let total = 0;
+    for (let i = 0; i < ar.length; i++) {
+      if (ar[i] !== -1) total = total + ar[i];
+    }
+    axiosInstance
+      .post(`api/marks/${apiId}`, {
+        data: {
+          username: user,
+          marks: total,
+          maxMarks:maxMarks,
+          gotMarks:gotMarks
+        },
+      })
+      .then((res) => {
+        console.log("done");
+        localStorage.removeItem(`test${tNo}`)
+        console.log(res.data)
+        // localStorage.setItem('result',total)
+      })
+      .catch((e) => console.log(e));
+
+
+
+
+
     const token = localStorage.getItem("access_token");
     const isMyTokenExpired = isExpired(token);
     if (isMyTokenExpired) {
       navigate("/login");
       return;
     }
-    var test = JSON.parse(localStorage.getItem("test"));
-    let ar = test["marks"];
-    let total = 0;
-    let a = 0;
-    let b = 0;
-    let c = 0;
-    for (let i = 0; i < ar.length; i++) {
-      if (ar[i] === -1) {
-        b++;
-      } else {
-        if (ar[i] === 0) {
-          c++;
-        }
-        a++;
-        total = total + ar[i];
-      }
-    }
-    setDone(a);
-    setWrong(c);
-    setRight(a - c);
-    setNotDone(b);
-    setmrks(total);
-    if (!localStorage.getItem("result")) {
-      axiosInstance
-        .post("api/marks", {
-          data: {
-            username: test["username"],
-            marks: total,
-          },
-        })
-        .then((res) => {
-          localStorage.setItem("result", total);
-        })
-        .catch((e) => console.log(e));
-    }
+  
+    // setDone(a);
+    // setWrong(c);
+    // setRight(a - c);
+    // setNotDone(b);
+    // setmrks(total);
+
+    
     setOpt({
-      plotOptions: {
-        pie: {
-          startAngle: 0,
-          endAngle: 360,
-        },
+      stroke: {
+        width: [0, 4]
       },
       dataLabels: {
         enabled: true,
+        enabledOnSeries: [1]
       },
-      fill: {
-        type: "gradient",
+      labels: ['Aptitude', 'Computer Fund.', 'Domain', 'Personality', 'Coding', 'Analytical Writing'],
+      xaxis: {
+        type: 'datetime'
       },
-      legend: {
-        formatter: function (val, opts) {
-          return val;
+      yaxis: [{
+        title: {
+          text: 'Marks',
         },
-        horizontalAlign: "right",
-        floating: true,
-        fontSize: "20px",
-        fontWeight: 400,
-        markers: {
-          width: 22,
-          height: 22,
-          strokeWidth: 0,
-          strokeColor: "#fff",
-          radius: 0,
-        },
-        onItemClick: {
-          toggleDataSeries: true,
-        },
-        onItemHover: {
-          highlightDataSeries: true,
-        },
-      },
-      labels: ["Right", "Wrong", "Not Attempted"],
-
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 200,
-            },
-            legend: {
-              position: "bottom",
-            },
-          },
-        },
-      ],
+      
+      }]
     });
+    setOpt1({plotOptions: {
+      radialBar: {
+        dataLabels: {
+          name: {
+            fontSize: '22px',
+          },
+          value: {
+            fontSize: '16px',
+          },
+          total: {
+            show: true,
+            label: 'Total',
+            formatter: function (w) {
+              // By default this function returns the average of all series. The below is just an example to show the use of custom formatter function
+              return 249
+            }
+          }
+        }
+      }
+    },
+    labels: ['Apples', 'Oranges', 'Bananas', 'Berries'],
+  });
     if (document.fullscreenElement !== null) {
       if (document.exitFullscreen) {
         document.exitFullscreen();
@@ -176,7 +207,7 @@ function Result() {
         </Col>
       </Row>
       <Row style={{ marginTop: "15px" }}>
-        <Col md="12">
+        <Col lg="6">
           <div
             className="rectangle"
             style={{ minHeight: "500px", color: "#788094" }}
@@ -193,9 +224,41 @@ function Result() {
               Analysis
             </h3>
             <Chart
-              series={[right, wrong, notDone]}
+              series={[{
+                name: 'Marks Scored',
+                type: 'column',
+                data: [440, 505, 414, 671, 227, 413]
+              }, {
+                name: 'Average',
+                type: 'line',
+                data: [223, 202, 235, 227, 243, 222]
+              }]}
               options={opt}
-              type="donut"
+              type="line"
+              height={`400px`}
+            />
+          </div>
+        </Col>
+        <Col lg="6">
+          <div
+            className="rectangle"
+            style={{ minHeight: "500px", color: "#788094" }}
+          >
+            <h3
+              style={{
+                paddingLeft: "20px",
+                fontWeight: "600",
+                fontSize: "24px",
+                lineHeight: "36px",
+                color: "#293E6F",
+              }}
+            >
+              Analysis
+            </h3>
+            <Chart
+              series={[76, 67, 61, 90]}
+              options={opt1}
+              type="radialBar"
               height={`400px`}
             />
           </div>
