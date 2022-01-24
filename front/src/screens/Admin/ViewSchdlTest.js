@@ -10,11 +10,8 @@ import {CSVLink, CSVDownload} from 'react-csv';
 function ViewSchdlTest() {
     const navigate=useNavigate()
     const location = useLocation();
-    const [studentNameArr,setStudentNameArr] = useState([]);
-    const [testData,setTestData] = useState([]);
     const [rows,setRows] = useState([]);
     const [data,setTData] = useState({});
-    const [data0,setTData0] = useState([]);
 
     const columns=[
         {
@@ -45,11 +42,9 @@ function ViewSchdlTest() {
     useEffect(() => {
      axiosInstance.get(`/api/admin/resultTest/${location.state.id}`).then((res)=>{
          console.log(res.data)
-         setTestData(res.data.testData)
-         setStudentNameArr(res.data.studentNameArr)
+        
          setRows(res.data.studentNameArr)
          setTData({columns:columns,rows:res.data.studentNameArr})
-         setTData0(res.data.studentNameArr)
      })
     }, [])
     return (
@@ -95,7 +90,7 @@ function ViewSchdlTest() {
       data={data}
     />
     
-    <CSVLink data={data0} headers={headers}>
+    <CSVLink data={rows} headers={headers}>
   Download csv
 </CSVLink>
         
