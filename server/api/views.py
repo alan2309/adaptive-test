@@ -316,16 +316,23 @@ def delQs(request):
 @csrf_exempt
 def saveTest(request):
     if request.method == 'POST':
-        data=JSONParser().parse(request)['saveTest']
-        print(data)
-        print('---------------')
-        print(data[0]['sub'])
+        data=JSONParser().parse(request)['data']
+        print(data['saveTest'])
+       
+        print('##################')
+        print(data['createTest'])
+        
+        print('##################')
+       
+        tst=Test(test_name=data['createTest']['testName'],test_start=data['createTest']['sTime'],test_end=data['createTest']['eTime'])
+        print(tst.test_start)
+        tst.save()
         print('---------------')
 
-        for x in range(0,len(data)):
-            b=Subject.objects.get(sub_name=data[x]['sub'])
-            b.sub_qs=data[x]['totalQs']
-            b.sub_time=data[x]['time']
+        for x in range(0,len(data['saveTest'])):
+            b=Subject.objects.get(sub_name=data['saveTest'][x]['sub'])
+            b.sub_qs=data['saveTest'][x]['totalQs']
+            b.sub_time=data['saveTest'][x]['time']
             b.save()
         return JsonResponse('success',safe=False)
 
@@ -341,15 +348,18 @@ def tests(request):
 
     elif request.method == 'POST':
         data=JSONParser().parse(request)['data']
-        if not data['update']:
-            test = Test.objects.create(test_name =data['name'],test_start=data['start'],test_end=data['end'])
-            test.save()
+        if not data['delete']:
+            if not data['update']:
+                test = Test.objects.create(test_name =data['name'],test_start=data['start'],test_end=data['end'])
+                test.save()
+            else:
+                test=Test.objects.get(id=data['id'])
+                test.test_name=data['name']
+                test.test_start=data['start']
+                test.test_end=data['end']
+                test.save()
         else:
-            test=Test.objects.get(id=data['id'])
-            test.test_name=data['name']
-            test.test_start=data['start']
-            test.test_end=data['end']
-            test.save()
+            Test.objects.get(id=data['id']).delete()
         return JsonResponse('Created',safe=False)
         
 def getTests(request):

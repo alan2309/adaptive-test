@@ -7,9 +7,9 @@ import "../../css/AdminHomeScreen.css";
 import $ from "jquery";
 import axios from "axios";
 import sidFunc from "./sidFunc";
+import DateTimePicker from "react-datetime-picker";
 import TimeField from "react-simple-timefield";
 import axiosInstance from "../../axios";
-
 function NewTest() {
   //Current Sec Data
   const [easy, setEasy] = useState([]);
@@ -32,6 +32,9 @@ function NewTest() {
   });
 
   const [sectionName, setSectionName] = useState([]);
+  const [sDate, setSDate] = useState(new Date());
+  const [eDate, setEDate] = useState(new Date());
+  const [tName, setTName] = useState();
   const [sid, setSid] = useState(0);
   //
 
@@ -46,6 +49,8 @@ function NewTest() {
     console.log(PDic);
     console.log(CDic);
     console.log(AWDic);
+    let creaTest = { testName: tName, sTime: sDate, eTime: eDate };
+    console.log(creaTest);
     let a = [
       { sub: "Aptitude", time: aptDic.time, totalQs: aptDic.totalQs },
       {
@@ -58,10 +63,13 @@ function NewTest() {
       { sub: "Coding", time: CDic.time, totalQs: CDic.totalQs },
       { sub: "Analytical Writing", time: AWDic.time, totalQs: AWDic.totalQs },
     ];
-    axiosInstance.post("api/admin/saveTest", { saveTest: a }).then((res) => {
-      //after saving add value to --->navArray
-      navigate("/admin/home");
-    });
+    axiosInstance
+      .post("api/admin/saveTest", {
+        data: { saveTest: a, createTest: creaTest },
+      })
+      .then((res) => {
+        navigate("/admin/home");
+      });
   }
 
   function secOnCLick(e, index) {
@@ -171,351 +179,422 @@ function NewTest() {
     data();
   }, []);
   return (
-    <Row>
-      <Col md={3}>
-        {" "}
+    <>
+      <form onSubmit={saveTest}>
         <div
           className="basicRec"
-          id="listSec"
-          style={{ height: "70%", marginTop: "20%", overflow: "hidden" }}
+          style={{
+            marginBottom: "25px",
+            minHeight: "50px",
+            padding: "15px 15px",
+          }}
         >
           <Row>
-            <Col md={12}>
-              <div className="sectionClick" onClick={(e) => secOnCLick(e, 0)}>
-                Aptitude
-              </div>
+            <Col md={4}>
+              Name:{" "}
+              <input
+                type="text"
+                name="testName"
+                onChange={(e) => {
+                  setTName(e.target.value);
+                }}
+                style={{ width: "80%" }}
+                placeholder="Enter Test Name"
+                required
+              ></input>
             </Col>
-          </Row>
-          <Row>
-            <Col md={12}>
-              <div className="sectionClick" onClick={(e) => secOnCLick(e, 1)}>
-                Computer Fundamentals
-              </div>
+            <Col md={4}>
+              Start Time:
+              <DateTimePicker
+                className={"TimePicker"}
+                onChange={(e) => {
+                  setSDate(e);
+                }}
+                value={sDate}
+                required
+              />
             </Col>
-          </Row>
-          <Row>
-            <Col md={12}>
-              <div className="sectionClick" onClick={(e) => secOnCLick(e, 2)}>
-                Domain
-              </div>
-            </Col>
-          </Row>
-          <Row>
-            <Col md={12}>
-              <div className="sectionClick" onClick={(e) => secOnCLick(e, 3)}>
-                Personality
-              </div>
-            </Col>
-          </Row>
-          <Row>
-            <Col md={12}>
-              <div className="sectionClick" onClick={(e) => secOnCLick(e, 4)}>
-                Coding
-              </div>
-            </Col>
-          </Row>
-          <Row>
-            <Col md={12}>
-              <div className="sectionClick" onClick={(e) => secOnCLick(e, 5)}>
-                Analytical Writing
-              </div>
+            <Col md={4}>
+              End Time:
+              <DateTimePicker
+                className={"TimePicker"}
+                onChange={(e) => {
+                  setEDate(e);
+                }}
+                value={eDate}
+                required
+              />
             </Col>
           </Row>
         </div>
-      </Col>
-      <Col>
-        <div className="mainRec">
-          <form onSubmit={saveTest}>
-            <div className="AdminSetSection">
-              <div className="basicRec secNm">{sectionName}</div>
-              <Row style={{ margin: "44px 0", padding: "0px 0px" }}>
-                <Col style={{ padding: "0px" }}>
-                  <div className="basicRec avQs">
-                    Available Question
-                    <Row style={{ padding: "20px 10px 0px 40px" }}>
-                      <Col>
-                        <Row className="remQs">{easy.length}</Row>
-                      </Col>
-                      <Col>
-                        <Row className="remQs">{med.length}</Row>
-                      </Col>
-                      <Col>
-                        <Row className="remQs">{hard.length}</Row>
-                      </Col>
-                    </Row>
-                    <Row style={{ padding: "0px 15px 0px 30px" }}>
-                      <Col style={{ padding: "0px 0px 0px 15px" }}>Easy</Col>
-                      <Col>Medium</Col>
-                      <Col>
-                        <Row style={{ padding: "0px 0px 0px 15px" }}>Hard</Row>
-                      </Col>
-                    </Row>
+        <Row>
+          <Col md={3}>
+            {" "}
+            <div
+              className="basicRec"
+              id="listSec"
+              style={{ height: "420px", marginTop: "15px", overflow: "hidden" }}
+            >
+              <Row>
+                <Col md={12}>
+                  <div
+                    className="sectionClick"
+                    onClick={(e) => secOnCLick(e, 0)}
+                  >
+                    Aptitude
                   </div>
-                </Col>
-                <Col style={{ padding: "0px" }}>
-                  <Row>
-                    <Col>
-                      <div
-                        className="basicRec easyMedHard"
-                        style={{ marginBottom: "28px", padding: "11px 10px" }}
-                        onClick={(e) => {
-                          navigate("/admin/setQs", {
-                            state: {
-                              type: "Easy",
-                              sectionName: sectionName,
-                              sid: sid,
-                              navArr: easy,
-                            },
-                          });
-                        }}
-                      >
-                        Easy
-                      </div>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <div
-                        className="basicRec easyMedHard"
-                        style={{ marginBottom: "28px", padding: "11px 10px" }}
-                        onClick={(e) => {
-                          navigate("/admin/setQs", {
-                            state: {
-                              type: "Medium",
-                              sectionName: sectionName,
-                              sid: sid,
-                              navArr: med,
-                            },
-                          });
-                        }}
-                      >
-                        Medium
-                      </div>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <div
-                        className="basicRec easyMedHard"
-                        style={{ padding: "11px 10px" }}
-                        onClick={(e) => {
-                          navigate("/admin/setQs", {
-                            state: {
-                              type: "Hard",
-                              sectionName: sectionName,
-                              sid: sid,
-                              navArr: hard,
-                            },
-                          });
-                        }}
-                      >
-                        Hard
-                      </div>
-                    </Col>
-                  </Row>
                 </Col>
               </Row>
-              <Row style={{ margin: "44px 0" }}>
-                {" "}
-                <Col>
+              <Row>
+                <Col md={12}>
                   <div
-                    className="basicRec easyMedHard"
-                    style={{
-                      marginBottom: "28px",
-                      width: "90%",
-                      padding: "11px 10px",
-                    }}
+                    className="sectionClick"
+                    onClick={(e) => secOnCLick(e, 1)}
                   >
-                    <TimeField
-                      showSeconds
-                      className="timeFieldInput"
-                      id="timeFieldInput1"
-                      minTime="00:00:20"
-                      onChange={(e, value) => {
-                        console.log(e.target.value);
-                        var hms = e.target.value; // your input string
-                        var a = hms.split(":"); // split it at the colons
-
-                        // minutes are worth 60 seconds. Hours are worth 60 minutes.
-                        var seconds = +a[0] * 60 * 60 + +a[1] * 60 + +a[2];
-
-                        console.log(seconds);
-                        if (seconds > 19) {
-                          if (sid - 1 === 1) {
-                            setCFDic({
-                              time: e.target.value,
-                              totalQs: CurrentDic.totalQs,
-                            });
-                          } else if (sid - 1 === 2) {
-                            setDDic({
-                              time: e.target.value,
-                              totalQs: CurrentDic.totalQs,
-                            });
-                          } else if (sid - 1 === 3) {
-                            setPDic({
-                              time: e.target.value,
-                              totalQs: CurrentDic.totalQs,
-                            });
-                          } else if (sid - 1 == 4) {
-                            setCDic({
-                              time: e.target.value,
-                              totalQs: CurrentDic.totalQs,
-                            });
-                          } else if (sid - 1 == 5) {
-                            setAWDic({
-                              time: e.target.value,
-                              totalQs: CurrentDic.totalQs,
-                            });
-                          } else if (sid - 1 === 0) {
-                            setAptDic({
-                              time: e.target.value,
-                              totalQs: CurrentDic.totalQs,
-                            });
-                          }
-                          setCurrentDic({
-                            time: e.target.value,
-                            totalQs: CurrentDic.totalQs,
-                          });
-                        } else {
-                          alert("Minimum time should be 20 secs");
-
-                          if (sid - 1 === 1) {
-                            setCFDic({
-                              time: "00:59:59",
-                              totalQs: CurrentDic.totalQs,
-                            });
-                          } else if (sid - 1 === 2) {
-                            setDDic({
-                              time: "00:59:59",
-                              totalQs: CurrentDic.totalQs,
-                            });
-                          } else if (sid - 1 === 3) {
-                            setPDic({
-                              time: "00:59:59",
-                              totalQs: CurrentDic.totalQs,
-                            });
-                          } else if (sid - 1 == 4) {
-                            setCDic({
-                              time: "00:59:59",
-                              totalQs: CurrentDic.totalQs,
-                            });
-                          } else if (sid - 1 == 5) {
-                            setAWDic({
-                              time: "00:59:59",
-                              totalQs: CurrentDic.totalQs,
-                            });
-                          } else if (sid - 1 === 0) {
-                            setAptDic({
-                              time: "00:59:59",
-                              totalQs: CurrentDic.totalQs,
-                            });
-                          }
-                          setCurrentDic({
-                            time: "00:59:59",
-                            totalQs: CurrentDic.totalQs,
-                          });
-                        }
-                      }}
-                      style={{ width: "80px", border: "none" }}
-                      value={CurrentDic.time}
-                    />
-                    <img
-                      style={{ height: "25px", float: "right" }}
-                      alt="logo"
-                      src={Clock}
-                      onClick={(e) => {
-                        document.getElementById("timeFieldInput1").focus();
-                      }}
-                    ></img>{" "}
+                    Computer Fundamentals
                   </div>
                 </Col>
-                <Col style={{ padding: "0px" }}>
+              </Row>
+              <Row>
+                <Col md={12}>
                   <div
-                    className="basicRec secNm"
-                    style={{ marginBottom: "28px", padding: "11px 10px" }}
+                    className="sectionClick"
+                    onClick={(e) => secOnCLick(e, 2)}
                   >
-                    Total number of questions:{" "}
-                    <input
-                      type="number"
-                      style={{ maxWidth: "60px", background: "rgba(0,0,0,0)" }}
-                      onChange={(e) => {
-                        console.log(e.target.valueAsNumber);
-                        console.log(sid - 1);
-                        console.log(
-                          Math.min(easy.length, med.length, hard.length)
-                        );
-                        if (
-                          0 <= e.target.valueAsNumber &&
-                          e.target.valueAsNumber <=
-                            (Math.min(easy.length, med.length, hard.length) ||
-                            med.length > 0
-                              ? med.length
-                              : 0)
-                        ) {
-                          if (sid - 1 === 1) {
-                            setCFDic({
-                              time: CurrentDic.time,
-                              totalQs: e.target.valueAsNumber,
-                            });
-                          } else if (sid - 1 === 2) {
-                            setDDic({
-                              time: CurrentDic.time,
-                              totalQs: e.target.valueAsNumber,
-                            });
-                          } else if (sid - 1 === 3) {
-                            setPDic({
-                              time: CurrentDic.time,
-                              totalQs: e.target.valueAsNumber,
-                            });
-                          } else if (sid - 1 == 4) {
-                            setCDic({
-                              time: CurrentDic.time,
-                              totalQs: e.target.valueAsNumber,
-                            });
-                          } else if (sid - 1 == 5) {
-                            setAWDic({
-                              time: CurrentDic.time,
-                              totalQs: e.target.valueAsNumber,
-                            });
-                          } else if (sid - 1 === 0) {
-                            setAptDic({
-                              time: CurrentDic.time,
-                              totalQs: e.target.valueAsNumber,
-                            });
-                          }
-                          setCurrentDic({
-                            time: CurrentDic.time,
-                            totalQs: e.target.valueAsNumber,
-                          });
-                        }
-                      }}
-                      value={CurrentDic.totalQs}
-                    />
+                    Domain
+                  </div>
+                </Col>
+              </Row>
+              <Row>
+                <Col md={12}>
+                  <div
+                    className="sectionClick"
+                    onClick={(e) => secOnCLick(e, 3)}
+                  >
+                    Personality
+                  </div>
+                </Col>
+              </Row>
+              <Row>
+                <Col md={12}>
+                  <div
+                    className="sectionClick"
+                    onClick={(e) => secOnCLick(e, 4)}
+                  >
+                    Coding
+                  </div>
+                </Col>
+              </Row>
+              <Row>
+                <Col md={12}>
+                  <div
+                    className="sectionClick"
+                    onClick={(e) => secOnCLick(e, 5)}
+                  >
+                    Analytical Writing
                   </div>
                 </Col>
               </Row>
             </div>
+          </Col>
+          <Col>
+            <div className="mainRec">
+              <div className="AdminSetSection">
+                <div className="basicRec secNm">{sectionName}</div>
+                <Row style={{ margin: "24px 0", padding: "0px 0px" }}>
+                  <Col style={{ padding: "0px" }}>
+                    <div className="basicRec avQs">
+                      Available Question
+                      <Row style={{ padding: "20px 10px 0px 40px" }}>
+                        <Col>
+                          <Row className="remQs">{easy.length}</Row>
+                        </Col>
+                        <Col>
+                          <Row className="remQs">{med.length}</Row>
+                        </Col>
+                        <Col>
+                          <Row className="remQs">{hard.length}</Row>
+                        </Col>
+                      </Row>
+                      <Row style={{ padding: "0px 15px 0px 30px" }}>
+                        <Col style={{ padding: "0px 0px 0px 15px" }}>Easy</Col>
+                        <Col>Medium</Col>
+                        <Col>
+                          <Row style={{ padding: "0px 0px 0px 15px" }}>
+                            Hard
+                          </Row>
+                        </Col>
+                      </Row>
+                    </div>
+                  </Col>
+                  <Col style={{ padding: "0px" }}>
+                    <Row>
+                      <Col>
+                        <div
+                          className="basicRec easyMedHard"
+                          style={{ marginBottom: "28px", padding: "11px 10px" }}
+                          onClick={(e) => {
+                            navigate("/admin/setQs", {
+                              state: {
+                                type: "Easy",
+                                sectionName: sectionName,
+                                sid: sid,
+                                navArr: easy,
+                              },
+                            });
+                          }}
+                        >
+                          Easy
+                        </div>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>
+                        <div
+                          className="basicRec easyMedHard"
+                          style={{ marginBottom: "28px", padding: "11px 10px" }}
+                          onClick={(e) => {
+                            navigate("/admin/setQs", {
+                              state: {
+                                type: "Medium",
+                                sectionName: sectionName,
+                                sid: sid,
+                                navArr: med,
+                              },
+                            });
+                          }}
+                        >
+                          Medium
+                        </div>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>
+                        <div
+                          className="basicRec easyMedHard"
+                          style={{ padding: "11px 10px" }}
+                          onClick={(e) => {
+                            navigate("/admin/setQs", {
+                              state: {
+                                type: "Hard",
+                                sectionName: sectionName,
+                                sid: sid,
+                                navArr: hard,
+                              },
+                            });
+                          }}
+                        >
+                          Hard
+                        </div>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+                <Row style={{ margin: "44px 0" }}>
+                  {" "}
+                  <Col>
+                    <div
+                      className="basicRec easyMedHard"
+                      style={{
+                        marginBottom: "28px",
+                        width: "90%",
+                        padding: "11px 10px",
+                      }}
+                    >
+                      <TimeField
+                        showSeconds
+                        className="timeFieldInput"
+                        id="timeFieldInput1"
+                        minTime="00:00:20"
+                        onChange={(e, value) => {
+                          console.log(e.target.value);
+                          var hms = e.target.value; // your input string
+                          var a = hms.split(":"); // split it at the colons
 
-            <Row style={{ float: "right" }}>
-              <button
-                style={{ color: "white" }}
-                className="btn scTest"
-                onClick={(e) => navigate("/admin/home")}
-              >
-                Back to Home page
-              </button>{" "}
-              <button
-                style={{ color: "white" }}
-                type="submit"
-                className="btn scTest"
-              >
-                Save
-              </button>
-            </Row>
-          </form>
-        </div>
-      </Col>
-    </Row>
+                          // minutes are worth 60 seconds. Hours are worth 60 minutes.
+                          var seconds = +a[0] * 60 * 60 + +a[1] * 60 + +a[2];
+
+                          console.log(seconds);
+                          if (seconds > 19) {
+                            if (sid - 1 === 1) {
+                              setCFDic({
+                                time: e.target.value,
+                                totalQs: CurrentDic.totalQs,
+                              });
+                            } else if (sid - 1 === 2) {
+                              setDDic({
+                                time: e.target.value,
+                                totalQs: CurrentDic.totalQs,
+                              });
+                            } else if (sid - 1 === 3) {
+                              setPDic({
+                                time: e.target.value,
+                                totalQs: CurrentDic.totalQs,
+                              });
+                            } else if (sid - 1 == 4) {
+                              setCDic({
+                                time: e.target.value,
+                                totalQs: CurrentDic.totalQs,
+                              });
+                            } else if (sid - 1 == 5) {
+                              setAWDic({
+                                time: e.target.value,
+                                totalQs: CurrentDic.totalQs,
+                              });
+                            } else if (sid - 1 === 0) {
+                              setAptDic({
+                                time: e.target.value,
+                                totalQs: CurrentDic.totalQs,
+                              });
+                            }
+                            setCurrentDic({
+                              time: e.target.value,
+                              totalQs: CurrentDic.totalQs,
+                            });
+                          } else {
+                            alert("Minimum time should be 20 secs");
+
+                            if (sid - 1 === 1) {
+                              setCFDic({
+                                time: "00:59:59",
+                                totalQs: CurrentDic.totalQs,
+                              });
+                            } else if (sid - 1 === 2) {
+                              setDDic({
+                                time: "00:59:59",
+                                totalQs: CurrentDic.totalQs,
+                              });
+                            } else if (sid - 1 === 3) {
+                              setPDic({
+                                time: "00:59:59",
+                                totalQs: CurrentDic.totalQs,
+                              });
+                            } else if (sid - 1 == 4) {
+                              setCDic({
+                                time: "00:59:59",
+                                totalQs: CurrentDic.totalQs,
+                              });
+                            } else if (sid - 1 == 5) {
+                              setAWDic({
+                                time: "00:59:59",
+                                totalQs: CurrentDic.totalQs,
+                              });
+                            } else if (sid - 1 === 0) {
+                              setAptDic({
+                                time: "00:59:59",
+                                totalQs: CurrentDic.totalQs,
+                              });
+                            }
+                            setCurrentDic({
+                              time: "00:59:59",
+                              totalQs: CurrentDic.totalQs,
+                            });
+                          }
+                        }}
+                        style={{ width: "80px", border: "none" }}
+                        value={CurrentDic.time}
+                      />
+                      <img
+                        style={{ height: "25px", float: "right" }}
+                        alt="logo"
+                        src={Clock}
+                        onClick={(e) => {
+                          document.getElementById("timeFieldInput1").focus();
+                        }}
+                      ></img>{" "}
+                    </div>
+                  </Col>
+                  <Col style={{ padding: "0px" }}>
+                    <div
+                      className="basicRec secNm"
+                      style={{ marginBottom: "28px", padding: "11px 10px" }}
+                    >
+                      Total number of questions:{" "}
+                      <input
+                        type="number"
+                        style={{
+                          maxWidth: "60px",
+                          background: "rgba(0,0,0,0)",
+                        }}
+                        onChange={(e) => {
+                          console.log(e.target.valueAsNumber);
+                          console.log(sid - 1);
+                          console.log(
+                            Math.min(easy.length, med.length, hard.length)
+                          );
+                          if (
+                            0 <= e.target.valueAsNumber &&
+                            e.target.valueAsNumber <=
+                              (Math.min(easy.length, med.length, hard.length) ||
+                              med.length > 0
+                                ? med.length
+                                : 0)
+                          ) {
+                            if (sid - 1 === 1) {
+                              setCFDic({
+                                time: CurrentDic.time,
+                                totalQs: e.target.valueAsNumber,
+                              });
+                            } else if (sid - 1 === 2) {
+                              setDDic({
+                                time: CurrentDic.time,
+                                totalQs: e.target.valueAsNumber,
+                              });
+                            } else if (sid - 1 === 3) {
+                              setPDic({
+                                time: CurrentDic.time,
+                                totalQs: e.target.valueAsNumber,
+                              });
+                            } else if (sid - 1 == 4) {
+                              setCDic({
+                                time: CurrentDic.time,
+                                totalQs: e.target.valueAsNumber,
+                              });
+                            } else if (sid - 1 == 5) {
+                              setAWDic({
+                                time: CurrentDic.time,
+                                totalQs: e.target.valueAsNumber,
+                              });
+                            } else if (sid - 1 === 0) {
+                              setAptDic({
+                                time: CurrentDic.time,
+                                totalQs: e.target.valueAsNumber,
+                              });
+                            }
+                            setCurrentDic({
+                              time: CurrentDic.time,
+                              totalQs: e.target.valueAsNumber,
+                            });
+                          }
+                        }}
+                        value={CurrentDic.totalQs}
+                      />
+                    </div>
+                  </Col>
+                </Row>
+              </div>
+
+              <Row style={{ float: "right" }}>
+                <button
+                  style={{ color: "white" }}
+                  className="btn scTest"
+                  onClick={(e) => navigate("/admin/home")}
+                >
+                  Back to Home page
+                </button>{" "}
+                <button
+                  style={{ color: "white" }}
+                  type="submit"
+                  className="btn scTest"
+                >
+                  Save
+                </button>
+              </Row>
+            </div>
+          </Col>
+        </Row>
+      </form>
+    </>
   );
 }
 

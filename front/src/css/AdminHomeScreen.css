@@ -8,7 +8,7 @@
 .mainRec {
   padding: 10px;
   width: 90%;
-  height: 500px;
+  height: 460px;
   margin: 0 40px 0 10%;
   background-color: #ffffff !important;
   box-shadow: 1px 1px 7px 2px rgba(0, 0, 0, 0.25);
@@ -62,7 +62,7 @@
 }
 .AdminSetSection {
   margin-left: 10%;
-  margin-top: 50px;
+  margin-top: 20px;
   margin-right: 10%;
   font-style: normal;
   font-weight: normal;
@@ -172,4 +172,7 @@
   font-weight: bolder;
   font-size: 35px;
   color: #293e6f;
+}
+.TimePicker {
+  padding-left: 10px;
 }
