@@ -123,7 +123,7 @@ function ScheduledTest() {
   return (
     <div className="SchdlTest">
       <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton></Modal.Header>
+        <Modal.Header closeButton><h3>Edit</h3></Modal.Header>
         <Modal.Body>
           <Row style={{ margin: "2% 0" }}>
             <Col md={3}>Test Name: </Col>
