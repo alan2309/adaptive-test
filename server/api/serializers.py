@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Subject,Questions,Test
+from .models import Results, Subject,Questions,Test
 
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,4 +14,8 @@ class QuestionSerializer(serializers.ModelSerializer):
 class TestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Test
+        fields='__all__'      
+class ResultSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Results
         fields='__all__'      

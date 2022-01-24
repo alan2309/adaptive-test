@@ -1,3 +1,4 @@
+from urllib import request
 from django.db.models import manager
 from django.shortcuts import render
 from django.http.response import JsonResponse
@@ -11,7 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 import datetime
 from rest_framework.parsers import JSONParser
-from .serializers import SubjectSerializer,QuestionSerializer, TestSerializer 
+from .serializers import SubjectSerializer,QuestionSerializer, TestSerializer ,ResultSerializer
 import math
 from django.db.models import Q
 
@@ -195,7 +196,24 @@ def chartData(user):
         resl=0
     return {'startTime':resl.startTime,'endTime':resl.endTime,'marks':resl.marks,'totalQs':totalQs,'avgMarksArr':a,'mrksScored':mrksScored,'mrksScoredPercent':mrksScoredPercent,'totalMarksScored':sum(mrksScored),'timeTaken':tdelta.seconds}
 
-         
+@csrf_exempt
+def resultTest(request,id):
+    testData=Results.objects.filter(test=Test.objects.get(id=id))
+    a={}
+    a=ResultSerializer(testData,many=True)
+    
+    cc=[]
+    for x in a.data:
+        c={}
+        print(x)
+        c['name']=User.objects.get(id=x['student']).username
+        c['sdate']=x['startTime'].split('.')[0]
+        c['edate']=x['endTime'].split('.')[0]
+        c['marks']=x['marks']['ap']+x['marks']['cf']+x['marks']['c']+x['marks']['d']+x['marks']['p']+x['marks']['a']
+        cc.append(c)
+
+    return JsonResponse({'testData':a.data,'studentNameArr':cc},safe=False)
+
 
 @csrf_exempt        
 def marks(request,sid=0):
@@ -321,10 +339,17 @@ def tests(request):
         else:
             return JsonResponse({'testId':-1},safe=False)    
 
-    if request.method == 'POST':
+    elif request.method == 'POST':
         data=JSONParser().parse(request)['data']
-        test = Test.objects.create(test_name =data['name'],test_start=data['start'],test_end=data['end'])
-        test.save()
+        if not data['update']:
+            test = Test.objects.create(test_name =data['name'],test_start=data['start'],test_end=data['end'])
+            test.save()
+        else:
+            test=Test.objects.get(id=data['id'])
+            test.test_name=data['name']
+            test.test_start=data['start']
+            test.test_end=data['end']
+            test.save()
         return JsonResponse('Created',safe=False)
         
 def getTests(request):
