@@ -1,5 +1,14 @@
+from pyexpat import model
+from tkinter import CASCADE
 from django.db import models
 from django.conf import settings
+
+class Test(models.Model):
+    test_name = models.CharField(max_length=150)
+    test_start = models.DateTimeField(blank=True,null=True)
+    test_end = models.DateTimeField(blank=True,null=True)
+    def __str__(self):
+        return self.test_name
 
 class Subject(models.Model):
    sub_name = models.CharField(max_length=255)
@@ -27,13 +36,8 @@ class Results(models.Model):
     endTime = models.TimeField(blank=True,null=True)
     marks = models.JSONField(null=True, blank=True)
     student = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+    test=models.ForeignKey(Test,on_delete=models.CASCADE)
 
     def __str__(self):
         return self.student.username
 
-class Test(models.Model):
-    test_name = models.CharField(max_length=150)
-    test_start = models.DateTimeField(blank=True,null=True)
-    test_end = models.DateTimeField(blank=True,null=True)
-    def __str__(self):
-        return self.test_name

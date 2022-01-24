@@ -53,12 +53,14 @@ function Login() {
       })
       .then(async (res) => {
         let xx = await availabilty();
-        if (xx) {
+        if (xx !== -1) {
           var ob = new Date();
           var h = (ob.getHours() < 10 ? "0" : "") + ob.getHours();
           var m = (ob.getMinutes() < 10 ? "0" : "") + ob.getMinutes();
           var s = (ob.getMinutes() < 10 ? "0" : "") + ob.getSeconds();
-          axiosInstance.post(`api/results/${formData.username}`);
+          axiosInstance
+            .post(`api/results/${formData.username}`, { data: { testId: xx } })
+            .then((res) => {});
           localStorage.setItem("access_token", res.data.access);
           localStorage.setItem("username", formData.username);
           localStorage.setItem("refresh_token", res.data.refresh);
@@ -86,12 +88,12 @@ function Login() {
     await axios
       .get("http://127.0.0.1:8000/api/test")
       .then((res) => {
-        aa = res.data;
+        aa = res.data.testId;
       })
       .catch((e) => {
         console.log(e);
       });
-    return aa;
+    return parseInt(aa);
   }
   return (
     <div style={{ color: "#788094" }}>

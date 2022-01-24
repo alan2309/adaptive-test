@@ -128,13 +128,14 @@ class BlackListTokenView(APIView):
 def results(request,name):
     user = User.objects.get(username = name) 
     if request.method == 'POST':
+        data=JSONParser().parse(request)['data']
         if(user):
             d = datetime.datetime.now()
             try:
-                Results.objects.get(student = user).delete()
+                Results.objects.get(student = user,test=Test.objects.get(id=data['testId'])).delete()
             except Results.DoesNotExist:
                 print('No previous entry')
-            result = Results.objects.create(student = user,startTime = d.time(),
+            result = Results.objects.create(student = user,startTime = d.time(),test=Test.objects.get(id=data['testId']),
             marks={"ap":0,'cf':0,'c':0,'d':0,'p':0,'a':0,'apMax':[],'cfMax':[],'cMax':[],'dMax':[],'pMax':[],'aMax':[],'apGot':[],'cfGot':[],'cGot':[],'dGot':[],'pGot':[],'aGot':[]}
             )
             result.save()
@@ -314,15 +315,15 @@ def saveTest(request):
 def tests(request):
     if request.method == 'GET':
         d = datetime.datetime.now()
-        if(Test.objects.filter(test_start__lte = d,test_end__gte=d)):
-            return JsonResponse(1,safe=False)
+        ll=Test.objects.filter(test_start__lte = d,test_end__gte=d)
+        if(ll.exists()):
+            return JsonResponse({'testId':ll[0].id},safe=False)
         else:
-            return JsonResponse(0,safe=False)    
+            return JsonResponse({'testId':-1},safe=False)    
 
     if request.method == 'POST':
         data=JSONParser().parse(request)['data']
-        # test = Test.objects.create(test_name =data['name'],test_start=data['start'],test_end=data['end'])
-        test = Test.objects.create(test_name=data['name'],test_start = datetime.datetime.now(),test_end=datetime.datetime.now())
+        test = Test.objects.create(test_name =data['name'],test_start=data['start'],test_end=data['end'])
         test.save()
         return JsonResponse('Created',safe=False)
         
