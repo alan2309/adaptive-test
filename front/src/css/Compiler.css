@@ -1,0 +1,89 @@
+
+.language {
+    display: inline;
+  }
+  .heading {
+    font-size: 20px;
+  }
+  .source {
+    width: 100% !important;
+    background: white;
+    height: 300px;
+    font-size: 15px;
+    resize: vertical;
+  }
+  .customInput,.codeOutput {
+    background: white;
+    width: 100%;
+    height: 115px;
+    resize: none;
+    font-size: 14px;
+    border: 0px;
+  }
+  #output {
+    background: #cccccc52;
+    width: 50%;
+    height: 100%;
+    position: fixed;
+    top: 7.6%;
+    font-size: 18px;
+    right: 0;
+    resize: none;
+  }
+  .language {
+    width: 150px;
+  }
+
+  .custom-textarea {
+    position: relative;
+    margin: 5px auto;
+    width: 100%;
+    border-radius: 5px;
+    box-shadow: 0 0 16px rgba(34, 39, 37, 0.3);
+    overflow: hidden;
+  }
+  .custom-textarea::after {
+    background: #FFFFFF;
+    pointer-events: none;
+  }
+  .custom-textarea > .textarea {
+    margin-left: 58px;
+    width: 100%;
+    height: 290px;
+    font-family: 'Ubuntu Mono', monospace;
+    outline: none;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    resize: none;
+    white-space: pre;
+    overflow-y: auto;
+    overflow-x: auto;
+    word-wrap: break-word;
+    color: #121113;
+  }
+  .custom-textarea > .textarea::-webkit-scrollbar-track {
+    border-radius: 0;
+  }
+  .custom-textarea > .textarea::-webkit-scrollbar {
+   
+    background-color: #FFFFFF;
+  }
+  .custom-textarea > .textarea::-webkit-scrollbar-thumb {
+    border-radius: 0;
+    background-color: rgb(238, 238, 238);
+  }
+  .custom-textarea > .linenumbers {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 42px;
+    background: rgb(238, 238, 238);
+  }
+  .custom-textarea > .linenumbers > .number {
+    font-family: 'Ubuntu Mono', monospace;
+    font-size: 16px;
+    line-height: 24px;
+    padding-left: 6px;
+    color: #222725;
+  }
+  

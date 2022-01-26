@@ -3,6 +3,7 @@ import { Col, Row } from "react-bootstrap";
 import CustomTimer from "../../screens/Admin/CustomTimer";
 
 function TestHeaderComp({
+  noTotal=false,
   timer,
   start,
   reset,
@@ -19,7 +20,7 @@ function TestHeaderComp({
         <Col md="4" style={{ textAlign: "center" }}>
           <div>{header}</div>
         </Col>
-        <Col md="6" style={{ whiteSpace: "nowrap", display: "inline-block" }}>
+        {noTotal? <Col md={noTotal?8:6} style={{ whiteSpace: "nowrap", display: "inline-block",textAlign:'right' }}>
           {timeKey}:
           <CustomTimer
             start={start}
@@ -28,10 +29,19 @@ function TestHeaderComp({
             nextpage={nextpage}
             setMd={setMd}
           ></CustomTimer>
-        </Col>
-        <Col md="2" style={{ textAlign: "center" }}>
+        </Col>:<Col md={noTotal?8:6} style={{ whiteSpace: "nowrap", display: "inline-block",textAlign:'center' }}>
+          {timeKey}:
+          <CustomTimer
+            start={start}
+            reset={reset}
+            time={timer}
+            nextpage={nextpage}
+            setMd={setMd}
+          ></CustomTimer>
+        </Col>}
+        {!noTotal&& <Col md="2" style={{ textAlign: "center" }}>
           {totalKey} : {totalValue}
-        </Col>
+        </Col>}
       </Row>
     </div>
   );

@@ -23,6 +23,7 @@ import CTestScreen from "./screens/Test/CTestScreen";
 import ATestScreen from "./screens/Test/ATestScreen";
 import ScheduledTest from "./screens/Admin/ScheduledTest";
 import ViewSchdlTest from "./screens/Admin/ViewSchdlTest";
+import Compiler from "./screens/Test/Compiler";
 
 function App() {
   return (
@@ -96,6 +97,11 @@ function App() {
                   path="/admin/viewScheduledTest"
                   exact
                   element={<ViewSchdlTest />}
+                />
+                <Route
+                  path="/admin/compiler"
+                  exact
+                  element={<Compiler />}
                 />
               </Routes>
             </Router>
