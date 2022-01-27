@@ -4,62 +4,160 @@ import CodingQsComp from "../../components/TestScreeen/CodingQsComp";
 import TestHeaderComp from "../../components/TestScreeen/TestHeaderComp";
 import "../../css/Compiler.css";
 import $ from "jquery";
+import key from "../../components/TestScreeen/keys";
 
 export default function Compiler() {
   const [inputT, setInput] = useState("");
-  const [output, setOutput] = useState();
+  const [inputT_question_1, setInput_question_1] = useState("");
+  const [inputT_question_2, setInput_question_2] = useState("");
+  const [inputT_question_3, setInput_question_3] = useState("");
+  const [current_qs, set_current_qs] = useState(1);
+
+ 
   const [language_id, setLanguage_id] = useState();
+  const [language_id_question_1, setLanguage_id_question_1] = useState();
+  const [language_id_question_2, setLanguage_id_question_2] = useState();
+  const [language_id_question_3, setLanguage_id_question_3] = useState();
 
   const [user_input, setUser_input] = useState();
+  const [user_input_question_1, setUser_input_question_1] = useState();
+  const [user_input_question_2, setUser_input_question_2] = useState();
+  const [user_input_question_3, setUser_input_question_3] = useState();
+
+  
+
   const [default_input, set_default_input] = useState();
 
   const [customInputCheck, setCustomInputCheck] = useState(false);
-  const [isSubmitCode, setIsSubmitCode] = useState();
 
-  const [testCase_1_output, set_testCase_1_output] = useState();
-  const [testCase_2_output, set_testCase_2_output] = useState();
-  const [testCase_3_output, set_testCase_3_output] = useState();
-  const [testCase_Current_output, set_testCase_Current_output] = useState();
+  const [isSubmitCode, setIsSubmitCode] = useState(); // (t/f)
+  const [isSubmitCode_qs1, setIsSubmitCode_qs1] = useState(); // (t/f)
+  const [isSubmitCode_qs2, setIsSubmitCode_qs2] = useState(); // (t/f)
+  const [isSubmitCode_qs3, setIsSubmitCode_qs3] = useState(); // (t/f)
 
-  const [testCase_1_output_error, set_testCase_1_output_error] = useState();
-  const [testCase_2_output_error, set_testCase_2_output_error] = useState();
-  const [testCase_3_output_error, set_testCase_3_output_error] = useState();
+  const [submitCode_qs1, set_submitCode_qs1] = useState(false); // (t/f)
+  const [submitCode_qs2, set_submitCode_qs2] = useState(false); // (t/f)
+  const [submitCode_qs3, set_submitCode_qs3] = useState(false); // (t/f)
+
+  
+
+  
+
+  
+  const [q1_run_output, set_q1_run_output] = useState();
+  const [q1_testCase_1_output, set_q1_testCase_1_output] = useState();
+  const [q1_testCase_2_output, set_q1_testCase_2_output] = useState();
+  const [q1_testCase_3_output, set_q1_testCase_3_output] = useState();
+  const [q1_testCase_Current_output, set_q1_testCase_Current_output] = useState(); //generalized for Q1
+  const [q1_testCase_1_output_error, set_q1_testCase_1_output_error] = useState();    // (t/f)
+  const [q1_testCase_2_output_error, set_q1_testCase_2_output_error] = useState();  // (t/f)
+  const [q1_testCase_3_output_error, set_q1_testCase_3_output_error] = useState();  // (t/f)
+  
+
+  
+  const [q2_run_output, set_q2_run_output] = useState();
+  const [q2_testCase_1_output, set_q2_testCase_1_output] = useState();
+  const [q2_testCase_2_output, set_q2_testCase_2_output] = useState();
+  const [q2_testCase_3_output, set_q2_testCase_3_output] = useState();
+  const [q2_testCase_Current_output, set_q2_testCase_Current_output] = useState(); //generalized for Q2
+  const [q2_testCase_1_output_error, set_q2_testCase_1_output_error] = useState();    // (t/f)
+  const [q2_testCase_2_output_error, set_q2_testCase_2_output_error] = useState();  // (t/f)
+  const [q2_testCase_3_output_error, set_q2_testCase_3_output_error] = useState();  // (t/f)
+
+  
+  const [q3_run_output, set_q3_run_output] = useState();
+  const [q3_testCase_1_output, set_q3_testCase_1_output] = useState();
+  const [q3_testCase_2_output, set_q3_testCase_2_output] = useState();
+  const [q3_testCase_3_output, set_q3_testCase_3_output] = useState();
+  const [q3_testCase_Current_output, set_q3_testCase_Current_output] = useState(); //generalized for Q2
+  const [q3_testCase_1_output_error, set_q3_testCase_1_output_error] = useState();    // (t/f)
+  const [q3_testCase_2_output_error, set_q3_testCase_2_output_error] = useState();  // (t/f)
+  const [q3_testCase_3_output_error, set_q3_testCase_3_output_error] = useState();  // (t/f)
+
+  const [general_output,set_general_output]=useState([])
+ 
+
+  //three qs
+  const [question_1, set_question_1] = useState({
+    });
+  const [question_2, set_question_2] = useState();
+  const [question_3, set_question_3] = useState();
+  const [question_current, set_question_current] = useState({
+    'question':'qs1','input_format':'input format','output_format':'output_format','constraints':'constraints','sample_input_1':'sample_input_1',
+    'sample_output_1':'sample_output_1','explanation':['expl1','expl2','expl3']
+});
 
   useEffect(() => {
-    setInput(localStorage.getItem("input") || ``);
-    setOutput(``);
-    setLanguage_id(localStorage.getItem("language_Id") || 2);
+     
+  
+    setInput(localStorage.getItem("input_1") || ``);
+    setInput_question_1(localStorage.getItem("input_1") || ``)
+    setInput_question_2(localStorage.getItem("input_2") || ``)
+    setInput_question_3(localStorage.getItem("input_3") || ``)
+
+    setUser_input(localStorage.getItem("user_input_1") || ``)
+    setUser_input_question_1(localStorage.getItem("user_input_1") || ``)
+    setUser_input_question_2(localStorage.getItem("user_input_2") || ``)
+    setUser_input_question_3(localStorage.getItem("user_input_3") || ``)
+
+    setLanguage_id(localStorage.getItem("language_Id_question_1") || 2);
+    setLanguage_id_question_1(localStorage.getItem("language_Id_question_1") || 2);
+    setLanguage_id_question_2(localStorage.getItem("language_Id_question_2") || 2);
+    setLanguage_id_question_3(localStorage.getItem("language_Id_question_3") || 2);
+    
+    //from db
+    set_question_1({  'question':'qs1','input_format':'input format','output_format':'output_format','constraints':'constraints','sample_input_1':'sample_input_1',
+    'sample_output_1':'sample_output_1','explanation':['expl1','expl2','expl3']
+})
+set_question_current({  'question':'qs1','input_format':'input format','output_format':'output_format','constraints':'constraints','sample_input_1':'sample_input_1',
+'sample_output_1':'sample_output_1','explanation':['expl1','expl2','expl3']
+})
     set_default_input(69);
   }, []);
 
   function input(event) {
     event.preventDefault();
-    setInput(event.target.value);
-    localStorage.setItem("input", event.target.value);
+    setInput(event.target.value)
+    localStorage.setItem(`input_${current_qs}`, event.target.value);
+    current_qs===1?setInput_question_1(event.target.value):(current_qs===2?setInput_question_2(event.target.value):setInput_question_3(event.target.value))
   }
 
   function userInput(event) {
     event.preventDefault();
     !event.target.value ? setUser_input() : setUser_input(event.target.value);
-    localStorage.setItem("user_input", event.target.value);
+ 
+    current_qs===1?setUser_input_question_1(event.target.value):(current_qs===2?setUser_input_question_2(event.target.value):setUser_input_question_3(event.target.value))
+
+    localStorage.setItem(`user_input_${current_qs}`, event.target.value);
   }
 
   function language(event) {
     event.preventDefault();
     setLanguage_id(event.target.value);
-    localStorage.setItem("language_Id", event.target.value);
+    current_qs===1?setLanguage_id_question_1(event.target.value):(current_qs===2?setLanguage_id_question_2(event.target.value):setLanguage_id_question_3(event.target.value))
+    localStorage.setItem(`language_Id_question_${current_qs}`, event.target.value);
   }
 
   async function submit(e) {
-    set_testCase_Current_output("");
+    
+   if(current_qs===1) {
+       set_q1_testCase_Current_output("");
+}else if(current_qs===2){
+    set_q2_testCase_Current_output("");
+}else if(current_qs===3){
+    set_q3_testCase_Current_output("");
+}
     e.preventDefault();
     if (customInputCheck && user_input === undefined) {
       alert("Please enter input");
     } else {
-      let outputText = document.getElementsByClassName("codeOutput")[0];
-      outputText.innerHTML = "";
-      outputText.innerHTML += "Creating Submission ...\n";
-      const response = await fetch(
+      
+      if(current_qs===1){set_q1_run_output("Creating Submission ...\n")
+    }else if(current_qs===2){set_q2_run_output("Creating Submission ...\n")
+  }else if(current_qs===3){
+    set_q3_run_output("Creating Submission ...\n")
+  }
+      let response = await fetch(
         "https://judge0-ce.p.rapidapi.com/submissions",
         {
           method: "POST",
@@ -72,13 +170,15 @@ export default function Compiler() {
           },
           body: JSON.stringify({
             source_code: inputT,
-            stdin: customInputCheck ? user_input : default_input, //stateVarialble
+            stdin: user_input , //stateVarialble
             language_id: language_id,
           }),
         }
       );
-
-      outputText.innerHTML += "Submission Created ...\n";
+     console.log(response)
+      if(current_qs===1){set_q1_run_output(q1_run_output+"Submission Created ...\n")
+    }else if(current_qs===2){set_q2_run_output(q2_run_output+"Submission Created ...\n")
+  }
       const jsonResponse = await response.json();
       let jsonGetSolution = {
         status: { description: "Queue" },
@@ -87,7 +187,9 @@ export default function Compiler() {
       };
       let flag = false;
       while (flag !== true) {
-        outputText.innerHTML = `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.status.description}`;
+       if(current_qs===1){set_q1_run_output(`Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.status.description}`)
+      }else if(current_qs===2){set_q2_run_output(`Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.status.description}`)
+    }
         if (jsonResponse.token) {
           let url = `https://judge0-ce.p.rapidapi.com/submissions/${jsonResponse.token}?base64_encoded=true`;
           const getSolution = await fetch(url, {
@@ -105,6 +207,7 @@ export default function Compiler() {
             jsonGetSolution.status.description === "Accepted" &&
             jsonGetSolution.stderr === null &&
             jsonGetSolution.compile_output === null
+            
           ) {
             flag = true;
           } else if (
@@ -112,102 +215,177 @@ export default function Compiler() {
             jsonGetSolution.status.description !== "Accepted"
           ) {
             flag = true;
-          }
+          }else if(jsonGetSolution.stderr === null &&
+            jsonGetSolution.status.description === "Compilation Error"){
+                flag=true
+            }
         }
       }
       console.log(jsonGetSolution);
 
       if (jsonGetSolution.stdout) {
         const output = atob(jsonGetSolution.stdout);
-        set_testCase_Current_output(
-          `${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
-        );
+        if(current_qs===1){
+            set_q1_testCase_Current_output(
+            `${output}\nExxecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
+            );
+            set_q1_run_output(
+            `${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
+            );    
+            localStorage.setItem(`question_1`,JSON.stringify({run_output: `${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
+            q1_testCase_1_output:q1_testCase_1_output,
+            q1_testCase_2_output:q1_testCase_2_output,
+            q1_testCase_3_output:q1_testCase_3_output}))
+        }else if(current_qs===2){
+            set_q2_testCase_Current_output(
+                `${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
+                );
+                set_q2_run_output(
+                `${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
+                );    
+                localStorage.setItem(`question_2`,JSON.stringify({run_output: `${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
+                q2_testCase_1_output:q2_testCase_1_output,
+                q2_testCase_2_output:q2_testCase_2_output,
+                q2_testCase_3_output:q2_testCase_3_output}))
+
+        }
+       
       } else if (jsonGetSolution.stderr) {
         const error = atob(jsonGetSolution.stderr);
         console.log(error);
-        set_testCase_Current_output(`\n Error :${error}`);
+        if(current_qs===1){
+        set_q1_testCase_Current_output(`\n Error :${error}`);
+        set_q1_run_output(`\n Error :${error}`);
+        localStorage.setItem(`question_1`,JSON.stringify({run_output:`\n Error :${error}`,q1_testCase_1_output:q1_testCase_1_output,q1_testCase_2_output:q1_testCase_2_output,q1_testCase_3_output:q1_testCase_3_output}))
+       }else if(current_qs===2){
+        set_q2_testCase_Current_output(`\n Error :${error}`);
+        set_q2_run_output(`\n Error :${error}`);
+        localStorage.setItem(`question_2`,JSON.stringify({run_output:`\n Error :${error}`,q2_testCase_1_output:q2_testCase_1_output,q2_testCase_2_output:q2_testCase_2_output,q2_testCase_3_output:q2_testCase_3_output}))
+      
+       }
+        
       } else {
         const compilation_error = atob(jsonGetSolution.compile_output);
-        outputText.innerHTML = "";
-        outputText.innerHTML += `\n Error :${compilation_error}`;
+        if(current_qs===1){
+        set_q1_testCase_Current_output(
+            `\n Error :${compilation_error}`
+            );
+        set_q1_run_output(`\n Error :${compilation_error}`)
+        localStorage.setItem(`question_1`,JSON.stringify({run_output:`\n Error :${compilation_error}`,q1_testCase_1_output:q1_testCase_1_output,q1_testCase_2_output:q1_testCase_2_output,q1_testCase_3_output:q1_testCase_3_output}))
+        }else if(current_qs===2){
+            set_q2_testCase_Current_output(
+                `\n Error :${compilation_error}`
+                );
+            set_q2_run_output(`\n Error :${compilation_error}`)
+            localStorage.setItem(`question_2`,JSON.stringify({run_output:`\n Error :${compilation_error}`,q2_testCase_1_output:q2_testCase_1_output,q2_testCase_2_output:q2_testCase_2_output,q2_testCase_3_output:q2_testCase_3_output}))
+           
+
+        }
       }
     }
   }
 
   async function submitCode(e) {
-    setIsSubmitCode(true);
-    set_testCase_1_output_error();
-    set_testCase_2_output_error();
-    set_testCase_3_output_error();
+    if(current_qs===1){
+        set_submitCode_qs1(true)
+    setIsSubmitCode_qs1(true);
+    set_q1_testCase_1_output_error();
+    set_q1_testCase_2_output_error();
+    set_q1_testCase_3_output_error();
+    }else if(current_qs===2){
+        set_submitCode_qs2(true)
+        setIsSubmitCode_qs2(true);
+        set_q2_testCase_1_output_error();
+        set_q2_testCase_2_output_error();
+        set_q2_testCase_3_output_error();
+    }
     e.preventDefault();
-    let outputText = document.getElementsByClassName("codeOutput")[0];
-    outputText.innerHTML = "";
-    outputText.innerHTML += "Creating Submission ...\n";
-    set_testCase_Current_output("Creating Submission ...\n");
+        if(current_qs===1){
+            set_q1_testCase_Current_output("Creating Submission ...\n");
+        }else if(current_qs===2){
+            set_q2_testCase_Current_output("Creating Submission ...\n");
+        }
+    let count=0;
+    let keyArr=key()
+    let jsonResponse;
+    do{
+    
     const response = await fetch(
-      "https://judge0-ce.p.rapidapi.com/submissions/batch",
+        "https://judge0-ce.p.rapidapi.com/submissions/batch",
+        {
+          method: "POST",
+          headers: {
+            "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
+            "x-rapidapi-key":
+              `${keyArr[count]}`, // Get yours for free at https://rapidapi.com/judge0-official/api/judge0-ce/
+            "content-type": "application/json",
+            accept: "application/json",
+          },
+          body: JSON.stringify({
+            submissions: [
+              {
+                source_code: inputT,
+                stdin: 12, //stateVarialble
+                language_id: language_id,
+              },
+              {
+                source_code: inputT,
+                stdin: "a", //stateVarialble
+                language_id: language_id,
+              },
+              {
+                source_code: inputT,
+                stdin: 2, //stateVarialble
+                language_id: language_id,
+              },
+            ],
+          }),
+        }
+      );
+      jsonResponse = await response.json();
+      console.log(jsonResponse)
+      console.log(jsonResponse.message=="You have exceeded the DAILY quota for Batched Submissions on your current plan, BASIC. Upgrade your plan at https://rapidapi.com/judge0-official/api/judge0-ce")
+      count+=1;
+}while(jsonResponse.message!==undefined && jsonResponse.message==="You have exceeded the DAILY quota for Batched Submissions on your current plan, BASIC. Upgrade your plan at https://rapidapi.com/judge0-official/api/judge0-ce")
+if(current_qs===1){
+    set_q1_testCase_Current_output(
+      q1_testCase_Current_output + "Submission Created ...\n"
+    );
+}else if(current_qs===2){
+    set_q2_testCase_Current_output(
+        q2_testCase_Current_output + "Submission Created ...\n"
+      );
+}
+let jsonGetSolution = {
+    submissions: [
       {
-        method: "POST",
-        headers: {
-          "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
-          "x-rapidapi-key":
-            "d35b7822fcmshab047f684dc27bap12bb13jsnfc29849e5539", // Get yours for free at https://rapidapi.com/judge0-official/api/judge0-ce/
-          "content-type": "application/json",
-          accept: "application/json",
-        },
-        body: JSON.stringify({
-          submissions: [
-            {
-              source_code: inputT,
-              stdin: 12, //stateVarialble
-              language_id: language_id,
-            },
-            {
-              source_code: inputT,
-              stdin: "a", //stateVarialble
-              language_id: language_id,
-            },
-            {
-              source_code: inputT,
-              stdin: 2, //stateVarialble
-              language_id: language_id,
-            },
-          ],
-        }),
-      }
-    );
-    const jsonResponse = await response.json();
-    console.log(jsonResponse);
-    outputText.innerHTML += "Submission Created ...\n";
-    set_testCase_Current_output(
-      testCase_Current_output + "Submission Created ...\n"
-    );
-
-    let jsonGetSolution = {
-      submissions: [
-        {
-          status: { description: "In Queue" },
-          stderr: null,
-          compile_output: null,
-        },
-        {
-          status: { description: "In Queue" },
-          stderr: null,
-          compile_output: null,
-        },
-        {
-          status: { description: "In Queue" },
-          stderr: null,
-          compile_output: null,
-        },
-      ],
-    };
-    let flag = false;
+        status: { description: "In Queue" },
+        stderr: null,
+        compile_output: null,
+      },
+      {
+        status: { description: "In Queue" },
+        stderr: null,
+        compile_output: null,
+      },
+      {
+        status: { description: "In Queue" },
+        stderr: null,
+        compile_output: null,
+      },
+    ],
+  };
+let flag = false;
     while (flag !== true) {
-      //   outputText.innerHTML = `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution[0].status.description}`;
-      set_testCase_Current_output(
+        if(current_qs===1){
+      set_q1_testCase_Current_output(
         `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.submissions[0].status.description}`
       );
+    }else if(current_qs===2){
+        set_q2_testCase_Current_output(
+            `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.submissions[0].status.description}`
+          );
+      }
       if (
         jsonResponse[0].token &&
         jsonResponse[1].token &&
@@ -273,7 +451,7 @@ export default function Compiler() {
         alert("token dont exists");
       }
     }
-
+    let t1Output,t2Output,t3Output;
     for (var y = 0; y < jsonGetSolution.submissions.length; y++) {
       if (jsonGetSolution.submissions[y].stdout) {
         const output = atob(jsonGetSolution.submissions[y].stdout);
@@ -282,58 +460,142 @@ export default function Compiler() {
           `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
         );
         console.log(output);
+       if(current_qs===1){
+            if (y === 0) {
+            set_q1_testCase_1_output(
+                `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+                );
+            t1Output= `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+            
+            set_q1_testCase_1_output_error(false);
+            set_q1_testCase_Current_output(
+                `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+            );
+            } else if (y === 1) {
+            set_q1_testCase_2_output_error(false);
+            set_q1_testCase_2_output(
+                `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+            );
+            t2Output= `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
 
-        if (y === 0) {
-          set_testCase_1_output(
-            `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
-          );
-          set_testCase_1_output_error(false);
-          set_testCase_Current_output(
-            `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
-          );
-        } else if (y === 1) {
-          set_testCase_2_output_error(false);
-          set_testCase_2_output(
-            `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
-          );
-        } else if (y === 2) {
-          set_testCase_3_output_error(false);
-          set_testCase_3_output(
-            `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
-          );
+        
+            } else if (y === 2) {
+            set_q1_testCase_3_output_error(false);
+            set_q1_testCase_3_output(
+                `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+            );
+            t3Output= `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+
+            
+            }
+        }else if(current_qs==2){
+            if (y === 0) {
+                set_q2_testCase_1_output(
+                  `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+                  );
+                t1Output= `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+              
+                set_q2_testCase_1_output_error(false);
+                set_q2_testCase_Current_output(
+                  `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+                );
+              } else if (y === 1) {
+                set_q2_testCase_2_output_error(false);
+                set_q2_testCase_2_output(
+                  `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+                );
+                t2Output= `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+      
+             
+              } else if (y === 2) {
+                set_q2_testCase_3_output_error(false);
+                set_q2_testCase_3_output(
+                  `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+                );
+                t3Output= `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+      
+               
+              }
         }
+
       } else if (jsonGetSolution.submissions[y].stderr) {
         const error = atob(jsonGetSolution.submissions[y].stderr);
-
+       if(current_qs===1){
         if (y === 0) {
-          set_testCase_1_output(`Error :${error}`);
-          set_testCase_Current_output(`Error :${error}`);
-          set_testCase_1_output_error(true);
+          set_q1_testCase_1_output(`Error :${error}`);
+          set_q1_testCase_Current_output(`Error :${error}`);
+          set_q1_testCase_1_output_error(true);
+          t1Output=`Error :${error}`
         } else if (y === 1) {
-          set_testCase_2_output(`Error :${error}`);
-          set_testCase_2_output_error(true);
+          set_q1_testCase_2_output(`Error :${error}`);
+          t2Output=`Error :${error}`
+          set_q1_testCase_2_output_error(true);
         } else if (y == 2) {
-          set_testCase_3_output(`Error :${error}`);
-          set_testCase_3_output_error(true);
+          set_q1_testCase_3_output(`Error :${error}`);
+          t3Output=`Error :${error}`
+          set_q1_testCase_3_output_error(true);
         }
+      }else if(current_qs===2){
+        if (y === 0) {
+          set_q2_testCase_1_output(`Error :${error}`);
+          set_q2_testCase_Current_output(`Error :${error}`);
+          set_q2_testCase_1_output_error(true);
+          t1Output=`Error :${error}`
+        } else if (y === 1) {
+          set_q2_testCase_2_output(`Error :${error}`);
+          t2Output=`Error :${error}`
+          set_q2_testCase_2_output_error(true);
+        } else if (y == 2) {
+          set_q2_testCase_3_output(`Error :${error}`);
+          t3Output=`Error :${error}`
+          set_q2_testCase_3_output_error(true);
+        }
+       }
       } else {
         const compilation_error = atob(
           jsonGetSolution.submissions[y].compile_output
         );
-
+        if(current_qs===1){
         if (y === 0) {
-          set_testCase_1_output(`Error :${compilation_error}`);
-          set_testCase_1_output_error(true);
-          set_testCase_Current_output(`Error :${compilation_error}`);
+          set_q1_testCase_1_output(`Error :${compilation_error}`);
+          set_q1_testCase_1_output_error(true);
+          set_q1_testCase_Current_output(`Error :${compilation_error}`);
+          t1Output=`Error :${compilation_error}`;
         } else if (y === 1) {
-          set_testCase_2_output_error(true);
-          set_testCase_2_output(`Error :${compilation_error}`);
+          set_q1_testCase_2_output_error(true);
+          set_q1_testCase_2_output(`Error :${compilation_error}`);
+          t2Output=`Error :${compilation_error}`;
         } else if (y === 2) {
-          set_testCase_3_output_error(true);
-          set_testCase_3_output(`Error :${compilation_error}`);
+          set_q1_testCase_3_output_error(true);
+          set_q1_testCase_3_output(`Error :${compilation_error}`);
+          t3Output=`Error :${compilation_error}`;
         }
+     }else if(current_qs===2){
+        if (y === 0) {
+            set_q2_testCase_1_output(`Error :${compilation_error}`);
+            set_q2_testCase_1_output_error(true);
+            set_q2_testCase_Current_output(`Error :${compilation_error}`);
+            t1Output=`Error :${compilation_error}`;
+          } else if (y === 1) {
+            set_q2_testCase_2_output_error(true);
+            set_q2_testCase_2_output(`Error :${compilation_error}`);
+            t2Output=`Error :${compilation_error}`;
+          } else if (y === 2) {
+            set_q2_testCase_3_output_error(true);
+            set_q2_testCase_3_output(`Error :${compilation_error}`);
+            t3Output=`Error :${compilation_error}`;
+          }
+     }
+
       }
     }
+    if(current_qs===1){
+        localStorage.setItem('question_1',JSON.stringify({run_output:q1_run_output,q1_testCase_1_output:t1Output,q1_testCase_2_output:t2Output,q1_testCase_3_output:t3Output}))
+    }else if(current_qs===2){
+        localStorage.setItem('question_2',JSON.stringify({run_output:q2_run_output,q2_testCase_1_output:t1Output,q2_testCase_2_output:t2Output,q2_testCase_3_output:t3Output}))
+   
+    }
+
   }
 
   class CustomTextarea {
@@ -384,67 +646,8 @@ export default function Compiler() {
 
   return (
     <>
-      {/* <div className="row container-fluid">
-          <div className="col-6 ml-4 ">
-            <label htmlFor="solution ">
-              <span className="badge badge-info heading mt-2 ">
-                <i className="fas fa-code fa-fw fa-lg"></i> Code Here
-              </span>
-            </label>
-            <textarea spellcheck="false"
-              required
-              name="solution"
-              id="source"
-              onChange={(e)=>input(e)}
-              className=" source"
-              defaultValue={inputT}
-            ></textarea>
-            <button
-              type="submit"
-              className="btn btn-danger ml-2 mr-2 "
-              onClick={submit}
-            >
-              <i className="fas fa-cog fa-fw"></i> Run
-            </button>
-            <button
-              type="submit"
-              className="btn btn-primary ml-2 mr-2 "
-              onClick={submitCode}
-            >
-              <i className="fas fa-cog fa-fw"></i> Submit
-            </button>
-
-            <label htmlFor="tags" className="mr-1">
-              <b className="heading">Language:</b>
-            </label>
-            <select
-              value={language_id}
-              onChange={language}
-              id="tags"
-              className="form-control form-inline mb-2 language"
-            >
-              <option value="54">C++</option>
-              <option value="50">C</option>
-              <option value="62">Java</option>
-              <option value="71">Python</option>
-            </select>
-          </div>
-          <div className="col-5">
-            <div>
-              <span className="badge badge-info heading my-2 ">
-                <i className="fas fa-exclamation fa-fw fa-md"></i> Output
-              </span>
-              <textarea id="output"></textarea>
-            </div>
-          </div>
-        </div>
-        <div className="mt-2 ml-5">
-          <span className="badge badge-primary heading my-2 ">
-            <i className="fas fa-user fa-fw fa-md"></i> User Input
-          </span>
-          <br />
-          <textarea id="input" onChange={userInput}></textarea>
-        </div> */}
+    {q1_testCase_Current_output} {q2_testCase_Current_output}
+    
       <Row>
         <Col md={6}>
           <Row>
@@ -473,21 +676,81 @@ export default function Compiler() {
                 defaultActiveKey="Q1"
                 id="uncontrolled-tab-example"
                 style={{ marginBottom: "0px !important" }}
-                className="mb-3"
+                className="mb-3" onClick={(e)=>{
+                    
+                    let qsNo=e.target.textContent.split('Q')[1]
+                    set_current_qs(parseInt(qsNo));
+                    if(parseInt(qsNo)===1){
+                        setInput(inputT_question_1)
+                        document.getElementById('codeEditor').value=inputT_question_1
+                      document.getElementsByClassName('customInput')[0].value=user_input_question_1
+                        setUser_input(user_input_question_1)
+                        setLanguage_id(language_id_question_1)
+                        if(document.getElementsByClassName('codeOutput')[0]!==undefined){
+                            
+                            if(isSubmitCode_qs1){
+                                document.getElementsByClassName('codeOutput')[0].value=q1_testCase_1_output
+                                set_q1_testCase_Current_output(q1_testCase_1_output)
+                            }else{
+                                    if(q1_run_output!==undefined){
+                                        document.getElementsByClassName('codeOutput')[0].value=q1_run_output
+                                        set_q1_testCase_Current_output(q1_run_output)
+                                    }else{
+                                        document.getElementsByClassName('codeOutput')[0].value=''
+                                        set_q1_testCase_Current_output()
+                                    }
+                        }
+                    }
+                  
+                    }
+                    else if(parseInt(qsNo)===2){
+                      
+                        setInput(inputT_question_2)
+                        document.getElementById('codeEditor').value=inputT_question_2
+                        document.getElementsByClassName('customInput')[0].value=user_input_question_2
+                        setUser_input(user_input_question_2)
+                        setLanguage_id(language_id_question_2)
+
+                        console.log(document.getElementsByClassName('codeOutput')[0])
+                        if(document.getElementsByClassName('codeOutput')[0]!==undefined){
+                            if(isSubmitCode_qs2){
+                                document.getElementsByClassName('codeOutput')[0].value=q2_testCase_1_output
+                                set_q2_testCase_Current_output(q2_testCase_1_output)
+                            }else{
+                                    if(q2_run_output!==undefined){
+                                        document.getElementsByClassName('codeOutput')[0].value=q2_run_output
+                                        set_q2_testCase_Current_output(q2_run_output)
+                                    }else{
+                                        document.getElementsByClassName('codeOutput')[0].value=''
+                                        set_q2_testCase_Current_output()
+                                    }
+                        }
+                    }
+                    }
+                    else if(parseInt(qsNo)===3){
+                        setInput(inputT_question_3)
+                        document.getElementById('codeEditor').value=inputT_question_3
+                        document.getElementsByClassName('customInput')[0].value=user_input_question_3
+                        setUser_input(user_input_question_3)
+                        setLanguage_id(language_id_question_3)
+                    }
+                
+                }}
               >
-                <Tab eventKey="Q1" title="Q1">
-                  <CodingQsComp></CodingQsComp>
+                <Tab eventKey="Q1"  title="Q1">
+                  {/* <CodingQsComp qs={question_current}></CodingQsComp> */}
                 </Tab>
                 <Tab eventKey="Q2" title="Q2">
-                  <CodingQsComp></CodingQsComp>
+                  {/* <CodingQsComp></CodingQsComp> */}
                 </Tab>
                 <Tab eventKey="Q3" title="Q3">
-                  <CodingQsComp></CodingQsComp>
+                  {/* <CodingQsComp></CodingQsComp> */}
                 </Tab>
               </Tabs>
             </div>
           </Row>
         </Col>
+        
         <Col md={6}>
           <div style={{ marginLeft: "45px" }}>
             <Row
@@ -530,6 +793,7 @@ export default function Compiler() {
               >
                 <div class="custom-textarea">
                   <textarea
+                  id="codeEditor"
                     class="textarea"
                     spellCheck={false}
                     defaultValue={inputT}
@@ -583,7 +847,7 @@ export default function Compiler() {
                   className="btn scTest ml-2 mr-2 "
                   style={{ color: "white", width: "fit-content" }}
                   onClick={(e) => {
-                    setIsSubmitCode();
+                   current_qs===1?setIsSubmitCode_qs1():(current_qs===2?setIsSubmitCode_qs2():setIsSubmitCode_qs3());
                     submit(e);
                   }}
                 >
@@ -595,7 +859,16 @@ export default function Compiler() {
                   type="submit"
                   className="btn scTest ml-2 mr-2 "
                   style={{ color: "white", width: "fit-content" }}
-                  onClick={submitCode}
+                  onClick={(e)=>{
+                      if(current_qs===1){
+                          set_submitCode_qs1(true);
+                    }else if(current_qs===2){
+                        set_submitCode_qs2(true);
+                    }else if(current_qs===3){
+                        set_submitCode_qs3(true);
+                    }
+                      submitCode(e)
+                    }}
                 >
                   <i className="fas fa-cog fa-fw"></i> Submit
                 </button>
@@ -620,27 +893,41 @@ export default function Compiler() {
                       id="style-4"
                       className="scrollbar customInput"
                       spellCheck={false}
+                      defaultValue={user_input}
                       onChange={userInput}
                     ></textarea>
                   </Tab>
                   <Tab eventKey="Result" title="result">
-                    <Row>
-                      {isSubmitCode !== undefined && (
+                  
+                   <Row>
+                      { (current_qs===1?submitCode_qs1:(current_qs===2?submitCode_qs2:submitCode_qs3) ) && (
+                          
                         <Col md={3}>
+                            
                           <div>
                             <Row className="" style={{ height: "20%" }}>
-                              {testCase_1_output_error !== undefined ? (
+                              {( current_qs===1?( q1_testCase_1_output_error !== undefined):(current_qs===2?q2_testCase_1_output_error!==undefined:null)) ? (
                                 <Col style={{ paddingLeft: "0%" }}>
                                   <button
                                     className={
-                                      !testCase_1_output_error
-                                        ? "btn scTest"
-                                        : "btn btn-danger"
+                                        current_qs===1? (!q1_testCase_1_output_error
+                                            ? "btn scTest"
+                                            : "btn btn-danger"):(current_qs===2?(!q2_testCase_1_output_error
+                                                ? "btn scTest"
+                                                : "btn btn-danger"):null)
                                     }
                                     onClick={(e) => {
-                                      set_testCase_Current_output(
-                                        testCase_1_output
-                                      );
+                                        if(current_qs===1){
+                                            document.getElementsByClassName('codeOutput')[0].value=q1_testCase_1_output;
+                                              set_q1_testCase_Current_output(
+                                                q1_testCase_1_output
+                                              );
+                                            }else if(current_qs===2){
+                                                document.getElementsByClassName('codeOutput')[0].value=q2_testCase_1_output;
+                                              set_q2_testCase_Current_output(
+                                                q2_testCase_1_output
+                                              );
+                                            }
                                     }}
                                     style={{
                                       marginBottom: "1px",
@@ -657,9 +944,17 @@ export default function Compiler() {
                                   <button
                                     className="btn btn-secondary"
                                     onClick={(e) => {
-                                      set_testCase_Current_output(
-                                        testCase_1_output
-                                      );
+                                        if(current_qs===1){
+                                            document.getElementsByClassName('codeOutput')[0].value=q1_testCase_1_output;
+                                              set_q1_testCase_Current_output(
+                                                q1_testCase_1_output
+                                              );
+                                            }else if(current_qs===2){
+                                                document.getElementsByClassName('codeOutput')[0].value=q2_testCase_1_output;
+                                              set_q2_testCase_Current_output(
+                                                q2_testCase_1_output
+                                              );
+                                            }
                                     }}
                                     style={{
                                       marginBottom: "1px",
@@ -674,18 +969,29 @@ export default function Compiler() {
                               )}
                             </Row>
                             <Row className="">
-                              {testCase_2_output_error !== undefined && (
+                              {( current_qs===1?( q1_testCase_2_output_error !== undefined):(current_qs===2?q2_testCase_2_output_error!==undefined:null)) ? 
+                              (
                                 <Col style={{ paddingLeft: "0%" }}>
                                   <button
                                     className={
-                                      !testCase_2_output_error
+                                      current_qs===1? (!q1_testCase_2_output_error
                                         ? "btn scTest"
-                                        : "btn btn-danger"
+                                        : "btn btn-danger"):(current_qs===2?(!q2_testCase_2_output_error
+                                            ? "btn scTest"
+                                            : "btn btn-danger"):null)
                                     }
                                     onClick={(e) => {
-                                      set_testCase_Current_output(
-                                        testCase_2_output
-                                      );
+                                        if(current_qs===1){
+                                            document.getElementsByClassName('codeOutput')[0].value=q1_testCase_2_output;
+                                              set_q1_testCase_Current_output(
+                                                q1_testCase_2_output
+                                              );
+                                            }else if(current_qs===2){
+                                                document.getElementsByClassName('codeOutput')[0].value=q2_testCase_2_output;
+                                              set_q2_testCase_Current_output(
+                                                q2_testCase_2_output
+                                              );
+                                            }
                                     }}
                                     style={{
                                       marginBottom: "1px",
@@ -694,18 +1000,25 @@ export default function Compiler() {
                                       width: "100%",
                                     }}
                                   >
-                                    Test Case 2
+                                    Test Case 22
                                   </button>
-                                </Col>
-                              )}
-                              {testCase_2_output_error === undefined && (
-                                <Col style={{ paddingLeft: "0%" }}>
+                                </Col>)
+                              :(  <Col style={{ paddingLeft: "0%" }}>
                                   <button
                                     className="btn btn-secondary"
                                     onClick={(e) => {
-                                      set_testCase_Current_output(
-                                        testCase_2_output
-                                      );
+                                       
+                                      if(current_qs===1){
+                                        document.getElementsByClassName('codeOutput')[0].value=q1_testCase_2_output;
+                                          set_q1_testCase_Current_output(
+                                            q1_testCase_2_output
+                                          );
+                                        }else if(current_qs===2){
+                                            document.getElementsByClassName('codeOutput')[0].value=q2_testCase_2_output;
+                                          set_q2_testCase_Current_output(
+                                            q2_testCase_2_output
+                                          );
+                                        }
                                     }}
                                     style={{
                                       marginBottom: "1px",
@@ -720,18 +1033,28 @@ export default function Compiler() {
                               )}
                             </Row>
                             <Row className="">
-                              {testCase_3_output_error !== undefined ? (
+                              {( current_qs===1?( q1_testCase_3_output_error !== undefined):(current_qs===2?q2_testCase_3_output_error!==undefined:null)) ? (
                                 <Col style={{ paddingLeft: "0%" }}>
                                   <button
                                     className={
-                                      !testCase_3_output_error
-                                        ? "btn scTest"
-                                        : "btn btn-danger"
+                                        current_qs===1? (!q1_testCase_3_output_error
+                                            ? "btn scTest"
+                                            : "btn btn-danger"):(current_qs===2?(!q2_testCase_3_output_error
+                                                ? "btn scTest"
+                                                : "btn btn-danger"):null)
                                     }
                                     onClick={(e) => {
-                                      set_testCase_Current_output(
-                                        testCase_3_output
-                                      );
+                                        if(current_qs===1){
+                                            document.getElementsByClassName('codeOutput')[0].value=q1_testCase_3_output;
+                                              set_q1_testCase_Current_output(
+                                                q1_testCase_3_output
+                                              );
+                                            }else if(current_qs===2){
+                                                document.getElementsByClassName('codeOutput')[0].value=q2_testCase_3_output;
+                                              set_q2_testCase_Current_output(
+                                                q2_testCase_3_output
+                                              );
+                                            }
                                     }}
                                     style={{
                                       marginBottom: "1px",
@@ -740,7 +1063,7 @@ export default function Compiler() {
                                       width: "100%",
                                     }}
                                   >
-                                    Test Case 3
+                                    Test Case 32
                                   </button>
                                 </Col>
                               ) : (
@@ -748,9 +1071,17 @@ export default function Compiler() {
                                   <button
                                     className={"btn btn-secondary"}
                                     onClick={(e) => {
-                                      set_testCase_Current_output(
-                                        testCase_3_output
+                                        if(current_qs===1){
+                                    document.getElementsByClassName('codeOutput')[0].value=q1_testCase_3_output;
+                                      set_q1_testCase_Current_output(
+                                        q1_testCase_3_output
                                       );
+                                    }else if(current_qs===2){
+                                        document.getElementsByClassName('codeOutput')[0].value=q2_testCase_3_output;
+                                      set_q2_testCase_Current_output(
+                                        q2_testCase_3_output
+                                      );
+                                    }
                                     }}
                                     style={{
                                       marginBottom: "1px",
@@ -759,7 +1090,7 @@ export default function Compiler() {
                                       width: "100%",
                                     }}
                                   >
-                                    Test Case 3
+                                    Test Case 31
                                   </button>
                                 </Col>
                               )}
@@ -767,16 +1098,18 @@ export default function Compiler() {
                           </div>
                         </Col>
                       )}
-                      <Col md={isSubmitCode ? 9 : 12}>
+                      <Col md={(current_qs===1?submitCode_qs1:(current_qs===2?submitCode_qs2:submitCode_qs3)) ? 9 : 12}>
                         <textarea
                           disabled
-                          defaultValue={testCase_Current_output}
+                          value={current_qs===1?q1_testCase_Current_output:(current_qs===2?q2_testCase_Current_output:'hello')}
                           readOnly
                           className="scrollbar codeOutput"
                           id="style-4"
                         ></textarea>
                       </Col>
                     </Row>
+                    
+                    
                   </Tab>
                 </Tabs>
               </div>
