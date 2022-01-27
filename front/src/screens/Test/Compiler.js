@@ -13,7 +13,6 @@ export default function Compiler() {
   const [inputT_question_3, setInput_question_3] = useState("");
   const [current_qs, set_current_qs] = useState(1);
 
- 
   const [language_id, setLanguage_id] = useState();
   const [language_id_question_1, setLanguage_id_question_1] = useState();
   const [language_id_question_2, setLanguage_id_question_2] = useState();
@@ -23,8 +22,6 @@ export default function Compiler() {
   const [user_input_question_1, setUser_input_question_1] = useState();
   const [user_input_question_2, setUser_input_question_2] = useState();
   const [user_input_question_3, setUser_input_question_3] = useState();
-
-  
 
   const [default_input, set_default_input] = useState();
 
@@ -39,94 +36,125 @@ export default function Compiler() {
   const [submitCode_qs2, set_submitCode_qs2] = useState(false); // (t/f)
   const [submitCode_qs3, set_submitCode_qs3] = useState(false); // (t/f)
 
-  
-
-  
-
-  
   const [q1_run_output, set_q1_run_output] = useState();
   const [q1_testCase_1_output, set_q1_testCase_1_output] = useState();
   const [q1_testCase_2_output, set_q1_testCase_2_output] = useState();
   const [q1_testCase_3_output, set_q1_testCase_3_output] = useState();
-  const [q1_testCase_Current_output, set_q1_testCase_Current_output] = useState(); //generalized for Q1
-  const [q1_testCase_1_output_error, set_q1_testCase_1_output_error] = useState();    // (t/f)
-  const [q1_testCase_2_output_error, set_q1_testCase_2_output_error] = useState();  // (t/f)
-  const [q1_testCase_3_output_error, set_q1_testCase_3_output_error] = useState();  // (t/f)
-  
+  const [q1_testCase_Current_output, set_q1_testCase_Current_output] =
+    useState(); //generalized for Q1
+  const [q1_testCase_1_output_error, set_q1_testCase_1_output_error] =
+    useState(); // (t/f)
+  const [q1_testCase_2_output_error, set_q1_testCase_2_output_error] =
+    useState(); // (t/f)
+  const [q1_testCase_3_output_error, set_q1_testCase_3_output_error] =
+    useState(); // (t/f)
 
-  
   const [q2_run_output, set_q2_run_output] = useState();
   const [q2_testCase_1_output, set_q2_testCase_1_output] = useState();
   const [q2_testCase_2_output, set_q2_testCase_2_output] = useState();
   const [q2_testCase_3_output, set_q2_testCase_3_output] = useState();
-  const [q2_testCase_Current_output, set_q2_testCase_Current_output] = useState(); //generalized for Q2
-  const [q2_testCase_1_output_error, set_q2_testCase_1_output_error] = useState();    // (t/f)
-  const [q2_testCase_2_output_error, set_q2_testCase_2_output_error] = useState();  // (t/f)
-  const [q2_testCase_3_output_error, set_q2_testCase_3_output_error] = useState();  // (t/f)
+  const [q2_testCase_Current_output, set_q2_testCase_Current_output] =
+    useState(); //generalized for Q2
+  const [q2_testCase_1_output_error, set_q2_testCase_1_output_error] =
+    useState(); // (t/f)
+  const [q2_testCase_2_output_error, set_q2_testCase_2_output_error] =
+    useState(); // (t/f)
+  const [q2_testCase_3_output_error, set_q2_testCase_3_output_error] =
+    useState(); // (t/f)
 
-  
   const [q3_run_output, set_q3_run_output] = useState();
   const [q3_testCase_1_output, set_q3_testCase_1_output] = useState();
   const [q3_testCase_2_output, set_q3_testCase_2_output] = useState();
   const [q3_testCase_3_output, set_q3_testCase_3_output] = useState();
-  const [q3_testCase_Current_output, set_q3_testCase_Current_output] = useState(); //generalized for Q2
-  const [q3_testCase_1_output_error, set_q3_testCase_1_output_error] = useState();    // (t/f)
-  const [q3_testCase_2_output_error, set_q3_testCase_2_output_error] = useState();  // (t/f)
-  const [q3_testCase_3_output_error, set_q3_testCase_3_output_error] = useState();  // (t/f)
+  const [q3_testCase_Current_output, set_q3_testCase_Current_output] =
+    useState(); //generalized for Q2
+  const [q3_testCase_1_output_error, set_q3_testCase_1_output_error] =
+    useState(); // (t/f)
+  const [q3_testCase_2_output_error, set_q3_testCase_2_output_error] =
+    useState(); // (t/f)
+  const [q3_testCase_3_output_error, set_q3_testCase_3_output_error] =
+    useState(); // (t/f)
 
-  const [general_output,set_general_output]=useState([])
- 
+  const [general_output, set_general_output] = useState([]);
 
   //three qs
-  const [question_1, set_question_1] = useState({
-    });
+  const [question_1, set_question_1] = useState({});
   const [question_2, set_question_2] = useState();
   const [question_3, set_question_3] = useState();
   const [question_current, set_question_current] = useState({
-    'question':'qs1','input_format':'input format','output_format':'output_format','constraints':'constraints','sample_input_1':'sample_input_1',
-    'sample_output_1':'sample_output_1','explanation':['expl1','expl2','expl3']
-});
+    question: "qs1",
+    input_format: "input format",
+    output_format: "output_format",
+    constraints: "constraints",
+    sample_input_1: "sample_input_1",
+    sample_output_1: "sample_output_1",
+    explanation: ["expl1", "expl2", "expl3"],
+  });
 
   useEffect(() => {
-     
-  
     setInput(localStorage.getItem("input_1") || ``);
-    setInput_question_1(localStorage.getItem("input_1") || ``)
-    setInput_question_2(localStorage.getItem("input_2") || ``)
-    setInput_question_3(localStorage.getItem("input_3") || ``)
+    setInput_question_1(localStorage.getItem("input_1") || ``);
+    setInput_question_2(localStorage.getItem("input_2") || ``);
+    setInput_question_3(localStorage.getItem("input_3") || ``);
 
-    setUser_input(localStorage.getItem("user_input_1") || ``)
-    setUser_input_question_1(localStorage.getItem("user_input_1") || ``)
-    setUser_input_question_2(localStorage.getItem("user_input_2") || ``)
-    setUser_input_question_3(localStorage.getItem("user_input_3") || ``)
+    setUser_input(localStorage.getItem("user_input_1") || ``);
+    setUser_input_question_1(localStorage.getItem("user_input_1") || ``);
+    setUser_input_question_2(localStorage.getItem("user_input_2") || ``);
+    setUser_input_question_3(localStorage.getItem("user_input_3") || ``);
 
     setLanguage_id(localStorage.getItem("language_Id_question_1") || 2);
-    setLanguage_id_question_1(localStorage.getItem("language_Id_question_1") || 2);
-    setLanguage_id_question_2(localStorage.getItem("language_Id_question_2") || 2);
-    setLanguage_id_question_3(localStorage.getItem("language_Id_question_3") || 2);
-    
+    setLanguage_id_question_1(
+      localStorage.getItem("language_Id_question_1") || 2
+    );
+    setLanguage_id_question_2(
+      localStorage.getItem("language_Id_question_2") || 2
+    );
+    setLanguage_id_question_3(
+      localStorage.getItem("language_Id_question_3") || 2
+    );
+
     //from db
-    set_question_1({  'question':'qs1','input_format':'input format','output_format':'output_format','constraints':'constraints','sample_input_1':'sample_input_1',
-    'sample_output_1':'sample_output_1','explanation':['expl1','expl2','expl3']
-})
-set_question_current({  'question':'qs1','input_format':'input format','output_format':'output_format','constraints':'constraints','sample_input_1':'sample_input_1',
-'sample_output_1':'sample_output_1','explanation':['expl1','expl2','expl3']
-})
+    set_question_1({
+      question: "qs1",
+      input_format: "input format",
+      output_format: "output_format",
+      constraints: "constraints",
+      sample_input_1: "sample_input_1",
+      sample_output_1: "sample_output_1",
+      explanation: ["expl1", "expl2", "expl3"],
+    });
+    set_question_current({
+      question: "qs1",
+      input_format: "input format",
+      output_format: "output_format",
+      constraints: "constraints",
+      sample_input_1: "sample_input_1",
+      sample_output_1: "sample_output_1",
+      explanation: ["expl1", "expl2", "expl3"],
+    });
     set_default_input(69);
   }, []);
 
   function input(event) {
     event.preventDefault();
-    setInput(event.target.value)
+    setInput(event.target.value);
     localStorage.setItem(`input_${current_qs}`, event.target.value);
-    current_qs===1?setInput_question_1(event.target.value):(current_qs===2?setInput_question_2(event.target.value):setInput_question_3(event.target.value))
+    current_qs === 1
+      ? setInput_question_1(event.target.value)
+      : current_qs === 2
+      ? setInput_question_2(event.target.value)
+      : setInput_question_3(event.target.value);
   }
 
   function userInput(event) {
     event.preventDefault();
     !event.target.value ? setUser_input() : setUser_input(event.target.value);
- 
-    current_qs===1?setUser_input_question_1(event.target.value):(current_qs===2?setUser_input_question_2(event.target.value):setUser_input_question_3(event.target.value))
+
+    current_qs === 1
+      ? setUser_input_question_1(event.target.value)
+      : current_qs === 2
+      ? setUser_input_question_2(event.target.value)
+      : setUser_input_question_3(event.target.value);
 
     localStorage.setItem(`user_input_${current_qs}`, event.target.value);
   }
@@ -134,29 +162,36 @@ set_question_current({  'question':'qs1','input_format':'input format','output_f
   function language(event) {
     event.preventDefault();
     setLanguage_id(event.target.value);
-    current_qs===1?setLanguage_id_question_1(event.target.value):(current_qs===2?setLanguage_id_question_2(event.target.value):setLanguage_id_question_3(event.target.value))
-    localStorage.setItem(`language_Id_question_${current_qs}`, event.target.value);
+    current_qs === 1
+      ? setLanguage_id_question_1(event.target.value)
+      : current_qs === 2
+      ? setLanguage_id_question_2(event.target.value)
+      : setLanguage_id_question_3(event.target.value);
+    localStorage.setItem(
+      `language_Id_question_${current_qs}`,
+      event.target.value
+    );
   }
 
   async function submit(e) {
-    
-   if(current_qs===1) {
-       set_q1_testCase_Current_output("");
-}else if(current_qs===2){
-    set_q2_testCase_Current_output("");
-}else if(current_qs===3){
-    set_q3_testCase_Current_output("");
-}
+    if (current_qs === 1) {
+      set_q1_testCase_Current_output("");
+    } else if (current_qs === 2) {
+      set_q2_testCase_Current_output("");
+    } else if (current_qs === 3) {
+      set_q3_testCase_Current_output("");
+    }
     e.preventDefault();
     if (customInputCheck && user_input === undefined) {
       alert("Please enter input");
     } else {
-      
-      if(current_qs===1){set_q1_run_output("Creating Submission ...\n")
-    }else if(current_qs===2){set_q2_run_output("Creating Submission ...\n")
-  }else if(current_qs===3){
-    set_q3_run_output("Creating Submission ...\n")
-  }
+      if (current_qs === 1) {
+        set_q1_run_output("Creating Submission ...\n");
+      } else if (current_qs === 2) {
+        set_q2_run_output("Creating Submission ...\n");
+      } else if (current_qs === 3) {
+        set_q3_run_output("Creating Submission ...\n");
+      }
       let response = await fetch(
         "https://judge0-ce.p.rapidapi.com/submissions",
         {
@@ -170,15 +205,19 @@ set_question_current({  'question':'qs1','input_format':'input format','output_f
           },
           body: JSON.stringify({
             source_code: inputT,
-            stdin: user_input , //stateVarialble
+            stdin: user_input, //stateVarialble
             language_id: language_id,
           }),
         }
       );
-     console.log(response)
-      if(current_qs===1){set_q1_run_output(q1_run_output+"Submission Created ...\n")
-    }else if(current_qs===2){set_q2_run_output(q2_run_output+"Submission Created ...\n")
-  }
+      console.log(response);
+      if (current_qs === 1) {
+        set_q1_run_output(q1_run_output + "Submission Created ...\n");
+      } else if (current_qs === 2) {
+        set_q2_run_output(q2_run_output + "Submission Created ...\n");
+      } else if (current_qs === 3) {
+        set_q3_run_output(q2_run_output + "Submission Created ...\n");
+      }
       const jsonResponse = await response.json();
       let jsonGetSolution = {
         status: { description: "Queue" },
@@ -187,9 +226,19 @@ set_question_current({  'question':'qs1','input_format':'input format','output_f
       };
       let flag = false;
       while (flag !== true) {
-       if(current_qs===1){set_q1_run_output(`Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.status.description}`)
-      }else if(current_qs===2){set_q2_run_output(`Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.status.description}`)
-    }
+        if (current_qs === 1) {
+          set_q1_run_output(
+            `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.status.description}`
+          );
+        } else if (current_qs === 2) {
+          set_q2_run_output(
+            `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.status.description}`
+          );
+        } else if (current_qs === 3) {
+          set_q3_run_output(
+            `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.status.description}`
+          );
+        }
         if (jsonResponse.token) {
           let url = `https://judge0-ce.p.rapidapi.com/submissions/${jsonResponse.token}?base64_encoded=true`;
           const getSolution = await fetch(url, {
@@ -207,7 +256,6 @@ set_question_current({  'question':'qs1','input_format':'input format','output_f
             jsonGetSolution.status.description === "Accepted" &&
             jsonGetSolution.stderr === null &&
             jsonGetSolution.compile_output === null
-            
           ) {
             flag = true;
           } else if (
@@ -215,109 +263,189 @@ set_question_current({  'question':'qs1','input_format':'input format','output_f
             jsonGetSolution.status.description !== "Accepted"
           ) {
             flag = true;
-          }else if(jsonGetSolution.stderr === null &&
-            jsonGetSolution.status.description === "Compilation Error"){
-                flag=true
-            }
+          } else if (
+            jsonGetSolution.stderr === null &&
+            jsonGetSolution.status.description === "Compilation Error"
+          ) {
+            flag = true;
+          }
         }
       }
       console.log(jsonGetSolution);
 
       if (jsonGetSolution.stdout) {
         const output = atob(jsonGetSolution.stdout);
-        if(current_qs===1){
-            set_q1_testCase_Current_output(
+        if (current_qs === 1) {
+          set_q1_testCase_Current_output(
             `${output}\nExxecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
-            );
-            set_q1_run_output(
+          );
+          set_q1_run_output(
             `${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
-            );    
-            localStorage.setItem(`question_1`,JSON.stringify({run_output: `${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
-            q1_testCase_1_output:q1_testCase_1_output,
-            q1_testCase_2_output:q1_testCase_2_output,
-            q1_testCase_3_output:q1_testCase_3_output}))
-        }else if(current_qs===2){
-            set_q2_testCase_Current_output(
-                `${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
-                );
-                set_q2_run_output(
-                `${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
-                );    
-                localStorage.setItem(`question_2`,JSON.stringify({run_output: `${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
-                q2_testCase_1_output:q2_testCase_1_output,
-                q2_testCase_2_output:q2_testCase_2_output,
-                q2_testCase_3_output:q2_testCase_3_output}))
-
+          );
+          localStorage.setItem(
+            `question_1`,
+            JSON.stringify({
+              run_output: `${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
+              q1_testCase_1_output: q1_testCase_1_output,
+              q1_testCase_2_output: q1_testCase_2_output,
+              q1_testCase_3_output: q1_testCase_3_output,
+            })
+          );
+        } else if (current_qs === 2) {
+          set_q2_testCase_Current_output(
+            `${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
+          );
+          set_q2_run_output(
+            `${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
+          );
+          localStorage.setItem(
+            `question_2`,
+            JSON.stringify({
+              run_output: `${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
+              q2_testCase_1_output: q2_testCase_1_output,
+              q2_testCase_2_output: q2_testCase_2_output,
+              q2_testCase_3_output: q2_testCase_3_output,
+            })
+          );
+        } else if (current_qs === 3) {
+          set_q3_testCase_Current_output(
+            `${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
+          );
+          set_q3_run_output(
+            `${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
+          );
+          localStorage.setItem(
+            `question_3`,
+            JSON.stringify({
+              run_output: `${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
+              q3_testCase_1_output: q3_testCase_1_output,
+              q3_testCase_2_output: q3_testCase_2_output,
+              q3_testCase_3_output: q3_testCase_3_output,
+            })
+          );
         }
-       
       } else if (jsonGetSolution.stderr) {
         const error = atob(jsonGetSolution.stderr);
         console.log(error);
-        if(current_qs===1){
-        set_q1_testCase_Current_output(`\n Error :${error}`);
-        set_q1_run_output(`\n Error :${error}`);
-        localStorage.setItem(`question_1`,JSON.stringify({run_output:`\n Error :${error}`,q1_testCase_1_output:q1_testCase_1_output,q1_testCase_2_output:q1_testCase_2_output,q1_testCase_3_output:q1_testCase_3_output}))
-       }else if(current_qs===2){
-        set_q2_testCase_Current_output(`\n Error :${error}`);
-        set_q2_run_output(`\n Error :${error}`);
-        localStorage.setItem(`question_2`,JSON.stringify({run_output:`\n Error :${error}`,q2_testCase_1_output:q2_testCase_1_output,q2_testCase_2_output:q2_testCase_2_output,q2_testCase_3_output:q2_testCase_3_output}))
-      
-       }
-        
+        if (current_qs === 1) {
+          set_q1_testCase_Current_output(`\n Error :${error}`);
+          set_q1_run_output(`\n Error :${error}`);
+          localStorage.setItem(
+            `question_1`,
+            JSON.stringify({
+              run_output: `\n Error :${error}`,
+              q1_testCase_1_output: q1_testCase_1_output,
+              q1_testCase_2_output: q1_testCase_2_output,
+              q1_testCase_3_output: q1_testCase_3_output,
+            })
+          );
+        } else if (current_qs === 2) {
+          set_q2_testCase_Current_output(`\n Error :${error}`);
+          set_q2_run_output(`\n Error :${error}`);
+          localStorage.setItem(
+            `question_2`,
+            JSON.stringify({
+              run_output: `\n Error :${error}`,
+              q2_testCase_1_output: q2_testCase_1_output,
+              q2_testCase_2_output: q2_testCase_2_output,
+              q2_testCase_3_output: q2_testCase_3_output,
+            })
+          );
+        } else if (current_qs === 3) {
+          set_q3_testCase_Current_output(`\n Error :${error}`);
+          set_q3_run_output(`\n Error :${error}`);
+          localStorage.setItem(
+            `question_3`,
+            JSON.stringify({
+              run_output: `\n Error :${error}`,
+              q3_testCase_1_output: q3_testCase_1_output,
+              q3_testCase_2_output: q3_testCase_2_output,
+              q3_testCase_3_output: q3_testCase_3_output,
+            })
+          );
+        }
       } else {
         const compilation_error = atob(jsonGetSolution.compile_output);
-        if(current_qs===1){
-        set_q1_testCase_Current_output(
-            `\n Error :${compilation_error}`
-            );
-        set_q1_run_output(`\n Error :${compilation_error}`)
-        localStorage.setItem(`question_1`,JSON.stringify({run_output:`\n Error :${compilation_error}`,q1_testCase_1_output:q1_testCase_1_output,q1_testCase_2_output:q1_testCase_2_output,q1_testCase_3_output:q1_testCase_3_output}))
-        }else if(current_qs===2){
-            set_q2_testCase_Current_output(
-                `\n Error :${compilation_error}`
-                );
-            set_q2_run_output(`\n Error :${compilation_error}`)
-            localStorage.setItem(`question_2`,JSON.stringify({run_output:`\n Error :${compilation_error}`,q2_testCase_1_output:q2_testCase_1_output,q2_testCase_2_output:q2_testCase_2_output,q2_testCase_3_output:q2_testCase_3_output}))
-           
-
+        if (current_qs === 1) {
+          set_q1_testCase_Current_output(`\n Error :${compilation_error}`);
+          set_q1_run_output(`\n Error :${compilation_error}`);
+          localStorage.setItem(
+            `question_1`,
+            JSON.stringify({
+              run_output: `\n Error :${compilation_error}`,
+              q1_testCase_1_output: q1_testCase_1_output,
+              q1_testCase_2_output: q1_testCase_2_output,
+              q1_testCase_3_output: q1_testCase_3_output,
+            })
+          );
+        } else if (current_qs === 2) {
+          set_q2_testCase_Current_output(`\n Error :${compilation_error}`);
+          set_q2_run_output(`\n Error :${compilation_error}`);
+          localStorage.setItem(
+            `question_2`,
+            JSON.stringify({
+              run_output: `\n Error :${compilation_error}`,
+              q2_testCase_1_output: q2_testCase_1_output,
+              q2_testCase_2_output: q2_testCase_2_output,
+              q2_testCase_3_output: q2_testCase_3_output,
+            })
+          );
+        } else if (current_qs === 3) {
+          set_q3_testCase_Current_output(`\n Error :${compilation_error}`);
+          set_q3_run_output(`\n Error :${compilation_error}`);
+          localStorage.setItem(
+            `question_3`,
+            JSON.stringify({
+              run_output: `\n Error :${compilation_error}`,
+              q3_testCase_1_output: q3_testCase_1_output,
+              q3_testCase_2_output: q3_testCase_2_output,
+              q3_testCase_3_output: q3_testCase_3_output,
+            })
+          );
         }
       }
     }
   }
 
   async function submitCode(e) {
-    if(current_qs===1){
-        set_submitCode_qs1(true)
-    setIsSubmitCode_qs1(true);
-    set_q1_testCase_1_output_error();
-    set_q1_testCase_2_output_error();
-    set_q1_testCase_3_output_error();
-    }else if(current_qs===2){
-        set_submitCode_qs2(true)
-        setIsSubmitCode_qs2(true);
-        set_q2_testCase_1_output_error();
-        set_q2_testCase_2_output_error();
-        set_q2_testCase_3_output_error();
+    if (current_qs === 1) {
+      set_submitCode_qs1(true);
+      setIsSubmitCode_qs1(true);
+      set_q1_testCase_1_output_error();
+      set_q1_testCase_2_output_error();
+      set_q1_testCase_3_output_error();
+    } else if (current_qs === 2) {
+      set_submitCode_qs2(true);
+      setIsSubmitCode_qs2(true);
+      set_q2_testCase_1_output_error();
+      set_q2_testCase_2_output_error();
+      set_q2_testCase_3_output_error();
+    } else if (current_qs === 3) {
+      set_submitCode_qs3(true);
+      setIsSubmitCode_qs3(true);
+      set_q3_testCase_1_output_error();
+      set_q3_testCase_2_output_error();
+      set_q3_testCase_3_output_error();
     }
     e.preventDefault();
-        if(current_qs===1){
-            set_q1_testCase_Current_output("Creating Submission ...\n");
-        }else if(current_qs===2){
-            set_q2_testCase_Current_output("Creating Submission ...\n");
-        }
-    let count=0;
-    let keyArr=key()
+    if (current_qs === 1) {
+      set_q1_testCase_Current_output("Creating Submission ...\n");
+    } else if (current_qs === 2) {
+      set_q2_testCase_Current_output("Creating Submission ...\n");
+    } else if (current_qs === 3) {
+      set_q3_testCase_Current_output("Creating Submission ...\n");
+    }
+    let count = 0;
+    let keyArr = key();
     let jsonResponse;
-    do{
-    
-    const response = await fetch(
+    do {
+      const response = await fetch(
         "https://judge0-ce.p.rapidapi.com/submissions/batch",
         {
           method: "POST",
           headers: {
             "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
-            "x-rapidapi-key":
-              `${keyArr[count]}`, // Get yours for free at https://rapidapi.com/judge0-official/api/judge0-ce/
+            "x-rapidapi-key": `${keyArr[count]}`, // Get yours for free at https://rapidapi.com/judge0-official/api/judge0-ce/
             "content-type": "application/json",
             accept: "application/json",
           },
@@ -343,48 +471,63 @@ set_question_current({  'question':'qs1','input_format':'input format','output_f
         }
       );
       jsonResponse = await response.json();
-      console.log(jsonResponse)
-      console.log(jsonResponse.message=="You have exceeded the DAILY quota for Batched Submissions on your current plan, BASIC. Upgrade your plan at https://rapidapi.com/judge0-official/api/judge0-ce")
-      count+=1;
-}while(jsonResponse.message!==undefined && jsonResponse.message==="You have exceeded the DAILY quota for Batched Submissions on your current plan, BASIC. Upgrade your plan at https://rapidapi.com/judge0-official/api/judge0-ce")
-if(current_qs===1){
-    set_q1_testCase_Current_output(
-      q1_testCase_Current_output + "Submission Created ...\n"
+      console.log(jsonResponse);
+      console.log(
+        jsonResponse.message ==
+          "You have exceeded the DAILY quota for Batched Submissions on your current plan, BASIC. Upgrade your plan at https://rapidapi.com/judge0-official/api/judge0-ce"
+      );
+      count += 1;
+    } while (
+      jsonResponse.message !== undefined &&
+      jsonResponse.message ===
+        "You have exceeded the DAILY quota for Batched Submissions on your current plan, BASIC. Upgrade your plan at https://rapidapi.com/judge0-official/api/judge0-ce"
     );
-}else if(current_qs===2){
-    set_q2_testCase_Current_output(
+    if (current_qs === 1) {
+      set_q1_testCase_Current_output(
+        q1_testCase_Current_output + "Submission Created ...\n"
+      );
+    } else if (current_qs === 2) {
+      set_q2_testCase_Current_output(
         q2_testCase_Current_output + "Submission Created ...\n"
       );
-}
-let jsonGetSolution = {
-    submissions: [
-      {
-        status: { description: "In Queue" },
-        stderr: null,
-        compile_output: null,
-      },
-      {
-        status: { description: "In Queue" },
-        stderr: null,
-        compile_output: null,
-      },
-      {
-        status: { description: "In Queue" },
-        stderr: null,
-        compile_output: null,
-      },
-    ],
-  };
-let flag = false;
-    while (flag !== true) {
-        if(current_qs===1){
-      set_q1_testCase_Current_output(
-        `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.submissions[0].status.description}`
+    } else if (current_qs === 3) {
+      set_q3_testCase_Current_output(
+        q3_testCase_Current_output + "Submission Created ...\n"
       );
-    }else if(current_qs===2){
+    }
+    let jsonGetSolution = {
+      submissions: [
+        {
+          status: { description: "In Queue" },
+          stderr: null,
+          compile_output: null,
+        },
+        {
+          status: { description: "In Queue" },
+          stderr: null,
+          compile_output: null,
+        },
+        {
+          status: { description: "In Queue" },
+          stderr: null,
+          compile_output: null,
+        },
+      ],
+    };
+    let flag = false;
+    while (flag !== true) {
+      if (current_qs === 1) {
+        set_q1_testCase_Current_output(
+          `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.submissions[0].status.description}`
+        );
+      } else if (current_qs === 2) {
         set_q2_testCase_Current_output(
-            `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.submissions[0].status.description}`
-          );
+          `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.submissions[0].status.description}`
+        );
+      } else if (current_qs === 3) {
+        set_q3_testCase_Current_output(
+          `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.submissions[0].status.description}`
+        );
       }
       if (
         jsonResponse[0].token &&
@@ -451,7 +594,7 @@ let flag = false;
         alert("token dont exists");
       }
     }
-    let t1Output,t2Output,t3Output;
+    let t1Output, t2Output, t3Output;
     for (var y = 0; y < jsonGetSolution.submissions.length; y++) {
       if (jsonGetSolution.submissions[y].stdout) {
         const output = atob(jsonGetSolution.submissions[y].stdout);
@@ -460,142 +603,210 @@ let flag = false;
           `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
         );
         console.log(output);
-       if(current_qs===1){
-            if (y === 0) {
+        if (current_qs === 1) {
+          if (y === 0) {
             set_q1_testCase_1_output(
-                `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
-                );
-            t1Output= `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
-            
+              `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+            );
+            t1Output = `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
+
             set_q1_testCase_1_output_error(false);
             set_q1_testCase_Current_output(
-                `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+              `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
             );
-            } else if (y === 1) {
+          } else if (y === 1) {
             set_q1_testCase_2_output_error(false);
             set_q1_testCase_2_output(
-                `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+              `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
             );
-            t2Output= `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
-
-        
-            } else if (y === 2) {
+            t2Output = `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
+          } else if (y === 2) {
             set_q1_testCase_3_output_error(false);
             set_q1_testCase_3_output(
-                `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+              `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
             );
-            t3Output= `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+            t3Output = `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
+          }
+        } else if (current_qs == 2) {
+          if (y === 0) {
+            set_q2_testCase_1_output(
+              `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+            );
+            t1Output = `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
 
-            
-            }
-        }else if(current_qs==2){
-            if (y === 0) {
-                set_q2_testCase_1_output(
-                  `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
-                  );
-                t1Output= `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
-              
-                set_q2_testCase_1_output_error(false);
-                set_q2_testCase_Current_output(
-                  `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
-                );
-              } else if (y === 1) {
-                set_q2_testCase_2_output_error(false);
-                set_q2_testCase_2_output(
-                  `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
-                );
-                t2Output= `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
-      
-             
-              } else if (y === 2) {
-                set_q2_testCase_3_output_error(false);
-                set_q2_testCase_3_output(
-                  `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
-                );
-                t3Output= `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
-      
-               
-              }
+            set_q2_testCase_1_output_error(false);
+            set_q2_testCase_Current_output(
+              `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+            );
+          } else if (y === 1) {
+            set_q2_testCase_2_output_error(false);
+            set_q2_testCase_2_output(
+              `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+            );
+            t2Output = `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
+          } else if (y === 2) {
+            set_q2_testCase_3_output_error(false);
+            set_q2_testCase_3_output(
+              `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+            );
+            t3Output = `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
+          }
+        } else if (current_qs == 3) {
+          if (y === 0) {
+            set_q3_testCase_1_output(
+              `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+            );
+            t1Output = `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
+
+            set_q3_testCase_1_output_error(false);
+            set_q3_testCase_Current_output(
+              `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+            );
+          } else if (y === 1) {
+            set_q3_testCase_2_output_error(false);
+            set_q3_testCase_2_output(
+              `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+            );
+            t2Output = `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
+          } else if (y === 2) {
+            set_q3_testCase_3_output_error(false);
+            set_q3_testCase_3_output(
+              `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+            );
+            t3Output = `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
+          }
         }
-
       } else if (jsonGetSolution.submissions[y].stderr) {
         const error = atob(jsonGetSolution.submissions[y].stderr);
-       if(current_qs===1){
-        if (y === 0) {
-          set_q1_testCase_1_output(`Error :${error}`);
-          set_q1_testCase_Current_output(`Error :${error}`);
-          set_q1_testCase_1_output_error(true);
-          t1Output=`Error :${error}`
-        } else if (y === 1) {
-          set_q1_testCase_2_output(`Error :${error}`);
-          t2Output=`Error :${error}`
-          set_q1_testCase_2_output_error(true);
-        } else if (y == 2) {
-          set_q1_testCase_3_output(`Error :${error}`);
-          t3Output=`Error :${error}`
-          set_q1_testCase_3_output_error(true);
+        if (current_qs === 1) {
+          if (y === 0) {
+            set_q1_testCase_1_output(`Error :${error}`);
+            set_q1_testCase_Current_output(`Error :${error}`);
+            set_q1_testCase_1_output_error(true);
+            t1Output = `Error :${error}`;
+          } else if (y === 1) {
+            set_q1_testCase_2_output(`Error :${error}`);
+            t2Output = `Error :${error}`;
+            set_q1_testCase_2_output_error(true);
+          } else if (y == 2) {
+            set_q1_testCase_3_output(`Error :${error}`);
+            t3Output = `Error :${error}`;
+            set_q1_testCase_3_output_error(true);
+          }
+        } else if (current_qs === 2) {
+          if (y === 0) {
+            set_q2_testCase_1_output(`Error :${error}`);
+            set_q2_testCase_Current_output(`Error :${error}`);
+            set_q2_testCase_1_output_error(true);
+            t1Output = `Error :${error}`;
+          } else if (y === 1) {
+            set_q2_testCase_2_output(`Error :${error}`);
+            t2Output = `Error :${error}`;
+            set_q2_testCase_2_output_error(true);
+          } else if (y == 2) {
+            set_q2_testCase_3_output(`Error :${error}`);
+            t3Output = `Error :${error}`;
+            set_q2_testCase_3_output_error(true);
+          }
+        } else if (current_qs === 3) {
+          if (y === 0) {
+            set_q3_testCase_1_output(`Error :${error}`);
+            set_q3_testCase_Current_output(`Error :${error}`);
+            set_q3_testCase_1_output_error(true);
+            t1Output = `Error :${error}`;
+          } else if (y === 1) {
+            set_q3_testCase_2_output(`Error :${error}`);
+            t2Output = `Error :${error}`;
+            set_q3_testCase_2_output_error(true);
+          } else if (y == 2) {
+            set_q3_testCase_3_output(`Error :${error}`);
+            t3Output = `Error :${error}`;
+            set_q3_testCase_3_output_error(true);
+          }
         }
-      }else if(current_qs===2){
-        if (y === 0) {
-          set_q2_testCase_1_output(`Error :${error}`);
-          set_q2_testCase_Current_output(`Error :${error}`);
-          set_q2_testCase_1_output_error(true);
-          t1Output=`Error :${error}`
-        } else if (y === 1) {
-          set_q2_testCase_2_output(`Error :${error}`);
-          t2Output=`Error :${error}`
-          set_q2_testCase_2_output_error(true);
-        } else if (y == 2) {
-          set_q2_testCase_3_output(`Error :${error}`);
-          t3Output=`Error :${error}`
-          set_q2_testCase_3_output_error(true);
-        }
-       }
       } else {
         const compilation_error = atob(
           jsonGetSolution.submissions[y].compile_output
         );
-        if(current_qs===1){
-        if (y === 0) {
-          set_q1_testCase_1_output(`Error :${compilation_error}`);
-          set_q1_testCase_1_output_error(true);
-          set_q1_testCase_Current_output(`Error :${compilation_error}`);
-          t1Output=`Error :${compilation_error}`;
-        } else if (y === 1) {
-          set_q1_testCase_2_output_error(true);
-          set_q1_testCase_2_output(`Error :${compilation_error}`);
-          t2Output=`Error :${compilation_error}`;
-        } else if (y === 2) {
-          set_q1_testCase_3_output_error(true);
-          set_q1_testCase_3_output(`Error :${compilation_error}`);
-          t3Output=`Error :${compilation_error}`;
-        }
-     }else if(current_qs===2){
-        if (y === 0) {
+        if (current_qs === 1) {
+          if (y === 0) {
+            set_q1_testCase_1_output(`Error :${compilation_error}`);
+            set_q1_testCase_1_output_error(true);
+            set_q1_testCase_Current_output(`Error :${compilation_error}`);
+            t1Output = `Error :${compilation_error}`;
+          } else if (y === 1) {
+            set_q1_testCase_2_output_error(true);
+            set_q1_testCase_2_output(`Error :${compilation_error}`);
+            t2Output = `Error :${compilation_error}`;
+          } else if (y === 2) {
+            set_q1_testCase_3_output_error(true);
+            set_q1_testCase_3_output(`Error :${compilation_error}`);
+            t3Output = `Error :${compilation_error}`;
+          }
+        } else if (current_qs === 2) {
+          if (y === 0) {
             set_q2_testCase_1_output(`Error :${compilation_error}`);
             set_q2_testCase_1_output_error(true);
             set_q2_testCase_Current_output(`Error :${compilation_error}`);
-            t1Output=`Error :${compilation_error}`;
+            t1Output = `Error :${compilation_error}`;
           } else if (y === 1) {
             set_q2_testCase_2_output_error(true);
             set_q2_testCase_2_output(`Error :${compilation_error}`);
-            t2Output=`Error :${compilation_error}`;
+            t2Output = `Error :${compilation_error}`;
           } else if (y === 2) {
             set_q2_testCase_3_output_error(true);
             set_q2_testCase_3_output(`Error :${compilation_error}`);
-            t3Output=`Error :${compilation_error}`;
+            t3Output = `Error :${compilation_error}`;
           }
-     }
-
+        } else if (current_qs === 3) {
+          if (y === 0) {
+            set_q3_testCase_1_output(`Error :${compilation_error}`);
+            set_q3_testCase_1_output_error(true);
+            set_q3_testCase_Current_output(`Error :${compilation_error}`);
+            t1Output = `Error :${compilation_error}`;
+          } else if (y === 1) {
+            set_q3_testCase_2_output_error(true);
+            set_q3_testCase_2_output(`Error :${compilation_error}`);
+            t2Output = `Error :${compilation_error}`;
+          } else if (y === 2) {
+            set_q3_testCase_3_output_error(true);
+            set_q3_testCase_3_output(`Error :${compilation_error}`);
+            t3Output = `Error :${compilation_error}`;
+          }
+        }
       }
     }
-    if(current_qs===1){
-        localStorage.setItem('question_1',JSON.stringify({run_output:q1_run_output,q1_testCase_1_output:t1Output,q1_testCase_2_output:t2Output,q1_testCase_3_output:t3Output}))
-    }else if(current_qs===2){
-        localStorage.setItem('question_2',JSON.stringify({run_output:q2_run_output,q2_testCase_1_output:t1Output,q2_testCase_2_output:t2Output,q2_testCase_3_output:t3Output}))
-   
+    if (current_qs === 1) {
+      localStorage.setItem(
+        "question_1",
+        JSON.stringify({
+          run_output: q1_run_output,
+          q1_testCase_1_output: t1Output,
+          q1_testCase_2_output: t2Output,
+          q1_testCase_3_output: t3Output,
+        })
+      );
+    } else if (current_qs === 2) {
+      localStorage.setItem(
+        "question_2",
+        JSON.stringify({
+          run_output: q2_run_output,
+          q2_testCase_1_output: t1Output,
+          q2_testCase_2_output: t2Output,
+          q2_testCase_3_output: t3Output,
+        })
+      );
+    } else if (current_qs === 3) {
+      localStorage.setItem(
+        "question_3",
+        JSON.stringify({
+          run_output: q3_run_output,
+          q3_testCase_1_output: t1Output,
+          q3_testCase_2_output: t2Output,
+          q3_testCase_3_output: t3Output,
+        })
+      );
     }
-
   }
 
   class CustomTextarea {
@@ -642,12 +853,67 @@ let flag = false;
     const textarea = new CustomTextarea(
       document.querySelector(".custom-textarea")
     );
+    if (submitCode_qs1) {
+      if (
+        !q1_testCase_1_output_error &&
+        !q1_testCase_2_output_error &&
+        !q1_testCase_3_output_error
+      ) {
+        document.getElementById(
+          "uncontrolled-tab-example-tab-Q1"
+        ).style.backgroundColor = "#10b65c"; //green
+        document.getElementById("uncontrolled-tab-example-tab-Q1").style.color =
+          "white";
+      } else {
+        document.getElementById(
+          "uncontrolled-tab-example-tab-Q1"
+        ).style.backgroundColor = "#dc3545"; //red
+        document.getElementById("uncontrolled-tab-example-tab-Q1").style.color =
+          "white";
+      }
+    }
+    if (submitCode_qs2) {
+      if (
+        !q2_testCase_1_output_error &&
+        !q2_testCase_2_output_error &&
+        !q2_testCase_3_output_error
+      ) {
+        document.getElementById(
+          "uncontrolled-tab-example-tab-Q2"
+        ).style.backgroundColor = "#10b65c";
+        document.getElementById("uncontrolled-tab-example-tab-Q2").style.color =
+          "white";
+      } else {
+        document.getElementById(
+          "uncontrolled-tab-example-tab-Q2"
+        ).style.backgroundColor = "#dc3545";
+        document.getElementById("uncontrolled-tab-example-tab-Q2").style.color =
+          "white";
+      }
+    }
+    if (submitCode_qs3) {
+      if (
+        !q3_testCase_1_output_error &&
+        !q3_testCase_2_output_error &&
+        !q3_testCase_3_output_error
+      ) {
+        document.getElementById(
+          "uncontrolled-tab-example-tab-Q3"
+        ).style.backgroundColor = "#10b65c";
+        document.getElementById("uncontrolled-tab-example-tab-Q3").style.color =
+          "white";
+      } else {
+        document.getElementById(
+          "uncontrolled-tab-example-tab-Q3"
+        ).style.backgroundColor = "#dc3545";
+        document.getElementById("uncontrolled-tab-example-tab-Q3").style.color =
+          "white";
+      }
+    }
   });
 
   return (
     <>
-    {q1_testCase_Current_output} {q2_testCase_Current_output}
-    
       <Row>
         <Col md={6}>
           <Row>
@@ -674,83 +940,129 @@ let flag = false;
             >
               <Tabs
                 defaultActiveKey="Q1"
+                inkBarStyle={{ background: "blue" }}
                 id="uncontrolled-tab-example"
                 style={{ marginBottom: "0px !important" }}
-                className="mb-3" onClick={(e)=>{
-                    
-                    let qsNo=e.target.textContent.split('Q')[1]
-                    set_current_qs(parseInt(qsNo));
-                    if(parseInt(qsNo)===1){
-                        setInput(inputT_question_1)
-                        document.getElementById('codeEditor').value=inputT_question_1
-                      document.getElementsByClassName('customInput')[0].value=user_input_question_1
-                        setUser_input(user_input_question_1)
-                        setLanguage_id(language_id_question_1)
-                        if(document.getElementsByClassName('codeOutput')[0]!==undefined){
-                            
-                            if(isSubmitCode_qs1){
-                                document.getElementsByClassName('codeOutput')[0].value=q1_testCase_1_output
-                                set_q1_testCase_Current_output(q1_testCase_1_output)
-                            }else{
-                                    if(q1_run_output!==undefined){
-                                        document.getElementsByClassName('codeOutput')[0].value=q1_run_output
-                                        set_q1_testCase_Current_output(q1_run_output)
-                                    }else{
-                                        document.getElementsByClassName('codeOutput')[0].value=''
-                                        set_q1_testCase_Current_output()
-                                    }
+                className="mb-3"
+                onClick={(e) => {
+                  let qsNo = e.target.textContent.split("Q")[1];
+                  set_current_qs(parseInt(qsNo));
+                  if (parseInt(qsNo) === 1) {
+                    setInput(inputT_question_1);
+                    document.getElementById("codeEditor").value =
+                      inputT_question_1;
+                    document.getElementsByClassName("customInput")[0].value =
+                      user_input_question_1;
+                    setUser_input(user_input_question_1);
+                    setLanguage_id(language_id_question_1);
+                    if (
+                      document.getElementsByClassName("codeOutput")[0] !==
+                      undefined
+                    ) {
+                      if (isSubmitCode_qs1) {
+                        document.getElementsByClassName("codeOutput")[0].value =
+                          q1_testCase_1_output;
+                        set_q1_testCase_Current_output(q1_testCase_1_output);
+                      } else {
+                        if (q1_run_output !== undefined) {
+                          document.getElementsByClassName(
+                            "codeOutput"
+                          )[0].value = q1_run_output;
+                          set_q1_testCase_Current_output(q1_run_output);
+                        } else {
+                          document.getElementsByClassName(
+                            "codeOutput"
+                          )[0].value = "";
+                          set_q1_testCase_Current_output();
                         }
+                      }
                     }
-                  
-                    }
-                    else if(parseInt(qsNo)===2){
-                      
-                        setInput(inputT_question_2)
-                        document.getElementById('codeEditor').value=inputT_question_2
-                        document.getElementsByClassName('customInput')[0].value=user_input_question_2
-                        setUser_input(user_input_question_2)
-                        setLanguage_id(language_id_question_2)
+                  } else if (parseInt(qsNo) === 2) {
+                    setInput(inputT_question_2);
+                    document.getElementById("codeEditor").value =
+                      inputT_question_2;
+                    document.getElementsByClassName("customInput")[0].value =
+                      user_input_question_2;
+                    setUser_input(user_input_question_2);
+                    setLanguage_id(language_id_question_2);
 
-                        console.log(document.getElementsByClassName('codeOutput')[0])
-                        if(document.getElementsByClassName('codeOutput')[0]!==undefined){
-                            if(isSubmitCode_qs2){
-                                document.getElementsByClassName('codeOutput')[0].value=q2_testCase_1_output
-                                set_q2_testCase_Current_output(q2_testCase_1_output)
-                            }else{
-                                    if(q2_run_output!==undefined){
-                                        document.getElementsByClassName('codeOutput')[0].value=q2_run_output
-                                        set_q2_testCase_Current_output(q2_run_output)
-                                    }else{
-                                        document.getElementsByClassName('codeOutput')[0].value=''
-                                        set_q2_testCase_Current_output()
-                                    }
+                    console.log(
+                      document.getElementsByClassName("codeOutput")[0]
+                    );
+                    if (
+                      document.getElementsByClassName("codeOutput")[0] !==
+                      undefined
+                    ) {
+                      if (isSubmitCode_qs2) {
+                        document.getElementsByClassName("codeOutput")[0].value =
+                          q2_testCase_1_output;
+                        set_q2_testCase_Current_output(q2_testCase_1_output);
+                      } else {
+                        if (q2_run_output !== undefined) {
+                          document.getElementsByClassName(
+                            "codeOutput"
+                          )[0].value = q2_run_output;
+                          set_q2_testCase_Current_output(q2_run_output);
+                        } else {
+                          document.getElementsByClassName(
+                            "codeOutput"
+                          )[0].value = "";
+                          set_q2_testCase_Current_output();
                         }
+                      }
                     }
+                  } else if (parseInt(qsNo) === 3) {
+                    setInput(inputT_question_3);
+                    document.getElementById("codeEditor").value =
+                      inputT_question_3;
+                    document.getElementsByClassName("customInput")[0].value =
+                      user_input_question_3;
+                    setUser_input(user_input_question_3);
+                    setLanguage_id(language_id_question_3);
+
+                    if (
+                      document.getElementsByClassName("codeOutput")[0] !==
+                      undefined
+                    ) {
+                      if (isSubmitCode_qs3) {
+                        document.getElementsByClassName("codeOutput")[0].value =
+                          q3_testCase_1_output;
+                        set_q3_testCase_Current_output(q3_testCase_1_output);
+                      } else {
+                        if (q3_run_output !== undefined) {
+                          document.getElementsByClassName(
+                            "codeOutput"
+                          )[0].value = q3_run_output;
+                          set_q3_testCase_Current_output(q3_run_output);
+                        } else {
+                          document.getElementsByClassName(
+                            "codeOutput"
+                          )[0].value = "";
+                          set_q3_testCase_Current_output();
+                        }
+                      }
                     }
-                    else if(parseInt(qsNo)===3){
-                        setInput(inputT_question_3)
-                        document.getElementById('codeEditor').value=inputT_question_3
-                        document.getElementsByClassName('customInput')[0].value=user_input_question_3
-                        setUser_input(user_input_question_3)
-                        setLanguage_id(language_id_question_3)
-                    }
-                
+                  }
                 }}
               >
-                <Tab eventKey="Q1"  title="Q1">
-                  {/* <CodingQsComp qs={question_current}></CodingQsComp> */}
+                <Tab
+                  eventKey="Q1"
+                  style={{ backgroundColor: "black" }}
+                  title="Q1"
+                >
+                  <CodingQsComp qs={question_current}></CodingQsComp>
                 </Tab>
                 <Tab eventKey="Q2" title="Q2">
-                  {/* <CodingQsComp></CodingQsComp> */}
+                  <CodingQsComp qs={question_current}></CodingQsComp>
                 </Tab>
                 <Tab eventKey="Q3" title="Q3">
-                  {/* <CodingQsComp></CodingQsComp> */}
+                  <CodingQsComp qs={question_current}></CodingQsComp>
                 </Tab>
               </Tabs>
             </div>
           </Row>
         </Col>
-        
+
         <Col md={6}>
           <div style={{ marginLeft: "45px" }}>
             <Row
@@ -793,7 +1105,7 @@ let flag = false;
               >
                 <div class="custom-textarea">
                   <textarea
-                  id="codeEditor"
+                    id="codeEditor"
                     class="textarea"
                     spellCheck={false}
                     defaultValue={inputT}
@@ -847,7 +1159,11 @@ let flag = false;
                   className="btn scTest ml-2 mr-2 "
                   style={{ color: "white", width: "fit-content" }}
                   onClick={(e) => {
-                   current_qs===1?setIsSubmitCode_qs1():(current_qs===2?setIsSubmitCode_qs2():setIsSubmitCode_qs3());
+                    current_qs === 1
+                      ? setIsSubmitCode_qs1()
+                      : current_qs === 2
+                      ? setIsSubmitCode_qs2()
+                      : setIsSubmitCode_qs3();
                     submit(e);
                   }}
                 >
@@ -859,16 +1175,16 @@ let flag = false;
                   type="submit"
                   className="btn scTest ml-2 mr-2 "
                   style={{ color: "white", width: "fit-content" }}
-                  onClick={(e)=>{
-                      if(current_qs===1){
-                          set_submitCode_qs1(true);
-                    }else if(current_qs===2){
-                        set_submitCode_qs2(true);
-                    }else if(current_qs===3){
-                        set_submitCode_qs3(true);
+                  onClick={(e) => {
+                    if (current_qs === 1) {
+                      set_submitCode_qs1(true);
+                    } else if (current_qs === 2) {
+                      set_submitCode_qs2(true);
+                    } else if (current_qs === 3) {
+                      set_submitCode_qs3(true);
                     }
-                      submitCode(e)
-                    }}
+                    submitCode(e);
+                  }}
                 >
                   <i className="fas fa-cog fa-fw"></i> Submit
                 </button>
@@ -898,36 +1214,60 @@ let flag = false;
                     ></textarea>
                   </Tab>
                   <Tab eventKey="Result" title="result">
-                  
-                   <Row>
-                      { (current_qs===1?submitCode_qs1:(current_qs===2?submitCode_qs2:submitCode_qs3) ) && (
-                          
+                    <Row>
+                      {(current_qs === 1
+                        ? submitCode_qs1
+                        : current_qs === 2
+                        ? submitCode_qs2
+                        : submitCode_qs3) && (
                         <Col md={3}>
-                            
                           <div>
                             <Row className="" style={{ height: "20%" }}>
-                              {( current_qs===1?( q1_testCase_1_output_error !== undefined):(current_qs===2?q2_testCase_1_output_error!==undefined:null)) ? (
+                              {(
+                                current_qs === 1
+                                  ? q1_testCase_1_output_error !== undefined
+                                  : current_qs === 2
+                                  ? q2_testCase_1_output_error !== undefined
+                                  : q3_testCase_1_output_error !== undefined
+                              ) ? (
                                 <Col style={{ paddingLeft: "0%" }}>
                                   <button
                                     className={
-                                        current_qs===1? (!q1_testCase_1_output_error
-                                            ? "btn scTest"
-                                            : "btn btn-danger"):(current_qs===2?(!q2_testCase_1_output_error
-                                                ? "btn scTest"
-                                                : "btn btn-danger"):null)
+                                      current_qs === 1
+                                        ? !q1_testCase_1_output_error
+                                          ? "btn scTest"
+                                          : "btn btn-danger"
+                                        : current_qs === 2
+                                        ? !q2_testCase_1_output_error
+                                          ? "btn scTest"
+                                          : "btn btn-danger"
+                                        : !q3_testCase_1_output_error
+                                        ? "btn scTest"
+                                        : "btn btn-danger"
                                     }
                                     onClick={(e) => {
-                                        if(current_qs===1){
-                                            document.getElementsByClassName('codeOutput')[0].value=q1_testCase_1_output;
-                                              set_q1_testCase_Current_output(
-                                                q1_testCase_1_output
-                                              );
-                                            }else if(current_qs===2){
-                                                document.getElementsByClassName('codeOutput')[0].value=q2_testCase_1_output;
-                                              set_q2_testCase_Current_output(
-                                                q2_testCase_1_output
-                                              );
-                                            }
+                                      if (current_qs === 1) {
+                                        document.getElementsByClassName(
+                                          "codeOutput"
+                                        )[0].value = q1_testCase_1_output;
+                                        set_q1_testCase_Current_output(
+                                          q1_testCase_1_output
+                                        );
+                                      } else if (current_qs === 2) {
+                                        document.getElementsByClassName(
+                                          "codeOutput"
+                                        )[0].value = q2_testCase_1_output;
+                                        set_q2_testCase_Current_output(
+                                          q2_testCase_1_output
+                                        );
+                                      } else if (current_qs === 3) {
+                                        document.getElementsByClassName(
+                                          "codeOutput"
+                                        )[0].value = q3_testCase_1_output;
+                                        set_q3_testCase_Current_output(
+                                          q3_testCase_1_output
+                                        );
+                                      }
                                     }}
                                     style={{
                                       marginBottom: "1px",
@@ -944,17 +1284,28 @@ let flag = false;
                                   <button
                                     className="btn btn-secondary"
                                     onClick={(e) => {
-                                        if(current_qs===1){
-                                            document.getElementsByClassName('codeOutput')[0].value=q1_testCase_1_output;
-                                              set_q1_testCase_Current_output(
-                                                q1_testCase_1_output
-                                              );
-                                            }else if(current_qs===2){
-                                                document.getElementsByClassName('codeOutput')[0].value=q2_testCase_1_output;
-                                              set_q2_testCase_Current_output(
-                                                q2_testCase_1_output
-                                              );
-                                            }
+                                      if (current_qs === 1) {
+                                        document.getElementsByClassName(
+                                          "codeOutput"
+                                        )[0].value = q1_testCase_1_output;
+                                        set_q1_testCase_Current_output(
+                                          q1_testCase_1_output
+                                        );
+                                      } else if (current_qs === 2) {
+                                        document.getElementsByClassName(
+                                          "codeOutput"
+                                        )[0].value = q2_testCase_1_output;
+                                        set_q2_testCase_Current_output(
+                                          q2_testCase_1_output
+                                        );
+                                      } else if (current_qs === 3) {
+                                        document.getElementsByClassName(
+                                          "codeOutput"
+                                        )[0].value = q3_testCase_1_output;
+                                        set_q3_testCase_Current_output(
+                                          q3_testCase_1_output
+                                        );
+                                      }
                                     }}
                                     style={{
                                       marginBottom: "1px",
@@ -969,29 +1320,51 @@ let flag = false;
                               )}
                             </Row>
                             <Row className="">
-                              {( current_qs===1?( q1_testCase_2_output_error !== undefined):(current_qs===2?q2_testCase_2_output_error!==undefined:null)) ? 
-                              (
+                              {(
+                                current_qs === 1
+                                  ? q1_testCase_2_output_error !== undefined
+                                  : current_qs === 2
+                                  ? q2_testCase_2_output_error !== undefined
+                                  : q3_testCase_2_output_error !== undefined
+                              ) ? (
                                 <Col style={{ paddingLeft: "0%" }}>
                                   <button
                                     className={
-                                      current_qs===1? (!q1_testCase_2_output_error
+                                      current_qs === 1
+                                        ? !q1_testCase_2_output_error
+                                          ? "btn scTest"
+                                          : "btn btn-danger"
+                                        : current_qs === 2
+                                        ? !q2_testCase_2_output_error
+                                          ? "btn scTest"
+                                          : "btn btn-danger"
+                                        : !q3_testCase_2_output_error
                                         ? "btn scTest"
-                                        : "btn btn-danger"):(current_qs===2?(!q2_testCase_2_output_error
-                                            ? "btn scTest"
-                                            : "btn btn-danger"):null)
+                                        : "btn btn-danger"
                                     }
                                     onClick={(e) => {
-                                        if(current_qs===1){
-                                            document.getElementsByClassName('codeOutput')[0].value=q1_testCase_2_output;
-                                              set_q1_testCase_Current_output(
-                                                q1_testCase_2_output
-                                              );
-                                            }else if(current_qs===2){
-                                                document.getElementsByClassName('codeOutput')[0].value=q2_testCase_2_output;
-                                              set_q2_testCase_Current_output(
-                                                q2_testCase_2_output
-                                              );
-                                            }
+                                      if (current_qs === 1) {
+                                        document.getElementsByClassName(
+                                          "codeOutput"
+                                        )[0].value = q1_testCase_2_output;
+                                        set_q1_testCase_Current_output(
+                                          q1_testCase_2_output
+                                        );
+                                      } else if (current_qs === 2) {
+                                        document.getElementsByClassName(
+                                          "codeOutput"
+                                        )[0].value = q2_testCase_2_output;
+                                        set_q2_testCase_Current_output(
+                                          q2_testCase_2_output
+                                        );
+                                      } else if (current_qs === 3) {
+                                        document.getElementsByClassName(
+                                          "codeOutput"
+                                        )[0].value = q3_testCase_2_output;
+                                        set_q3_testCase_Current_output(
+                                          q3_testCase_2_output
+                                        );
+                                      }
                                     }}
                                     style={{
                                       marginBottom: "1px",
@@ -1000,25 +1373,36 @@ let flag = false;
                                       width: "100%",
                                     }}
                                   >
-                                    Test Case 22
+                                    Test Case 2
                                   </button>
-                                </Col>)
-                              :(  <Col style={{ paddingLeft: "0%" }}>
+                                </Col>
+                              ) : (
+                                <Col style={{ paddingLeft: "0%" }}>
                                   <button
                                     className="btn btn-secondary"
                                     onClick={(e) => {
-                                       
-                                      if(current_qs===1){
-                                        document.getElementsByClassName('codeOutput')[0].value=q1_testCase_2_output;
-                                          set_q1_testCase_Current_output(
-                                            q1_testCase_2_output
-                                          );
-                                        }else if(current_qs===2){
-                                            document.getElementsByClassName('codeOutput')[0].value=q2_testCase_2_output;
-                                          set_q2_testCase_Current_output(
-                                            q2_testCase_2_output
-                                          );
-                                        }
+                                      if (current_qs === 1) {
+                                        document.getElementsByClassName(
+                                          "codeOutput"
+                                        )[0].value = q1_testCase_2_output;
+                                        set_q1_testCase_Current_output(
+                                          q1_testCase_2_output
+                                        );
+                                      } else if (current_qs === 2) {
+                                        document.getElementsByClassName(
+                                          "codeOutput"
+                                        )[0].value = q2_testCase_2_output;
+                                        set_q2_testCase_Current_output(
+                                          q2_testCase_2_output
+                                        );
+                                      } else if (current_qs === 3) {
+                                        document.getElementsByClassName(
+                                          "codeOutput"
+                                        )[0].value = q3_testCase_2_output;
+                                        set_q3_testCase_Current_output(
+                                          q3_testCase_2_output
+                                        );
+                                      }
                                     }}
                                     style={{
                                       marginBottom: "1px",
@@ -1033,28 +1417,51 @@ let flag = false;
                               )}
                             </Row>
                             <Row className="">
-                              {( current_qs===1?( q1_testCase_3_output_error !== undefined):(current_qs===2?q2_testCase_3_output_error!==undefined:null)) ? (
+                              {(
+                                current_qs === 1
+                                  ? q1_testCase_3_output_error !== undefined
+                                  : current_qs === 2
+                                  ? q2_testCase_3_output_error !== undefined
+                                  : q3_testCase_3_output_error !== undefined
+                              ) ? (
                                 <Col style={{ paddingLeft: "0%" }}>
                                   <button
                                     className={
-                                        current_qs===1? (!q1_testCase_3_output_error
-                                            ? "btn scTest"
-                                            : "btn btn-danger"):(current_qs===2?(!q2_testCase_3_output_error
-                                                ? "btn scTest"
-                                                : "btn btn-danger"):null)
+                                      current_qs === 1
+                                        ? !q1_testCase_3_output_error
+                                          ? "btn scTest"
+                                          : "btn btn-danger"
+                                        : current_qs === 2
+                                        ? !q2_testCase_3_output_error
+                                          ? "btn scTest"
+                                          : "btn btn-danger"
+                                        : !q3_testCase_3_output_error
+                                        ? "btn scTest"
+                                        : "btn btn-danger"
                                     }
                                     onClick={(e) => {
-                                        if(current_qs===1){
-                                            document.getElementsByClassName('codeOutput')[0].value=q1_testCase_3_output;
-                                              set_q1_testCase_Current_output(
-                                                q1_testCase_3_output
-                                              );
-                                            }else if(current_qs===2){
-                                                document.getElementsByClassName('codeOutput')[0].value=q2_testCase_3_output;
-                                              set_q2_testCase_Current_output(
-                                                q2_testCase_3_output
-                                              );
-                                            }
+                                      if (current_qs === 1) {
+                                        document.getElementsByClassName(
+                                          "codeOutput"
+                                        )[0].value = q1_testCase_3_output;
+                                        set_q1_testCase_Current_output(
+                                          q1_testCase_3_output
+                                        );
+                                      } else if (current_qs === 2) {
+                                        document.getElementsByClassName(
+                                          "codeOutput"
+                                        )[0].value = q2_testCase_3_output;
+                                        set_q2_testCase_Current_output(
+                                          q2_testCase_3_output
+                                        );
+                                      } else if (current_qs === 3) {
+                                        document.getElementsByClassName(
+                                          "codeOutput"
+                                        )[0].value = q3_testCase_3_output;
+                                        set_q3_testCase_Current_output(
+                                          q3_testCase_3_output
+                                        );
+                                      }
                                     }}
                                     style={{
                                       marginBottom: "1px",
@@ -1063,7 +1470,7 @@ let flag = false;
                                       width: "100%",
                                     }}
                                   >
-                                    Test Case 32
+                                    Test Case 3
                                   </button>
                                 </Col>
                               ) : (
@@ -1071,17 +1478,28 @@ let flag = false;
                                   <button
                                     className={"btn btn-secondary"}
                                     onClick={(e) => {
-                                        if(current_qs===1){
-                                    document.getElementsByClassName('codeOutput')[0].value=q1_testCase_3_output;
-                                      set_q1_testCase_Current_output(
-                                        q1_testCase_3_output
-                                      );
-                                    }else if(current_qs===2){
-                                        document.getElementsByClassName('codeOutput')[0].value=q2_testCase_3_output;
-                                      set_q2_testCase_Current_output(
-                                        q2_testCase_3_output
-                                      );
-                                    }
+                                      if (current_qs === 1) {
+                                        document.getElementsByClassName(
+                                          "codeOutput"
+                                        )[0].value = q1_testCase_3_output;
+                                        set_q1_testCase_Current_output(
+                                          q1_testCase_3_output
+                                        );
+                                      } else if (current_qs === 2) {
+                                        document.getElementsByClassName(
+                                          "codeOutput"
+                                        )[0].value = q2_testCase_3_output;
+                                        set_q2_testCase_Current_output(
+                                          q2_testCase_3_output
+                                        );
+                                      } else if (current_qs === 3) {
+                                        document.getElementsByClassName(
+                                          "codeOutput"
+                                        )[0].value = q3_testCase_3_output;
+                                        set_q3_testCase_Current_output(
+                                          q3_testCase_3_output
+                                        );
+                                      }
                                     }}
                                     style={{
                                       marginBottom: "1px",
@@ -1090,7 +1508,7 @@ let flag = false;
                                       width: "100%",
                                     }}
                                   >
-                                    Test Case 31
+                                    Test Case 3
                                   </button>
                                 </Col>
                               )}
@@ -1098,18 +1516,34 @@ let flag = false;
                           </div>
                         </Col>
                       )}
-                      <Col md={(current_qs===1?submitCode_qs1:(current_qs===2?submitCode_qs2:submitCode_qs3)) ? 9 : 12}>
+                      <Col
+                        md={
+                          (
+                            current_qs === 1
+                              ? submitCode_qs1
+                              : current_qs === 2
+                              ? submitCode_qs2
+                              : submitCode_qs3
+                          )
+                            ? 9
+                            : 12
+                        }
+                      >
                         <textarea
                           disabled
-                          value={current_qs===1?q1_testCase_Current_output:(current_qs===2?q2_testCase_Current_output:'hello')}
+                          value={
+                            current_qs === 1
+                              ? q1_testCase_Current_output
+                              : current_qs === 2
+                              ? q2_testCase_Current_output
+                              : q3_testCase_Current_output
+                          }
                           readOnly
                           className="scrollbar codeOutput"
                           id="style-4"
                         ></textarea>
                       </Col>
                     </Row>
-                    
-                    
                   </Tab>
                 </Tabs>
               </div>
