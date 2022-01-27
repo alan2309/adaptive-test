@@ -192,14 +192,15 @@ export default function Compiler() {
       } else if (current_qs === 3) {
         set_q3_run_output("Creating Submission ...\n");
       }
-      let response = await fetch(
-        "https://judge0-ce.p.rapidapi.com/submissions",
-        {
+      let response,
+        count = 0,
+        keyArr = key();
+      do {
+        response = await fetch("https://judge0-ce.p.rapidapi.com/submissions", {
           method: "POST",
           headers: {
             "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
-            "x-rapidapi-key":
-              "d35b7822fcmshab047f684dc27bap12bb13jsnfc29849e5539", // Get yours for free at https://rapidapi.com/judge0-official/api/judge0-ce/
+            "x-rapidapi-key": `${keyArr[count]}`, // Get yours for free at https://rapidapi.com/judge0-official/api/judge0-ce/
             "content-type": "application/json",
             accept: "application/json",
           },
@@ -208,8 +209,9 @@ export default function Compiler() {
             stdin: user_input, //stateVarialble
             language_id: language_id,
           }),
-        }
-      );
+        });
+        count += 1;
+      } while (response.token !== undefined);
       console.log(response);
       if (current_qs === 1) {
         set_q1_run_output(q1_run_output + "Submission Created ...\n");
@@ -241,15 +243,19 @@ export default function Compiler() {
         }
         if (jsonResponse.token) {
           let url = `https://judge0-ce.p.rapidapi.com/submissions/${jsonResponse.token}?base64_encoded=true`;
-          const getSolution = await fetch(url, {
-            method: "GET",
-            headers: {
-              "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
-              "x-rapidapi-key":
-                "d35b7822fcmshab047f684dc27bap12bb13jsnfc29849e5539", // Get yours for free at https://rapidapi.com/judge0-official/api/judge0-ce/
-              "content-type": "application/json",
-            },
-          });
+          let count = 0;
+          let getSolution;
+          do {
+            getSolution = await fetch(url, {
+              method: "GET",
+              headers: {
+                "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
+                "x-rapidapi-key": `${keyArr[count]}`, // Get yours for free at https://rapidapi.com/judge0-official/api/judge0-ce/
+                "content-type": "application/json",
+              },
+            });
+            count += 1;
+          } while (getSolution.status !== 200);
           jsonGetSolution = await getSolution.json();
           console.log(jsonGetSolution);
           if (
