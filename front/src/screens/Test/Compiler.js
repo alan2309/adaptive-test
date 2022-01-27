@@ -14,8 +14,16 @@ export default function Compiler() {
   const [default_input, set_default_input] = useState();
 
   const [customInputCheck, setCustomInputCheck] = useState(false);
+  const [isSubmitCode, setIsSubmitCode] = useState();
 
-  const [leftBoxActiveKey, setleftBoxActiveKey] = useState("Q1");
+  const [testCase_1_output, set_testCase_1_output] = useState();
+  const [testCase_2_output, set_testCase_2_output] = useState();
+  const [testCase_3_output, set_testCase_3_output] = useState();
+  const [testCase_Current_output, set_testCase_Current_output] = useState();
+
+  const [testCase_1_output_error, set_testCase_1_output_error] = useState();
+  const [testCase_2_output_error, set_testCase_2_output_error] = useState();
+  const [testCase_3_output_error, set_testCase_3_output_error] = useState();
 
   useEffect(() => {
     setInput(localStorage.getItem("input") || ``);
@@ -43,6 +51,7 @@ export default function Compiler() {
   }
 
   async function submit(e) {
+    set_testCase_Current_output("");
     e.preventDefault();
     if (customInputCheck && user_input === undefined) {
       alert("Please enter input");
@@ -76,11 +85,8 @@ export default function Compiler() {
         stderr: null,
         compile_output: null,
       };
-      while (
-        jsonGetSolution.status.description !== "Accepted" &&
-        jsonGetSolution.stderr == null &&
-        jsonGetSolution.compile_output == null
-      ) {
+      let flag = false;
+      while (flag !== true) {
         outputText.innerHTML = `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.status.description}`;
         if (jsonResponse.token) {
           let url = `https://judge0-ce.p.rapidapi.com/submissions/${jsonResponse.token}?base64_encoded=true`;
@@ -94,19 +100,32 @@ export default function Compiler() {
             },
           });
           jsonGetSolution = await getSolution.json();
+          console.log(jsonGetSolution);
+          if (
+            jsonGetSolution.status.description === "Accepted" &&
+            jsonGetSolution.stderr === null &&
+            jsonGetSolution.compile_output === null
+          ) {
+            flag = true;
+          } else if (
+            jsonGetSolution.stderr !== null &&
+            jsonGetSolution.status.description !== "Accepted"
+          ) {
+            flag = true;
+          }
         }
       }
       console.log(jsonGetSolution);
 
       if (jsonGetSolution.stdout) {
         const output = atob(jsonGetSolution.stdout);
-        outputText.innerHTML = "";
-        outputText.innerHTML += `${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`;
+        set_testCase_Current_output(
+          `${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
+        );
       } else if (jsonGetSolution.stderr) {
         const error = atob(jsonGetSolution.stderr);
-        outputText.innerHTML = "";
         console.log(error);
-        outputText.innerHTML += `\n Error :${error}`;
+        set_testCase_Current_output(`\n Error :${error}`);
       } else {
         const compilation_error = atob(jsonGetSolution.compile_output);
         outputText.innerHTML = "";
@@ -116,10 +135,15 @@ export default function Compiler() {
   }
 
   async function submitCode(e) {
+    setIsSubmitCode(true);
+    set_testCase_1_output_error();
+    set_testCase_2_output_error();
+    set_testCase_3_output_error();
     e.preventDefault();
     let outputText = document.getElementsByClassName("codeOutput")[0];
     outputText.innerHTML = "";
     outputText.innerHTML += "Creating Submission ...\n";
+    set_testCase_Current_output("Creating Submission ...\n");
     const response = await fetch(
       "https://judge0-ce.p.rapidapi.com/submissions/batch",
       {
@@ -135,17 +159,17 @@ export default function Compiler() {
           submissions: [
             {
               source_code: inputT,
-              stdin: 1, //stateVarialble
+              stdin: 12, //stateVarialble
               language_id: language_id,
             },
             {
               source_code: inputT,
-              stdin: 69, //stateVarialble
+              stdin: "a", //stateVarialble
               language_id: language_id,
             },
             {
               source_code: inputT,
-              stdin: 3, //stateVarialble
+              stdin: 2, //stateVarialble
               language_id: language_id,
             },
           ],
@@ -155,6 +179,9 @@ export default function Compiler() {
     const jsonResponse = await response.json();
     console.log(jsonResponse);
     outputText.innerHTML += "Submission Created ...\n";
+    set_testCase_Current_output(
+      testCase_Current_output + "Submission Created ...\n"
+    );
 
     let jsonGetSolution = {
       submissions: [
@@ -178,6 +205,9 @@ export default function Compiler() {
     let flag = false;
     while (flag !== true) {
       //   outputText.innerHTML = `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution[0].status.description}`;
+      set_testCase_Current_output(
+        `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.submissions[0].status.description}`
+      );
       if (
         jsonResponse[0].token &&
         jsonResponse[1].token &&
@@ -208,53 +238,104 @@ export default function Compiler() {
           jsonGetSolution.submissions[2].compile_output == null
         ) {
           flag = true;
+        } else if (
+          jsonGetSolution.submissions[1].status.description !== "In Queue" &&
+          jsonGetSolution.submissions[1].status.description !== "Processing" &&
+          jsonGetSolution.submissions[2].status.description !== "In Queue" &&
+          jsonGetSolution.submissions[2].status.description !== "Processing" &&
+          jsonGetSolution.submissions[0].status.description !== "In Queue" &&
+          jsonGetSolution.submissions[0].status.description !== "Processing" &&
+          (jsonGetSolution.submissions[1].stderr !== null ||
+            jsonGetSolution.submissions[2].stderr !== null ||
+            jsonGetSolution.submissions[0].stderr !== null)
+        ) {
+          flag = true;
+        } else if (
+          ((jsonGetSolution.submissions[1].status.description ===
+            "Compilation Error" &&
+            jsonGetSolution.submissions[1].stderr === null) ||
+            (jsonGetSolution.submissions[0].status.description ===
+              "Compilation Error" &&
+              jsonGetSolution.submissions[0].stderr === null) ||
+            (jsonGetSolution.submissions[2].status.description ===
+              "Compilation Error" &&
+              jsonGetSolution.submissions[2].stderr === null)) &&
+          jsonGetSolution.submissions[1].status.description !== "In Queue" &&
+          jsonGetSolution.submissions[1].status.description !== "Processing" &&
+          jsonGetSolution.submissions[2].status.description !== "In Queue" &&
+          jsonGetSolution.submissions[2].status.description !== "Processing" &&
+          jsonGetSolution.submissions[0].status.description !== "In Queue" &&
+          jsonGetSolution.submissions[0].status.description !== "Processing"
+        ) {
+          flag = true;
         }
       } else {
         alert("token dont exists");
       }
     }
 
-    outputText.innerHTML = "";
     for (var y = 0; y < jsonGetSolution.submissions.length; y++) {
       if (jsonGetSolution.submissions[y].stdout) {
         const output = atob(jsonGetSolution.submissions[y].stdout);
 
         var text = document.createTextNode(
-          `\n${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+          `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
         );
         console.log(output);
-        outputText.appendChild(text);
+
+        if (y === 0) {
+          set_testCase_1_output(
+            `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+          );
+          set_testCase_1_output_error(false);
+          set_testCase_Current_output(
+            `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+          );
+        } else if (y === 1) {
+          set_testCase_2_output_error(false);
+          set_testCase_2_output(
+            `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+          );
+        } else if (y === 2) {
+          set_testCase_3_output_error(false);
+          set_testCase_3_output(
+            `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+          );
+        }
       } else if (jsonGetSolution.submissions[y].stderr) {
         const error = atob(jsonGetSolution.submissions[y].stderr);
 
-        var text = document.createTextNode(`\n Error :${error}`);
-        outputText.appendChild(text);
+        if (y === 0) {
+          set_testCase_1_output(`Error :${error}`);
+          set_testCase_Current_output(`Error :${error}`);
+          set_testCase_1_output_error(true);
+        } else if (y === 1) {
+          set_testCase_2_output(`Error :${error}`);
+          set_testCase_2_output_error(true);
+        } else if (y == 2) {
+          set_testCase_3_output(`Error :${error}`);
+          set_testCase_3_output_error(true);
+        }
       } else {
         const compilation_error = atob(
           jsonGetSolution.submissions[y].compile_output
         );
-        outputText.innerHTML = "";
-        outputText.innerHTML += `\n Error :${compilation_error}`;
+
+        if (y === 0) {
+          set_testCase_1_output(`Error :${compilation_error}`);
+          set_testCase_1_output_error(true);
+          set_testCase_Current_output(`Error :${compilation_error}`);
+        } else if (y === 1) {
+          set_testCase_2_output_error(true);
+          set_testCase_2_output(`Error :${compilation_error}`);
+        } else if (y === 2) {
+          set_testCase_3_output_error(true);
+          set_testCase_3_output(`Error :${compilation_error}`);
+        }
       }
     }
   }
-  function update(e) {
-    const gutter = document.querySelector(".gutter");
-    let val = document.getElementById("gutterTextarea").value;
-    let numOfLines = 1;
 
-    let lineBreaks = val.match(/\n/gi) || [];
-    let numOfSpans = gutter.childElementCount;
-    numOfLines = lineBreaks.length ? lineBreaks.length + 1 : 1;
-
-    gutter.innerHTML = "";
-    for (var i = 0; i < numOfLines; i++) {
-      console.log("creating no", i);
-      var el = document.createElement("span");
-      el.innerHTML = i + 1;
-      gutter.appendChild(el);
-    }
-  }
   class CustomTextarea {
     constructor(element) {
       this.element = element;
@@ -501,7 +582,10 @@ export default function Compiler() {
                   type="submit"
                   className="btn scTest ml-2 mr-2 "
                   style={{ color: "white", width: "fit-content" }}
-                  onClick={submit}
+                  onClick={(e) => {
+                    setIsSubmitCode();
+                    submit(e);
+                  }}
                 >
                   <i className="fas fa-cog fa-fw"></i> Run
                 </button>
@@ -540,12 +624,159 @@ export default function Compiler() {
                     ></textarea>
                   </Tab>
                   <Tab eventKey="Result" title="result">
-                    <textarea
-                      disabled
-                      readOnly
-                      className="scrollbar codeOutput"
-                      id="style-4"
-                    ></textarea>
+                    <Row>
+                      {isSubmitCode !== undefined && (
+                        <Col md={3}>
+                          <div>
+                            <Row className="" style={{ height: "20%" }}>
+                              {testCase_1_output_error !== undefined ? (
+                                <Col style={{ paddingLeft: "0%" }}>
+                                  <button
+                                    className={
+                                      !testCase_1_output_error
+                                        ? "btn scTest"
+                                        : "btn btn-danger"
+                                    }
+                                    onClick={(e) => {
+                                      set_testCase_Current_output(
+                                        testCase_1_output
+                                      );
+                                    }}
+                                    style={{
+                                      marginBottom: "1px",
+                                      color: "white",
+                                      borderRadius: "0",
+                                      width: "100%",
+                                    }}
+                                  >
+                                    Test Case 1
+                                  </button>
+                                </Col>
+                              ) : (
+                                <Col style={{ paddingLeft: "0%" }}>
+                                  <button
+                                    className="btn btn-secondary"
+                                    onClick={(e) => {
+                                      set_testCase_Current_output(
+                                        testCase_1_output
+                                      );
+                                    }}
+                                    style={{
+                                      marginBottom: "1px",
+                                      color: "white",
+                                      borderRadius: "0",
+                                      width: "100%",
+                                    }}
+                                  >
+                                    Test Case 1
+                                  </button>
+                                </Col>
+                              )}
+                            </Row>
+                            <Row className="">
+                              {testCase_2_output_error !== undefined && (
+                                <Col style={{ paddingLeft: "0%" }}>
+                                  <button
+                                    className={
+                                      !testCase_2_output_error
+                                        ? "btn scTest"
+                                        : "btn btn-danger"
+                                    }
+                                    onClick={(e) => {
+                                      set_testCase_Current_output(
+                                        testCase_2_output
+                                      );
+                                    }}
+                                    style={{
+                                      marginBottom: "1px",
+                                      color: "white",
+                                      borderRadius: "0",
+                                      width: "100%",
+                                    }}
+                                  >
+                                    Test Case 2
+                                  </button>
+                                </Col>
+                              )}
+                              {testCase_2_output_error === undefined && (
+                                <Col style={{ paddingLeft: "0%" }}>
+                                  <button
+                                    className="btn btn-secondary"
+                                    onClick={(e) => {
+                                      set_testCase_Current_output(
+                                        testCase_2_output
+                                      );
+                                    }}
+                                    style={{
+                                      marginBottom: "1px",
+                                      color: "white",
+                                      borderRadius: "0",
+                                      width: "100%",
+                                    }}
+                                  >
+                                    Test Case 2
+                                  </button>
+                                </Col>
+                              )}
+                            </Row>
+                            <Row className="">
+                              {testCase_3_output_error !== undefined ? (
+                                <Col style={{ paddingLeft: "0%" }}>
+                                  <button
+                                    className={
+                                      !testCase_3_output_error
+                                        ? "btn scTest"
+                                        : "btn btn-danger"
+                                    }
+                                    onClick={(e) => {
+                                      set_testCase_Current_output(
+                                        testCase_3_output
+                                      );
+                                    }}
+                                    style={{
+                                      marginBottom: "1px",
+                                      color: "white",
+                                      borderRadius: "0",
+                                      width: "100%",
+                                    }}
+                                  >
+                                    Test Case 3
+                                  </button>
+                                </Col>
+                              ) : (
+                                <Col style={{ paddingLeft: "0%" }}>
+                                  <button
+                                    className={"btn btn-secondary"}
+                                    onClick={(e) => {
+                                      set_testCase_Current_output(
+                                        testCase_3_output
+                                      );
+                                    }}
+                                    style={{
+                                      marginBottom: "1px",
+                                      color: "white",
+                                      borderRadius: "0",
+                                      width: "100%",
+                                    }}
+                                  >
+                                    Test Case 3
+                                  </button>
+                                </Col>
+                              )}
+                            </Row>
+                          </div>
+                        </Col>
+                      )}
+                      <Col md={isSubmitCode ? 9 : 12}>
+                        <textarea
+                          disabled
+                          defaultValue={testCase_Current_output}
+                          readOnly
+                          className="scrollbar codeOutput"
+                          id="style-4"
+                        ></textarea>
+                      </Col>
+                    </Row>
                   </Tab>
                 </Tabs>
               </div>
