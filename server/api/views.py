@@ -1,9 +1,7 @@
-from urllib import request
-from django.db.models import manager
 from django.shortcuts import render
 from django.http.response import JsonResponse
 from rest_framework.views import APIView
-from api.models import Questions,Options,Results,Subject,Test
+from api.models import Questions,Options,Results,Subject,Test,CodingTest
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 from rest_framework.permissions import AllowAny
@@ -12,7 +10,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 import datetime
 from rest_framework.parsers import JSONParser
-from .serializers import SubjectSerializer,QuestionSerializer, TestSerializer ,ResultSerializer
+import random
+from .serializers import CodingTestSerializer, SubjectSerializer,QuestionSerializer, TestSerializer ,ResultSerializer
 import math
 from django.db.models import Q
 
@@ -372,3 +371,24 @@ def getTests(request):
         stestS = TestSerializer(stests,many=True)
         utestS = TestSerializer(utests,many=True)
         return JsonResponse({"stests":stestS.data,"utests":utestS.data},safe=False)
+
+
+
+def getCodingTests(request):
+    if request.method == 'GET':
+        t1=CodingTestSerializer(CodingTest.objects.filter(type=1),many=True).data
+        t2=CodingTestSerializer(CodingTest.objects.filter(type=2),many=True).data
+        t3=CodingTestSerializer(CodingTest.objects.filter(type=3),many=True).data
+        itemsType1={}
+        itemsType2={}
+        itemsType3={}
+        if len(t1)>0:
+            itemsType1=CodingTest.objects.get(id=list(random.sample(t1,1)[0].items())[0][1])
+            itemsType1=CodingTestSerializer(itemsType1).data
+        if len(t2)>0:
+            itemsType2=CodingTest.objects.get(id=list(random.sample(t2,1)[0].items())[0][1])
+            itemsType2=CodingTestSerializer(itemsType2).data
+        if len(t3)>0:
+            itemsType3=CodingTest.objects.get(id=list(random.sample(t3,1)[0].items())[0][1])
+            itemsType3=CodingTestSerializer(itemsType3).data
+        return JsonResponse({'cQs':[itemsType1,itemsType2,itemsType3]},safe=False)

@@ -41,3 +41,20 @@ class Results(models.Model):
     def __str__(self):
         return self.student.username
 
+class CodingTest(models.Model):
+    question=models.TextField(null=True, blank=True)
+    marks=models.JSONField(null=True, blank=True)
+    type = models.IntegerField()
+    input_format=models.TextField(null=True, blank=True)
+    output_format=models.TextField(null=True, blank=True)
+    constraints=models.TextField(null=True, blank=True)
+    sample_input=models.JSONField(null=True, blank=True)
+    sample_output=models.JSONField(null=True, blank=True)
+    explanation=models.JSONField(null=True, blank=True)
+    test_case_input=models.JSONField(null=True, blank=True)
+    test_case_output=models.JSONField(null=True, blank=True)
+    def __str__(self):
+        return self.question
+    
+
+

@@ -5,6 +5,7 @@ import TestHeaderComp from "../../components/TestScreeen/TestHeaderComp";
 import "../../css/Compiler.css";
 import $ from "jquery";
 import key from "../../components/TestScreeen/keys";
+import axios from "axios";
 
 export default function Compiler() {
   const [inputT, setInput] = useState("");
@@ -22,7 +23,6 @@ export default function Compiler() {
   const [user_input_question_1, setUser_input_question_1] = useState();
   const [user_input_question_2, setUser_input_question_2] = useState();
   const [user_input_question_3, setUser_input_question_3] = useState();
-
 
   const [customInputCheck, setCustomInputCheck] = useState(false);
 
@@ -82,13 +82,34 @@ export default function Compiler() {
   const [q2_testCase_2_input, set_q2_testCase_2_input] = useState();
   const [q2_testCase_3_input, set_q2_testCase_3_input] = useState();
 
-
   const [q3_testCase_1_input, set_q3_testCase_1_input] = useState();
   const [q3_testCase_2_input, set_q3_testCase_2_input] = useState();
   const [q3_testCase_3_input, set_q3_testCase_3_input] = useState();
 
+  //testcase out
+  const [q1_testCase_1_expected_output, set_q1_testCase_1_expected_output] =
+    useState();
+  const [q1_testCase_2_expected_output, set_q1_testCase_2_expected_output] =
+    useState();
+  const [q1_testCase_3_expected_output, set_q1_testCase_3_expected_output] =
+    useState();
+
+  const [q2_testCase_1_expected_output, set_q2_testCase_1_expected_output] =
+    useState();
+  const [q2_testCase_2_expected_output, set_q2_testCase_2_expected_output] =
+    useState();
+  const [q2_testCase_3_expected_output, set_q2_testCase_3_expected_output] =
+    useState();
+
+  const [q3_testCase_1_expected_output, set_q3_testCase_1_expected_output] =
+    useState();
+  const [q3_testCase_2_expected_output, set_q3_testCase_2_expected_output] =
+    useState();
+  const [q3_testCase_3_expected_output, set_q3_testCase_3_expected_output] =
+    useState();
 
   //three qs
+  const [db_data, set_db_data] = useState();
   const [question_1, set_question_1] = useState({});
   const [question_2, set_question_2] = useState();
   const [question_3, set_question_3] = useState();
@@ -103,6 +124,47 @@ export default function Compiler() {
   });
 
   useEffect(() => {
+    let data;
+    const getData = async () =>
+      await axios.get("http://127.0.0.1:8000/api/codingTests").then((res) => {
+        console.log(res.data.cQs);
+        set_db_data(res.data.cQs);
+        data = res.data.cQs;
+        //from db
+
+        if (Object.keys(data[0]).length !== 0) {
+          set_question_1(data[0]);
+          set_question_current(data[0]);
+          set_q1_testCase_1_input(data[0].test_case_input[0]);
+          set_q1_testCase_1_expected_output(data[0].test_case_output[0]);
+          set_q1_testCase_2_input(data[0].test_case_input[1]);
+          set_q1_testCase_2_expected_output(data[0].test_case_output[1]);
+          set_q1_testCase_3_input(data[0].test_case_input[2]);
+          set_q1_testCase_3_expected_output(data[0].test_case_output[2]);
+        }
+        if (Object.keys(data[1]).length !== 0) {
+          console.log(data[1]);
+          set_question_2(data[1]);
+          set_q2_testCase_1_input(data[1].test_case_input[0]);
+
+          set_q2_testCase_1_expected_output(data[1].test_case_output[0]);
+          set_q2_testCase_2_input(data[1].test_case_input[1]);
+          set_q2_testCase_2_expected_output(data[1].test_case_output[1]);
+          set_q2_testCase_3_input(data[1].test_case_input[2]);
+          set_q2_testCase_3_expected_output(data[1].test_case_output[2]);
+        }
+        if (Object.keys(data[2]).length !== 0) {
+          set_question_3(data[2]);
+          set_q3_testCase_1_input(data[2].test_case_input[0]);
+
+          set_q3_testCase_1_expected_output(data[2].test_case_output[0]);
+          set_q3_testCase_2_input(data[2].test_case_input[1]);
+          set_q3_testCase_2_expected_output(data[2].test_case_output[1]);
+          set_q3_testCase_3_input(data[2].test_case_input[2]);
+          set_q3_testCase_3_expected_output(data[2].test_case_output[2]);
+        }
+      });
+    getData();
     setInput(localStorage.getItem("input_1") || ``);
     setInput_question_1(localStorage.getItem("input_1") || ``);
     setInput_question_2(localStorage.getItem("input_2") || ``);
@@ -113,45 +175,16 @@ export default function Compiler() {
     setUser_input_question_2(localStorage.getItem("user_input_2") || ``);
     setUser_input_question_3(localStorage.getItem("user_input_3") || ``);
 
-    setLanguage_id(localStorage.getItem("language_Id_question_1") || 2);
+    setLanguage_id(localStorage.getItem("language_Id_question_1") || 54);
     setLanguage_id_question_1(
-      localStorage.getItem("language_Id_question_1") || 2
+      localStorage.getItem("language_Id_question_1") || 54
     );
     setLanguage_id_question_2(
-      localStorage.getItem("language_Id_question_2") || 2
+      localStorage.getItem("language_Id_question_2") || 54
     );
     setLanguage_id_question_3(
-      localStorage.getItem("language_Id_question_3") || 2
+      localStorage.getItem("language_Id_question_3") || 54
     );
-
-    //from db
-    set_question_1({
-      question: "qs1",
-      input_format: "input format",
-      output_format: "output_format",
-      constraints: "constraints",
-      sample_input_1: "sample_input_1",
-      sample_output_1: "sample_output_1",
-      explanation: ["expl1", "expl2", "expl3"],
-    });
-    set_question_current({
-      question: "qs1",
-      input_format: "input format",
-      output_format: "output_format",
-      constraints: "constraints",
-      sample_input_1: "sample_input_1",
-      sample_output_1: "sample_output_1",
-      explanation: ["expl1", "expl2", "expl3"],
-    });
-    set_q1_testCase_1_input(1)
-    set_q1_testCase_2_input(2)
-    set_q1_testCase_3_input(3)
-    set_q2_testCase_1_input(4)
-    set_q2_testCase_2_input(5)
-    set_q2_testCase_3_input(6)
-    set_q3_testCase_1_input(7)
-    set_q3_testCase_2_input(8)
-    set_q3_testCase_3_input(9)
   }, []);
 
   function input(event) {
@@ -213,7 +246,8 @@ export default function Compiler() {
       }
       let response,
         count = 0,
-        keyArr = key(),selectedKey;
+        keyArr = key(),
+        selectedKey;
       do {
         response = await fetch("https://judge0-ce.p.rapidapi.com/submissions", {
           method: "POST",
@@ -229,46 +263,46 @@ export default function Compiler() {
             language_id: language_id,
           }),
         });
-        selectedKey=keyArr[count];
+        selectedKey = keyArr[count];
         count += 1;
-        
-
-
-      } while (response.token !== undefined);
+        console.log(response);
+        console.log(parseInt(response.status) !== 201);
+        console.log(typeof response.status);
+      } while (parseInt(response.status) !== 201 && keyArr.length > count);
       console.log(response);
-      if (current_qs === 1) {
-        set_q1_run_output(q1_run_output + "Submission Created ...\n");
-      } else if (current_qs === 2) {
-        set_q2_run_output(q2_run_output + "Submission Created ...\n");
-      } else if (current_qs === 3) {
-        set_q3_run_output(q2_run_output + "Submission Created ...\n");
-      }
-      const jsonResponse = await response.json();
-      let jsonGetSolution = {
-        status: { description: "Queue" },
-        stderr: null,
-        compile_output: null,
-      };
-      let flag = false;
-      while (flag !== true) {
+      if (response.status === 201) {
         if (current_qs === 1) {
-          set_q1_run_output(
-            `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.status.description}`
-          );
+          set_q1_run_output(q1_run_output + "Submission Created ...\n");
         } else if (current_qs === 2) {
-          set_q2_run_output(
-            `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.status.description}`
-          );
+          set_q2_run_output(q2_run_output + "Submission Created ...\n");
         } else if (current_qs === 3) {
-          set_q3_run_output(
-            `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.status.description}`
-          );
+          set_q3_run_output(q2_run_output + "Submission Created ...\n");
         }
-        if (jsonResponse.token) {
-          let url = `https://judge0-ce.p.rapidapi.com/submissions/${jsonResponse.token}?base64_encoded=true`;
-          
-         
-          const  getSolution = await fetch(url, {
+        const jsonResponse = await response.json();
+        let jsonGetSolution = {
+          status: { description: "Queue" },
+          stderr: null,
+          compile_output: null,
+        };
+        let flag = false;
+        while (flag !== true) {
+          if (current_qs === 1) {
+            set_q1_run_output(
+              `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.status.description}`
+            );
+          } else if (current_qs === 2) {
+            set_q2_run_output(
+              `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.status.description}`
+            );
+          } else if (current_qs === 3) {
+            set_q3_run_output(
+              `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.status.description}`
+            );
+          }
+          if (jsonResponse.token) {
+            let url = `https://judge0-ce.p.rapidapi.com/submissions/${jsonResponse.token}?base64_encoded=true`;
+
+            const getSolution = await fetch(url, {
               method: "GET",
               headers: {
                 "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
@@ -276,160 +310,176 @@ export default function Compiler() {
                 "content-type": "application/json",
               },
             });
-          
-          jsonGetSolution = await getSolution.json();
-          console.log(jsonGetSolution);
-          if (
-            jsonGetSolution.status.description === "Accepted" &&
-            jsonGetSolution.stderr === null &&
-            jsonGetSolution.compile_output === null
-          ) {
-            flag = true;
-          } else if (
-            jsonGetSolution.stderr !== null &&
-            jsonGetSolution.status.description !== "Accepted"
-          ) {
-            flag = true;
-          } else if (
-            jsonGetSolution.stderr === null &&
-            jsonGetSolution.status.description === "Compilation Error"
-          ) {
-            flag = true;
+
+            jsonGetSolution = await getSolution.json();
+            console.log(jsonGetSolution);
+            if (
+              jsonGetSolution.status.description === "Accepted" &&
+              jsonGetSolution.stderr === null &&
+              jsonGetSolution.compile_output === null
+            ) {
+              flag = true;
+            } else if (
+              jsonGetSolution.stderr !== null &&
+              jsonGetSolution.status.description !== "Accepted"
+            ) {
+              flag = true;
+            } else if (
+              jsonGetSolution.stderr === null &&
+              jsonGetSolution.status.description === "Compilation Error"
+            ) {
+              flag = true;
+            } else if (
+              jsonGetSolution.compile_output !== null &&
+              jsonGetSolution.status.description === "Accepted"
+            ) {
+              flag = true;
+            }
           }
         }
-      }
-      console.log(jsonGetSolution);
+        console.log(jsonGetSolution);
 
-      if (jsonGetSolution.stdout) {
-        const output = atob(jsonGetSolution.stdout);
-        if (current_qs === 1) {
-          set_q1_testCase_Current_output(
-            `${output}\nExxecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
-          );
-          set_q1_run_output(
-            `${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
-          );
-          localStorage.setItem(
-            `question_1`,
-            JSON.stringify({
-              run_output: `${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
-              q1_testCase_1_output: q1_testCase_1_output,
-              q1_testCase_2_output: q1_testCase_2_output,
-              q1_testCase_3_output: q1_testCase_3_output,
-            })
-          );
-        } else if (current_qs === 2) {
-          set_q2_testCase_Current_output(
-            `${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
-          );
-          set_q2_run_output(
-            `${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
-          );
-          localStorage.setItem(
-            `question_2`,
-            JSON.stringify({
-              run_output: `${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
-              q2_testCase_1_output: q2_testCase_1_output,
-              q2_testCase_2_output: q2_testCase_2_output,
-              q2_testCase_3_output: q2_testCase_3_output,
-            })
-          );
-        } else if (current_qs === 3) {
-          set_q3_testCase_Current_output(
-            `${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
-          );
-          set_q3_run_output(
-            `${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
-          );
-          localStorage.setItem(
-            `question_3`,
-            JSON.stringify({
-              run_output: `${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
-              q3_testCase_1_output: q3_testCase_1_output,
-              q3_testCase_2_output: q3_testCase_2_output,
-              q3_testCase_3_output: q3_testCase_3_output,
-            })
-          );
-        }
-      } else if (jsonGetSolution.stderr) {
-        const error = atob(jsonGetSolution.stderr);
-        console.log(error);
-        if (current_qs === 1) {
-          set_q1_testCase_Current_output(`\n Error :${error}`);
-          set_q1_run_output(`\n Error :${error}`);
-          localStorage.setItem(
-            `question_1`,
-            JSON.stringify({
-              run_output: `\n Error :${error}`,
-              q1_testCase_1_output: q1_testCase_1_output,
-              q1_testCase_2_output: q1_testCase_2_output,
-              q1_testCase_3_output: q1_testCase_3_output,
-            })
-          );
-        } else if (current_qs === 2) {
-          set_q2_testCase_Current_output(`\n Error :${error}`);
-          set_q2_run_output(`\n Error :${error}`);
-          localStorage.setItem(
-            `question_2`,
-            JSON.stringify({
-              run_output: `\n Error :${error}`,
-              q2_testCase_1_output: q2_testCase_1_output,
-              q2_testCase_2_output: q2_testCase_2_output,
-              q2_testCase_3_output: q2_testCase_3_output,
-            })
-          );
-        } else if (current_qs === 3) {
-          set_q3_testCase_Current_output(`\n Error :${error}`);
-          set_q3_run_output(`\n Error :${error}`);
-          localStorage.setItem(
-            `question_3`,
-            JSON.stringify({
-              run_output: `\n Error :${error}`,
-              q3_testCase_1_output: q3_testCase_1_output,
-              q3_testCase_2_output: q3_testCase_2_output,
-              q3_testCase_3_output: q3_testCase_3_output,
-            })
-          );
+        if (
+          jsonGetSolution.stdout &&
+          jsonGetSolution.stderr === null &&
+          jsonGetSolution.compile_output === null
+        ) {
+          var b = new Buffer(jsonGetSolution.stdout, "base64");
+          const output = b.toString();
+
+          if (current_qs === 1) {
+            set_q1_testCase_Current_output(
+              `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
+            );
+            set_q1_run_output(
+              `${output}\n\nExxecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
+            );
+            localStorage.setItem(
+              `question_1`,
+              JSON.stringify({
+                run_output: `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
+                q1_testCase_1_output: q1_testCase_1_output,
+                q1_testCase_2_output: q1_testCase_2_output,
+                q1_testCase_3_output: q1_testCase_3_output,
+              })
+            );
+          } else if (current_qs === 2) {
+            set_q2_testCase_Current_output(
+              `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
+            );
+            set_q2_run_output(
+              `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
+            );
+            localStorage.setItem(
+              `question_2`,
+              JSON.stringify({
+                run_output: `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
+                q2_testCase_1_output: q2_testCase_1_output,
+                q2_testCase_2_output: q2_testCase_2_output,
+                q2_testCase_3_output: q2_testCase_3_output,
+              })
+            );
+          } else if (current_qs === 3) {
+            set_q3_testCase_Current_output(
+              `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
+            );
+            set_q3_run_output(
+              `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
+            );
+            localStorage.setItem(
+              `question_3`,
+              JSON.stringify({
+                run_output: `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
+                q3_testCase_1_output: q3_testCase_1_output,
+                q3_testCase_2_output: q3_testCase_2_output,
+                q3_testCase_3_output: q3_testCase_3_output,
+              })
+            );
+          }
+        } else if (jsonGetSolution.stderr) {
+          var b = new Buffer(jsonGetSolution.stderr, "base64");
+          const error = b.toString();
+          console.log(error);
+          if (current_qs === 1) {
+            set_q1_testCase_Current_output(`Error :${error}`);
+            set_q1_run_output(`Error :${error}`);
+            localStorage.setItem(
+              `question_1`,
+              JSON.stringify({
+                run_output: `Error :${error}`,
+                q1_testCase_1_output: q1_testCase_1_output,
+                q1_testCase_2_output: q1_testCase_2_output,
+                q1_testCase_3_output: q1_testCase_3_output,
+              })
+            );
+          } else if (current_qs === 2) {
+            set_q2_testCase_Current_output(`\n Error :${error}`);
+            set_q2_run_output(`\n Error :${error}`);
+            localStorage.setItem(
+              `question_2`,
+              JSON.stringify({
+                run_output: `\n Error :${error}`,
+                q2_testCase_1_output: q2_testCase_1_output,
+                q2_testCase_2_output: q2_testCase_2_output,
+                q2_testCase_3_output: q2_testCase_3_output,
+              })
+            );
+          } else if (current_qs === 3) {
+            set_q3_testCase_Current_output(`\n Error :${error}`);
+            set_q3_run_output(`\n Error :${error}`);
+            localStorage.setItem(
+              `question_3`,
+              JSON.stringify({
+                run_output: `\n Error :${error}`,
+                q3_testCase_1_output: q3_testCase_1_output,
+                q3_testCase_2_output: q3_testCase_2_output,
+                q3_testCase_3_output: q3_testCase_3_output,
+              })
+            );
+          }
+        } else {
+          var b = new Buffer(jsonGetSolution.compile_output, "base64");
+          const compilation_error = b.toString();
+          if (current_qs === 1) {
+            set_q1_testCase_Current_output(`\n Error :${compilation_error}`);
+            set_q1_run_output(`\n Error :${compilation_error}`);
+            localStorage.setItem(
+              `question_1`,
+              JSON.stringify({
+                run_output: `\n Error :${compilation_error}`,
+                q1_testCase_1_output: q1_testCase_1_output,
+                q1_testCase_2_output: q1_testCase_2_output,
+                q1_testCase_3_output: q1_testCase_3_output,
+              })
+            );
+          } else if (current_qs === 2) {
+            set_q2_testCase_Current_output(`\n Error :${compilation_error}`);
+            set_q2_run_output(`\n Error :${compilation_error}`);
+            localStorage.setItem(
+              `question_2`,
+              JSON.stringify({
+                run_output: `\n Error :${compilation_error}`,
+                q2_testCase_1_output: q2_testCase_1_output,
+                q2_testCase_2_output: q2_testCase_2_output,
+                q2_testCase_3_output: q2_testCase_3_output,
+              })
+            );
+          } else if (current_qs === 3) {
+            set_q3_testCase_Current_output(`\n Error :${compilation_error}`);
+            set_q3_run_output(`\n Error :${compilation_error}`);
+            localStorage.setItem(
+              `question_3`,
+              JSON.stringify({
+                run_output: `\n Error :${compilation_error}`,
+                q3_testCase_1_output: q3_testCase_1_output,
+                q3_testCase_2_output: q3_testCase_2_output,
+                q3_testCase_3_output: q3_testCase_3_output,
+              })
+            );
+          }
         }
       } else {
-        const compilation_error = atob(jsonGetSolution.compile_output);
-        if (current_qs === 1) {
-          set_q1_testCase_Current_output(`\n Error :${compilation_error}`);
-          set_q1_run_output(`\n Error :${compilation_error}`);
-          localStorage.setItem(
-            `question_1`,
-            JSON.stringify({
-              run_output: `\n Error :${compilation_error}`,
-              q1_testCase_1_output: q1_testCase_1_output,
-              q1_testCase_2_output: q1_testCase_2_output,
-              q1_testCase_3_output: q1_testCase_3_output,
-            })
-          );
-        } else if (current_qs === 2) {
-          set_q2_testCase_Current_output(`\n Error :${compilation_error}`);
-          set_q2_run_output(`\n Error :${compilation_error}`);
-          localStorage.setItem(
-            `question_2`,
-            JSON.stringify({
-              run_output: `\n Error :${compilation_error}`,
-              q2_testCase_1_output: q2_testCase_1_output,
-              q2_testCase_2_output: q2_testCase_2_output,
-              q2_testCase_3_output: q2_testCase_3_output,
-            })
-          );
-        } else if (current_qs === 3) {
-          set_q3_testCase_Current_output(`\n Error :${compilation_error}`);
-          set_q3_run_output(`\n Error :${compilation_error}`);
-          localStorage.setItem(
-            `question_3`,
-            JSON.stringify({
-              run_output: `\n Error :${compilation_error}`,
-              q3_testCase_1_output: q3_testCase_1_output,
-              q3_testCase_2_output: q3_testCase_2_output,
-              q3_testCase_3_output: q3_testCase_3_output,
-            })
-          );
-        }
+        alert("Contact Administrator");
       }
     }
   }
@@ -463,17 +513,18 @@ export default function Compiler() {
       set_q3_testCase_Current_output("Creating Submission ...\n");
     }
     let count = 0;
-    let keyArr = key(),selectedKey;
+    let keyArr = key(),
+      selectedKey;
     let jsonResponse;
     do {
-      selectedKey=keyArr[count];
+      selectedKey = keyArr[count];
       const response = await fetch(
         "https://judge0-ce.p.rapidapi.com/submissions/batch",
         {
           method: "POST",
           headers: {
             "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
-            "x-rapidapi-key": `${keyArr[count]}`, // Get yours for free at https://rapidapi.com/judge0-official/api/judge0-ce/
+            "x-rapidapi-key": `${selectedKey}`, // Get yours for free at https://rapidapi.com/judge0-official/api/judge0-ce/
             "content-type": "application/json",
             accept: "application/json",
           },
@@ -481,18 +532,51 @@ export default function Compiler() {
             submissions: [
               {
                 source_code: inputT,
-                stdin: current_qs===1?q1_testCase_1_input:(current_qs===2?q2_testCase_1_input:q3_testCase_1_input), //stateVarialble
+                stdin:
+                  current_qs === 1
+                    ? q1_testCase_1_input
+                    : current_qs === 2
+                    ? q2_testCase_1_input
+                    : q3_testCase_1_input, //stateVarialble
                 language_id: language_id,
+                expected_output:
+                  current_qs === 1
+                    ? q1_testCase_1_expected_output
+                    : current_qs === 2
+                    ? q2_testCase_1_expected_output
+                    : q3_testCase_1_expected_output, //stateVarialble
               },
               {
                 source_code: inputT,
-                stdin: current_qs===1?q1_testCase_2_input:(current_qs===2?q2_testCase_2_input:q3_testCase_2_input), //stateVarialble
+                stdin:
+                  current_qs === 1
+                    ? q1_testCase_2_input
+                    : current_qs === 2
+                    ? q2_testCase_2_input
+                    : q3_testCase_2_input, //stateVarialble
                 language_id: language_id,
+                expected_output:
+                  current_qs === 1
+                    ? q1_testCase_2_expected_output
+                    : current_qs === 2
+                    ? q2_testCase_2_expected_output
+                    : q3_testCase_2_expected_output, //stateVarialble
               },
               {
                 source_code: inputT,
-                stdin: current_qs===1?q1_testCase_3_input:(current_qs===2?q2_testCase_3_input:q3_testCase_3_input), //stateVarialble
+                stdin:
+                  current_qs === 1
+                    ? q1_testCase_3_input
+                    : current_qs === 2
+                    ? q2_testCase_3_input
+                    : q3_testCase_3_input, //stateVarialble
                 language_id: language_id,
+                expected_output:
+                  current_qs === 1
+                    ? q1_testCase_3_expected_output
+                    : current_qs === 2
+                    ? q2_testCase_3_expected_output
+                    : q3_testCase_3_expected_output, //stateVarialble
               },
             ],
           }),
@@ -505,7 +589,6 @@ export default function Compiler() {
           "You have exceeded the DAILY quota for Batched Submissions on your current plan, BASIC. Upgrade your plan at https://rapidapi.com/judge0-official/api/judge0-ce"
       );
       count += 1;
-      
     } while (
       jsonResponse.message !== undefined &&
       jsonResponse.message ===
@@ -551,7 +634,7 @@ export default function Compiler() {
         );
       } else if (current_qs === 2) {
         set_q2_testCase_Current_output(
-          `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.submissions[0].status.description}`
+          `Creating Submisxxxxxxxxxxxxxxxxxxxxxxsion ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.submissions[0].status.description}`
         );
       } else if (current_qs === 3) {
         set_q3_testCase_Current_output(
@@ -568,8 +651,7 @@ export default function Compiler() {
           method: "GET",
           headers: {
             "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
-            "x-rapidapi-key":
-              `${selectedKey}`, // Get yours for free at https://rapidapi.com/judge0-official/api/judge0-ce/
+            "x-rapidapi-key": `${selectedKey}`, // Get yours for free at https://rapidapi.com/judge0-official/api/judge0-ce/
             "content-type": "application/json",
           },
         });
@@ -577,15 +659,21 @@ export default function Compiler() {
         console.log(jsonGetSolution.submissions[1].status.description);
         console.log(jsonGetSolution);
         if (
-          jsonGetSolution.submissions[0].status.description === "Accepted" &&
-          jsonGetSolution.submissions[0].stderr == null &&
-          jsonGetSolution.submissions[0].compile_output == null &&
-          jsonGetSolution.submissions[1].status.description === "Accepted" &&
-          jsonGetSolution.submissions[1].stderr == null &&
-          jsonGetSolution.submissions[1].compile_output == null &&
-          jsonGetSolution.submissions[2].status.description === "Accepted" &&
-          jsonGetSolution.submissions[2].stderr == null &&
-          jsonGetSolution.submissions[2].compile_output == null
+          (jsonGetSolution.submissions[0].status.description === "Accepted" ||
+            jsonGetSolution.submissions[0].status.description ===
+              "Wrong Answer") &&
+          jsonGetSolution.submissions[0].stderr === null &&
+          jsonGetSolution.submissions[0].compile_output === null &&
+          (jsonGetSolution.submissions[1].status.description === "Accepted" ||
+            jsonGetSolution.submissions[1].status.description ===
+              "Wrong Answer") &&
+          jsonGetSolution.submissions[1].stderr === null &&
+          jsonGetSolution.submissions[1].compile_output === null &&
+          (jsonGetSolution.submissions[2].status.description === "Accepted" ||
+            jsonGetSolution.submissions[2].status.description ===
+              "Wrong Answer") &&
+          jsonGetSolution.submissions[2].stderr === null &&
+          jsonGetSolution.submissions[2].compile_output === null
         ) {
           flag = true;
         } else if (
@@ -618,221 +706,349 @@ export default function Compiler() {
           jsonGetSolution.submissions[0].status.description !== "Processing"
         ) {
           flag = true;
+        } else if (
+          (jsonGetSolution.submissions[0].status.description === "Accepted" ||
+            jsonGetSolution.submissions[0].status.description ===
+              "Wrong Answer") &&
+          jsonGetSolution.submissions[0].stderr === null &&
+          jsonGetSolution.submissions[0].compile_output !== null &&
+          (jsonGetSolution.submissions[1].status.description === "Accepted" ||
+            jsonGetSolution.submissions[1].status.description ===
+              "Wrong Answer") &&
+          jsonGetSolution.submissions[1].stderr === null &&
+          jsonGetSolution.submissions[1].compile_output !== null &&
+          (jsonGetSolution.submissions[2].status.description === "Accepted" ||
+            jsonGetSolution.submissions[2].status.description ===
+              "Wrong Answer") &&
+          jsonGetSolution.submissions[2].stderr === null &&
+          jsonGetSolution.submissions[2].compile_output !== null
+        ) {
+          flag = true;
         }
       } else {
         alert("token dont exists");
+        break;
       }
     }
-    let t1Output, t2Output, t3Output;
-    for (var y = 0; y < jsonGetSolution.submissions.length; y++) {
-      if (jsonGetSolution.submissions[y].stdout) {
-        const output = atob(jsonGetSolution.submissions[y].stdout);
+    if (flag) {
+      let t1Output, t2Output, t3Output;
+      for (var y = 0; y < jsonGetSolution.submissions.length; y++) {
+        if (
+          jsonGetSolution.submissions[y].stdout &&
+          jsonGetSolution.submissions[y].stderr === null &&
+          jsonGetSolution.submissions[y].compile_output === null
+        ) {
+          var b = new Buffer(jsonGetSolution.submissions[y].stdout, "base64");
+          const output = b.toString();
 
-        
-        console.log(output);
-        if (current_qs === 1) {
-          if (y === 0) {
-            set_q1_testCase_1_output(
-              `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
-            );
-            t1Output = `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
+          if (jsonGetSolution.submissions[y].status.id === 3) {
+            console.log(output);
+            if (current_qs === 1) {
+              if (y === 0) {
+                set_q1_testCase_1_output(
+                  `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+                );
+                t1Output = `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
 
-            set_q1_testCase_1_output_error(false);
-            set_q1_testCase_Current_output(
-              `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
-            );
-          } else if (y === 1) {
-            set_q1_testCase_2_output_error(false);
-            set_q1_testCase_2_output(
-              `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
-            );
-            t2Output = `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
-          } else if (y === 2) {
-            set_q1_testCase_3_output_error(false);
-            set_q1_testCase_3_output(
-              `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
-            );
-            t3Output = `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
+                set_q1_testCase_1_output_error(false);
+                set_q1_testCase_Current_output(
+                  `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+                );
+              } else if (y === 1) {
+                set_q1_testCase_2_output_error(false);
+                set_q1_testCase_2_output(
+                  `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+                );
+                t2Output = `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
+              } else if (y === 2) {
+                set_q1_testCase_3_output_error(false);
+                set_q1_testCase_3_output(
+                  `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+                );
+                t3Output = `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
+              }
+            } else if (current_qs == 2) {
+              if (y === 0) {
+                set_q2_testCase_1_output(
+                  `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+                );
+                t1Output = `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
+
+                set_q2_testCase_1_output_error(false);
+                set_q2_testCase_Current_output(
+                  `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+                );
+              } else if (y === 1) {
+                set_q2_testCase_2_output_error(false);
+                set_q2_testCase_2_output(
+                  `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+                );
+                t2Output = `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
+              } else if (y === 2) {
+                set_q2_testCase_3_output_error(false);
+                set_q2_testCase_3_output(
+                  `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+                );
+                t3Output = `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
+              }
+            } else if (current_qs == 3) {
+              if (y === 0) {
+                set_q3_testCase_1_output(
+                  `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+                );
+                t1Output = `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
+
+                set_q3_testCase_1_output_error(false);
+                set_q3_testCase_Current_output(
+                  `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+                );
+              } else if (y === 1) {
+                set_q3_testCase_2_output_error(false);
+                set_q3_testCase_2_output(
+                  `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+                );
+                t2Output = `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
+              } else if (y === 2) {
+                set_q3_testCase_3_output_error(false);
+                set_q3_testCase_3_output(
+                  `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+                );
+                t3Output = `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
+              }
+            }
+          } else if (jsonGetSolution.submissions[y].status.id === 4) {
+            if (current_qs === 1) {
+              if (y === 0) {
+                set_q1_testCase_1_output(
+                  `Wrong Answer\nYour Output:\n${output}\nExpected Output:\n${q1_testCase_1_expected_output}
+              \nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+                );
+                t1Output = `Wrong Answer\nYour Output:\n${output}\nExpected Output:\n${q1_testCase_1_expected_output}
+            \nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
+
+                set_q1_testCase_1_output_error(true);
+                set_q1_testCase_Current_output(
+                  `Wrong Answer\nYour Output:\n${output}\nExpected Output:\n${q1_testCase_1_expected_output}
+              \nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+                );
+              } else if (y === 1) {
+                set_q1_testCase_2_output_error(true);
+                set_q1_testCase_2_output(
+                  `Wrong Answer\nYour Output:\n${output}\nExpected Output:\n${q1_testCase_2_expected_output}
+              \nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+                );
+                t2Output = `Wrong Answer\nYour Output:\n${output}\nExpected Output:\n${q1_testCase_2_expected_output}
+            \nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
+              } else if (y === 2) {
+                set_q1_testCase_3_output_error(true);
+                set_q1_testCase_3_output(
+                  `Wrong Answer\nYour Output:\n${output}\nExpected Output:\n${q1_testCase_3_expected_output}
+              \nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+                );
+                t3Output = `Wrong Answer\nYour Output:\n${output}\nExpected Output:\n${q1_testCase_3_expected_output}
+            \nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
+              }
+            } else if (current_qs == 2) {
+              if (y === 0) {
+                set_q2_testCase_1_output_error(true);
+                set_q2_testCase_1_output(
+                  `Wrong Answer\nYour Output:\n${output}\nExpected Output:\n${q2_testCase_1_expected_output}
+              \nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+                );
+                t1Output = `Wrong Answer\nYour Output:\n${output}\nExpected Output:\n${q2_testCase_1_expected_output}
+            \nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
+                set_q2_testCase_Current_output(
+                  `Wrong Answer\nYour Output:\n${output}\nExpected Output:\n${q2_testCase_1_expected_output}
+              \nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+                );
+              } else if (y === 1) {
+                set_q2_testCase_2_output_error(false);
+                set_q2_testCase_2_output(
+                  `Wrong Answer\nYour Output:\n${output}\nExpected Output:\n${q2_testCase_2_expected_output}
+              \nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+                );
+                t2Output = `Wrong Answer\nYour Output:\n${output}\nExpected Output:\n${q2_testCase_2_expected_output}
+            \nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
+              } else if (y === 2) {
+                set_q2_testCase_3_output_error(true);
+                set_q2_testCase_3_output(
+                  `Wrong Answer\nYour Output:\n${output}\nExpected Output:\n${q2_testCase_3_expected_output}
+              \nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+                );
+                t3Output = `Wrong Answer\nYour Output:\n${output}\nExpected Output:\n${q2_testCase_2_expected_output}
+            \nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
+              }
+            } else if (current_qs == 3) {
+              if (y === 0) {
+                set_q3_testCase_1_output(
+                  `Wrong Answer\nYour Output:\n${output}\nExpected Output:\n${q3_testCase_1_expected_output}
+              \nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+                );
+                t1Output = `Wrong Answer\nYour Output:\n${output}\nExpected Output:\n${q3_testCase_1_expected_output}
+            \nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
+
+                set_q3_testCase_1_output_error(true);
+                set_q3_testCase_Current_output(
+                  `Wrong Answer\nYour Output:\n${output}\nExpected Output:\n${q3_testCase_1_expected_output}
+              \nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+                );
+              } else if (y === 1) {
+                set_q3_testCase_2_output_error(true);
+                set_q3_testCase_2_output(
+                  `Wrong Answer\nYour Output:\n${output}\nExpected Output:\n${q3_testCase_2_expected_output}
+              \nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+                );
+                t2Output = `Wrong Answer\nYour Output:\n${output}\nExpected Output:\n${q3_testCase_2_expected_output}
+            \nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
+              } else if (y === 2) {
+                set_q3_testCase_3_output_error(true);
+                set_q3_testCase_3_output(
+                  `Wrong Answer\nYour Output:\n${output}\nExpected Output:\n${q3_testCase_3_expected_output}
+              \nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
+                );
+                t3Output = `Wrong Answer\nYour Output:\n${output}\nExpected Output:\n${q3_testCase_3_expected_output}
+            \nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
+              }
+            }
           }
-        } else if (current_qs == 2) {
-          if (y === 0) {
-            set_q2_testCase_1_output(
-              `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
-            );
-            t1Output = `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
-
-            set_q2_testCase_1_output_error(false);
-            set_q2_testCase_Current_output(
-              `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
-            );
-          } else if (y === 1) {
-            set_q2_testCase_2_output_error(false);
-            set_q2_testCase_2_output(
-              `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
-            );
-            t2Output = `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
-          } else if (y === 2) {
-            set_q2_testCase_3_output_error(false);
-            set_q2_testCase_3_output(
-              `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
-            );
-            t3Output = `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
+        } else if (jsonGetSolution.submissions[y].stderr) {
+          var b = new Buffer(jsonGetSolution.submissions[y].stderr, "base64");
+          const error = b.toString();
+          if (current_qs === 1) {
+            if (y === 0) {
+              set_q1_testCase_1_output(`Error :${error}`);
+              set_q1_testCase_Current_output(`Error :${error}`);
+              set_q1_testCase_1_output_error(true);
+              t1Output = `Error :${error}`;
+            } else if (y === 1) {
+              set_q1_testCase_2_output(`Error :${error}`);
+              t2Output = `Error :${error}`;
+              set_q1_testCase_2_output_error(true);
+            } else if (y == 2) {
+              set_q1_testCase_3_output(`Error :${error}`);
+              t3Output = `Error :${error}`;
+              set_q1_testCase_3_output_error(true);
+            }
+          } else if (current_qs === 2) {
+            if (y === 0) {
+              set_q2_testCase_1_output(`EEEEEEEEError :${error}`);
+              set_q2_testCase_Current_output(`EEEEEEError :${error}`);
+              set_q2_testCase_1_output_error(true);
+              t1Output = `EEEEEError :${error}`;
+            } else if (y === 1) {
+              set_q2_testCase_2_output(`EEEEEEEEError :${error}`);
+              t2Output = `EEEEEEEEEError :${error}`;
+              set_q2_testCase_2_output_error(true);
+            } else if (y == 2) {
+              set_q2_testCase_3_output(`EEEEEError :${error}`);
+              t3Output = `EEEEEError :${error}`;
+              set_q2_testCase_3_output_error(true);
+            }
+          } else if (current_qs === 3) {
+            if (y === 0) {
+              set_q3_testCase_1_output(`Error :${error}`);
+              set_q3_testCase_Current_output(`Error :${error}`);
+              set_q3_testCase_1_output_error(true);
+              t1Output = `Error :${error}`;
+            } else if (y === 1) {
+              set_q3_testCase_2_output(`Error :${error}`);
+              t2Output = `Error :${error}`;
+              set_q3_testCase_2_output_error(true);
+            } else if (y == 2) {
+              set_q3_testCase_3_output(`Error :${error}`);
+              t3Output = `Error :${error}`;
+              set_q3_testCase_3_output_error(true);
+            }
           }
-        } else if (current_qs == 3) {
-          if (y === 0) {
-            set_q3_testCase_1_output(
-              `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
-            );
-            t1Output = `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
-
-            set_q3_testCase_1_output_error(false);
-            set_q3_testCase_Current_output(
-              `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
-            );
-          } else if (y === 1) {
-            set_q3_testCase_2_output_error(false);
-            set_q3_testCase_2_output(
-              `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
-            );
-            t2Output = `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
-          } else if (y === 2) {
-            set_q3_testCase_3_output_error(false);
-            set_q3_testCase_3_output(
-              `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
-            );
-            t3Output = `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
+        } else {
+          var b = new Buffer(
+            jsonGetSolution.submissions[y].compile_output,
+            "base64"
+          );
+          const compilation_error = b.toString();
+          if (current_qs === 1) {
+            if (y === 0) {
+              set_q1_testCase_1_output(`EYyyyyrror :${compilation_error}`);
+              set_q1_testCase_1_output_error(true);
+              set_q1_testCase_Current_output(
+                `yyyyyyError :${compilation_error}`
+              );
+              t1Output = `Eyyyyyrror :${compilation_error}`;
+            } else if (y === 1) {
+              set_q1_testCase_2_output_error(true);
+              set_q1_testCase_2_output(`EEEEEEError :${compilation_error}`);
+              t2Output = `EEEEEEError :${compilation_error}`;
+            } else if (y === 2) {
+              set_q1_testCase_3_output_error(true);
+              set_q1_testCase_3_output(`Error :${compilation_error}`);
+              t3Output = `Error :${compilation_error}`;
+            }
+          } else if (current_qs === 2) {
+            if (y === 0) {
+              set_q2_testCase_1_output(`Error :${compilation_error}`);
+              set_q2_testCase_1_output_error(true);
+              set_q2_testCase_Current_output(`Error :${compilation_error}`);
+              t1Output = `Error :${compilation_error}`;
+            } else if (y === 1) {
+              set_q2_testCase_2_output_error(true);
+              set_q2_testCase_2_output(`Error :${compilation_error}`);
+              t2Output = `Error :${compilation_error}`;
+            } else if (y === 2) {
+              set_q2_testCase_3_output_error(true);
+              set_q2_testCase_3_output(`Error :${compilation_error}`);
+              t3Output = `Error :${compilation_error}`;
+            }
+          } else if (current_qs === 3) {
+            if (y === 0) {
+              set_q3_testCase_1_output(`Error :${compilation_error}`);
+              set_q3_testCase_1_output_error(true);
+              set_q3_testCase_Current_output(`Error :${compilation_error}`);
+              t1Output = `Error :${compilation_error}`;
+            } else if (y === 1) {
+              set_q3_testCase_2_output_error(true);
+              set_q3_testCase_2_output(`Error :${compilation_error}`);
+              t2Output = `Error :${compilation_error}`;
+            } else if (y === 2) {
+              set_q3_testCase_3_output_error(true);
+              set_q3_testCase_3_output(`Error :${compilation_error}`);
+              t3Output = `Error :${compilation_error}`;
+            }
           }
         }
-      } else if (jsonGetSolution.submissions[y].stderr) {
-        const error = atob(jsonGetSolution.submissions[y].stderr);
-        if (current_qs === 1) {
-          if (y === 0) {
-            set_q1_testCase_1_output(`Error :${error}`);
-            set_q1_testCase_Current_output(`Error :${error}`);
-            set_q1_testCase_1_output_error(true);
-            t1Output = `Error :${error}`;
-          } else if (y === 1) {
-            set_q1_testCase_2_output(`Error :${error}`);
-            t2Output = `Error :${error}`;
-            set_q1_testCase_2_output_error(true);
-          } else if (y == 2) {
-            set_q1_testCase_3_output(`Error :${error}`);
-            t3Output = `Error :${error}`;
-            set_q1_testCase_3_output_error(true);
-          }
-        } else if (current_qs === 2) {
-          if (y === 0) {
-            set_q2_testCase_1_output(`Error :${error}`);
-            set_q2_testCase_Current_output(`Error :${error}`);
-            set_q2_testCase_1_output_error(true);
-            t1Output = `Error :${error}`;
-          } else if (y === 1) {
-            set_q2_testCase_2_output(`Error :${error}`);
-            t2Output = `Error :${error}`;
-            set_q2_testCase_2_output_error(true);
-          } else if (y == 2) {
-            set_q2_testCase_3_output(`Error :${error}`);
-            t3Output = `Error :${error}`;
-            set_q2_testCase_3_output_error(true);
-          }
-        } else if (current_qs === 3) {
-          if (y === 0) {
-            set_q3_testCase_1_output(`Error :${error}`);
-            set_q3_testCase_Current_output(`Error :${error}`);
-            set_q3_testCase_1_output_error(true);
-            t1Output = `Error :${error}`;
-          } else if (y === 1) {
-            set_q3_testCase_2_output(`Error :${error}`);
-            t2Output = `Error :${error}`;
-            set_q3_testCase_2_output_error(true);
-          } else if (y == 2) {
-            set_q3_testCase_3_output(`Error :${error}`);
-            t3Output = `Error :${error}`;
-            set_q3_testCase_3_output_error(true);
-          }
-        }
-      } else {
-        const compilation_error = atob(
-          jsonGetSolution.submissions[y].compile_output
+      }
+      if (current_qs === 1) {
+        localStorage.setItem(
+          "question_1",
+          JSON.stringify({
+            run_output: q1_run_output,
+            q1_testCase_1_output: t1Output,
+            q1_testCase_2_output: t2Output,
+            q1_testCase_3_output: t3Output,
+          })
         );
-        if (current_qs === 1) {
-          if (y === 0) {
-            set_q1_testCase_1_output(`Error :${compilation_error}`);
-            set_q1_testCase_1_output_error(true);
-            set_q1_testCase_Current_output(`Error :${compilation_error}`);
-            t1Output = `Error :${compilation_error}`;
-          } else if (y === 1) {
-            set_q1_testCase_2_output_error(true);
-            set_q1_testCase_2_output(`Error :${compilation_error}`);
-            t2Output = `Error :${compilation_error}`;
-          } else if (y === 2) {
-            set_q1_testCase_3_output_error(true);
-            set_q1_testCase_3_output(`Error :${compilation_error}`);
-            t3Output = `Error :${compilation_error}`;
-          }
-        } else if (current_qs === 2) {
-          if (y === 0) {
-            set_q2_testCase_1_output(`Error :${compilation_error}`);
-            set_q2_testCase_1_output_error(true);
-            set_q2_testCase_Current_output(`Error :${compilation_error}`);
-            t1Output = `Error :${compilation_error}`;
-          } else if (y === 1) {
-            set_q2_testCase_2_output_error(true);
-            set_q2_testCase_2_output(`Error :${compilation_error}`);
-            t2Output = `Error :${compilation_error}`;
-          } else if (y === 2) {
-            set_q2_testCase_3_output_error(true);
-            set_q2_testCase_3_output(`Error :${compilation_error}`);
-            t3Output = `Error :${compilation_error}`;
-          }
-        } else if (current_qs === 3) {
-          if (y === 0) {
-            set_q3_testCase_1_output(`Error :${compilation_error}`);
-            set_q3_testCase_1_output_error(true);
-            set_q3_testCase_Current_output(`Error :${compilation_error}`);
-            t1Output = `Error :${compilation_error}`;
-          } else if (y === 1) {
-            set_q3_testCase_2_output_error(true);
-            set_q3_testCase_2_output(`Error :${compilation_error}`);
-            t2Output = `Error :${compilation_error}`;
-          } else if (y === 2) {
-            set_q3_testCase_3_output_error(true);
-            set_q3_testCase_3_output(`Error :${compilation_error}`);
-            t3Output = `Error :${compilation_error}`;
-          }
-        }
+      } else if (current_qs === 2) {
+        localStorage.setItem(
+          "question_2",
+          JSON.stringify({
+            run_output: q2_run_output,
+            q2_testCase_1_output: t1Output,
+            q2_testCase_2_output: t2Output,
+            q2_testCase_3_output: t3Output,
+          })
+        );
+      } else if (current_qs === 3) {
+        localStorage.setItem(
+          "question_3",
+          JSON.stringify({
+            run_output: q3_run_output,
+            q3_testCase_1_output: t1Output,
+            q3_testCase_2_output: t2Output,
+            q3_testCase_3_output: t3Output,
+          })
+        );
       }
-    }
-    if (current_qs === 1) {
-      localStorage.setItem(
-        "question_1",
-        JSON.stringify({
-          run_output: q1_run_output,
-          q1_testCase_1_output: t1Output,
-          q1_testCase_2_output: t2Output,
-          q1_testCase_3_output: t3Output,
-        })
-      );
-    } else if (current_qs === 2) {
-      localStorage.setItem(
-        "question_2",
-        JSON.stringify({
-          run_output: q2_run_output,
-          q2_testCase_1_output: t1Output,
-          q2_testCase_2_output: t2Output,
-          q2_testCase_3_output: t3Output,
-        })
-      );
-    } else if (current_qs === 3) {
-      localStorage.setItem(
-        "question_3",
-        JSON.stringify({
-          run_output: q3_run_output,
-          q3_testCase_1_output: t1Output,
-          q3_testCase_2_output: t2Output,
-          q3_testCase_3_output: t3Output,
-        })
-      );
+    } else {
+      alert("Contact Administrator");
     }
   }
 
@@ -975,6 +1191,7 @@ export default function Compiler() {
                   let qsNo = e.target.textContent.split("Q")[1];
                   set_current_qs(parseInt(qsNo));
                   if (parseInt(qsNo) === 1) {
+                    set_question_current(question_1);
                     setInput(inputT_question_1);
                     document.getElementById("codeEditor").value =
                       inputT_question_1;
@@ -1005,6 +1222,7 @@ export default function Compiler() {
                       }
                     }
                   } else if (parseInt(qsNo) === 2) {
+                    set_question_current(question_2);
                     setInput(inputT_question_2);
                     document.getElementById("codeEditor").value =
                       inputT_question_2;
@@ -1039,6 +1257,7 @@ export default function Compiler() {
                       }
                     }
                   } else if (parseInt(qsNo) === 3) {
+                    set_question_current(question_3);
                     setInput(inputT_question_3);
                     document.getElementById("codeEditor").value =
                       inputT_question_3;

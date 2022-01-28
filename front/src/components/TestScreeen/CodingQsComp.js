@@ -26,7 +26,7 @@ function CodingQsComp({ qs }) {
             <b>Sample Input 1 </b>
           </h5>
           <textarea
-            defaultValue={qs.sample_input_1}
+            defaultValue={qs.sample_input}
             style={{ height: "fit-content" }}
             disabled
           ></textarea>
@@ -34,14 +34,16 @@ function CodingQsComp({ qs }) {
             <b>Sample Output 1 </b>
           </h5>
           <textarea
-            defaultValue={qs.sample_output_1}
+            defaultValue={qs.sample_output}
             style={{ height: "fit-content" }}
             disabled
           ></textarea>
-          <h5>
-            <b>Explanation</b>
-          </h5>
-          {qs.explanation !== undefined &&
+          {qs.explanation !== null && (
+            <h5>
+              <b>Explanation</b>
+            </h5>
+          )}
+          {qs.explanation !== null &&
             qs.explanation.map((expl, index) => {
               return (
                 <>

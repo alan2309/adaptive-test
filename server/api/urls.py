@@ -9,6 +9,7 @@ urlpatterns = [
    path('api/subs/<str:subject>',views.subqs),
    path('api/test',views.tests),
    path('api/admin/tests',views.getTests),
+   path('api/codingTests',views.getCodingTests),
    path('api/admin/resultTest/<str:id>',views.resultTest),
    
 
