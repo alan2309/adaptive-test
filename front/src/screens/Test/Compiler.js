@@ -1153,6 +1153,54 @@ export default function Compiler() {
           "white";
       }
     }
+    let sum = 0;
+    let sum1 = 0;
+    let sum2 = 0;
+    let sum3 = 0;
+
+    if (q1_testCase_1_output_error === false) {
+      sum1 = sum1 + 2;
+      sum = sum + 2;
+    }
+    if (q1_testCase_2_output_error === false) {
+      sum1 = sum1 + 3;
+      sum = sum + 3;
+    }
+    if (q1_testCase_3_output_error === false) {
+      sum1 = sum1 + 5;
+      sum = sum + 5;
+    }
+
+    if (q2_testCase_1_output_error === false) {
+      sum2 = sum2 + 4;
+      sum = sum + 4;
+    }
+    if (q2_testCase_2_output_error === false) {
+      sum2 = sum2 + 5;
+      sum = sum + 5;
+    }
+    if (q2_testCase_3_output_error === false) {
+      sum2 = sum2 + 10;
+      sum = sum + 10;
+    }
+
+    if (q3_testCase_1_output_error === false) {
+      sum3 = sum3 + 5;
+      sum = sum + 5;
+    }
+    if (q3_testCase_2_output_error === false) {
+      sum3 = sum3 + 10;
+      sum = sum + 10;
+    }
+    if (q3_testCase_3_output_error === false) {
+      sum3 = sum3 + 15;
+      sum = sum + 15;
+    }
+
+    localStorage.setItem("total_q_marks", sum);
+    localStorage.setItem("q1_marks", sum1);
+    localStorage.setItem("q2_marks", sum2);
+    localStorage.setItem("q3_marks", sum3);
   });
 
   return (
