@@ -23,11 +23,9 @@ export default function Compiler() {
   const [user_input_question_2, setUser_input_question_2] = useState();
   const [user_input_question_3, setUser_input_question_3] = useState();
 
-  const [default_input, set_default_input] = useState();
 
   const [customInputCheck, setCustomInputCheck] = useState(false);
 
-  const [isSubmitCode, setIsSubmitCode] = useState(); // (t/f)
   const [isSubmitCode_qs1, setIsSubmitCode_qs1] = useState(); // (t/f)
   const [isSubmitCode_qs2, setIsSubmitCode_qs2] = useState(); // (t/f)
   const [isSubmitCode_qs3, setIsSubmitCode_qs3] = useState(); // (t/f)
@@ -75,7 +73,20 @@ export default function Compiler() {
   const [q3_testCase_3_output_error, set_q3_testCase_3_output_error] =
     useState(); // (t/f)
 
-  const [general_output, set_general_output] = useState([]);
+  //testcase in
+  const [q1_testCase_1_input, set_q1_testCase_1_input] = useState();
+  const [q1_testCase_2_input, set_q1_testCase_2_input] = useState();
+  const [q1_testCase_3_input, set_q1_testCase_3_input] = useState();
+
+  const [q2_testCase_1_input, set_q2_testCase_1_input] = useState();
+  const [q2_testCase_2_input, set_q2_testCase_2_input] = useState();
+  const [q2_testCase_3_input, set_q2_testCase_3_input] = useState();
+
+
+  const [q3_testCase_1_input, set_q3_testCase_1_input] = useState();
+  const [q3_testCase_2_input, set_q3_testCase_2_input] = useState();
+  const [q3_testCase_3_input, set_q3_testCase_3_input] = useState();
+
 
   //three qs
   const [question_1, set_question_1] = useState({});
@@ -132,7 +143,15 @@ export default function Compiler() {
       sample_output_1: "sample_output_1",
       explanation: ["expl1", "expl2", "expl3"],
     });
-    set_default_input(69);
+    set_q1_testCase_1_input(1)
+    set_q1_testCase_2_input(2)
+    set_q1_testCase_3_input(3)
+    set_q2_testCase_1_input(4)
+    set_q2_testCase_2_input(5)
+    set_q2_testCase_3_input(6)
+    set_q3_testCase_1_input(7)
+    set_q3_testCase_2_input(8)
+    set_q3_testCase_3_input(9)
   }, []);
 
   function input(event) {
@@ -194,7 +213,7 @@ export default function Compiler() {
       }
       let response,
         count = 0,
-        keyArr = key();
+        keyArr = key(),selectedKey;
       do {
         response = await fetch("https://judge0-ce.p.rapidapi.com/submissions", {
           method: "POST",
@@ -210,7 +229,11 @@ export default function Compiler() {
             language_id: language_id,
           }),
         });
+        selectedKey=keyArr[count];
         count += 1;
+        
+
+
       } while (response.token !== undefined);
       console.log(response);
       if (current_qs === 1) {
@@ -243,19 +266,17 @@ export default function Compiler() {
         }
         if (jsonResponse.token) {
           let url = `https://judge0-ce.p.rapidapi.com/submissions/${jsonResponse.token}?base64_encoded=true`;
-          let count = 0;
-          let getSolution;
-          do {
-            getSolution = await fetch(url, {
+          
+         
+          const  getSolution = await fetch(url, {
               method: "GET",
               headers: {
                 "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
-                "x-rapidapi-key": `${keyArr[count]}`, // Get yours for free at https://rapidapi.com/judge0-official/api/judge0-ce/
+                "x-rapidapi-key": `${selectedKey}`, // Get yours for free at https://rapidapi.com/judge0-official/api/judge0-ce/
                 "content-type": "application/json",
               },
             });
-            count += 1;
-          } while (getSolution.status !== 200);
+          
           jsonGetSolution = await getSolution.json();
           console.log(jsonGetSolution);
           if (
@@ -442,9 +463,10 @@ export default function Compiler() {
       set_q3_testCase_Current_output("Creating Submission ...\n");
     }
     let count = 0;
-    let keyArr = key();
+    let keyArr = key(),selectedKey;
     let jsonResponse;
     do {
+      selectedKey=keyArr[count];
       const response = await fetch(
         "https://judge0-ce.p.rapidapi.com/submissions/batch",
         {
@@ -459,17 +481,17 @@ export default function Compiler() {
             submissions: [
               {
                 source_code: inputT,
-                stdin: 12, //stateVarialble
+                stdin: current_qs===1?q1_testCase_1_input:(current_qs===2?q2_testCase_1_input:q3_testCase_1_input), //stateVarialble
                 language_id: language_id,
               },
               {
                 source_code: inputT,
-                stdin: "a", //stateVarialble
+                stdin: current_qs===1?q1_testCase_2_input:(current_qs===2?q2_testCase_2_input:q3_testCase_2_input), //stateVarialble
                 language_id: language_id,
               },
               {
                 source_code: inputT,
-                stdin: 2, //stateVarialble
+                stdin: current_qs===1?q1_testCase_3_input:(current_qs===2?q2_testCase_3_input:q3_testCase_3_input), //stateVarialble
                 language_id: language_id,
               },
             ],
@@ -483,6 +505,7 @@ export default function Compiler() {
           "You have exceeded the DAILY quota for Batched Submissions on your current plan, BASIC. Upgrade your plan at https://rapidapi.com/judge0-official/api/judge0-ce"
       );
       count += 1;
+      
     } while (
       jsonResponse.message !== undefined &&
       jsonResponse.message ===
@@ -546,7 +569,7 @@ export default function Compiler() {
           headers: {
             "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
             "x-rapidapi-key":
-              "d35b7822fcmshab047f684dc27bap12bb13jsnfc29849e5539", // Get yours for free at https://rapidapi.com/judge0-official/api/judge0-ce/
+              `${selectedKey}`, // Get yours for free at https://rapidapi.com/judge0-official/api/judge0-ce/
             "content-type": "application/json",
           },
         });
@@ -605,9 +628,7 @@ export default function Compiler() {
       if (jsonGetSolution.submissions[y].stdout) {
         const output = atob(jsonGetSolution.submissions[y].stdout);
 
-        var text = document.createTextNode(
-          `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
-        );
+        
         console.log(output);
         if (current_qs === 1) {
           if (y === 0) {
