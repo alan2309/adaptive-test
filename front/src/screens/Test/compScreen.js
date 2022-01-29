@@ -40,9 +40,9 @@ function CompScreen() {
       isReload(true);
     }
     if (!localStorage.getItem("test3")) {
+        let user = localStorage.getItem("username");
       if (localStorage.getItem("test6")) {
-        let ax = JSON.parse(localStorage.getItem("test6"));
-        var user = ax["username"];
+        let ax = JSON.parse(localStorage.getItem("test6")); 
         let ar = ax["marks"];
         let maxMarks = ax["maxMarks"];
         let gotMarks = ax["marks"];

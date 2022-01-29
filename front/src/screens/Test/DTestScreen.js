@@ -44,8 +44,9 @@ function DTestScreen() {
       isReload(true);
     }
     if (!localStorage.getItem("test5")) {
+      let user = localStorage.getItem('username');
+      if(localStorage.getItem("test4")){
       let ax = JSON.parse(localStorage.getItem("test4"));
-      let user = ax["username"];
       let ar = ax["marks"];
       let maxMarks = ax["maxMarks"];
       let gotMarks = ax["marks"];
@@ -65,6 +66,7 @@ function DTestScreen() {
           localStorage.removeItem("test4");
         })
         .catch((e) => console.log(e));
+      }
       let txx = getCurrentTime();
       let hh = txx.hh;
       let mm = txx.mm;
@@ -77,6 +79,7 @@ function DTestScreen() {
           FSTimer: "10",
           question: [],
           strtTime: +hh + ":" + mm + ":" + ss,
+          marks:[],
           currentQsNo: 1,
         })
       );

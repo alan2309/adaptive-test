@@ -43,32 +43,34 @@ function CFTestScreen() {
       setMd(false);
       isReload(true);
     }
-
     if (!localStorage.getItem("test2")) {
-      let ax = JSON.parse(localStorage.getItem("test"));
-      let user = ax["username"];
-      let ar = ax["marks"];
-      let maxMarks = ax["maxMarks"];
-      let gotMarks = ax["marks"];
-      let total = 0;
-      for (let i = 0; i < ar.length; i++) {
-        if (ar[i] !== -1) total = total + ar[i];
+      let user = localStorage.getItem("username");
+      if (localStorage.getItem("test")) {
+        let ax = JSON.parse(localStorage.getItem("test"));
+
+        let ar = ax["marks"];
+        let maxMarks = ax["maxMarks"];
+        let gotMarks = ax["marks"];
+        let total = 0;
+        for (let i = 0; i < ar.length; i++) {
+          if (ar[i] !== -1) total = total + ar[i];
+        }
+        axiosInstance
+          .post("api/marks/1", {
+            data: {
+              username: user,
+              marks: total,
+              maxMarks: maxMarks,
+              testId: localStorage.getItem("testId"),
+              gotMarks: gotMarks,
+            },
+          })
+          .then((res) => {
+            console.log("done");
+            localStorage.removeItem("test");
+          })
+          .catch((e) => console.log(e));
       }
-      axiosInstance
-        .post("api/marks/1", {
-          data: {
-            username: user,
-            marks: total,
-            maxMarks: maxMarks,
-            testId: localStorage.getItem("testId"),
-            gotMarks: gotMarks,
-          },
-        })
-        .then((res) => {
-          console.log("done");
-          localStorage.removeItem("test");
-        })
-        .catch((e) => console.log(e));
       let txx = getCurrentTime();
       let hh = txx.hh;
       let mm = txx.mm;
@@ -80,6 +82,7 @@ function CFTestScreen() {
           STime: Date(),
           FSTimer: "10",
           question: [],
+          marks: [],
           strtTime: +hh + ":" + mm + ":" + ss,
           currentQsNo: 1,
         })
@@ -223,6 +226,7 @@ function CFTestScreen() {
                   setTimeFF(tf - hourDiff);
                 }
               } else {
+                localStorage.removeItem("test2");
                 navigate("/admin/compiler");
               }
             })

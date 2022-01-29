@@ -137,6 +137,8 @@ def results(request,name):
                     rr=Results.objects.get(student = user,test=Test.objects.get(id=data['testId']))
                     if rr:
                         return JsonResponse({'resultExists':True},safe=False)
+                else:
+                    Results.objects.get(student = user,test=Test.objects.get(id=data['testId'])).delete()
             except Results.DoesNotExist:
                 print('No previous entry')
             result = Results.objects.create(student = user,startTime = d.time(),test=Test.objects.get(id=data['testId']),

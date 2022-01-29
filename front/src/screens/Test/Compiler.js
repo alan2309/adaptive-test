@@ -150,8 +150,9 @@ export default function Compiler() {
       isReload(true);
     }
     if (!localStorage.getItem("test4")) {
+      let ax = JSON.parse(localStorage.getItem("test2"));
       if (localStorage.getItem("test2")) {
-        let ax = JSON.parse(localStorage.getItem("test2"));
+        
         var user = ax["username"];
         let ar = ax["marks"];
         let maxMarks = ax["maxMarks"];

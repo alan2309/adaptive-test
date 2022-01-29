@@ -80,6 +80,7 @@ function Login() {
                       strtTime: +h + ":" + m + ":" + s,
                       FSTimer: "10",
                       question: [],
+                      marks: [],
                       currentQsNo: 1,
                     })
                   );

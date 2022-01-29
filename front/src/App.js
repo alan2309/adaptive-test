@@ -13,14 +13,9 @@ import AdminHome from "./screens/Admin/Home";
 import AdminAddQs from "./screens/Admin/AddQs";
 import SetQuestion from "./screens/Admin/SetQuestion";
 import NewTest from "./screens/Admin/NewTest";
-
 import CFTestScreen from "./screens/Test/CFTestScreen";
-
 import PTestScreen from "./screens/Test/PTestScreen";
 import DTestScreen from "./screens/Test/DTestScreen";
-
-import CTestScreen from "./screens/Test/CTestScreen";
-import ATestScreen from "./screens/Test/ATestScreen";
 import ScheduledTest from "./screens/Admin/ScheduledTest";
 import ViewSchdlTest from "./screens/Admin/ViewSchdlTest";
 import Compiler from "./screens/Test/Compiler";
@@ -55,7 +50,6 @@ function App() {
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
         </Navbar>
-
         <Row style={{ margin: "20px 0 0 0" }}>
           <Col style={{ padding: "10px 90px" }}>
             <Router>
@@ -70,7 +64,6 @@ function App() {
                 <Route path="/admin/addQs" exact element={<AdminAddQs />} />
                 <Route path="/admin/setQs" exact element={<SetQuestion />} />
                 <Route path="/admin/newTest" exact element={<NewTest />} />
-
                 <Route
                   path="/admin/personality"
                   exact
@@ -87,8 +80,6 @@ function App() {
                   exact
                   element={<CompScreen />}
                 />
-         
-
                 <Route
                   path="/admin/scheduledTest"
                   exact

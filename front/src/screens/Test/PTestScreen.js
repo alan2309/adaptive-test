@@ -45,7 +45,8 @@ function PTestScreen() {
     }
     if (!localStorage.getItem("test6")) {
       let ax = JSON.parse(localStorage.getItem("test5"));
-      let user = ax["username"];
+      let user = localStorage.getItem("username");
+      if(ax){
       let ar = ax["marks"];
       let maxMarks = ax["maxMarks"];
       let gotMarks = ax["marks"];
@@ -68,6 +69,7 @@ function PTestScreen() {
           localStorage.removeItem("test5");
         })
         .catch((e) => console.log(e));
+      }
       let txx = getCurrentTime();
       let hh = txx.hh;
       let mm = txx.mm;
@@ -79,6 +81,7 @@ function PTestScreen() {
           STime: Date(),
           FSTimer: "10",
           question: [],
+          marks:[],
           strtTime: +hh + ":" + mm + ":" + ss,
           currentQsNo: 1,
         })

@@ -167,6 +167,7 @@ function TestScreen() {
                   setTimeFF(tf - hourDiff);
                 }
               } else {
+                localStorage.removeItem("test");
                 navigate("/admin/computer");
               }
             })
