@@ -68,7 +68,6 @@ function Login() {
                 data: { testId: xx },
               })
               .then((res) => {
-                alert(res.data.resultExists);
                 if (res.data.resultExists) {
                   navigate("/result");
                 } else {

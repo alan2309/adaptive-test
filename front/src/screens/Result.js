@@ -57,7 +57,6 @@ function Result() {
     }
 
     if (current !== undefined) {
-      alert("in if");
       let ax = JSON.parse(current);
       let user = ax["username"];
       let ar = ax["marks"];
