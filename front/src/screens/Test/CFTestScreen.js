@@ -222,7 +222,7 @@ function CFTestScreen() {
                   setTimeFF(tf - hourDiff);
                 }
               } else {
-                navigate("/admin/coding");
+                navigate("/admin/compiler");
               }
             })
             .catch((e) => {
@@ -336,7 +336,7 @@ function CFTestScreen() {
     }
     test["marks"] = ans;
     if (ans.length - 1 === qsno) {
-      navigate("/admin/coding");
+      navigate("/admin/compiler");
       localStorage.setItem("test2", JSON.stringify(test));
     } else {
       setQsno(qsno + 1);
@@ -403,7 +403,7 @@ function CFTestScreen() {
                       totalKey="Total"
                       totalValue={ans.length}
                       header="Computer Fundamentals"
-                      nextpage={"admin/coding"}
+                      nextpage={"admin/compiler"}
                       setMd={setMd}
                     ></TestHeaderComp>
                   )}

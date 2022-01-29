@@ -5,7 +5,11 @@ function CodingQsComp({ qs }) {
     <div
       className="scrollbar"
       id="style-4"
-      style={{ backgroundColor: "white", height: "480px" }}
+      style={{
+        backgroundColor: "white",
+        height: window.screen.height - 300,
+        padding: "5px 10px",
+      }}
     >
       {qs !== undefined && (
         <>

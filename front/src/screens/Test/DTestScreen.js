@@ -49,10 +49,7 @@ function DTestScreen() {
       let ar = ax["marks"];
       let maxMarks = ax["maxMarks"];
       let gotMarks = ax["marks"];
-      let total = 0;
-      for (let i = 0; i < ar.length; i++) {
-        if (ar[i] !== -1) total = total + ar[i];
-      }
+      let total = ax["total_q_marks"];
       axiosInstance
         .post("api/marks/3", {
           data: {

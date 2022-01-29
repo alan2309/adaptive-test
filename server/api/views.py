@@ -43,6 +43,7 @@ def subqs(request,subject=0):
                 b.append(aa)
             elif x.type==3:
                 c.append(aa)
+       
        return JsonResponse({'qs':sub.sub_qs,'time':sub.sub_time,'easy':a,'medium':b,'hard':c},safe=False)
 @csrf_exempt
 def subs(request):
@@ -391,4 +392,5 @@ def getCodingTests(request):
         if len(t3)>0:
             itemsType3=CodingTest.objects.get(id=list(random.sample(t3,1)[0].items())[0][1])
             itemsType3=CodingTestSerializer(itemsType3).data
-        return JsonResponse({'cQs':[itemsType1,itemsType2,itemsType3]},safe=False)
+        sub =Subject.objects.get(id=6)
+        return JsonResponse({'time':sub.sub_time,'cQs':[itemsType1,itemsType2,itemsType3]},safe=False)

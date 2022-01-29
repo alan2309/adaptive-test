@@ -1,11 +1,17 @@
 import React, { Component, useEffect, useState } from "react";
-import { Col, Row, Tabs, Tab } from "react-bootstrap";
+import { Col, Row,Modal, Button, Tabs, Tab } from "react-bootstrap";
 import CodingQsComp from "../../components/TestScreeen/CodingQsComp";
 import TestHeaderComp from "../../components/TestScreeen/TestHeaderComp";
 import "../../css/Compiler.css";
 import $ from "jquery";
 import key from "../../components/TestScreeen/keys";
 import axios from "axios";
+import { useNavigate } from "react-router";
+import CustomTimer from "../Admin/CustomTimer";
+import getCurrentTime from "../../components/TestScreeen/dateCalc";
+import axiosInstance from "../../axios";
+import { isExpired, decodeToken } from "react-jwt";
+
 
 export default function Compiler() {
   const [inputT, setInput] = useState("");
@@ -122,12 +128,121 @@ export default function Compiler() {
     sample_output_1: "sample_output_1",
     explanation: ["expl1", "expl2", "expl3"],
   });
+  //prev pages
+  const navigate = useNavigate();
+  const [show, setShow] = useState(false);
+  const [reload, isReload] = useState(false);
+  const handleClose = () => {
+    setShow(false);
+    setMd(true);
+  };
+  const [countWindowAway, setCountWindowAway] = useState(0);
+  const [countWindowAwayModal, setCountWindowAwayModal] = useState(false);
+  const [testFinshBool, setTestFinishBool] = useState(false);
+  const [md, setMd] = useState(false);
+  const [timeFF, setTimeFF] = useState();
+
+  
 
   useEffect(() => {
+    var full_screen_element = document.fullscreenElement;
+
+    if (full_screen_element === null) {
+      setShow(true);
+      setMd(false);
+      isReload(true);
+    }
+    if (!localStorage.getItem("test4")) {
+      if(localStorage.getItem("test2")){
+      let ax = JSON.parse(localStorage.getItem("test2"));
+      var user = ax["username"];
+      let ar = ax["marks"];
+      let maxMarks = ax["maxMarks"];
+      let gotMarks = ax["marks"];
+      let total = 0;
+      for (let i = 0; i < ar.length; i++) {
+        if (ar[i] !== -1) total = total + ar[i];
+      }
+      axiosInstance
+        .post("api/marks/2", {
+          data: {
+            username: user,
+            marks: total,
+            maxMarks: maxMarks,
+            testId: localStorage.getItem("testId"),
+            gotMarks: gotMarks,
+          },
+        })
+        .then((res) => {
+          console.log("done");
+          localStorage.removeItem("test2");
+        })
+        .catch((e) => console.log(e));
+      }
+      let txx = getCurrentTime();
+      let hh = txx.hh;
+      let mm = txx.mm;
+      let ss = txx.ss;
+      localStorage.setItem(
+        "test4",
+        JSON.stringify({
+          username: user,
+          STime: Date(),
+          FSTimer: "10",
+          marks:[0,0,0],
+          isFirstTime:true,
+          maxMarks:[10,20,30],
+
+          strtTime: hh + ":" + mm + ":" + ss,
+        })
+      );
+    }
+    var test = JSON.parse(localStorage.getItem("test4"));
+    const token = localStorage.getItem("access_token");
+  const isMyTokenExpired = isExpired(token);
+  //  const isMyTokenExpired = false;
+
+    if (isMyTokenExpired) {
+      navigate("/login");
+      return;
+    } else {
+      if (localStorage.getItem("result")) {
+        navigate("/result");
+      } else {
     let data;
     const getData = async () =>
       await axios.get("http://127.0.0.1:8000/api/codingTests").then((res) => {
         console.log(res.data.cQs);
+        let a = converttime(res.data.time);
+        var tf = a;
+       // setTimeFF(tf);
+
+       var ob = new Date();
+       console.log(test["strtTime"]);
+       console.log(ob.toLocaleTimeString());
+       var h = (ob.getHours() < 10 ? "0" : "") + ob.getHours();
+       var m = (ob.getMinutes() < 10 ? "0" : "") + ob.getMinutes();
+       var s = (ob.getSeconds() < 10 ? "0" : "") + ob.getSeconds();
+
+       var timeStart = new Date(
+         new Date().toLocaleDateString() + " " + test["strtTime"]
+       );
+       var timeEnd = new Date(
+         new Date().toLocaleDateString() +
+           " " +
+           h +
+           ":" +
+           m +
+           ":" +
+           s
+       );
+       var hourDiff = (timeEnd - timeStart) / 1000;
+       console.log(timeEnd);
+       console.log(timeStart);
+       console.log(hourDiff);
+       console.log(tf);
+       setTimeFF(tf - hourDiff);
+
         set_db_data(res.data.cQs);
         data = res.data.cQs;
         //from db
@@ -165,32 +280,43 @@ export default function Compiler() {
         }
       });
     getData();
-    setInput(localStorage.getItem("input_1") || ``);
-    setInput_question_1(localStorage.getItem("input_1") || ``);
-    setInput_question_2(localStorage.getItem("input_2") || ``);
-    setInput_question_3(localStorage.getItem("input_3") || ``);
+    setInput(localStorage.getItem("test4")['input_1'] || ``);
+    setInput_question_1(localStorage.getItem("test4")['input_1'] || ``);
+    setInput_question_2(localStorage.getItem("test4")['input_2'] || ``);
+    setInput_question_3(localStorage.getItem("test4")['input_3'] || ``);
 
-    setUser_input(localStorage.getItem("user_input_1") || ``);
-    setUser_input_question_1(localStorage.getItem("user_input_1") || ``);
-    setUser_input_question_2(localStorage.getItem("user_input_2") || ``);
-    setUser_input_question_3(localStorage.getItem("user_input_3") || ``);
+    setUser_input(localStorage.getItem("test4")['user_input_1'] || ``);
+    setUser_input_question_1(localStorage.getItem("test4")['user_input_1'] || ``);
+    setUser_input_question_2(localStorage.getItem("test4")['user_input_2'] || ``);
+    setUser_input_question_3(localStorage.getItem("test4")['user_input_3'] || ``);
 
-    setLanguage_id(localStorage.getItem("language_Id_question_1") || 54);
+    setLanguage_id(localStorage.getItem("test4")['language_Id_question_1'] || 54);
     setLanguage_id_question_1(
-      localStorage.getItem("language_Id_question_1") || 54
+      localStorage.getItem("test4")['language_Id_question_1'] || 54
     );
     setLanguage_id_question_2(
-      localStorage.getItem("language_Id_question_2") || 54
+      localStorage.getItem("test4")['language_Id_question_2'] || 54
     );
     setLanguage_id_question_3(
-      localStorage.getItem("language_Id_question_3") || 54
+      localStorage.getItem("test4")['language_Id_question_3'] || 54
     );
+    }
+  }
+    
   }, []);
+  function converttime(timex) {
+    let secs = 0;
+    let x = timex.split(":");
+    secs = secs + parseInt(x[0]) * 3600 + parseInt(x[1]) * 60 + parseInt(x[2]);
+    return secs;
+  }
 
   function input(event) {
     event.preventDefault();
     setInput(event.target.value);
-    localStorage.setItem(`input_${current_qs}`, event.target.value);
+    let test=JSON.parse(localStorage.getItem('test4'))
+    test[`input_${current_qs}`]=event.target.value
+    localStorage.setItem('test4',JSON.stringify(test));
     current_qs === 1
       ? setInput_question_1(event.target.value)
       : current_qs === 2
@@ -208,7 +334,14 @@ export default function Compiler() {
       ? setUser_input_question_2(event.target.value)
       : setUser_input_question_3(event.target.value);
 
-    localStorage.setItem(`user_input_${current_qs}`, event.target.value);
+
+
+    let test=JSON.parse(localStorage.getItem('test4'))
+    test[`user_input_${current_qs}`]=event.target.value
+    localStorage.setItem('test4',JSON.stringify(test));
+    
+
+    
   }
 
   function language(event) {
@@ -219,10 +352,12 @@ export default function Compiler() {
       : current_qs === 2
       ? setLanguage_id_question_2(event.target.value)
       : setLanguage_id_question_3(event.target.value);
-    localStorage.setItem(
-      `language_Id_question_${current_qs}`,
-      event.target.value
-    );
+    
+
+    let test=JSON.parse(localStorage.getItem('test4'))
+    test[`language_Id_question_${current_qs}`]=event.target.value
+    
+    localStorage.setItem('test4',JSON.stringify(test));
   }
 
   async function submit(e) {
@@ -354,15 +489,18 @@ export default function Compiler() {
             set_q1_run_output(
               `${output}\n\nExxecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
             );
-            localStorage.setItem(
-              `question_1`,
-              JSON.stringify({
-                run_output: `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
-                q1_testCase_1_output: q1_testCase_1_output,
-                q1_testCase_2_output: q1_testCase_2_output,
-                q1_testCase_3_output: q1_testCase_3_output,
-              })
-            );
+           
+              
+            let test=JSON.parse(localStorage.getItem('test4'))
+            test[`question_1`]=JSON.stringify({
+              run_output: `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
+              q1_testCase_1_output: q1_testCase_1_output,
+              q1_testCase_2_output: q1_testCase_2_output,
+              q1_testCase_3_output: q1_testCase_3_output,
+            })            
+            localStorage.setItem('test4',JSON.stringify(test));
+    
+
           } else if (current_qs === 2) {
             set_q2_testCase_Current_output(
               `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
@@ -370,15 +508,17 @@ export default function Compiler() {
             set_q2_run_output(
               `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
             );
-            localStorage.setItem(
-              `question_2`,
-              JSON.stringify({
-                run_output: `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
-                q2_testCase_1_output: q2_testCase_1_output,
-                q2_testCase_2_output: q2_testCase_2_output,
-                q2_testCase_3_output: q2_testCase_3_output,
-              })
-            );
+          
+           
+
+            let test=JSON.parse(localStorage.getItem('test4'))
+            test[`question_2`]=JSON.stringify({
+              run_output: `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
+              q2_testCase_1_output: q2_testCase_1_output,
+              q2_testCase_2_output: q2_testCase_2_output,
+              q2_testCase_3_output: q2_testCase_3_output,
+            })
+localStorage.setItem('test4',JSON.stringify(test));
           } else if (current_qs === 3) {
             set_q3_testCase_Current_output(
               `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
@@ -386,15 +526,20 @@ export default function Compiler() {
             set_q3_run_output(
               `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
             );
-            localStorage.setItem(
-              `question_3`,
-              JSON.stringify({
-                run_output: `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
-                q3_testCase_1_output: q3_testCase_1_output,
-                q3_testCase_2_output: q3_testCase_2_output,
-                q3_testCase_3_output: q3_testCase_3_output,
-              })
-            );
+           
+
+      
+
+            let test=JSON.parse(localStorage.getItem('test4'))
+            test[`question_3`]=
+            JSON.stringify({
+              run_output: `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
+              q3_testCase_1_output: q3_testCase_1_output,
+              q3_testCase_2_output: q3_testCase_2_output,
+              q3_testCase_3_output: q3_testCase_3_output,
+            })
+            
+localStorage.setItem('test4',JSON.stringify(test));
           }
         } else if (jsonGetSolution.stderr) {
           var b = new Buffer(jsonGetSolution.stderr, "base64");
@@ -403,39 +548,51 @@ export default function Compiler() {
           if (current_qs === 1) {
             set_q1_testCase_Current_output(`Error :${error}`);
             set_q1_run_output(`Error :${error}`);
-            localStorage.setItem(
-              `question_1`,
-              JSON.stringify({
-                run_output: `Error :${error}`,
-                q1_testCase_1_output: q1_testCase_1_output,
-                q1_testCase_2_output: q1_testCase_2_output,
-                q1_testCase_3_output: q1_testCase_3_output,
-              })
-            );
+           
+
+
+            let test=JSON.parse(localStorage.getItem('test4'))
+            test[`question_1`]=
+            JSON.stringify({
+              run_output: `Error :${error}`,
+              q1_testCase_1_output: q1_testCase_1_output,
+              q1_testCase_2_output: q1_testCase_2_output,
+              q1_testCase_3_output: q1_testCase_3_output,
+            })
+            
+        localStorage.setItem('test4',JSON.stringify(test));
+
           } else if (current_qs === 2) {
             set_q2_testCase_Current_output(`\n Error :${error}`);
             set_q2_run_output(`\n Error :${error}`);
-            localStorage.setItem(
-              `question_2`,
-              JSON.stringify({
-                run_output: `\n Error :${error}`,
-                q2_testCase_1_output: q2_testCase_1_output,
-                q2_testCase_2_output: q2_testCase_2_output,
-                q2_testCase_3_output: q2_testCase_3_output,
-              })
-            );
+            
+          
+
+
+            let test=JSON.parse(localStorage.getItem('test4'))
+            test[`question_2`]=
+            JSON.stringify({
+              run_output: `\n Error :${error}`,
+              q2_testCase_1_output: q2_testCase_1_output,
+              q2_testCase_2_output: q2_testCase_2_output,
+              q2_testCase_3_output: q2_testCase_3_output,
+            })
+        localStorage.setItem('test4',JSON.stringify(test));
+            
           } else if (current_qs === 3) {
             set_q3_testCase_Current_output(`\n Error :${error}`);
             set_q3_run_output(`\n Error :${error}`);
-            localStorage.setItem(
-              `question_3`,
-              JSON.stringify({
-                run_output: `\n Error :${error}`,
-                q3_testCase_1_output: q3_testCase_1_output,
-                q3_testCase_2_output: q3_testCase_2_output,
-                q3_testCase_3_output: q3_testCase_3_output,
-              })
-            );
+
+
+            let test=JSON.parse(localStorage.getItem('test4'))
+            test[`question_3`]=
+            JSON.stringify({
+              run_output: `\n Error :${error}`,
+              q3_testCase_1_output: q3_testCase_1_output,
+              q3_testCase_2_output: q3_testCase_2_output,
+              q3_testCase_3_output: q3_testCase_3_output,
+            })
+        localStorage.setItem('test4',JSON.stringify(test));
           }
         } else {
           var b = new Buffer(jsonGetSolution.compile_output, "base64");
@@ -443,39 +600,50 @@ export default function Compiler() {
           if (current_qs === 1) {
             set_q1_testCase_Current_output(`\n Error :${compilation_error}`);
             set_q1_run_output(`\n Error :${compilation_error}`);
-            localStorage.setItem(
-              `question_1`,
-              JSON.stringify({
-                run_output: `\n Error :${compilation_error}`,
-                q1_testCase_1_output: q1_testCase_1_output,
-                q1_testCase_2_output: q1_testCase_2_output,
-                q1_testCase_3_output: q1_testCase_3_output,
-              })
-            );
+        
+
+
+            let test=JSON.parse(localStorage.getItem('test4'))
+            test[`question_1`]=
+            JSON.stringify({
+              run_output: `\n Error :${compilation_error}`,
+              q1_testCase_1_output: q1_testCase_1_output,
+              q1_testCase_2_output: q1_testCase_2_output,
+              q1_testCase_3_output: q1_testCase_3_output,
+            })
+            
+        localStorage.setItem('test4',JSON.stringify(test));
+
+
           } else if (current_qs === 2) {
             set_q2_testCase_Current_output(`\n Error :${compilation_error}`);
             set_q2_run_output(`\n Error :${compilation_error}`);
-            localStorage.setItem(
-              `question_2`,
-              JSON.stringify({
-                run_output: `\n Error :${compilation_error}`,
-                q2_testCase_1_output: q2_testCase_1_output,
-                q2_testCase_2_output: q2_testCase_2_output,
-                q2_testCase_3_output: q2_testCase_3_output,
-              })
-            );
+
+
+            let test=JSON.parse(localStorage.getItem('test4'))
+            test[`question_2`]=
+            JSON.stringify({
+              run_output: `\n Error :${compilation_error}`,
+              q2_testCase_1_output: q2_testCase_1_output,
+              q2_testCase_2_output: q2_testCase_2_output,
+              q2_testCase_3_output: q2_testCase_3_output,
+            })
+            
+        localStorage.setItem('test4',JSON.stringify(test));
+
           } else if (current_qs === 3) {
             set_q3_testCase_Current_output(`\n Error :${compilation_error}`);
             set_q3_run_output(`\n Error :${compilation_error}`);
-            localStorage.setItem(
-              `question_3`,
-              JSON.stringify({
-                run_output: `\n Error :${compilation_error}`,
-                q3_testCase_1_output: q3_testCase_1_output,
-                q3_testCase_2_output: q3_testCase_2_output,
-                q3_testCase_3_output: q3_testCase_3_output,
-              })
-            );
+
+            let test=JSON.parse(localStorage.getItem('test4'))
+            JSON.stringify({
+              run_output: `\n Error :${compilation_error}`,
+              q3_testCase_1_output: q3_testCase_1_output,
+              q3_testCase_2_output: q3_testCase_2_output,
+              q3_testCase_3_output: q3_testCase_3_output,
+            })
+            
+        localStorage.setItem('test4',JSON.stringify(test));
           }
         }
       } else {
@@ -1017,35 +1185,50 @@ export default function Compiler() {
         }
       }
       if (current_qs === 1) {
-        localStorage.setItem(
-          "question_1",
-          JSON.stringify({
-            run_output: q1_run_output,
-            q1_testCase_1_output: t1Output,
-            q1_testCase_2_output: t2Output,
-            q1_testCase_3_output: t3Output,
-          })
-        );
+        
+
+
+        let test=JSON.parse(localStorage.getItem('test4'))
+        test[`question_1`]=
+        JSON.stringify({
+          run_output: q1_run_output,
+          q1_testCase_1_output: t1Output,
+          q1_testCase_2_output: t2Output,
+          q1_testCase_3_output: t3Output,
+        })
+            
+        localStorage.setItem('test4',JSON.stringify(test));
+
       } else if (current_qs === 2) {
-        localStorage.setItem(
-          "question_2",
-          JSON.stringify({
-            run_output: q2_run_output,
-            q2_testCase_1_output: t1Output,
-            q2_testCase_2_output: t2Output,
-            q2_testCase_3_output: t3Output,
-          })
-        );
+        
+
+      
+
+
+        let test=JSON.parse(localStorage.getItem('test4'))
+        test[`question_2`]=
+        JSON.stringify({
+          run_output: q2_run_output,
+          q2_testCase_1_output: t1Output,
+          q2_testCase_2_output: t2Output,
+          q2_testCase_3_output: t3Output,
+        })
+            
+        localStorage.setItem('test4',JSON.stringify(test));
+
       } else if (current_qs === 3) {
-        localStorage.setItem(
-          "question_3",
-          JSON.stringify({
-            run_output: q3_run_output,
-            q3_testCase_1_output: t1Output,
-            q3_testCase_2_output: t2Output,
-            q3_testCase_3_output: t3Output,
-          })
-        );
+
+
+        let test=JSON.parse(localStorage.getItem('test4'))
+        test[`question_3`]=
+        JSON.stringify({
+          run_output: q3_run_output,
+          q3_testCase_1_output: t1Output,
+          q3_testCase_2_output: t2Output,
+          q3_testCase_3_output: t3Output,
+        })
+            
+        localStorage.setItem('test4',JSON.stringify(test));
       }
     } else {
       alert("Contact Administrator");
@@ -1196,28 +1379,88 @@ export default function Compiler() {
       sum3 = sum3 + 15;
       sum = sum + 15;
     }
+    let ax = JSON.parse(localStorage.getItem("test4"));
 
-    localStorage.setItem("total_q_marks", sum);
-    localStorage.setItem("q1_marks", sum1);
-    localStorage.setItem("q2_marks", sum2);
-    localStorage.setItem("q3_marks", sum3);
+    ax["total_q_marks"]=sum;
+    ax["q1_marks"]= sum1;
+    ax["q2_marks"]= sum2;
+    ax["q3_marks"]= sum3;
+    ax["marks"]=[sum1,sum2,sum3];
+    localStorage.setItem("test4", JSON.stringify(ax));
+    
+  });
+
+  function GoInFullscreen(element) {
+    if (document.fullscreenElement === null) {
+      if (element.requestFullscreen) element.requestFullscreen();
+      else if (element.mozRequestFullScreen) element.mozRequestFullScreen();
+      else if (element.webkitRequestFullscreen)
+        element.webkitRequestFullscreen();
+      else if (element.msRequestFullscreen) element.msRequestFullscreen();
+    }
+  }
+  document.addEventListener("fullscreenchange", function () {
+    var full_screen_element = document.fullscreenElement;
+
+    if (full_screen_element === null) {
+      setShow(true);
+      setMd(false);
+      isReload(true);
+    }
   });
 
   return (
     <>
+     <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header>
+          <Modal.Title>Enter FullScreeen</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {reload ? (
+            <CustomTimer
+              msg={`Please Enter Full Screen or Test will get auto submitted in`}
+              onlyS={true}
+              reset={md}
+              time={10}
+              start={show}
+              setMd={setMd}
+              nextpage={"result"}
+            ></CustomTimer>
+          ) : (
+            "Please enter Full Screen mode"
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="primary"
+            onClick={(e) => {
+              handleClose(e);
+              GoInFullscreen(document.querySelector("#element"));
+            }}
+          >
+            Enter Full Screeen
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <Row>
         <Col md={6}>
           <Row>
             <div className="TestHeaderComp" style={{ paddingBottom: "7px" }}>
-              <TestHeaderComp
-                timer={3000}
-                start={true}
-                reset={false}
-                timeKey="Time"
+            {timeFF!==undefined&&  <TestHeaderComp
                 noTotal={true}
+                timer={timeFF}
+                start={!testFinshBool}
+                reset={testFinshBool}
+                timeKey="Time"
                 header="Coding"
-                nextpage={"result"}
-              ></TestHeaderComp>
+                nextpage={"admin/domain"}
+                setMd={setMd}
+              ></TestHeaderComp>}
             </div>
           </Row>
           <Row>
@@ -1225,7 +1468,7 @@ export default function Compiler() {
               className="basicRec"
               style={{
                 marginTop: "5px",
-                height: "550px",
+                height:window.screen.height-220,
                 backgroundColor: "#F7F7F7",
               }}
             >
@@ -1341,7 +1584,7 @@ export default function Compiler() {
               >
                 <Tab
                   eventKey="Q1"
-                  style={{ backgroundColor: "black" }}
+                 
                   title="Q1"
                 >
                   <CodingQsComp qs={question_current}></CodingQsComp>
@@ -1357,7 +1600,7 @@ export default function Compiler() {
           </Row>
         </Col>
 
-        <Col md={6}>
+        <Col md={6} style={{height:window.screen.height-160}}>
           <div style={{ marginLeft: "45px" }}>
             <Row
               style={{
@@ -1370,6 +1613,9 @@ export default function Compiler() {
               <Col>
                 <button
                   type="button"
+                  onClick={(e)=>{
+                    setMd(true);setTestFinishBool(true);setShow(false);navigate('/admin/domain')
+                  }}
                   style={{ color: "white", width: "fit-content" }}
                   className="btn scTest"
                 >
@@ -1380,6 +1626,21 @@ export default function Compiler() {
                 <button
                   type="button"
                   className="btn btn-success"
+                  onClick={(e) => {
+                    setTestFinishBool(true);
+                    setShow(false);
+                    setMd(true);
+                    navigate("/result");
+                    if (document.exitFullscreen) {
+                      document.exitFullscreen();
+                    } else if (document.webkitExitFullscreen) {
+                      document.webkitExitFullscreen();
+                    } else if (document.mozCancelFullScreen) {
+                      document.mozCancelFullScreen();
+                    } else if (document.msExitFullscreen) {
+                      document.msExitFullscreen();
+                    }
+                  }}
                   style={{
                     backgroundColor: "#081466",
                     width: "fit-content",
@@ -1404,6 +1665,7 @@ export default function Compiler() {
                     spellCheck={false}
                     defaultValue={inputT}
                     onChange={(e) => input(e)}
+                    style={{height:window.screen.height-560}}
                   ></textarea>
                   <div class="linenumbers"></div>
                 </div>
@@ -1489,7 +1751,7 @@ export default function Compiler() {
                 className="basicRec"
                 style={{
                   marginTop: "5px",
-                  height: "190px",
+                  height: '270px',
                   backgroundColor: "#F7F7F7",
                 }}
               >
@@ -1504,6 +1766,7 @@ export default function Compiler() {
                       className="scrollbar customInput"
                       spellCheck={false}
                       defaultValue={user_input}
+                      style={{  height:200}}
                       onChange={userInput}
                     ></textarea>
                   </Tab>
@@ -1834,6 +2097,7 @@ export default function Compiler() {
                           }
                           readOnly
                           className="scrollbar codeOutput"
+                          style={{height: 200}}
                           id="style-4"
                         ></textarea>
                       </Col>

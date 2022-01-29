@@ -15,7 +15,6 @@
 .codeOutput {
   background: white;
   width: 100%;
-  height: 115px;
   resize: none;
   font-size: 14px;
   border: 0px;
@@ -50,7 +49,6 @@
 .custom-textarea > .textarea {
   margin-left: 58px;
   width: 90%;
-  height: 290px;
   font-family: "Ubuntu Mono", monospace;
   outline: none;
   border: none;
