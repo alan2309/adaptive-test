@@ -133,9 +133,10 @@ def results(request,name):
         if(user):
             d = datetime.datetime.now()
             try:
-                rr=Results.objects.get(student = user,test=Test.objects.get(id=data['testId']))
-                if rr:
-                    return JsonResponse({'resultExists':True},safe=False)
+                if name != 'a':
+                    rr=Results.objects.get(student = user,test=Test.objects.get(id=data['testId']))
+                    if rr:
+                        return JsonResponse({'resultExists':True},safe=False)
             except Results.DoesNotExist:
                 print('No previous entry')
             result = Results.objects.create(student = user,startTime = d.time(),test=Test.objects.get(id=data['testId']),

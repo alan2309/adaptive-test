@@ -1,7 +1,9 @@
+*{
+    font-family: Poppins;
+font-style: normal;
+}
 .passage{
     padding-top: 35px;
-    height: 30rem;
-    overflow: scroll;
     background: #F6F6F6;
     box-shadow: 1px 1px 7px 2px rgba(0, 0, 0, 0.25);
 }
@@ -9,4 +11,9 @@
     padding: 0px 5px;
     background: #FFFFFF;
 box-shadow: 1px 1px 7px 2px rgba(0, 0, 0, 0.25);
+}
+.verbalRHeader{
+    background: #FEFFFF;
+box-shadow: 1px 1px 7px 2px rgba(0, 0, 0, 0.25);
+padding: 10px;
 }

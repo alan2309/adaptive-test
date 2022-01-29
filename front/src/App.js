@@ -87,7 +87,7 @@ function App() {
                   exact
                   element={<CompScreen />}
                 />
-                <Route path="/admin/coding" exact element={<CTestScreen />} />
+         
 
                 <Route
                   path="/admin/scheduledTest"

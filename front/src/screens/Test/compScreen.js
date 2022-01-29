@@ -336,77 +336,139 @@ function CompScreen() {
 
       {passage !== undefined && (
         <>
-          <Row>
-            {timeFF !== undefined && (
-              <div style={{ border: "1px solid black", paddingBottom: "7px" }}>
-                <TestHeaderComp
-                  timer={timeFF}
-                  timeKey="Time"
-                  noTotal={true}
-                  header="Verbal Reasoning"
-                  nextpage={"result"}
-                  start={!testFinshBool}
-                  reset={testFinshBool}
-                  setMd={setMd}
-                ></TestHeaderComp>
-              </div>
-            )}
-          </Row>
-          <button
-            type="button"
-            className="btn btn-success"
-            onClick={(e) => {
-              setTestFinishBool(true);
-              setShow(false);
-              setMd(true);
-              navigate("/result");
-              if (document.exitFullscreen) {
-                document.exitFullscreen();
-              } else if (document.webkitExitFullscreen) {
-                document.webkitExitFullscreen();
-              } else if (document.mozCancelFullScreen) {
-                document.mozCancelFullScreen();
-              } else if (document.msExitFullscreen) {
-                document.msExitFullscreen();
-              }
-            }}
-            style={{
-              backgroundColor: "#081466",
-              width: "fit-content",
-              borderRadius: "10px",
-              color: "white",
-              padding: "7px 10px",
-            }}
-          >
-            Finish Test
-          </button>
-          <Row>
-            <Col className="passage">
-              <h3>Paragraph-{parano + 1}</h3>
-              <div
+          <Row className="verbalRHeader">
+            <Col md={7}>
+              {timeFF !== undefined && (
+                <div
+                  style={{ border: "0px solid black", paddingBottom: "7px" }}
+                >
+                  <TestHeaderComp
+                    timer={timeFF}
+                    timeKey="Time"
+                    noTotal={true}
+                    header="Verbal Reasoning"
+                    nextpage={"result"}
+                    start={!testFinshBool}
+                    reset={testFinshBool}
+                    setMd={setMd}
+                  ></TestHeaderComp>
+                </div>
+              )}
+            </Col>
+
+            <Col md={5}>
+              <button
+                type="button"
+                className="btn btn-success"
+                onClick={(e) => {
+                  setTestFinishBool(true);
+                  setShow(false);
+                  setMd(true);
+                  navigate("/result");
+                  if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                  } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                  } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                  } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                  }
+                }}
                 style={{
-                  padding: "15px 5px",
-                  backgroundColor: "#FEFFFF",
-                  boxShadow: "1px 1px 7px 2px rgba(0, 0, 0, 0.25)",
-                  borderRadius: "14px",
-                  marginBottom: "10px",
+                  float: "right",
+                  backgroundColor: "#081466",
+                  width: "fit-content",
+                  borderRadius: "10px",
+                  marginRight: "30px",
+                  color: "white",
+                  padding: "7px 10px",
                 }}
               >
-                Read the passage and answer the associated questions
+                Finish Test
+              </button>
+            </Col>
+          </Row>
+
+          <Row style={{ height: window.screen.height - 300 }}>
+            <Col className="passage scrollbar" id="style-4">
+              <div
+                style={{
+                  backgroundColor: "#293E6F",
+                  boxShadow: "1px 1px 7px 2px rgba(0, 0, 0, 0.25)",
+                  borderRadius: "14px",
+                  margin: "5px 5px 15px 5px",
+                }}
+              >
+                <div
+                  style={{
+                    padding: "15px 10px",
+                    backgroundColor: "#FEFFFF",
+                    boxShadow: "1px 1px 7px 2px rgba(0, 0, 0, 0.25)",
+                    borderRadius: "14px",
+                    margin: "0 0 0 15px",
+                    fontFamily: "Poppins",
+                    fontStyle: "normal",
+                    fontWeight: "normal",
+                    fontSize: "18px",
+                    lineHeight: "27px",
+                    color: "#081466",
+                  }}
+                >
+                  Read the passage and answer the associated questions
+                </div>
               </div>
-              <h3 style={{ textAlign: "center", marginTop: "20px" }}>
+              <h3
+                style={{
+                  textAlign: "center",
+                  fontWeight: "bold",
+                  marginTop: "20px",
+                }}
+              >
                 {passage[parano].title}
               </h3>
-              {passage[parano].para}
+              <h5
+                style={{
+                  fontFamily: "Poppins",
+                  fontStyle: "normal",
+                  fontWeight: "normal",
+                  padding: "0 10px",
+                  fontSize: "18px",
+                  lineHeight: "27px",
+                  color: "#000000",
+                }}
+              >
+                {" "}
+                {passage[parano].para}
+              </h5>
             </Col>
-            <Col className="question">
-              <div style={{ marginBottom: "10px" }}>
+            <Col className="question scrollbar" id="style-4">
+              <div style={{ marginBottom: "10px", padding: "30px" }}>
                 <form onSubmit={next}>
-                  <h5>
-                    Question-{qsno + 1}
-                    <br />
+                  <h5
+                    style={{
+                      fontWeight: "600",
+                      marginBottom: "30px",
+                      fontSize: "18px",
+                      lineHeight: "27px",
+                      color: "#081466",
+                    }}
+                  >
+                    Question {qsno + 1}
+                  </h5>
+                  <h5
+                    style={{
+                      fontWeight: "normal",
+                      marginBottom: "20px",
+                      fontSize: "18px",
+                      lineHeight: "27px",
+                      color: "#081466",
+                    }}
+                  >
+                    {" "}
                     {passage[parano].questions[qsno].question}
                   </h5>
+
                   {passage[parano].questions[qsno].options.map((opt) => {
                     return (
                       <p>
@@ -430,8 +492,20 @@ function CompScreen() {
                       </p>
                     );
                   })}
-                  <button type="submit" className="btn btn-primary">
-                    Next Question
+                  <button
+                    type="submit"
+                    className="btn"
+                    style={{
+                      backgroundColor: `#10B65C`,
+                      width: `100px`,
+                      marginLeft: "80%",
+                      marginTop: "30px",
+                      height: `40px`,
+                      borderRadius: `14px`,
+                      color: "white",
+                    }}
+                  >
+                    Next
                   </button>
                 </form>
               </div>
