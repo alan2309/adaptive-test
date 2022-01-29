@@ -1,0 +1,446 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Row, Col, Modal, Button } from "react-bootstrap";
+import "../../css/Comprehension.css";
+import TestHeaderComp from "../../components/TestScreeen/TestHeaderComp";
+
+import { useNavigate } from "react-router";
+import CustomTimer from "../Admin/CustomTimer";
+import getCurrentTime from "../../components/TestScreeen/dateCalc";
+import axiosInstance from "../../axios";
+import { isExpired, decodeToken } from "react-jwt";
+
+function CompScreen() {
+  //prev pages
+  const navigate = useNavigate();
+  const [show, setShow] = useState(false);
+  const [reload, isReload] = useState(false);
+  const handleClose = () => {
+    setShow(false);
+    setMd(true);
+  };
+  const [countWindowAway, setCountWindowAway] = useState(0);
+  const [countWindowAwayModal, setCountWindowAwayModal] = useState(false);
+  const [testFinshBool, setTestFinishBool] = useState(false);
+  const [md, setMd] = useState(false);
+  const [timeFF, setTimeFF] = useState();
+
+  const [passage, setPassage] = useState();
+  const [qsno, setQsNo] = useState(0);
+  const [parano, setParano] = useState(0);
+  const [ans, setAns] = useState([]);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    var full_screen_element = document.fullscreenElement;
+
+    if (full_screen_element === null) {
+      setShow(true);
+      setMd(false);
+      isReload(true);
+    }
+    if (!localStorage.getItem("test3")) {
+      if (localStorage.getItem("test6")) {
+        let ax = JSON.parse(localStorage.getItem("test6"));
+        var user = ax["username"];
+        let ar = ax["marks"];
+        let maxMarks = ax["maxMarks"];
+        let gotMarks = ax["marks"];
+        let total = 0;
+        for (let i = 0; i < ar.length; i++) {
+          if (ar[i] !== -1) total = total + ar[i];
+        }
+        axiosInstance
+          .post("api/marks/5", {
+            data: {
+              username: user,
+              marks: total,
+              maxMarks: maxMarks,
+              testId: localStorage.getItem("testId"),
+              gotMarks: gotMarks,
+            },
+          })
+          .then((res) => {
+            console.log("done");
+            localStorage.removeItem("test6");
+          })
+          .catch((e) => console.log(e));
+      }
+      let txx = getCurrentTime();
+      let hh = txx.hh;
+      let mm = txx.mm;
+      let ss = txx.ss;
+      localStorage.setItem(
+        "test3",
+        JSON.stringify({
+          username: user,
+          STime: Date(),
+          FSTimer: "10",
+          marks: [],
+          parano: -1,
+          qsno: -1,
+          strtTime: hh + ":" + mm + ":" + ss,
+        })
+      );
+    }
+    var test = JSON.parse(localStorage.getItem("test3"));
+    const token = localStorage.getItem("access_token");
+    // const isMyTokenExpired = isExpired(token);
+    const isMyTokenExpired = false;
+
+    if (isMyTokenExpired) {
+      navigate("/login");
+      return;
+    } else {
+      if (localStorage.getItem("result")) {
+        navigate("/result");
+      } else {
+        if (parseInt(test["parano"]) === -1 && parseInt(test["qsno"]) === -1) {
+          const data = async () => {
+            await axios
+              .get("http://127.0.0.1:8000/api/para")
+              .then((res) => {
+                let aa = converttime(res.data.time);
+                var tf = aa;
+                // setTimeFF(tf);
+
+                var ob = new Date();
+                console.log(test["strtTime"]);
+                console.log(ob.toLocaleTimeString());
+                var h = (ob.getHours() < 10 ? "0" : "") + ob.getHours();
+                var m = (ob.getMinutes() < 10 ? "0" : "") + ob.getMinutes();
+                var s = (ob.getSeconds() < 10 ? "0" : "") + ob.getSeconds();
+
+                var timeStart = new Date(
+                  new Date().toLocaleDateString() + " " + test["strtTime"]
+                );
+                var timeEnd = new Date(
+                  new Date().toLocaleDateString() + " " + h + ":" + m + ":" + s
+                );
+                var hourDiff = (timeEnd - timeStart) / 1000;
+                console.log(timeEnd);
+                console.log(timeStart);
+                console.log(hourDiff);
+                console.log(tf);
+                setTimeFF(tf - hourDiff);
+
+                console.log(res.data[0]);
+                let a = res.data.data;
+                let n = 0;
+                for (let i = 0; i < a.length; i++) {
+                  n = n + a[i].questions.length;
+                }
+                let ar = new Array(n).fill(-1);
+                let Maxar = new Array(n).fill(2);
+                test["marks"] = ar;
+                test["parano"] = 0;
+                test["qsno"] = 0;
+                test["passage"] = a;
+                test["count"] = 0;
+                test["testtime"] = aa;
+                test["maxMarks"] = Maxar;
+                localStorage.setItem("test3", JSON.stringify(test));
+                setAns(ar);
+                setPassage(res.data.data);
+              })
+              .catch((e) => {
+                console.log(e);
+              });
+          };
+          data();
+        } else {
+          var tf = test["testtime"];
+          var ob = new Date();
+          console.log(test["strtTime"]);
+          console.log(ob.toLocaleTimeString());
+          var h = (ob.getHours() < 10 ? "0" : "") + ob.getHours();
+          var m = (ob.getMinutes() < 10 ? "0" : "") + ob.getMinutes();
+          var s = (ob.getSeconds() < 10 ? "0" : "") + ob.getSeconds();
+
+          var timeStart = new Date(
+            new Date().toLocaleDateString() + " " + test["strtTime"]
+          );
+          var timeEnd = new Date(
+            new Date().toLocaleDateString() + " " + h + ":" + m + ":" + s
+          );
+          var hourDiff = (timeEnd - timeStart) / 1000;
+          console.log(timeEnd);
+          console.log(timeStart);
+          console.log(hourDiff);
+          console.log(tf);
+          setTimeFF(tf - hourDiff);
+          setPassage(test["passage"]);
+          setQsNo(parseInt(test["qsno"]));
+          setParano(parseInt(test["parano"]));
+          setCount(parseInt(test["count"]));
+          setAns(test["marks"]);
+        }
+      }
+    }
+  }, []);
+
+  function converttime(timex) {
+    let secs = 0;
+    let x = timex.split(":");
+    secs = secs + parseInt(x[0]) * 3600 + parseInt(x[1]) * 60 + parseInt(x[2]);
+    return secs;
+  }
+
+  function GoInFullscreen(element) {
+    if (document.fullscreenElement === null) {
+      if (element.requestFullscreen) element.requestFullscreen();
+      else if (element.mozRequestFullScreen) element.mozRequestFullScreen();
+      else if (element.webkitRequestFullscreen)
+        element.webkitRequestFullscreen();
+      else if (element.msRequestFullscreen) element.msRequestFullscreen();
+    }
+  }
+  document.addEventListener("fullscreenchange", function () {
+    var full_screen_element = document.fullscreenElement;
+
+    if (full_screen_element === null) {
+      setShow(true);
+      setMd(false);
+      isReload(true);
+    }
+  });
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) {
+      windowAway();
+    }
+  });
+  function handleCloseSChange(e) {
+    setCountWindowAwayModal(false);
+    GoInFullscreen(document.querySelector("#element"));
+  }
+  function windowAway() {
+    var ccount = countWindowAway + 1;
+    setCountWindowAway(countWindowAway + 1);
+    if (ccount < 3) {
+      setCountWindowAwayModal(true);
+    } else {
+      navigate("/result");
+    }
+  }
+
+  function next(e) {
+    e.preventDefault();
+    var test = JSON.parse(localStorage.getItem("test3"));
+    let radio = document.getElementsByName(`question-${qsno}`);
+    let flag = 0;
+    for (let i = 0; i < radio.length; i++) {
+      if (radio[i].checked) {
+        let ar = ans;
+        ar[count] = parseInt(radio[i].value);
+        test["marks"] = ar;
+        test["gotMarks"] = ar;
+        test["count"] = count + 1;
+        localStorage.setItem("test3", JSON.stringify(test));
+        flag = 1;
+      }
+    }
+    if (!flag) {
+      let ar = ans;
+      ar[count] = -1;
+      test["marks"] = ar;
+      test["gotMarks"] = ar;
+      test["count"] = count + 1;
+      localStorage.setItem("test3", JSON.stringify(test));
+    }
+    if (passage[parano].questions.length > qsno + 1) {
+      test["qsno"] = qsno + 1;
+      localStorage.setItem("test3", JSON.stringify(test));
+      setQsNo(qsno + 1);
+    } else {
+      if (passage.length > parano + 1) {
+        test["qsno"] = 0;
+        test["parano"] = parano + 1;
+        localStorage.setItem("test3", JSON.stringify(test));
+        setParano(parano + 1);
+        setQsNo(0);
+      } else {
+        setTestFinishBool(true);
+        setShow(false);
+        navigate("/result");
+      }
+    }
+    setCount(count + 1);
+    e.target.reset();
+  }
+
+  function finish() {
+    setTestFinishBool(true);
+    setShow(false);
+    setMd(true);
+    navigate("/result");
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  }
+  return (
+    <div>
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header>
+          <Modal.Title>Enter FullScreeen</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {reload ? (
+            <CustomTimer
+              msg={`Please Enter Full Screen or Test will get auto submitted in`}
+              onlyS={true}
+              reset={md}
+              time={10}
+              start={show}
+              setMd={setMd}
+              nextpage={"result"}
+            ></CustomTimer>
+          ) : (
+            "Please enter Full Screen mode"
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="primary"
+            onClick={(e) => {
+              handleClose(e);
+              GoInFullscreen(document.querySelector("#element"));
+            }}
+          >
+            Enter Full Screeen
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      {countWindowAwayModal && (
+        <>
+          <h1 style={{ color: "red" }}>
+            Screen Change Detected !! {countWindowAway === 1 ? "1st" : "LAST"}{" "}
+            WARNING
+          </h1>
+          <h3>
+            Screen changed detected.Test will get auto submitted if you try to
+            change screen again !!
+          </h3>
+          <button
+            className="btn btn-secondary"
+            onClick={(e) => handleCloseSChange(e)}
+          >
+            OKay
+          </button>
+        </>
+      )}
+
+      {passage !== undefined && (
+        <>
+          <Row>
+            {timeFF !== undefined && (
+              <div style={{ border: "1px solid black", paddingBottom: "7px" }}>
+                <TestHeaderComp
+                  timer={timeFF}
+                  timeKey="Time"
+                  noTotal={true}
+                  header="Verbal Reasoning"
+                  nextpage={"result"}
+                  start={!testFinshBool}
+                  reset={testFinshBool}
+                  setMd={setMd}
+                ></TestHeaderComp>
+              </div>
+            )}
+          </Row>
+          <button
+            type="button"
+            className="btn btn-success"
+            onClick={(e) => {
+              setTestFinishBool(true);
+              setShow(false);
+              setMd(true);
+              navigate("/result");
+              if (document.exitFullscreen) {
+                document.exitFullscreen();
+              } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+              } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+              } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+              }
+            }}
+            style={{
+              backgroundColor: "#081466",
+              width: "fit-content",
+              borderRadius: "10px",
+              color: "white",
+              padding: "7px 10px",
+            }}
+          >
+            Finish Test
+          </button>
+          <Row>
+            <Col className="passage">
+              <h3>Paragraph-{parano + 1}</h3>
+              <div
+                style={{
+                  padding: "15px 5px",
+                  backgroundColor: "#FEFFFF",
+                  boxShadow: "1px 1px 7px 2px rgba(0, 0, 0, 0.25)",
+                  borderRadius: "14px",
+                  marginBottom: "10px",
+                }}
+              >
+                Read the passage and answer the associated questions
+              </div>
+              <h3 style={{ textAlign: "center", marginTop: "20px" }}>
+                {passage[parano].title}
+              </h3>
+              {passage[parano].para}
+            </Col>
+            <Col className="question">
+              <div style={{ marginBottom: "10px" }}>
+                <form onSubmit={next}>
+                  <h5>
+                    Question-{qsno + 1}
+                    <br />
+                    {passage[parano].questions[qsno].question}
+                  </h5>
+                  {passage[parano].questions[qsno].options.map((opt) => {
+                    return (
+                      <p>
+                        <input
+                          type="radio"
+                          id={opt.id}
+                          name={`question-${qsno}`}
+                          class="radio qsRadio"
+                          value={opt.marks}
+                        />
+                        <label
+                          class="option"
+                          id="option-one-label"
+                          style={{
+                            marginLeft: "15px",
+                            fontWeight: "400",
+                          }}
+                        >
+                          {opt.title}
+                        </label>
+                      </p>
+                    );
+                  })}
+                  <button type="submit" className="btn btn-primary">
+                    Next Question
+                  </button>
+                </form>
+              </div>
+            </Col>
+          </Row>
+        </>
+      )}
+    </div>
+  );
+}
+
+export default CompScreen;

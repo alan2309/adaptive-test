@@ -128,6 +128,7 @@ function PTestScreen() {
                   setTimeFF(tf);
                   setEasy(res.data.easy);
                   setHard(res.data.hard);
+
                   var mediumArrRes = res.data.medium;
                   var index = getRandomInt(0, res.data.medium.length);
                   setQs([...qs, mediumArrRes[index]]);
@@ -190,6 +191,7 @@ function PTestScreen() {
                   setEasy(x);
                   setHard(z);
                   setMedium(y);
+                  setCurrent(test["currentLevel"]);
                   var ar = test["marks"];
                   setAns(ar);
                   setQsno(test["currentQsNo"] - 1);

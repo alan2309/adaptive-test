@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CodingTest, Results, Subject,Questions,Test
+from .models import CodingTest, Results, Subject,Questions,Test,Paraopt,Para
 
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
@@ -23,3 +23,12 @@ class CodingTestSerializer(serializers.ModelSerializer):
     class Meta:
         model = CodingTest
         fields='__all__'      
+class OptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Paraopt
+        fields='__all__'  
+
+class ParaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Para
+        fields='__all__'     

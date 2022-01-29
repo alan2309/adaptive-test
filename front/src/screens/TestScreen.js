@@ -83,7 +83,7 @@ function TestScreen() {
                   let ar = new Array(res.data.qs).fill(-1);
                   setAns(ar);
                   test["marks"] = ar;
-                  test['maxMarks']=[2]
+                  test["maxMarks"] = [2];
                   localStorage.setItem("test", JSON.stringify(test));
                 } else {
                   var qss = test["question"];
@@ -135,6 +135,7 @@ function TestScreen() {
                   setEasy(x);
                   setHard(z);
                   setMedium(y);
+                  setCurrent(test["currentLevel"]);
                   var ar = test["marks"];
                   setAns(ar);
                   setQsno(test["currentQsNo"] - 1);
@@ -256,7 +257,7 @@ function TestScreen() {
         setQs([...qs, easy[index]]);
         test["question"].push(easy[index]);
         test["currentLevel"] = 1;
-        if (ans.length - 1 !== qsno) test['maxMarks'].push(1)
+        if (ans.length - 1 !== qsno) test["maxMarks"].push(1);
         easy.splice(index, 1);
         break;
       case 2:
@@ -264,7 +265,7 @@ function TestScreen() {
         setQs([...qs, medium[index]]);
         test["question"].push(medium[index]);
         test["currentLevel"] = 2;
-        if (ans.length - 1 !== qsno) test['maxMarks'].push(2)
+        if (ans.length - 1 !== qsno) test["maxMarks"].push(2);
         medium.splice(index, 1);
         break;
       case 3:
@@ -272,7 +273,7 @@ function TestScreen() {
         setQs([...qs, hard[index]]);
         test["question"].push(hard[index]);
         test["currentLevel"] = 3;
-        if (ans.length - 1 !== qsno) test['maxMarks'].push(5)
+        if (ans.length - 1 !== qsno) test["maxMarks"].push(5);
         hard.splice(index, 1);
         break;
     }

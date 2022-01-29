@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http.response import JsonResponse
 from rest_framework.views import APIView
-from api.models import Questions,Options,Results,Subject,Test,CodingTest
+from api.models import Questions,Options,Results,Subject,Test,CodingTest,Para,Paraopt,Paraqs
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 from rest_framework.permissions import AllowAny
@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 import datetime
 from rest_framework.parsers import JSONParser
 import random
-from .serializers import CodingTestSerializer, SubjectSerializer,QuestionSerializer, TestSerializer ,ResultSerializer
+from .serializers import CodingTestSerializer, SubjectSerializer,QuestionSerializer, TestSerializer ,ResultSerializer,OptionSerializer
 import math
 from django.db.models import Q
 
@@ -133,14 +133,16 @@ def results(request,name):
         if(user):
             d = datetime.datetime.now()
             try:
-                Results.objects.get(student = user,test=Test.objects.get(id=data['testId'])).delete()
+                rr=Results.objects.get(student = user,test=Test.objects.get(id=data['testId']))
+                if rr:
+                    return JsonResponse({'resultExists':True},safe=False)
             except Results.DoesNotExist:
                 print('No previous entry')
             result = Results.objects.create(student = user,startTime = d.time(),test=Test.objects.get(id=data['testId']),
             marks={"ap":0,'cf':0,'c':0,'d':0,'p':0,'a':0,'apMax':[],'cfMax':[],'cMax':[],'dMax':[],'pMax':[],'aMax':[],'apGot':[],'cfGot':[],'cGot':[],'dGot':[],'pGot':[],'aGot':[]}
             )
             result.save()
-            return JsonResponse("Result entry created",safe=False)
+            return JsonResponse({'resultExists':False},safe=False)
         else:
             return JsonResponse("User Doesn't exist",safe=False)
     elif request.method=='GET':
@@ -394,3 +396,24 @@ def getCodingTests(request):
             itemsType3=CodingTestSerializer(itemsType3).data
         sub =Subject.objects.get(id=6)
         return JsonResponse({'time':sub.sub_time,'cQs':[itemsType1,itemsType2,itemsType3]},safe=False)
+
+def comprehension(request):
+    if request.method == 'GET':
+        sub = Subject.objects.get(id=5)
+        paras = Para.objects.order_by('?')[:3]
+        f=[]
+        for para in paras:
+            x={}
+            x['title'] = para.title
+            x['para'] = para.data
+            questions = Paraqs.objects.filter(para=para)
+            qs = []
+            for question in questions:
+                op={}
+                options = Paraopt.objects.filter(paraqs=question)
+                op['question'] = question.title
+                op['options'] =OptionSerializer(options,many=True).data
+                qs.append(op)
+            x['questions'] = qs 
+            f.append(x)    
+        return JsonResponse({'data':f,'time':sub.sub_time},safe=False)   

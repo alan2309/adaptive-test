@@ -191,6 +191,7 @@ function CFTestScreen() {
                   setEasy(x);
                   setHard(z);
                   setMedium(y);
+                  setCurrent(test["currentLevel"]);
                   var ar = test["marks"];
                   setAns(ar);
                   setQsno(test["currentQsNo"] - 1);

@@ -2,6 +2,7 @@ from pyexpat import model
 from tkinter import CASCADE
 from django.db import models
 from django.conf import settings
+from django.forms import IntegerField
 
 class Test(models.Model):
     test_name = models.CharField(max_length=150)
@@ -55,6 +56,25 @@ class CodingTest(models.Model):
     test_case_output=models.JSONField(null=True, blank=True)
     def __str__(self):
         return self.question
+
+class Para(models.Model):
+    title = models.CharField(max_length=200)
+    data = models.TextField()
+    def __str__(self):
+        return self.title
+
+class Paraqs(models.Model):
+    para = models.ForeignKey(Para,on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    def __str__(self):
+        return self.title
+
+class Paraopt(models.Model):
+    paraqs = models.ForeignKey(Paraqs,on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    marks = models.IntegerField()
+    def __str__(self):
+        return self.title
     
 
 

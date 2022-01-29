@@ -59,27 +59,36 @@ function Login() {
           var h = (ob.getHours() < 10 ? "0" : "") + ob.getHours();
           var m = (ob.getMinutes() < 10 ? "0" : "") + ob.getMinutes();
           var s = (ob.getMinutes() < 10 ? "0" : "") + ob.getSeconds();
-          axiosInstance
-            .post(`api/results/${formData.username}`, { data: { testId: xx } })
-            .then((res) => {});
           localStorage.setItem("access_token", res.data.access);
           localStorage.setItem("username", formData.username);
           localStorage.setItem("refresh_token", res.data.refresh);
-
-          localStorage.setItem(
-            "test",
-            JSON.stringify({
-              username: formData.username,
-              STime: Date(),
-              strtTime: +h + ":" + m + ":" + s,
-              FSTimer: "10",
-              question: [],
-              currentQsNo: 1,
-            })
-          );
-          axiosInstance.defaults.headers["Authorization"] =
-            "JWT " + localStorage.getItem("access_token");
-          navigate("/testScreen");
+          const data = async () =>
+            axiosInstance
+              .post(`api/results/${formData.username}`, {
+                data: { testId: xx },
+              })
+              .then((res) => {
+                alert(res.data.resultExists);
+                if (res.data.resultExists) {
+                  navigate("/result");
+                } else {
+                  localStorage.setItem(
+                    "test",
+                    JSON.stringify({
+                      username: formData.username,
+                      STime: Date(),
+                      strtTime: +h + ":" + m + ":" + s,
+                      FSTimer: "10",
+                      question: [],
+                      currentQsNo: 1,
+                    })
+                  );
+                  axiosInstance.defaults.headers["Authorization"] =
+                    "JWT " + localStorage.getItem("access_token");
+                  navigate("/testScreen");
+                }
+              });
+          data();
         } else {
           alert("test not available");
         }
