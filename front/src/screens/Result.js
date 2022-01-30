@@ -7,19 +7,21 @@ import TestHeaderComp from "../components/TestScreeen/TestHeaderComp";
 import Chart from "react-apexcharts";
 import "../css/ResultScreen.css";
 import $ from "jquery";
+import PersonalityResultComp from "../components/Result/personalityResultComp";
+import GenericPdfDownloader from "../components/Result/GenericPdfDownloader";
 
 function Result() {
   const navigate = useNavigate();
   const [mrks, setmrks] = useState(0);
   const [totalMarksScored, setTotalMarksScored] = useState(0);
   const [timeTaken, setTimeTaken] = useState();
-
+  const [personalityData, setPersonalityData] = useState([]);
   const [mrksScored, setMrksScored] = useState([0, 0, 0, 0, 0, 0]);
   const [avgMarksArr, setAvgMarksArr] = useState([0, 0, 0, 0, 0, 0]);
   const [mrksScoredPercent, setMrksScoredPercent] = useState([]);
-
   const [opt, setOpt] = useState({});
   const [opt1, setOpt1] = useState({});
+  const [optRadar, setOptRadar] = useState({});
 
   useEffect(() => {
     var t = localStorage.getItem("test");
@@ -28,6 +30,61 @@ function Result() {
     var t4 = localStorage.getItem("test4");
     var t5 = localStorage.getItem("test5");
     var t6 = localStorage.getItem("test6");
+
+    setOptRadar({
+      dataLabels: {
+        enabled: true,
+      },
+      plotOptions: {
+        radar: {
+          size: 200,
+          polygons: {
+            strokeColors: "#e9e9e9",
+            fill: {
+              colors: ["#f8f8f8", "#fff"],
+            },
+          },
+        },
+      },
+      title: {
+        text: "Personality Analysis",
+      },
+      colors: ["#FF4560"],
+      markers: {
+        size: 4,
+        colors: ["#fff"],
+        strokeColor: "#FF4560",
+        strokeWidth: 2,
+      },
+      tooltip: {
+        y: {
+          formatter: function (val) {
+            return val;
+          },
+        },
+      },
+      xaxis: {
+        categories: [
+          "Extraversion",
+          "Agreeableness",
+          "Conscientiousness",
+          "Neuroticism",
+          "Openness",
+        ],
+      },
+      yaxis: {
+        tickAmount: 7,
+        labels: {
+          formatter: function (val, i) {
+            if (i % 2 === 0) {
+              return "";
+            } else {
+              return "";
+            }
+          },
+        },
+      },
+    });
 
     var current, apiId, tNo;
     if (t3 !== null) {
@@ -57,24 +114,37 @@ function Result() {
     }
 
     if (current !== undefined) {
-      let ax = JSON.parse(current);
-      let user = ax["username"];
-      let ar = ax["marks"];
-      let maxMarks = ax["maxMarks"];
-      let gotMarks = ax["marks"];
-      let total = 0;
-      for (let i = 0; i < ar.length; i++) {
-        if (ar[i] !== -1) total = total + ar[i];
+      let data = {};
+      if (current !== t6) {
+        let ax = JSON.parse(current);
+        let user = ax["username"];
+        let ar = ax["marks"];
+        let maxMarks = ax["maxMarks"];
+        let gotMarks = ax["marks"];
+        let total = 0;
+        for (let i = 0; i < ar.length; i++) {
+          if (ar[i] !== -1) total = total + ar[i];
+        }
+        data = {
+          username: user,
+          marks: total,
+          maxMarks: maxMarks,
+          gotMarks: gotMarks,
+          testId: localStorage.getItem("testId"),
+        };
+      } else {
+        let ax = JSON.parse(current);
+        let user = ax["username"];
+        let total = ax["marks"];
+        data = {
+          username: user,
+          marks: total,
+          testId: localStorage.getItem("testId"),
+        };
       }
       axiosInstance
         .post(`api/marks/${apiId}`, {
-          data: {
-            username: user,
-            marks: total,
-            maxMarks: maxMarks,
-            gotMarks: gotMarks,
-            testId: localStorage.getItem("testId"),
-          },
+          data: data,
         })
         .then((res) => {
           console.log("done");
@@ -89,6 +159,7 @@ function Result() {
           setMrksScoredPercent(res.data.mrksScoredPercent);
           setTotalMarksScored(res.data.totalMarksScored);
           setTimeTaken(res.data.timeTaken);
+          setPersonalityData(res.data.personalityData);
           // localStorage.setItem('result',total)
         })
         .catch((e) => console.log(e));
@@ -109,6 +180,7 @@ function Result() {
             setMrksScoredPercent(res.data.mrksScoredPercent);
             setTotalMarksScored(res.data.totalMarksScored);
             setTimeTaken(res.data.timeTaken);
+            setPersonalityData(res.data.personalityData);
           })
           .catch((e) => console.log(e));
       }
@@ -234,6 +306,7 @@ function Result() {
       }
     }
   }
+
   return (
     <div>
       <Row>
@@ -292,6 +365,217 @@ function Result() {
           </div>
         </Col>
       </Row>
+      {/* <GenericPdfDownloader rootElementId={'generatePdf'} downloadFileName="CustomPdf" ></GenericPdfDownloader> */}
+      <Row>
+        <Col>
+          <div
+            className="rectangle"
+            style={{ minHeight: "460px", backgroundColor: "#FFFFFF" }}
+          >
+            <Row>
+              <Col md={6}>
+                <div className="radarCh">
+                  {personalityData[0] && (
+                    <Chart
+                      series={[
+                        {
+                          name: "Series 1",
+                          data: [
+                            personalityData[0].SEP,
+                            personalityData[0].SAP,
+                            personalityData[0].SCP,
+                            personalityData[0].SNP,
+                            personalityData[0].SOP,
+                          ],
+                        },
+                      ]}
+                      options={optRadar}
+                      type="radar"
+                      height={`500px`}
+                    />
+                  )}
+                </div>
+              </Col>
+              <Col md={6}>
+                {personalityData[0] !== undefined && (
+                  <div>
+                    <h3 className="factor_5_modal">Extraversion</h3>
+
+                    <h5 className="factor_5_modal_result">
+                      {" "}
+                      {personalityData[0].SE < personalityData[0].LO && (
+                        <p>
+                          {" "}
+                          Your score on Extraversion is low, indicating you are
+                          introverted, reserved, and quiet. You enjoy solitude
+                          and solitary activities. Your socializing tends to be
+                          restricted to a few close friends.{" "}
+                        </p>
+                      )}
+                      {personalityData[0].SE >= personalityData[0].LO &&
+                        personalityData[0].SE <= personalityData[0].HI && (
+                          <>
+                            <br />{" "}
+                            <p>
+                              {" "}
+                              <em>
+                                {" "}
+                                Your score on Extraversion is average,
+                                indicating you are neither a subdued loner nor a
+                                jovial chatterbox. You enjoy time with others
+                                but also time alone.{" "}
+                              </em>{" "}
+                            </p>
+                          </>
+                        )}
+                      {personalityData[0].SE > personalityData[0].HI && (
+                        <>
+                          <br />{" "}
+                          <p>
+                            {" "}
+                            <em>
+                              {" "}
+                              Your score on Extraversion is high, indicating you
+                              are sociable, outgoing, energetic, and lively. You
+                              prefer to be around people much of the time.{" "}
+                            </em>{" "}
+                          </p>
+                        </>
+                      )}
+                    </h5>
+
+                    <h3 className="factor_5_modal">Agreeableness</h3>
+
+                    <h5 className="factor_5_modal_result">
+                      {" "}
+                      {personalityData[0].SA < personalityData[0].LO && (
+                        <p>
+                          {" "}
+                          Your score on Agreeableness is low, indicating less
+                          concern with others' needs than with your own. People
+                          see you as tough, critical, and uncompromising.{" "}
+                        </p>
+                      )}
+                      {personalityData[0].SA >= personalityData[0].LO &&
+                        personalityData[0].SA <= personalityData[0].HI && (
+                          <p>
+                            {" "}
+                            Your level of Agreeableness is average, indicating
+                            some concern with others' Needs, but, generally,
+                            unwillingness to sacrifice yourself for others.{" "}
+                          </p>
+                        )}
+                      {personalityData[0].SA > personalityData[0].HI && (
+                        <p>
+                          {" "}
+                          Your high level of Agreeableness indicates a strong
+                          interest in others' needs and well-being. You are
+                          pleasant, sympathetic, and cooperative.{" "}
+                        </p>
+                      )}
+                    </h5>
+
+                    <h3 className="factor_5_modal">Conscientiousness</h3>
+                    <h5 className="factor_5_modal_result">
+                      {" "}
+                      {personalityData[0].SC < personalityData[0].LO && (
+                        <p>
+                          Your score on Conscientiousness is low, indicating you
+                          like to live for the moment and do what feels good
+                          now. Your work tends to be careless and disorganized.
+                        </p>
+                      )}
+                      {personalityData[0].SC >= personalityData[0].LO &&
+                        personalityData[0].SC <= personalityData[0].HI && (
+                          <p>
+                            Your score on Conscientiousness is average. This
+                            means you are reasonably reliable, organized, and
+                            self-controlled.
+                          </p>
+                        )}
+                      {personalityData[0].SC > personalityData[0].HI && (
+                        <p>
+                          Your score on Conscientiousness is high. This means
+                          you set clear goals and pursue them with
+                          determination. People regard you as reliable and
+                          hard-working.
+                        </p>
+                      )}
+                    </h5>
+
+                    <h3 className="factor_5_modal">Neuroticism</h3>
+                    <h5 className="factor_5_modal_result">
+                      {" "}
+                      {personalityData[0].SN < personalityData[0].LO && (
+                        <p>
+                          Your score on Neuroticism is low, indicating that you
+                          are exceptionally calm, composed and unflappable. You
+                          do not react with intense emotions, even to situations
+                          that most people would describe as stressful.
+                        </p>
+                      )}
+                      {personalityData[0].SN >= personalityData[0].LO &&
+                        personalityData[0].SN <= personalityData[0].HI && (
+                          <p>
+                            Your score on Neuroticism is average, indicating
+                            that your level of emotional reactivity is typical
+                            of the general population. Stressful and frustrating
+                            situations are somewhat upsetting to you, but you
+                            are generally able to get over these feelings and
+                            cope with these situations.
+                          </p>
+                        )}
+                      {personalityData[0].SN > personalityData[0].HI && (
+                        <p>
+                          Your score on Neuroticism is high, indicating that you
+                          are easily upset, even by what most people consider
+                          the normal demands of living. People consider you to
+                          be sensitive and emotional.
+                        </p>
+                      )}
+                    </h5>
+
+                    <h3 className="factor_5_modal">Openness</h3>
+                    <h5 className="factor_5_modal_result">
+                      {personalityData[0].SO < personalityData[0].LO && (
+                        <p>
+                          Your score on Openness to Experience is low,
+                          indicating you like to think in plain and simple
+                          terms. Others describe you as down-to-earth,
+                          practical, and conservative.
+                        </p>
+                      )}
+
+                      {personalityData[0].SO >= personalityData[0].LO &&
+                        personalityData[0].SO <= personalityData[0].HI && (
+                          <p>
+                            Your score on Openness to Experience is average,
+                            indicating you enjoy tradition but are willing to
+                            try new things. Your thinking is neither simple nor
+                            complex. To others you appear to be a well-educated
+                            person but not an intellectual.{" "}
+                          </p>
+                        )}
+
+                      {personalityData[0].SO > personalityData[0].HI && (
+                        <p>
+                          Your score on Openness to Experience is high,
+                          indicating you enjoy novelty, variety, and change. You
+                          are curious, imaginative, and creative.
+                        </p>
+                      )}
+                    </h5>
+                  </div>
+                )}
+              </Col>
+            </Row>
+          </div>
+        </Col>
+      </Row>
+      {/* <Row>
+      {personalityData[0]!==undefined&&  <PersonalityResultComp SEP={personalityData[0].SEP} SEFP={personalityData[0].SEFP} LO={personalityData[0].LO} HI={personalityData[0].HI} SE={personalityData[0].SE} SAP={personalityData[0].SAP} SAFP={personalityData[0].SAFP} SA={personalityData[0].SA} SC={personalityData[0].SC} SCP={personalityData[0].SCP} SCFP={personalityData[0].SCFP} flev={personalityData[0].flev} SOP={personalityData[0].SOP} SOFP={personalityData[0].SOFP} SO={personalityData[0].SO} Nick={personalityData[0].Nick} Country={personalityData[0].Country}
+        SNP={personalityData[0].SNP} SNFP={personalityData[0].SNFP} Category={personalityData[0].Category} SN={personalityData[0].SN} />
+     } </Row> */}
       <button
         type="button"
         className="btn btn-secondary"

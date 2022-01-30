@@ -44,20 +44,13 @@ function CompScreen() {
       if (localStorage.getItem("test6")) {
         let ax = JSON.parse(localStorage.getItem("test6")); 
         let ar = ax["marks"];
-        let maxMarks = ax["maxMarks"];
-        let gotMarks = ax["marks"];
         let total = 0;
-        for (let i = 0; i < ar.length; i++) {
-          if (ar[i] !== -1) total = total + ar[i];
-        }
         axiosInstance
           .post("api/marks/5", {
             data: {
               username: user,
-              marks: total,
-              maxMarks: maxMarks,
+              marks: ar,
               testId: localStorage.getItem("testId"),
-              gotMarks: gotMarks,
             },
           })
           .then((res) => {

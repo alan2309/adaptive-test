@@ -46,29 +46,29 @@ function PTestScreen() {
     if (!localStorage.getItem("test6")) {
       let ax = JSON.parse(localStorage.getItem("test5"));
       let user = localStorage.getItem("username");
-      if(ax){
-      let ar = ax["marks"];
-      let maxMarks = ax["maxMarks"];
-      let gotMarks = ax["marks"];
-      let total = 0;
-      for (let i = 0; i < ar.length; i++) {
-        if (ar[i] !== -1) total = total + ar[i];
-      }
-      axiosInstance
-        .post("api/marks/4", {
-          data: {
-            username: user,
-            marks: total,
-            maxMarks: maxMarks,
-            testId: localStorage.getItem("testId"),
-            gotMarks: gotMarks,
-          },
-        })
-        .then((res) => {
-          console.log("done");
-          localStorage.removeItem("test5");
-        })
-        .catch((e) => console.log(e));
+      if (ax) {
+        let ar = ax["marks"];
+        let maxMarks = ax["maxMarks"];
+        let gotMarks = ax["marks"];
+        let total = 0;
+        for (let i = 0; i < ar.length; i++) {
+          if (ar[i] !== -1) total = total + ar[i];
+        }
+        axiosInstance
+          .post("api/marks/4", {
+            data: {
+              username: user,
+              marks: total,
+              maxMarks: maxMarks,
+              testId: localStorage.getItem("testId"),
+              gotMarks: gotMarks,
+            },
+          })
+          .then((res) => {
+            console.log("done");
+            localStorage.removeItem("test5");
+          })
+          .catch((e) => console.log(e));
       }
       let txx = getCurrentTime();
       let hh = txx.hh;
@@ -81,7 +81,7 @@ function PTestScreen() {
           STime: Date(),
           FSTimer: "10",
           question: [],
-          marks:[],
+          marks: [],
           strtTime: +hh + ":" + mm + ":" + ss,
           currentQsNo: 1,
         })
@@ -125,45 +125,27 @@ function PTestScreen() {
             .then((res) => {
               let a = converttime(res.data.time);
               var tf = a;
+              console.log(res.data);
               var totalQs = res.data.qs;
               if (totalQs > 0) {
                 if (test["question"].length === 0) {
                   setTimeFF(tf);
-                  setEasy(res.data.easy);
-                  setHard(res.data.hard);
-
-                  var mediumArrRes = res.data.medium;
-                  var index = getRandomInt(0, res.data.medium.length);
+                  var mediumArrRes = res.data.allQs;
+                  var index = getRandomInt(0, res.data.allQs.length);
                   setQs([...qs, mediumArrRes[index]]);
                   test["question"].push(mediumArrRes[index]);
-                  test["currentLevel"] = 2;
                   mediumArrRes.splice(index, 1);
                   setMedium(mediumArrRes);
                   let ar = new Array(res.data.qs).fill(-1);
                   setAns(ar);
                   test["marks"] = ar;
-                  test["maxMarks"] = [2];
                   localStorage.setItem("test6", JSON.stringify(test));
                 } else {
                   var qss = test["question"];
-                  var x = res.data.easy;
                   var y = res.data.medium;
-                  var z = res.data.hard;
+
                   for (let i = 0; i < qss.length; i++) {
                     if (
-                      x
-                        .map(function (e) {
-                          return e.ques;
-                        })
-                        .indexOf(qss[i].ques) !== -1
-                    ) {
-                      let a = x
-                        .map(function (e) {
-                          return e.ques;
-                        })
-                        .indexOf(qss[i].ques);
-                      x.splice(a, 1);
-                    } else if (
                       y
                         .map(function (e) {
                           return e.ques;
@@ -176,25 +158,9 @@ function PTestScreen() {
                         })
                         .indexOf(qss[i].ques);
                       y.splice(b, 1);
-                    } else if (
-                      z
-                        .map(function (e) {
-                          return e.ques;
-                        })
-                        .indexOf(qss[i].ques) !== -1
-                    ) {
-                      let c = z
-                        .map(function (e) {
-                          return e.ques;
-                        })
-                        .indexOf(qss[i].ques);
-                      z.splice(c, 1);
                     }
                   }
-                  setEasy(x);
-                  setHard(z);
                   setMedium(y);
-                  setCurrent(test["currentLevel"]);
                   var ar = test["marks"];
                   setAns(ar);
                   setQsno(test["currentQsNo"] - 1);
@@ -297,46 +263,17 @@ function PTestScreen() {
     setAns(ans);
     var test = JSON.parse(localStorage.getItem("test6"));
 
-    if (myans > 0) {
-      if (current < 3) {
-        setCurrent(current + 1);
-        x = current + 1;
-      } else {
-        x = 3;
-      }
-    } else {
-      if (current > 1) {
-        setCurrent(current - 1);
-        x = current - 1;
-      } else {
-        x = 1;
-      }
-    }
     var index = 0;
-    switch (x) {
+    switch (2) {
       case 1:
-        index = getRandomInt(0, easy.length);
-        setQs([...qs, easy[index]]);
-        test["question"].push(easy[index]);
-        test["currentLevel"] = 1;
-        if (ans.length - 1 !== qsno) test["maxMarks"].push(1);
-        easy.splice(index, 1);
         break;
       case 2:
         index = getRandomInt(0, medium.length);
         setQs([...qs, medium[index]]);
         test["question"].push(medium[index]);
-        test["currentLevel"] = 2;
-        if (ans.length - 1 !== qsno) test["maxMarks"].push(2);
         medium.splice(index, 1);
         break;
       case 3:
-        index = getRandomInt(0, hard.length);
-        setQs([...qs, hard[index]]);
-        test["question"].push(hard[index]);
-        test["currentLevel"] = 3;
-        if (ans.length - 1 !== qsno) test["maxMarks"].push(5);
-        hard.splice(index, 1);
         break;
     }
     test["marks"] = ans;
@@ -459,11 +396,12 @@ function PTestScreen() {
                       qs[qsno] !== undefined &&
                       !countWindowAwayModal && (
                         <QuestionComp
+                          isPersonality={true}
                           ans={ans}
                           qsno={qsno}
                           level={current}
                           question={qs[qsno].ques}
-                          options={qs[qsno].options}
+                          options={[]}
                         ></QuestionComp>
                       )}
                     {countWindowAwayModal && (

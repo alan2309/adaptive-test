@@ -19,34 +19,47 @@ CFG = {'DB': None}
 
 @csrf_exempt
 def subqs(request,subject=0):
-   if request.method == 'GET': 
-       a=[]
-       b=[]
-       c=[]
-       sub =Subject.objects.get(id=subject)
-       qs = Questions.objects.filter(subject=sub)
-       for x in qs:
-            aa={}
-            aaOption=[]
-            aa['ques']=x.title
-            aa['id']=x.id
-            ans = Options.objects.filter(question=x)
-            for asss in ans:
-                aaaOpt={}
-                aaaOpt['opt']=asss.title
-                aaaOpt['id']=asss.id
-                aaaOpt['mrks']=asss.marks
-                aaOption.append(aaaOpt)
 
-            aa['options']=aaOption
-            if x.type==1:
+    print(subject)
+    print(int(subject)==4)
+    print('(((((((((')
+    if request.method == 'GET': 
+        a=[]
+        b=[]
+        c=[]
+        sub =Subject.objects.get(id=subject)
+        qs = Questions.objects.filter(subject=sub)
+        if int(subject)!=4:
+            for x in qs:
+                    aa={}
+                    aaOption=[]
+                    aa['ques']=x.title
+                    aa['id']=x.id
+                    ans = Options.objects.filter(question=x)
+                    for asss in ans:
+                        aaaOpt={}
+                        aaaOpt['opt']=asss.title
+                        aaaOpt['id']=asss.id
+                        aaaOpt['mrks']=asss.marks
+                        aaOption.append(aaaOpt)
+
+                    aa['options']=aaOption
+                    if x.type==1:
+                        a.append(aa)
+                    elif x.type==2:
+                        b.append(aa)
+                    elif x.type==3:
+                        c.append(aa)
+            
+            return JsonResponse({'qs':sub.sub_qs,'time':sub.sub_time,'easy':a,'medium':b,'hard':c},safe=False)
+        elif int(subject)==4:
+            for x in qs:
+                aa={}
+                aa['ques']=x.title
+                aa['id']=x.id
                 a.append(aa)
-            elif x.type==2:
-                b.append(aa)
-            elif x.type==3:
-                c.append(aa)
-       
-       return JsonResponse({'qs':sub.sub_qs,'time':sub.sub_time,'easy':a,'medium':b,'hard':c},safe=False)
+            return JsonResponse({'qs':sub.sub_qs,'time':sub.sub_time,'allQs':a},safe=False)
+
 @csrf_exempt
 def subs(request):
     if request.method == 'GET':
@@ -165,11 +178,12 @@ def chartData(user,testId=-1):
     mrksScored=[]
     mrksScoredPercent=[]
     for sub in subs:
-        totalQs+=sub.sub_qs
-        avgMarks=sub.sub_qs*2*0.7 # 70% average
-        avgMarks=math.ceil(avgMarks)
-        aa[sub.sub_name]=avgMarks
-    a=[aa['Aptitude'],aa['Computer Fundamentals'],aa['Domain'],aa['Personality'],aa['Coding'],aa['Analytical Writing']]
+        if sub.sub_name!='Personality':
+            totalQs+=sub.sub_qs
+            avgMarks=sub.sub_qs*2*0.7 # 70% average
+            avgMarks=math.ceil(avgMarks)
+            aa[sub.sub_name]=avgMarks
+    a=[aa['Aptitude'],aa['Computer Fundamentals'],aa['Domain'],aa['Coding'],aa['Analytical Writing']]
     try:
         resl=Results.objects.get(student = user,test=Test.objects.get(id=testId))
         apMax=1
@@ -185,14 +199,12 @@ def chartData(user,testId=-1):
             cfMax=sum(resl.marks['cfMax'])
         if(sum(resl.marks['dMax'])>0):
             dMax=sum(resl.marks['dMax'])
-        if(sum(resl.marks['pMax'])>0):
-            pMax=sum(resl.marks['pMax'])
         if(sum(resl.marks['cMax'])>0):
             cMax=sum(resl.marks['cMax'])
         if(sum(resl.marks['aMax'])>0):
             aMax=sum(resl.marks['aMax'])
-        mrksScoredPercent=[round((resl.marks['ap']/apMax)*100,2),round((resl.marks['cf']/cfMax)*100,2),round((resl.marks['d']/dMax)*100,2),round((resl.marks['p']/pMax)*100,2),round((resl.marks['c']/cMax)*100,2),round((resl.marks['a']/aMax)*100,2)]
-        mrksScored=[resl.marks['ap'],resl.marks['cf'],resl.marks['d'],resl.marks['p'],resl.marks['c'],resl.marks['a']]
+        mrksScoredPercent=[round((resl.marks['ap']/apMax)*100,2),round((resl.marks['cf']/cfMax)*100,2),round((resl.marks['d']/dMax)*100,2),round((resl.marks['c']/cMax)*100,2),round((resl.marks['a']/aMax)*100,2)]
+        mrksScored=[resl.marks['ap'],resl.marks['cf'],resl.marks['d'],resl.marks['c'],resl.marks['a']]
         FMT = '%H:%M:%S'
         s1 = "{}:{}:{}".format(str(resl.endTime.hour),str(resl.endTime.minute),str(resl.endTime.second))
         s2 = "{}:{}:{}".format(str(resl.startTime.hour),str(resl.startTime.minute),str(resl.startTime.second))
@@ -202,7 +214,7 @@ def chartData(user,testId=-1):
     except Results.DoesNotExist:
         print('No previous entry')
         resl=0
-    return {'startTime':resl.startTime,'endTime':resl.endTime,'marks':resl.marks,'totalQs':totalQs,'avgMarksArr':a,'mrksScored':mrksScored,'mrksScoredPercent':mrksScoredPercent,'totalMarksScored':sum(mrksScored),'timeTaken':tdelta.seconds}
+    return {'startTime':resl.startTime,'endTime':resl.endTime,'personalityData':resl.marks['pGot'],'marks':resl.marks,'totalQs':totalQs,'avgMarksArr':a,'mrksScored':mrksScored,'mrksScoredPercent':mrksScoredPercent,'totalMarksScored':sum(mrksScored),'timeTaken':tdelta.seconds}
 
 @csrf_exempt
 def resultTest(request,id):
@@ -238,9 +250,6 @@ def marks(request,sid=0):
                    result.marks['ap'] = data['marks']
                    result.marks['apMax'] = data['maxMarks']
                    result.marks['apGot'] = data['gotMarks']
-                   print('.................')
-                   print(data['maxMarks'])
-                   print('.................')
                 elif sid == 2:
                     result.marks['cf'] = data['marks']
                     result.marks['cfMax'] = data['maxMarks']
@@ -255,8 +264,10 @@ def marks(request,sid=0):
                     result.marks['dGot'] = data['gotMarks']
                 elif sid == 5:
                     result.marks['p'] = data['marks']
-                    result.marks['pMax'] = data['maxMarks']
-                    result.marks['pGot'] = data['gotMarks']
+                    print('***************************')
+                    print(data['marks'])
+                    print('***************************')
+                    result.marks['pGot']=[evaluate(request,{'Nick':data['username'],'Sex':'Male','Age':21,'Q':data['marks'],'Country':'India'})]
                 elif sid == 6:
                     result.marks['a'] = data['marks'] 
                     result.marks['aMax'] = data['maxMarks']
@@ -326,16 +337,11 @@ def saveTest(request):
     if request.method == 'POST':
         data=JSONParser().parse(request)['data']
         print(data['saveTest'])
-       
-        print('##################')
         print(data['createTest'])
-        
-        print('##################')
        
         tst=Test(test_name=data['createTest']['testName'],test_start=data['createTest']['sTime'],test_end=data['createTest']['eTime'])
         print(tst.test_start)
         tst.save()
-        print('---------------')
 
         for x in range(0,len(data['saveTest'])):
             b=Subject.objects.get(sub_name=data['saveTest'][x]['sub'])
@@ -431,24 +437,51 @@ def personalityR(request):
     if request.method=='POST':
         return evaluate(request, CFG['DB'])
 
-def evaluate_api(request):
+def evaluate_api(request,data=0):
     """API endpoint."""
-    data=JSONParser().parse(request)['data']
+    if not data:
+        data=JSONParser().parse(request)['data']
 
-    # Extract identifying variables
-    Sex = data['Sex']
-    Age = int(data['Age'])
-    Nick = data['Nick']
-    Country = data['Country']
-    
-    # Get the item responses
-    items = 121  # shortipipneo
-    Q = [0] * (items)
+        # Extract identifying variables
+        Sex = data['Sex']
+        Age = int(data['Age'])
+        Nick = data['Nick']
+        Country = data['Country']
+        
+        # Get the item responses
+        items = 121  # shortipipneo
+        Q = [0] * (items)
 
-    # for i in range(1, items):
-    #     variable = "Q%d" % i
-    #     Q[i] = data(variable, 0)
-    Q[1]=data['Q1']
+        # for i in range(1, items):
+        #     variable = "Q%d" % i
+        #     Q[i] = data(variable, 0)
+        Q[1]=data['Q1']
+    else:
+        # Extract identifying variables
+        print('$$$$$$$$$$$$$$$$$$$')
+        print(data)
+        print('$$$$$$$$$$$$$$$$$$$')
+        Sex = data['Sex']
+        Age = int(data['Age'])
+        Nick = data['Nick']
+        Country = data['Country']
+        print(data['Q'])
+        print('@@@@@@@@@@@@@')
+        
+        # Get the item responses
+        items = 121  # shortipipneo
+        Q = [0] * (items)
+
+        for i in range(1, items):
+            if(len(data['Q'])>i):
+                if data['Q'][i-1]!=-1:
+                    Q[i]=data['Q'][i-1]
+                else :
+                    Q[i]=0
+            else:
+                Q[i]=(i-1)%2
+        print(Q)
+
 
     Q = list(map(int, Q))
 
@@ -763,12 +796,12 @@ def evaluate_api(request):
         return json.dumps(m)
 
 
-def evaluate(request, db=None):
+def evaluate(request, data=0):
 
     """Personality evaluation logic."""
 
     SEP, SEFP, LO, HI, SE, SAP, SAFP, SA, SC, SCP, SCFP, flev, SOP, SOFP, SO, \
-            Nick, Country, SNP, SNFP, Category, SN, Sex, Age, Q = evaluate_api(request)
+            Nick, Country, SNP, SNFP, Category, SN, Sex, Age, Q = evaluate_api(request,data)
 
     # Check sex and age
     if Sex != "Male" and Sex != "Female":
@@ -788,11 +821,19 @@ def evaluate(request, db=None):
     print('*****************')
     a={}
     a['SEP']=SEP
-
-    return JsonResponse({'data':{'SEP':SEP, 'SEFP':SEFP,
-        'LO':45, 'HI':55, 'SE':SE, 'SAP':SAP, 'SAFP':SAFP, 'SA':SA,
-        'SC':SC, 'SCP':SCP, 'SCFP':SCFP, 'flev':flev,
-        'SOP':SOP, 'SOFP':SOFP,
-        'SO':SO, 'Nick':Nick, 'Country':Country,
-        'SNP':SNP, 'SNFP':SNFP, 'Category':Category,
-        'SN':SN}},safe=False)
+    if not data:
+        return JsonResponse({'data':{'SEP':SEP, 'SEFP':SEFP,
+            'LO':45, 'HI':55, 'SE':SE, 'SAP':SAP, 'SAFP':SAFP, 'SA':SA,
+            'SC':SC, 'SCP':SCP, 'SCFP':SCFP, 'flev':flev,
+            'SOP':SOP, 'SOFP':SOFP,
+            'SO':SO, 'Nick':Nick, 'Country':Country,
+            'SNP':SNP, 'SNFP':SNFP, 'Category':Category,
+            'SN':SN}},safe=False)
+    else:
+        return ({'SEP':SEP, 'SEFP':SEFP,
+            'LO':45, 'HI':55, 'SE':SE, 'SAP':SAP, 'SAFP':SAFP, 'SA':SA,
+            'SC':SC, 'SCP':SCP, 'SCFP':SCFP, 'flev':flev,
+            'SOP':SOP, 'SOFP':SOFP,
+            'SO':SO, 'Nick':Nick, 'Country':Country,
+            'SNP':SNP, 'SNFP':SNFP, 'Category':Category,
+            'SN':SN})

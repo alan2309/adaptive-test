@@ -3,7 +3,7 @@ import { Col, Row } from "react-bootstrap";
 
 function QuestionNavigatorComp({ attempted }) {
   return (
-    <div id="questionNavComp">
+    <div id="style-4" className="questionNavComp" style={{maxHeight:window.screen.height-300}}>
       <Row>
         <Col>
           <div
