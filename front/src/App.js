@@ -20,6 +20,8 @@ import ScheduledTest from "./screens/Admin/ScheduledTest";
 import ViewSchdlTest from "./screens/Admin/ViewSchdlTest";
 import Compiler from "./screens/Test/Compiler";
 import CompScreen from "./screens/Test/compScreen";
+import Personality from "./screens/Test/Personality";
+import PersonalityResultComp from "./components/Result/personalityResultComp";
 
 function App() {
   return (
@@ -91,6 +93,8 @@ function App() {
                   element={<ViewSchdlTest />}
                 />
                 <Route path="/admin/compiler" exact element={<Compiler />} />
+                <Route path="/per" exact element={<Personality/>} />
+                <Route path="/per/result" exact element={<PersonalityResultComp/>} />
               </Routes>
             </Router>
           </Col>

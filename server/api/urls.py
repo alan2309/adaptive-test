@@ -12,6 +12,8 @@ urlpatterns = [
    path('api/codingTests',views.getCodingTests),
    path('api/admin/resultTest/<str:id>',views.resultTest),
    path('api/para',views.comprehension),
+   path('api/personality/res',views.personalityR),
+   path('api/personality/res',views.personalityR),
    
 
    # admin
