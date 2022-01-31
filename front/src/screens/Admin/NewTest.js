@@ -16,8 +16,8 @@ function NewTest() {
   const [med, setMed] = useState([]);
   const [hard, setHard] = useState([]);
   const [qs, setQs] = useState(0);
-  const [time, setTime] = useState("00:00:20");
   const [axData, setAxData] = useState({});
+  const [tests,setTests] = useState([])
 
   const [aptDic, setAptDic] = useState({ time: "00:00:20", totalQs: 1 });
   const [CFDic, setCFDic] = useState({ time: "00:00:20", totalQs: 1 });
@@ -43,12 +43,10 @@ function NewTest() {
 
   function saveTest(e) {
     e.preventDefault();
-    console.log(aptDic);
-    console.log(CFDic);
-    console.log(DDic);
-    console.log(PDic);
-    console.log(CDic);
-    console.log(AWDic);
+    let sx = new Date(sDate)
+    let ex = new Date(eDate)
+    if(ex.getTime() > sx.getTime()){
+      if(!clash(sx.getTime(),ex.getTime())){
     let creaTest = { testName: tName, sTime: sDate, eTime: eDate };
     console.log(creaTest);
     let a = [
@@ -70,6 +68,25 @@ function NewTest() {
       .then((res) => {
         navigate("/admin/home");
       });
+    }else{
+      alert('This test will clash with an existing test')
+    }
+  }else{
+    alert('Start time should be less than End time')
+  }
+  }
+  function clash(stx,etx){
+    for(let i=0;i<tests.length;i++){
+      let ss = new Date(tests[i].test_start).getTime();
+      let ee = new Date(tests[i].test_end).getTime();
+      if(stx>=ss && stx<=ee || etx>=ss && etx<=ee){
+        return 1;
+      }
+      else if(ss>=stx && ss<=etx || ee>stx && ee<=etx){
+        return 1;
+      }
+    }
+    return 0;
   }
 
   function secOnCLick(e, index) {
@@ -176,6 +193,17 @@ function NewTest() {
         .catch((e) => {
           console.log(e);
         });
+        const getTest = async()=>{
+          await axios.get('http://127.0.0.1:8000/api/admin/tests')
+          .then(res=>{
+            let ar = []
+            let st = res.data.stests
+            let ut = res.data.utests
+            setTests(ar.concat(st,ut))
+          })
+          .catch(e=>console.log(e)) 
+        }
+        getTest();
     data();
   }, []);
   return (

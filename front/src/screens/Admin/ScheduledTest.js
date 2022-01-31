@@ -10,7 +10,7 @@ function ScheduledTest() {
   const [stests, setSTests] = useState([]);
   const [utests, setUTests] = useState([]);
   const [show, setShow] = useState(false);
-
+  const [tests,setTests] = useState([])
   const [header, setHeader] = useState();
   const [testId, setTestId] = useState();
 
@@ -30,8 +30,10 @@ function ScheduledTest() {
         .get("http://127.0.0.1:8000/api/admin/tests")
         .then((res) => {
           console.log(res.data);
+          let ar = []
           setSTests(res.data.stests);
           setUTests(res.data.utests);
+          setTests(ar.concat(res.data.stests,res.data.utests))
         })
         .catch((e) => {
           console.log(e);
@@ -40,32 +42,49 @@ function ScheduledTest() {
 
     data();
   }, []);
+  function clash(stx,etx,tId){
+    for(let i=0;i<tests.length;i++){
+      if(tId===tests[i].id)continue;
+      let ss = new Date(tests[i].test_start).getTime();
+      let ee = new Date(tests[i].test_end).getTime();
+      
+      if(stx>=ss && stx<=ee || etx>=ss && etx<=ee ){
+        return 1;
+      }
+      else if(ss>=stx && ss<=etx || ee>stx && ee<=etx){
+        return 1;
+      }
+    }
+    return 0;
+  }
   function upcomingTest(e, test) {
+    let s = new Date(test.test_start)
+    let s1 = new Date(test.test_end)
+    
     setHeader(test.test_name);
-
-    var date = test.test_start.split("T");
-    var time = date[1].split("Z")[0];
-    date = date[0].split("-");
-    time = time.split(":");
-    console.log(date);
-    console.log(time);
+    let date = s.toLocaleDateString()
+    console.log(date)
+    console.log(s)
+    
+    date = date.split('/');
+    let time = s.toTimeString().split(' ')[0]
+    time = time.split(':');
+    console.log(new Date(date[2], date[0]-1, date[1], time[0], time[1], time[2]))
     onChangeStart(
-      new Date(date[0], date[1], date[2], time[0], time[1], time[2])
+      new Date(date[2], date[0]-1, date[1], time[0], time[1], time[2])
     );
     onChangeStartCheck(
-      new Date(date[0], date[1], date[2], time[0], time[1], time[2])
+      new Date(date[2], date[0]-1, date[1], time[0], time[1], time[2])
     );
     setTestId(test.id);
 
-    var date = test.test_end.split("T");
-    var time = date[1].split("Z")[0];
-    date = date[0].split("-");
-    time = time.split(":");
-    console.log(date);
-    console.log(time);
-    onChangeEnd(new Date(date[0], date[1], date[2], time[0], time[1], time[2]));
+    let datey = s1.toLocaleDateString()
+    datey = datey.split('/');
+    let timey = s1.toTimeString().split(' ')[0]
+    timey = timey.split(':');
+    onChangeEnd(new Date(datey[2], datey[0]-1, datey[1], timey[0], timey[1], timey[2]));
     onChangeEndCheck(
-      new Date(date[0], date[1], date[2], time[0], time[1], time[2])
+      new Date(datey[2], datey[0]-1, datey[1], timey[0], timey[1], timey[2])
     );
     setShow(true);
   }
@@ -73,8 +92,11 @@ function ScheduledTest() {
     e.preventDefault();
     var cDate = new Date();
     if (valueStart <= valueEnd && valueStart > cDate) {
-      //Check1
+      console.log(valueStart)
+      console.log(valueEnd)
+      
       if (valueStart !== valueStartCheck || valueEnd !== valueEndCheck) {
+        if(!clash(valueStart.getTime(),valueEnd.getTime(),testId)){
         axiosInstance
           .post("api/test", {
             data: {
@@ -93,6 +115,9 @@ function ScheduledTest() {
           .catch((e) => {
             console.log(e);
           });
+        }else{
+          alert('This test will clash with an existing test')
+        }
       }
       handleClose(e);
     } else {
