@@ -393,9 +393,16 @@ def saveTest(request):
         tst.save()
 
         for x in range(0,len(data['saveTest'])):
+            print(data['savetest'][x]['sub'])
+            avgMrk=0
+            if str(data['savetest'][x]['sub'])=='Coding' or str(data['savetest'][x]['sub'])=='Analytical Writing':
+                avgMrk=30
+            else:
+                avgMrk=math.ceil(int(data['saveTest'][x]['totalQs'])*2*0.7) # 70% average
             b=Subject.objects.get(sub_name=data['saveTest'][x]['sub'])
             b.sub_qs=data['saveTest'][x]['totalQs']
             b.sub_time=data['saveTest'][x]['time']
+            b.avg_score=avgMrk
             b.save()
         return JsonResponse('success',safe=False)
 
