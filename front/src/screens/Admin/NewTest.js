@@ -41,10 +41,23 @@ function NewTest() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  function checkOngoing(){
+    let current=new Date();
+    for(let i=0;i<tests.length;i++){
+      let ss = new Date(tests[i].test_start).getTime();
+      let ee = new Date(tests[i].test_end).getTime();
+      if(current.getTime()>=ss && current.getTime()<=ee){
+        return 1;
+      }
+    }
+    return 0;
+  }
+
   function saveTest(e) {
     e.preventDefault();
     let sx = new Date(sDate)
     let ex = new Date(eDate)
+    if(!checkOngoing()){
     if(ex.getTime() > sx.getTime()){
       if(!clash(sx.getTime(),ex.getTime())){
     let creaTest = { testName: tName, sTime: sDate, eTime: eDate };
@@ -73,6 +86,9 @@ function NewTest() {
     }
   }else{
     alert('Start time should be less than End time')
+  }
+  }else{
+   alert('Cannot save another test while one test is ongoing')
   }
   }
   function clash(stx,etx){
