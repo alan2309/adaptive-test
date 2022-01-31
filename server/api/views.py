@@ -163,7 +163,7 @@ def results(request,name):
     if request.method == 'POST':
         data=JSONParser().parse(request)['data']
         if(user):
-            d = datetime.datetime.now()
+            d = datetime.datetime.utcnow()
             try:
                 if name != 'a':
                     rr=Results.objects.get(student = user,test=Test.objects.get(id=data['testId']))
@@ -257,7 +257,7 @@ def marks(request,sid=0):
     if request.method == 'POST':
         data=JSONParser().parse(request)['data']
         sid = int(sid)
-        d = datetime.datetime.now()
+        d = datetime.datetime.utcnow()
         user = User.objects.get(username = data['username'])
         if(user):
             result = Results.objects.get(student = user,test=Test.objects.get(id=data['testId']))
@@ -402,7 +402,8 @@ def saveTest(request):
 @csrf_exempt
 def tests(request):
     if request.method == 'GET':
-        d = datetime.datetime.now()
+        d = datetime.datetime.utcnow()
+        print(d)
         ll=Test.objects.filter(test_start__lte = d,test_end__gte=d)
         if(ll.exists()):
             return JsonResponse({'testId':ll[0].id},safe=False)
@@ -428,7 +429,7 @@ def tests(request):
 @csrf_exempt    
 def getTests(request):
     if request.method == 'GET':
-        d = datetime.datetime.now()
+        d = datetime.datetime.utcnow()
         stests = Test.objects.filter(Q(test_end__lte=d) | Q(test_start__lt=d))
         utests = Test.objects.filter(test_start__gt=d) 
         print(stests)
