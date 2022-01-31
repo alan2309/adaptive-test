@@ -125,7 +125,7 @@ export default function Compiler() {
     constraints: "constraints",
     sample_input_1: "sample_input_1",
     sample_output_1: "sample_output_1",
-    explanation: ["expl1", "expl2", "expl3"],
+    explanation: "explanation",
   });
   //prev pages
   const navigate = useNavigate();
@@ -152,7 +152,6 @@ export default function Compiler() {
     if (!localStorage.getItem("test4")) {
       let ax = JSON.parse(localStorage.getItem("test2"));
       if (localStorage.getItem("test2")) {
-        
         var user = ax["username"];
         let ar = ax["marks"];
         let maxMarks = ax["maxMarks"];
@@ -1586,13 +1585,13 @@ export default function Compiler() {
                 }}
               >
                 <Tab eventKey="Q1" title="Q1">
-                  <CodingQsComp qs={question_current}></CodingQsComp>
+                  <CodingQsComp qs={question_1}></CodingQsComp>
                 </Tab>
                 <Tab eventKey="Q2" title="Q2">
-                  <CodingQsComp qs={question_current}></CodingQsComp>
+                  <CodingQsComp qs={question_2}></CodingQsComp>
                 </Tab>
                 <Tab eventKey="Q3" title="Q3">
-                  <CodingQsComp qs={question_current}></CodingQsComp>
+                  <CodingQsComp qs={question_3}></CodingQsComp>
                 </Tab>
               </Tabs>
             </div>

@@ -13,25 +13,52 @@ function CodingQsComp({ qs }) {
     >
       {qs !== undefined && (
         <>
-          {qs.question}
+          <textarea
+            defaultValue={qs.question}
+            style={{ height: "max-content", width: "100%" }}
+            rows={6}
+            className="style-4"
+            disabled
+          ></textarea>
           <h5>
             <b>Input Format</b>
           </h5>
-          {qs.input_format}
+
+          <textarea
+            defaultValue={qs.input_format}
+            style={{ height: "max-content", width: "100%" }}
+            rows={3}
+            className="style-4"
+            disabled
+          ></textarea>
           <h5>
             <b>Output Format</b>
           </h5>
-          {qs.output_format}
+
+          <textarea
+            defaultValue={qs.output_format}
+            style={{ height: "max-content", width: "100%" }}
+            rows={3}
+            className="style-4"
+            disabled
+          ></textarea>
           <h5>
             <b>Constraints</b>
           </h5>
-          {qs.constraints}
+
+          <textarea
+            defaultValue={qs.constraints}
+            style={{ height: "max-content", width: "100%" }}
+            className="style-4"
+            disabled
+          ></textarea>
           <h5>
             <b>Sample Input 1 </b>
           </h5>
           <textarea
             defaultValue={qs.sample_input}
             style={{ height: "fit-content" }}
+            className="style-4"
             disabled
           ></textarea>
           <h5>
@@ -41,23 +68,22 @@ function CodingQsComp({ qs }) {
             defaultValue={qs.sample_output}
             style={{ height: "fit-content" }}
             disabled
+            className="style-4"
           ></textarea>
           {qs.explanation !== null && (
             <h5>
               <b>Explanation</b>
             </h5>
           )}
-          {qs.explanation !== null &&
-            qs.explanation.map((expl, index) => {
-              return (
-                <>
-                  <h6>
-                    <b>Test Case {index + 1}:</b>
-                  </h6>
-                  {expl}
-                </>
-              );
-            })}
+          {qs.explanation !== null && (
+            <textarea
+              defaultValue={qs.explanation}
+              className="style-4"
+              rows={3}
+              style={{ height: "fit-content", width: "100%" }}
+              disabled
+            ></textarea>
+          )}
         </>
       )}
     </div>

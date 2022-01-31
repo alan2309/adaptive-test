@@ -67,30 +67,47 @@ def subs(request):
         subs=Subject.objects.all()
         for sub in subs:
             f[sub.sub_name]={}
+            f[sub.sub_name]={}
             f[sub.sub_name]['easy']=[]
             f[sub.sub_name]['medium']=[]
             f[sub.sub_name]['hard']=[]
             f[sub.sub_name]['qs']=sub.sub_qs
             f[sub.sub_name]['time']=sub.sub_time
+        codingTest=CodingTest.objects.all()
+        for c in codingTest:
+            c=CodingTestSerializer(c).data
+            print(c)
+            print('&&&&&&&&&&&&&&&')
+            if c['type']==1:
+                f['Coding']['easy'].append(c)
+            elif c['type']==2:
+                f['Coding']['medium'].append(c)
+            elif c['type']==3:
+                f['Coding']['hard'].append(c)
         qs=Questions.objects.all()
         for q in qs:
             a={}
-            a['ques']=q.title
-            a['id']=q.id
-            a['options']=[]
-            opts=Options.objects.filter(question=q)
-            for opt in opts:
-                o={}
-                o['opt']=opt.title
-                o['id']=opt.id
-                o['mrks']=opt.marks
-                a['options'].append(o)
-            if q.type==1:
-                f[str(q.subject)]['easy'].append(a)
-            if q.type==2:
-                f[str(q.subject)]['medium'].append(a)
-            elif q.type==3:
-                f[str(q.subject)]['hard'].append(a)
+            
+            if q.subject.sub_name!='Coding':
+                a['ques']=q.title
+                a['id']=q.id
+                a['options']=[]
+                opts=Options.objects.filter(question=q)
+                for opt in opts:
+                    o={}
+                    o['opt']=opt.title
+                    o['id']=opt.id
+                    o['mrks']=opt.marks
+                    a['options'].append(o)
+                if q.type==1:
+                    f[str(q.subject)]['easy'].append(a)
+                if q.type==2:
+                    f[str(q.subject)]['medium'].append(a)
+                elif q.type==3:
+                    f[str(q.subject)]['hard'].append(a)
+        
+        
+
     return JsonResponse({'data':f},safe=False)
 
 
@@ -288,49 +305,81 @@ def marks(request,sid=0):
 def addQs(request):
     if request.method == 'POST':
         data=JSONParser().parse(request)['data']
-        print(data)
-        if data['action']=='Save':
-            f=Questions(subject=Subject.objects.get(sub_name=data['sectionName']),title=data['questionNew'],type=data['type'])
-            f.save()
-              
-        elif data['action']=='Update':
-            print('update')
-            qData = {x: data[x] for x in data if 'question' in x}
-            print(qData)
-            for qs in qData:
-                f=Questions.objects.get(id=qs.split('question')[1])
-                f.title=qData[qs]
+        if str(data['sectionName'])!='Coding':
+            if data['action']=='Save':
+                f=Questions(subject=Subject.objects.get(sub_name=data['sectionName']),title=data['questionNew'],type=data['type'])
                 f.save()
+            elif data['action']=='Update':
+                print('update')
+                qData = {x: data[x] for x in data if 'question' in x}
+                print(qData)
+                for qs in qData:
+                    f=Questions.objects.get(id=qs.split('question')[1])
+                    f.title=qData[qs]
+                    f.save()
 
-                print(f)
-                print(qData[qs])
-                Options.objects.filter(question=f).delete()
-        optionData = {x: data[x] for x in data if 'Option' in x}
-        print(data)
-        for z in optionData:
-            print(z)
-            print(z==data['rightOpt'])
-            if z==data['rightOpt']:
-                if data['type']==1:
-                    marks=1
-                elif data['type']==2:
-                    marks=2
-                elif data['type']==3:
-                    marks=5
-            else:
-                marks=0
-            print(marks)
-            ff=Options(question=f,marks=marks,title=optionData[z])
-            ff.save()
+                    print(f)
+                    print(qData[qs])
+                    Options.objects.filter(question=f).delete()
+            optionData = {x: data[x] for x in data if 'Option' in x}
+            for z in optionData:
+                print(z)
+                print(z==data['rightOpt'])
+                if z==data['rightOpt']:
+                    if data['type']==1:
+                        marks=1
+                    elif data['type']==2:
+                        marks=2
+                    elif data['type']==3:
+                        marks=5
+                else:
+                    marks=0
+                print(marks)
+                ff=Options(question=f,marks=marks,title=optionData[z])
+                ff.save()
+        else:
+            test_case_input=[data['testCase1Input'],data['testCase2Input'],data['testCase3Input']]
+            test_case_output=[data['testCase1Output'],data['testCase2Output'],data['testCase3Output']]
+            if int(data['type'])==1:
+                    marks=10
+            elif int(data['type'])==2:
+                marks=20
+            elif int(data['type'])==3:
+                marks=30
+            if data['action']=='Save':            
+                f=CodingTest(question=data['questionNew'],marks=marks,type=data['type'],input_format=data['inputFormat'],
+                output_format=data['outputFormat'],constraints=data['constraints'],sample_input=[data['sampleInput']],sample_output=[data['sampleOutput']],explanation=data['explanation'],
+                test_case_input=test_case_input,test_case_output=test_case_output)
+                f.save()
+            elif data['action']=='Update':
+                qData = {x: data[x] for x in data if 'question' in x}
+                for qs in qData:
+                    f=CodingTest.objects.get(id=qs.split('question')[1])
+                    f.question=qData[qs]
+                    f.marks=marks
+                    f.type=data['type']
+                    f.input_format=data['inputFormat']
+                    f.output_format=data['outputFormat']
+                    f.constraints=data['constraints']
+                    f.sample_input=[data['sampleInput']]
+                    f.sample_output=[data['sampleOutput']]
+                    f.explanation=data['explanation']
+                    f.test_case_input=test_case_input
+                    f.test_case_output=test_case_output
+                    f.save()
         return JsonResponse("Done",safe=False) 
 
 @csrf_exempt
 def delQs(request):
     if request.method == 'POST':
-        data=JSONParser().parse(request)['delQs']
+        data=JSONParser().parse(request)['data']
         print(data)
-        for x in data:
-            Questions.objects.get(id=x).delete()
+        sid=int(data['sid'])
+        for x in data['delQs']:
+            if sid != 5:
+                Questions.objects.get(id=x).delete()
+            elif sid==5:
+                CodingTest.objects.get(id=x).delete()
         return JsonResponse('success',safe=False)
 @csrf_exempt
 def saveTest(request):
