@@ -20,9 +20,6 @@ CFG = {'DB': None}
 @csrf_exempt
 def subqs(request,subject=0):
 
-    print(subject)
-    print(int(subject)==4)
-    print('(((((((((')
     if request.method == 'GET': 
         a=[]
         b=[]
@@ -76,19 +73,36 @@ def subs(request):
         codingTest=CodingTest.objects.all()
         for c in codingTest:
             c=CodingTestSerializer(c).data
-            print(c)
-            print('&&&&&&&&&&&&&&&')
             if c['type']==1:
                 f['Coding']['easy'].append(c)
             elif c['type']==2:
                 f['Coding']['medium'].append(c)
             elif c['type']==3:
                 f['Coding']['hard'].append(c)
+        paras=Para.objects.all()
+        for para in paras:
+            x={}
+            x['title'] = para.title
+            x['paraId'] = para.id
+            x['para'] = para.data
+            questions = Paraqs.objects.filter(para=para)
+            qs = []
+            for question in questions:
+                op={}
+                options = Paraopt.objects.filter(paraqs=question)
+                op['question'] = question.title
+                op['paraQsId'] = question.id
+                op['options'] =OptionSerializer(options,many=True).data
+                qs.append(op)
+            x['questions'] = qs 
+            f['Analytical Writing']['medium'].append(x)  
+            
+
         qs=Questions.objects.all()
         for q in qs:
             a={}
             
-            if q.subject.sub_name!='Coding':
+            if str(q.subject.sub_name)!='Coding' and str(q.subject.sub_name)!='Analytical Writing':
                 a['ques']=q.title
                 a['id']=q.id
                 a['options']=[]
@@ -138,9 +152,6 @@ def qs(request):
                 b.append(aa)
             elif x.type==3:
                 c.append(aa)
-            # print(a)
-            # print(b)
-            # print(c)
 
                 
     return JsonResponse({'easy':a,'medium':b,'hard':c},safe=False)
@@ -209,7 +220,6 @@ def chartData(user,testId=-1):
         pMax=1
         aMax=1
         cMax=1
-        print('-----------')
         if(sum(resl.marks['apMax'])>0):
             apMax=sum(resl.marks['apMax'])
         if(sum(resl.marks['cfMax'])>0):
@@ -227,7 +237,6 @@ def chartData(user,testId=-1):
         s2 = "{}:{}:{}".format(str(resl.startTime.hour),str(resl.startTime.minute),str(resl.startTime.second))
         tdelta = datetime.datetime.strptime(str(s1), FMT) - datetime.datetime.strptime(str(s2), FMT)
 
-        print(tdelta.seconds)
     except Results.DoesNotExist:
         print('No previous entry')
         resl=0
@@ -242,7 +251,6 @@ def resultTest(request,id):
     cc=[]
     for x in a.data:
         c={}
-        print(x)
         c['name']=User.objects.get(id=x['student']).username
         c['sdate']=x['startTime'].split('.')[0]
         c['edate']=x['endTime'].split('.')[0]
@@ -281,9 +289,6 @@ def marks(request,sid=0):
                     result.marks['dGot'] = data['gotMarks']
                 elif sid == 5:
                     result.marks['p'] = data['marks']
-                    print('***************************')
-                    print(data['marks'])
-                    print('***************************')
                     result.marks['pGot']=[evaluate(request,{'Nick':data['username'],'Sex':'Male','Age':21,'Q':data['marks'],'Country':'India'})]
                 elif sid == 6:
                     result.marks['a'] = data['marks'] 
@@ -305,26 +310,19 @@ def marks(request,sid=0):
 def addQs(request):
     if request.method == 'POST':
         data=JSONParser().parse(request)['data']
-        if str(data['sectionName'])!='Coding':
+        if str(data['sectionName'])!='Coding' and str(data['sectionName'])!='Analytical Writing':
             if data['action']=='Save':
                 f=Questions(subject=Subject.objects.get(sub_name=data['sectionName']),title=data['questionNew'],type=data['type'])
                 f.save()
             elif data['action']=='Update':
-                print('update')
                 qData = {x: data[x] for x in data if 'question' in x}
-                print(qData)
                 for qs in qData:
                     f=Questions.objects.get(id=qs.split('question')[1])
                     f.title=qData[qs]
                     f.save()
-
-                    print(f)
-                    print(qData[qs])
                     Options.objects.filter(question=f).delete()
             optionData = {x: data[x] for x in data if 'Option' in x}
             for z in optionData:
-                print(z)
-                print(z==data['rightOpt'])
                 if z==data['rightOpt']:
                     if data['type']==1:
                         marks=1
@@ -334,10 +332,9 @@ def addQs(request):
                         marks=5
                 else:
                     marks=0
-                print(marks)
                 ff=Options(question=f,marks=marks,title=optionData[z])
                 ff.save()
-        else:
+        elif str(data['sectionName'])=='Coding':
             test_case_input=[data['testCase1Input'],data['testCase2Input'],data['testCase3Input']]
             test_case_output=[data['testCase1Output'],data['testCase2Output'],data['testCase3Output']]
             if int(data['type'])==1:
@@ -367,35 +364,58 @@ def addQs(request):
                     f.test_case_input=test_case_input
                     f.test_case_output=test_case_output
                     f.save()
+        elif str(data['sectionName'])=='Analytical Writing':
+            rightOptArrAnalytical=data['rightOptArrAnalytical']
+            paragraphTitle=data['paragraphTitle']
+            paragraph=data['paragraph']
+            action=str(data['action'])
+            qsDict=data['qsDict']
+            paraId=data['paraId']
+            if action=='Update':
+                para=Para.objects.get(id=paraId)
+                para.title=paragraphTitle
+                para.data=paragraph
+                para.save()
+                Paraqs.objects.filter(para=para).delete()
+            elif action=='Save':
+                para=Para(title=paragraphTitle,data=paragraph)
+                para.save()
+            for x in qsDict:
+                qs=Paraqs(para=para,title=qsDict[x]['title'])
+                qs.save()
+                for y in qsDict[x]['options']:
+                    if str(rightOptArrAnalytical[x])==str(y):
+                        marks=2
+                    else:
+                        marks=0
+                    paraOpt=Paraopt(paraqs=qs,title=data[y],marks=marks)
+                    paraOpt.save()
+
         return JsonResponse("Done",safe=False) 
 
 @csrf_exempt
 def delQs(request):
     if request.method == 'POST':
         data=JSONParser().parse(request)['data']
-        print(data)
         sid=int(data['sid'])
         for x in data['delQs']:
-            if sid != 5:
+            if sid != 5 and sid != 6:
                 Questions.objects.get(id=x).delete()
             elif sid==5:
                 CodingTest.objects.get(id=x).delete()
+            elif sid==6:
+                Para.objects.get(id=x).delete()
         return JsonResponse('success',safe=False)
 @csrf_exempt
 def saveTest(request):
     if request.method == 'POST':
         data=JSONParser().parse(request)['data']
-        print(data['saveTest'])
-        print(data['createTest'])
-       
         tst=Test(test_name=data['createTest']['testName'],test_start=data['createTest']['sTime'],test_end=data['createTest']['eTime'])
-        print(tst.test_start)
         tst.save()
 
         for x in range(0,len(data['saveTest'])):
-            print(data['savetest'][x]['sub'])
             avgMrk=0
-            if str(data['savetest'][x]['sub'])=='Coding' or str(data['savetest'][x]['sub'])=='Analytical Writing':
+            if str(data['saveTest'][x]['sub'])=='Coding' or str(data['saveTest'][x]['sub'])=='Analytical Writing':
                 avgMrk=30
             else:
                 avgMrk=math.ceil(int(data['saveTest'][x]['totalQs'])*2*0.7) # 70% average
@@ -410,7 +430,6 @@ def saveTest(request):
 def tests(request):
     if request.method == 'GET':
         d = datetime.datetime.utcnow()
-        print(d)
         ll=Test.objects.filter(test_start__lte = d,test_end__gte=d)
         if(ll.exists()):
             return JsonResponse({'testId':ll[0].id},safe=False)
@@ -439,7 +458,6 @@ def getTests(request):
         d = datetime.datetime.utcnow()
         stests = Test.objects.filter(Q(test_end__lte=d) | Q(test_start__lt=d))
         utests = Test.objects.filter(test_start__gt=d) 
-        print(stests)
         stestS = TestSerializer(stests,many=True)
         utestS = TestSerializer(utests,many=True)
         return JsonResponse({"stests":stestS.data,"utests":utestS.data},safe=False)
@@ -515,15 +533,10 @@ def evaluate_api(request,data=0):
         Q[1]=data['Q1']
     else:
         # Extract identifying variables
-        print('$$$$$$$$$$$$$$$$$$$')
-        print(data)
-        print('$$$$$$$$$$$$$$$$$$$')
         Sex = data['Sex']
         Age = int(data['Age'])
         Nick = data['Nick']
         Country = data['Country']
-        print(data['Q'])
-        print('@@@@@@@@@@@@@')
         
         # Get the item responses
         items = 121  # shortipipneo
@@ -537,8 +550,6 @@ def evaluate_api(request,data=0):
                     Q[i]=0
             else:
                 Q[i]=(i-1)%2
-        print(Q)
-
 
     Q = list(map(int, Q))
 
@@ -874,8 +885,6 @@ def evaluate(request, data=0):
     and change your response."""
 
     # Save Data
-    print(type(SEP))
-    print('*****************')
     a={}
     a['SEP']=SEP
     if not data:

@@ -5,6 +5,7 @@ import "../../css/AdminAddQsScreen.css";
 import { useLocation } from "react-router-dom";
 import axiosInstance from "../../axios";
 import $ from "jquery";
+import AnalyticalQsComp from "../../components/Admin/AnalyticalQsComp";
 
 function SetQuestion() {
   const navigate = useNavigate();
@@ -15,10 +16,12 @@ function SetQuestion() {
   const [currentQsID, setCurrentQsID] = useState(-1);
   const [currentQs, setCurrentQs] = useState("");
   const [opt, setOpt] = useState([]);
+  const [rerenderState, set_rerenderState] = useState(false);
   const [isNew, setIsNew] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const [windowHeight, setWindowHeight] = useState(window.screen.height);
   const [isCoding, setIsCoding] = useState(false);
+  const [isAnalytical, setIsAnalytical] = useState(false);
   const [inputF, setInputF] = useState();
   const [outputF, setOutputF] = useState();
   const [constraints, setConstraints] = useState();
@@ -31,23 +34,27 @@ function SetQuestion() {
   const [testCaseOutput1, setTestCaseOutput1] = useState();
   const [testCaseOutput2, setTestCaseOutput2] = useState();
   const [testCaseOutput3, setTestCaseOutput3] = useState();
+  const [para_title, set_para_title] = useState();
+  const [para, set_para] = useState();
+  const [para_qs, set_para_qs] = useState([]);
 
   useEffect(() => {
     var divHeight = document.querySelector("#SETQS").clientHeight;
     setWindowHeight(divHeight);
     localStorage.removeItem("isNewTestReload");
-    console.log(location.state.navArr);
     var temp = location.state.navArr;
     setNavArray(temp);
     if (parseInt(location.state.sid) === 5) {
       setIsCoding(true);
+    } else if (parseInt(location.state.sid) === 6) {
+      setIsAnalytical(true);
     }
     if (temp[0] !== undefined) {
-      if (location.state.sid !== 5) {
+      if (location.state.sid !== 5 && location.state.sid !== 6) {
         setCurrentQsID(temp[0].id);
         setCurrentQs(temp[0].ques);
         setOpt(temp[0].options);
-      } else {
+      } else if (location.state.sid === 5) {
         setCurrentQsID(temp[0].id);
         setCurrentQs(temp[0].question || "");
         setOpt([]);
@@ -71,6 +78,11 @@ function SetQuestion() {
           setTestCaseInput3(temp[0].test_case_input[2] || "");
           setTestCaseOutput3(temp[0].test_case_output[2] || "");
         }
+      } else if (location.state.sid === 6) {
+        setCurrentQsID(temp[0].paraId);
+        set_para_title(temp[0].title);
+        set_para(temp[0].para);
+        set_para_qs(temp[0].questions);
       }
     } else {
       setIsUpdate(true);
@@ -78,42 +90,72 @@ function SetQuestion() {
   }, []);
   function handleSubmit(e) {
     e.preventDefault();
-    console.log("handlesubmit");
     var dictionary = {};
-    dictionary[document.getElementById("qsSetQs").name] =
-      document.getElementById("qsSetQs").value;
+    if (parseInt(location.state.sid) === 6) {
+      dictionary["paraId"] = currentQsID;
+      let txtAreaEle = $("textarea");
+      console.log(txtAreaEle);
+      console.log("................");
+      dictionary["rightOptArrAnalytical"] = {};
+      dictionary["qsDict"] = {};
+      for (let y = 0; y < txtAreaEle.length; y++) {
+        if (txtAreaEle[y].name.includes("Qs")) {
+          let a = {};
+          dictionary[txtAreaEle[y].name] = txtAreaEle[y].value;
+          dictionary["rightOptArrAnalytical"][txtAreaEle[y].name] = "";
+          a["title"] = txtAreaEle[y].value;
+          a["options"] = [];
+          dictionary["qsDict"][txtAreaEle[y].name] = a;
+        } else {
+          dictionary[txtAreaEle[y].name] = txtAreaEle[y].value;
+        }
+      }
+      let rightOptArr = $('input[name$="correctOpt"]:checked');
 
-    if (parseInt(location.state.sid) === 5) {
-      dictionary[document.getElementById("qsSetInputFormat").name] =
-        document.getElementById("qsSetInputFormat").value;
-      dictionary[document.getElementById("qsSetOutputFormat").name] =
-        document.getElementById("qsSetOutputFormat").value;
-      dictionary[document.getElementById("qsSetConstraints").name] =
-        document.getElementById("qsSetConstraints").value;
-      dictionary[document.getElementById("qsSetSampleInput").name] =
-        document.getElementById("qsSetSampleInput").value;
-      dictionary[document.getElementById("qsSetSampleOutput").name] =
-        document.getElementById("qsSetSampleOutput").value;
-      dictionary[document.getElementById("qsSetExplanation").name] =
-        document.getElementById("qsSetExplanation").value || "";
+      for (let x = 0; x < rightOptArr.length; x++) {
+        if (rightOptArr[x] !== null) {
+          console.log(rightOptArr[x].value.split("Opt")[0]);
+          dictionary["rightOptArrAnalytical"][
+            rightOptArr[x].value.split("Option")[0]
+          ] = rightOptArr[x].value;
+        }
+      }
+    } else {
+      dictionary[document.getElementById("qsSetQs").name] =
+        document.getElementById("qsSetQs").value;
 
-      dictionary[document.getElementById("qsSetTestCase1Input").name] =
-        document.getElementById("qsSetTestCase1Input").value;
-      dictionary[document.getElementById("qsSetTestCase1Output").name] =
-        document.getElementById("qsSetTestCase1Output").value;
-      dictionary[document.getElementById("qsSetTestCase2Input").name] =
-        document.getElementById("qsSetTestCase2Input").value;
-      dictionary[document.getElementById("qsSetTestCase2Output").name] =
-        document.getElementById("qsSetTestCase2Output").value;
-      dictionary[document.getElementById("qsSetTestCase3Input").name] =
-        document.getElementById("qsSetTestCase3Input").value;
-      dictionary[document.getElementById("qsSetTestCase3Output").name] =
-        document.getElementById("qsSetTestCase3Output").value;
-    }
-    var rightOpt = document.querySelector('input[name="correctOpt"]:checked');
+      if (parseInt(location.state.sid) === 5) {
+        dictionary[document.getElementById("qsSetInputFormat").name] =
+          document.getElementById("qsSetInputFormat").value;
+        dictionary[document.getElementById("qsSetOutputFormat").name] =
+          document.getElementById("qsSetOutputFormat").value;
+        dictionary[document.getElementById("qsSetConstraints").name] =
+          document.getElementById("qsSetConstraints").value;
+        dictionary[document.getElementById("qsSetSampleInput").name] =
+          document.getElementById("qsSetSampleInput").value;
+        dictionary[document.getElementById("qsSetSampleOutput").name] =
+          document.getElementById("qsSetSampleOutput").value;
+        dictionary[document.getElementById("qsSetExplanation").name] =
+          document.getElementById("qsSetExplanation").value || "";
 
-    if (rightOpt !== null) {
-      dictionary["rightOpt"] = rightOpt.value;
+        dictionary[document.getElementById("qsSetTestCase1Input").name] =
+          document.getElementById("qsSetTestCase1Input").value;
+        dictionary[document.getElementById("qsSetTestCase1Output").name] =
+          document.getElementById("qsSetTestCase1Output").value;
+        dictionary[document.getElementById("qsSetTestCase2Input").name] =
+          document.getElementById("qsSetTestCase2Input").value;
+        dictionary[document.getElementById("qsSetTestCase2Output").name] =
+          document.getElementById("qsSetTestCase2Output").value;
+        dictionary[document.getElementById("qsSetTestCase3Input").name] =
+          document.getElementById("qsSetTestCase3Input").value;
+        dictionary[document.getElementById("qsSetTestCase3Output").name] =
+          document.getElementById("qsSetTestCase3Output").value;
+      }
+      var rightOpt = document.querySelector('input[name="correctOpt"]:checked');
+
+      if (rightOpt !== null) {
+        dictionary["rightOpt"] = rightOpt.value;
+      }
     }
     for (var x = 0; x < e.target.length; x++) {
       if (
@@ -121,6 +163,13 @@ function SetQuestion() {
         e.target[x] instanceof HTMLSelectElement
       ) {
         if (e.target[x].name !== "type") {
+          if (isAnalytical) {
+            console.log(e.target[x].name.split("Option")[0]);
+            var key = e.target[x].name.split("Option")[0].toString();
+            if (key in dictionary["qsDict"]) {
+              dictionary["qsDict"][key].options.push(e.target[x].name);
+            }
+          }
           dictionary[e.target[x].name] = e.target[x].value;
         } else {
           if (e.target[x].value == "Easy") {
@@ -138,18 +187,31 @@ function SetQuestion() {
       navigate("/admin/newTest", { state: { sid: location.state.sid - 1 } });
     });
   }
+  function delOptInSubQs(e, pId, qsId, questionIndex) {
+    para_qs[questionIndex].options.pop();
+    set_rerenderState(true);
+  }
+  function addOptInSubQs(e, pId, qsId, questionIndex) {
+    para_qs[questionIndex].options.push({
+      title: "New Opt",
+      id: -1,
+      paraqs: qsId,
+    });
+    set_rerenderState(true);
+  }
   function delOpt(e) {
     setOpt(
       opt.filter(function (item, index) {
-        console.log(index + 1);
-        console.log(opt.length);
         return opt.length !== index + 1;
       })
     );
   }
+  function delParaQs(e) {
+    para_qs.pop();
+    set_rerenderState(true);
+  }
   function addOpt(e) {
     setCountOpt(countOpt + 1);
-    console.log("Add opt clicked");
     setOpt(function (oldArray) {
       if (oldArray !== undefined) {
         return [
@@ -217,10 +279,17 @@ function SetQuestion() {
       }
     });
   }
+  function addParaQs(e) {
+    let noElementInDiv = $(`.qsArr > div`).length + 1 || 1;
+    para_qs.push({
+      question: "New Question",
+      paraQsId: noElementInDiv,
+      options: [],
+    });
+    set_rerenderState(true);
+  }
 
   function delQuestion(e) {
-    //Alankrit
-    //array to del from  ---> navArray
     var elCheckBox = document.getElementsByClassName("styled-checkbox");
     var $boxes = $("input[name=styleCheckBox]:checked");
 
@@ -236,10 +305,8 @@ function SetQuestion() {
             // Do stuff here with this
             var val = $boxes[item].value;
             val = val.split("CheckBox")[1];
-            console.log(val);
             a.push(parseInt(val));
           });
-          alert(location.state.sid);
           axiosInstance
             .post("api/admin/delQs", {
               data: { delQs: a, sid: location.state.sid },
@@ -258,13 +325,9 @@ function SetQuestion() {
     }
   }
   function fillData(e) {
-    console.log(e);
-    console.log("acacsasc");
-    console.log(e.target.id);
-    console.log("acacsasc");
     document.getElementById("sbForm").reset();
     if (e.target.id.toString() !== "questionNew") {
-      if (location.state.sid !== 5) {
+      if (location.state.sid !== 5 && location.state.sid !== 6) {
         setCurrentQs(navArray[e.target.id].ques);
         setCurrentQsID(navArray[e.target.id].id);
         setOpt(navArray[e.target.id].options);
@@ -314,12 +377,15 @@ function SetQuestion() {
           setTestCaseInput3("");
           setTestCaseOutput3("");
         }
+      } else if (location.state.sid === 6) {
+        setCurrentQsID(navArray[e.target.id].paraId);
+        set_para_title(navArray[e.target.id].title);
+        set_para(navArray[e.target.id].para);
+        set_para_qs(navArray[e.target.id].questions);
       }
     }
   }
   function reportWindowSize(e) {
-    alert("lol");
-    console.log(e);
     setWindowHeight(window.screen.height);
   }
 
@@ -347,13 +413,17 @@ function SetQuestion() {
             >
               <div style={{ padding: "20px 36px 0 36px" }}>
                 {!isCoding && (
-                  <div style={{ marginBottom: "20px" }}>
+                  <div
+                    style={{ marginBottom: "20px" }}
+                    hidden={isAnalytical ? true : false}
+                  >
                     <div class="form-group">
                       <label for="selectSetQs">Type :</label>
                       <select
                         class="form-select"
                         name="type"
                         aria-label="Default select example"
+                        hidden={isAnalytical ? true : false}
                         disabled={!isUpdate}
                       >
                         <option
@@ -381,8 +451,102 @@ function SetQuestion() {
                     </div>
                   </div>
                 )}
+                {isAnalytical && (
+                  <>
+                    {isNew && currentQsNo === navArray.length && (
+                      <>
+                        <div class="form-group">
+                          <label for="paragraphTitle">Paragraph Title : </label>
+                          <textarea
+                            class="form-control form-field style-4"
+                            disabled={!isUpdate}
+                            defaultValue={""}
+                            form="sbForm"
+                            name={`paragraphTitle`}
+                            id="paragraphTitle"
+                            placeholder="Enter Paragraph Title"
+                            rows="1"
+                            style={{ maxWidth: "100%", resize: "none" }}
+                            required
+                          ></textarea>
+                        </div>
+                        <div class="form-group">
+                          <label for="paragraph">Paragraph : </label>
+                          <textarea
+                            class="form-control form-field style-4"
+                            disabled={!isUpdate}
+                            defaultValue={""}
+                            form="sbForm"
+                            name={`paragraph`}
+                            id="paragraph"
+                            placeholder="Enter Paragraph"
+                            rows="4"
+                            style={{ maxWidth: "100%" }}
+                            required
+                          ></textarea>
+                        </div>
+                        <div className="qsArr">
+                          <AnalyticalQsComp
+                            para_qs={para_qs}
+                            currentQsID={currentQsID}
+                            isUpdate={isUpdate}
+                            addOptInSubQs={addOptInSubQs}
+                            delOptInSubQs={delOptInSubQs}
+                            set_rerenderState={set_rerenderState}
+                            rerenderState={rerenderState}
+                          ></AnalyticalQsComp>
+                        </div>
+                      </>
+                    )}
+                    {!isNew && (
+                      <>
+                        <div class="form-group">
+                          <label for="paragraphTitle">Paragraph Title : </label>
+                          <textarea
+                            class="form-control form-field style-4"
+                            disabled={!isUpdate}
+                            defaultValue={para_title}
+                            form="sbForm"
+                            name={`paragraphTitle`}
+                            id="paragraphTitle"
+                            placeholder="Enter Paragraph Title"
+                            rows="1"
+                            style={{ maxWidth: "100%", resize: "none" }}
+                            required
+                          ></textarea>
+                        </div>
+                        <div class="form-group">
+                          <label for="paragraph">Paragraph : </label>
+                          <textarea
+                            class="form-control form-field style-4"
+                            disabled={!isUpdate}
+                            defaultValue={para}
+                            form="sbForm"
+                            name={`paragraph`}
+                            id="paragraph"
+                            placeholder="Enter Paragraph"
+                            rows="4"
+                            style={{ maxWidth: "100%" }}
+                            required
+                          ></textarea>
+                        </div>
+                        <div className="qsArr">
+                          <AnalyticalQsComp
+                            para_qs={para_qs}
+                            currentQsID={currentQsID}
+                            isUpdate={isUpdate}
+                            addOptInSubQs={addOptInSubQs}
+                            delOptInSubQs={delOptInSubQs}
+                            set_rerenderState={set_rerenderState}
+                            rerenderState={rerenderState}
+                          ></AnalyticalQsComp>
+                        </div>
+                      </>
+                    )}
+                  </>
+                )}
                 <Row>
-                  {!isNew && (
+                  {!isNew && !isAnalytical && (
                     <div class="form-group">
                       <label for="qsSetQs">Question : </label>
                       <textarea
@@ -399,7 +563,7 @@ function SetQuestion() {
                       ></textarea>
                     </div>
                   )}
-                  {isNew && currentQsNo === navArray.length && (
+                  {isNew && !isAnalytical && currentQsNo === navArray.length && (
                     <div class="form-group">
                       <label for="qsSetQs">Question : </label>
                       <textarea
@@ -428,7 +592,6 @@ function SetQuestion() {
                     }}
                     id="style-4"
                   >
-                    {console.log(opt)}
                     {opt !== undefined &&
                       opt.map((x, index) => {
                         return (
@@ -1031,7 +1194,7 @@ function SetQuestion() {
                   <button
                     class="btn"
                     type="button"
-                    onClick={(e) => addOpt(e)}
+                    onClick={(e) => (isAnalytical ? addParaQs(e) : addOpt(e))}
                     style={{
                       backgroundColor: "#10B65C",
                       borderRadius: "100px",
@@ -1044,7 +1207,7 @@ function SetQuestion() {
                   <button
                     class="btn"
                     type="button"
-                    onClick={(e) => delOpt(e)}
+                    onClick={(e) => (isAnalytical ? delParaQs(e) : delOpt(e))}
                     style={{
                       backgroundColor: "#10B65C",
                       borderRadius: "100px",
@@ -1061,7 +1224,9 @@ function SetQuestion() {
                   class="btn"
                   type="button"
                   onClick={(e) => {
-                    if (window.confirm("Do you want to update ?")) {
+                    if (
+                      !window.confirm("Do you want to discard these changes?")
+                    ) {
                       // Save it!
                       var ele = document.getElementById("actionBut");
                       ele.focus();
@@ -1143,7 +1308,6 @@ function SetQuestion() {
                       navArray.map((ittr, index) => {
                         return (
                           <>
-                            {console.log(ittr)}
                             <div
                               style={{
                                 boxShadow: `rgba(0, 0, 0, 0.02) 0 1px 3px 0`,
@@ -1178,7 +1342,9 @@ function SetQuestion() {
                                       overflow: "hidden",
                                     }}
                                   >
-                                    {isCoding
+                                    {isAnalytical
+                                      ? ittr.title
+                                      : isCoding
                                       ? ittr.question || "New Qs"
                                       : ittr.ques || "New Qs"}
                                   </div>
@@ -1191,7 +1357,16 @@ function SetQuestion() {
                     {navArray !== undefined && navArray.length === 0
                       ? (setIsNew(true),
                         setIsUpdate(true),
-                        setNavArray((prev) => [...prev, -1]),
+                        isAnalytical
+                          ? setNavArray((prev) => [
+                              ...prev,
+                              {
+                                title: "New Question",
+                                paraId: "New",
+                                quetions: [],
+                              },
+                            ])
+                          : setNavArray((prev) => [...prev, -1]),
                         setCurrentQsNo(navArray.length + 1),
                         setCurrentQsID("New"),
                         setOpt([]))
@@ -1207,7 +1382,6 @@ function SetQuestion() {
                       padding: "10px 10px 0 10px",
                     }}
                   >
-                    {" "}
                     Question Navigator
                     <button
                       class="btn"
@@ -1232,7 +1406,6 @@ function SetQuestion() {
                       navArray.map((ittr, index) => {
                         return (
                           <>
-                            {console.log(ittr)}
                             <div
                               style={{
                                 boxShadow: `rgba(0, 0, 0, 0.02) 0 1px 3px 0`,
@@ -1245,6 +1418,7 @@ function SetQuestion() {
                                 color: `rgba(0, 0, 0, 0.85)`,
                               }}
                             >
+                              {console.log(navArray)}
                               <Row>
                                 <Col md={1}>
                                   <input
@@ -1254,7 +1428,11 @@ function SetQuestion() {
                                     id={`styled-checkbox-${index}`}
                                     type="checkbox"
                                     onClick={(e) => {}}
-                                    value={`valueCheckBox${ittr.id}`}
+                                    value={
+                                      isAnalytical
+                                        ? `valueCheckBox${ittr.paraId}`
+                                        : `valueCheckBox${ittr.id}`
+                                    }
                                   />
                                 </Col>
                                 <Col md={11}>
@@ -1268,7 +1446,9 @@ function SetQuestion() {
                                       overflow: "hidden",
                                     }}
                                   >
-                                    {isCoding
+                                    {isAnalytical
+                                      ? ittr.title
+                                      : isCoding
                                       ? ittr.question || "New Qs"
                                       : ittr.ques || "New Qs"}
                                   </div>
@@ -1325,9 +1505,15 @@ function SetQuestion() {
               onClick={(e) => {
                 setIsNew(true);
                 setIsUpdate(true);
-                setNavArray((prev) => [...prev, -1]);
+                isAnalytical
+                  ? setNavArray((prev) => [
+                      ...prev,
+                      { title: "New Question", paraId: "New", quetions: [] },
+                    ])
+                  : setNavArray((prev) => [...prev, -1]);
                 setCurrentQsNo(navArray.length + 1);
                 setCurrentQsID("New");
+                set_para_qs([]);
                 setOpt([]);
               }}
             >

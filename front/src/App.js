@@ -50,7 +50,6 @@ function App() {
               <h5 className="it">INFORMATION TECHNOLOGY</h5>
             </div>
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
         </Navbar>
         <Row style={{ margin: "20px 0 0 0" }}>
           <Col style={{ padding: "10px 90px" }}>
@@ -93,8 +92,12 @@ function App() {
                   element={<ViewSchdlTest />}
                 />
                 <Route path="/admin/compiler" exact element={<Compiler />} />
-                <Route path="/per" exact element={<Personality/>} />
-                <Route path="/per/result" exact element={<PersonalityResultComp/>} />
+                <Route path="/per" exact element={<Personality />} />
+                <Route
+                  path="/per/result"
+                  exact
+                  element={<PersonalityResultComp />}
+                />
               </Routes>
             </Router>
           </Col>

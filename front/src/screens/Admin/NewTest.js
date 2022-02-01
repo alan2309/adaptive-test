@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router";
 import Clock from "../../img/Clock.svg";
@@ -17,7 +17,7 @@ function NewTest() {
   const [hard, setHard] = useState([]);
   const [qs, setQs] = useState(0);
   const [axData, setAxData] = useState({});
-  const [tests,setTests] = useState([])
+  const [tests, setTests] = useState([]);
 
   const [aptDic, setAptDic] = useState({ time: "00:00:20", totalQs: 1 });
   const [CFDic, setCFDic] = useState({ time: "00:00:20", totalQs: 1 });
@@ -37,16 +37,65 @@ function NewTest() {
   const [tName, setTName] = useState();
   const [sid, setSid] = useState(0);
   //
-
   const location = useLocation();
   const navigate = useNavigate();
 
-  function checkOngoing(){
-    let current=new Date();
-    for(let i=0;i<tests.length;i++){
+  useEffect(() => {
+    var ssid;
+    if (localStorage.getItem("isNewTestReload") !== null) {
+      ssid = 0;
+      setSid(ssid + 1);
+    } else {
+      localStorage.setItem("isNewTestReload", false);
+      ssid = location.state.sid;
+      setSid(ssid + 1);
+    }
+    const data = async () =>
+      await axios
+        .get(`http://127.0.0.1:8000/api/subs`)
+        .then((res) => {
+          var d = res.data.data;
+          console.log(d);
+          setAxData(d);
+          //For Aptitude
+          var Wssid = sidFunc(ssid);
+          console.log(d[Wssid]);
+          setSectionName(Wssid);
+          setEasy(d[Wssid].easy);
+          setHard(d[Wssid].hard);
+          setMed(d[Wssid].medium);
+          setQs(d[Wssid].qs);
+          //setTime(d[Wssid].time)
+          if (d[Wssid].medium.length !== 0) {
+            setCurrentDic(aptDic);
+          } else {
+            setCurrentDic({ time: "00:00:20", totalQs: 0 });
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    const getTest = async () => {
+      await axios
+        .get("http://127.0.0.1:8000/api/admin/tests")
+        .then((res) => {
+          let ar = [];
+          let st = res.data.stests;
+          let ut = res.data.utests;
+          setTests(ar.concat(st, ut));
+        })
+        .catch((e) => console.log(e));
+    };
+    getTest();
+    data();
+  }, []);
+
+  function checkOngoing() {
+    let current = new Date();
+    for (let i = 0; i < tests.length; i++) {
       let ss = new Date(tests[i].test_start).getTime();
       let ee = new Date(tests[i].test_end).getTime();
-      if(current.getTime()>=ss && current.getTime()<=ee){
+      if (current.getTime() >= ss && current.getTime() <= ee) {
         return 1;
       }
     }
@@ -55,50 +104,53 @@ function NewTest() {
 
   function saveTest(e) {
     e.preventDefault();
-    let sx = new Date(sDate)
-    let ex = new Date(eDate)
-    if(!checkOngoing()){
-    if(ex.getTime() > sx.getTime()){
-      if(!clash(sx.getTime(),ex.getTime())){
-    let creaTest = { testName: tName, sTime: sDate, eTime: eDate };
-    console.log(creaTest);
-    let a = [
-      { sub: "Aptitude", time: aptDic.time, totalQs: aptDic.totalQs },
-      {
-        sub: "Computer Fundamentals",
-        time: CFDic.time,
-        totalQs: CFDic.totalQs,
-      },
-      { sub: "Domain", time: DDic.time, totalQs: DDic.totalQs },
-      { sub: "Personality", time: PDic.time, totalQs: PDic.totalQs },
-      { sub: "Coding", time: CDic.time, totalQs: CDic.totalQs },
-      { sub: "Analytical Writing", time: AWDic.time, totalQs: AWDic.totalQs },
-    ];
-    axiosInstance
-      .post("api/admin/saveTest", {
-        data: { saveTest: a, createTest: creaTest },
-      })
-      .then((res) => {
-        navigate("/admin/home");
-      });
-    }else{
-      alert('This test will clash with an existing test')
+    let sx = new Date(sDate);
+    let ex = new Date(eDate);
+    if (!checkOngoing()) {
+      if (ex.getTime() > sx.getTime()) {
+        if (!clash(sx.getTime(), ex.getTime())) {
+          let creaTest = { testName: tName, sTime: sDate, eTime: eDate };
+          console.log(creaTest);
+          let a = [
+            { sub: "Aptitude", time: aptDic.time, totalQs: aptDic.totalQs },
+            {
+              sub: "Computer Fundamentals",
+              time: CFDic.time,
+              totalQs: CFDic.totalQs,
+            },
+            { sub: "Domain", time: DDic.time, totalQs: DDic.totalQs },
+            { sub: "Personality", time: PDic.time, totalQs: PDic.totalQs },
+            { sub: "Coding", time: CDic.time, totalQs: CDic.totalQs },
+            {
+              sub: "Analytical Writing",
+              time: AWDic.time,
+              totalQs: AWDic.totalQs,
+            },
+          ];
+          axiosInstance
+            .post("api/admin/saveTest", {
+              data: { saveTest: a, createTest: creaTest },
+            })
+            .then((res) => {
+              navigate("/admin/home");
+            });
+        } else {
+          alert("This test will clash with an existing test");
+        }
+      } else {
+        alert("Start time should be less than End time");
+      }
+    } else {
+      alert("Cannot save another test while one test is ongoing");
     }
-  }else{
-    alert('Start time should be less than End time')
   }
-  }else{
-   alert('Cannot save another test while one test is ongoing')
-  }
-  }
-  function clash(stx,etx){
-    for(let i=0;i<tests.length;i++){
+  function clash(stx, etx) {
+    for (let i = 0; i < tests.length; i++) {
       let ss = new Date(tests[i].test_start).getTime();
       let ee = new Date(tests[i].test_end).getTime();
-      if(stx>=ss && stx<=ee || etx>=ss && etx<=ee){
+      if ((stx >= ss && stx <= ee) || (etx >= ss && etx <= ee)) {
         return 1;
-      }
-      else if(ss>=stx && ss<=etx || ee>stx && ee<=etx){
+      } else if ((ss >= stx && ss <= etx) || (ee > stx && ee <= etx)) {
         return 1;
       }
     }
@@ -172,56 +224,6 @@ function NewTest() {
     });
   });
 
-  useEffect(() => {
-    var ssid;
-    if (localStorage.getItem("isNewTestReload") !== null) {
-      ssid = 0;
-      setSid(ssid + 1);
-    } else {
-      localStorage.setItem("isNewTestReload", false);
-      ssid = location.state.sid;
-      setSid(ssid + 1);
-    }
-
-    const data = async () =>
-      await axios
-        .get(`http://127.0.0.1:8000/api/subs`)
-        .then((res) => {
-          var d = res.data.data;
-          console.log(d);
-          setAxData(d);
-
-          //For Aptitude
-          var Wssid = sidFunc(ssid);
-          console.log(d[Wssid]);
-          setSectionName(Wssid);
-          setEasy(d[Wssid].easy);
-          setHard(d[Wssid].hard);
-          setMed(d[Wssid].medium);
-          setQs(d[Wssid].qs);
-          //setTime(d[Wssid].time)
-          if (d[Wssid].medium.length !== 0) {
-            setCurrentDic(aptDic);
-          } else {
-            setCurrentDic({ time: "00:00:20", totalQs: 0 });
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-        const getTest = async()=>{
-          await axios.get('http://127.0.0.1:8000/api/admin/tests')
-          .then(res=>{
-            let ar = []
-            let st = res.data.stests
-            let ut = res.data.utests
-            setTests(ar.concat(st,ut))
-          })
-          .catch(e=>console.log(e)) 
-        }
-        getTest();
-    data();
-  }, []);
   return (
     <>
       <form onSubmit={saveTest}>
@@ -342,280 +344,554 @@ function NewTest() {
             </div>
           </Col>
           <Col>
-            <div className="mainRec">
-              <div className="AdminSetSection">
+            <div
+              className="mainRec"
+              style={{
+                height: sid === 6 ? 310 : 460,
+                marginTop: sid === 6 ? "50px" : "0",
+              }}
+            >
+              <div
+                className="AdminSetSection"
+                style={{ marginBottom: sid === 6 ? "70px" : "0" }}
+              >
                 <div className="basicRec secNm">{sectionName}</div>
                 <Row style={{ margin: "24px 0", padding: "0px 0px" }}>
-                  <Col style={{ padding: "0px" }}>
+                  <Col
+                    md={6}
+                    className="onHoverDiv"
+                    style={{ padding: "0px" }}
+                    onClick={(e) => {
+                      if (parseInt(sid - 1) === 5) {
+                        navigate("/admin/setQs", {
+                          state: {
+                            type: "Medium",
+                            sectionName: sectionName,
+                            sid: sid,
+                            navArr: med,
+                          },
+                        });
+                      }
+                    }}
+                  >
                     <div className="basicRec avQs">
-                      Available Question
-                      <Row style={{ padding: "20px 10px 0px 40px" }}>
-                        <Col>
-                          <Row className="remQs">{easy.length}</Row>
-                        </Col>
-                        <Col>
-                          <Row className="remQs">{med.length}</Row>
-                        </Col>
-                        <Col>
-                          <Row className="remQs">{hard.length}</Row>
-                        </Col>
-                      </Row>
-                      <Row style={{ padding: "0px 15px 0px 30px" }}>
-                        <Col style={{ padding: "0px 0px 0px 15px" }}>Easy</Col>
-                        <Col>Medium</Col>
-                        <Col>
-                          <Row style={{ padding: "0px 0px 0px 15px" }}>
-                            Hard
+                      Available{" "}
+                      {parseInt(sid - 1) !== 5 ? "Question" : "Paragraph"}
+                      {sid - 1 !== 5 && (
+                        <>
+                          <Row style={{ padding: "20px 10px 0px 40px" }}>
+                            <Col>
+                              <Row className="remQs">{easy.length}</Row>
+                            </Col>
+                            <Col>
+                              <Row className="remQs">{med.length}</Row>
+                            </Col>
+                            <Col>
+                              <Row className="remQs">{hard.length}</Row>
+                            </Col>
                           </Row>
-                        </Col>
-                      </Row>
+                          <Row style={{ padding: "0px 15px 0px 30px" }}>
+                            <Col style={{ padding: "0px 0px 0px 15px" }}>
+                              Easy
+                            </Col>
+                            <Col>Medium</Col>
+                            <Col>
+                              <Row style={{ padding: "0px 0px 0px 15px" }}>
+                                Hard
+                              </Row>
+                            </Col>
+                          </Row>
+                        </>
+                      )}
+                      {sid - 1 === 5 && (
+                        <div style={{ marginLeft: "20%" }}>
+                          <Row style={{ padding: "20px 10px 0px 40px" }}>
+                            <Col>
+                              <Row
+                                className="remQs"
+                                style={{ paddingLeft: "22%" }}
+                              >
+                                {med.length}
+                              </Row>
+                            </Col>
+                          </Row>
+                        </div>
+                      )}
                     </div>
                   </Col>
-                  <Col style={{ padding: "0px" }}>
-                    <Row>
-                      <Col>
-                        <div
-                          className="basicRec easyMedHard"
-                          style={{ marginBottom: "28px", padding: "11px 10px" }}
-                          onClick={(e) => {
-                            navigate("/admin/setQs", {
-                              state: {
-                                type: "Easy",
-                                sectionName: sectionName,
-                                sid: sid,
-                                navArr: easy,
-                              },
-                            });
-                          }}
-                        >
-                          Easy
-                        </div>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <div
-                          className="basicRec easyMedHard"
-                          style={{ marginBottom: "28px", padding: "11px 10px" }}
-                          onClick={(e) => {
-                            navigate("/admin/setQs", {
-                              state: {
-                                type: "Medium",
-                                sectionName: sectionName,
-                                sid: sid,
-                                navArr: med,
-                              },
-                            });
-                          }}
-                        >
-                          Medium
-                        </div>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <div
-                          className="basicRec easyMedHard"
-                          style={{ padding: "11px 10px" }}
-                          onClick={(e) => {
-                            navigate("/admin/setQs", {
-                              state: {
-                                type: "Hard",
-                                sectionName: sectionName,
-                                sid: sid,
-                                navArr: hard,
-                              },
-                            });
-                          }}
-                        >
-                          Hard
-                        </div>
-                      </Col>
-                    </Row>
+                  <Col md={6} style={{ padding: "0px" }}>
+                    {sid - 1 !== 5 && (
+                      <>
+                        <Row>
+                          <Col>
+                            <div
+                              className="basicRec easyMedHard"
+                              style={{
+                                marginBottom: "28px",
+                                padding: "11px 10px",
+                              }}
+                              onClick={(e) => {
+                                navigate("/admin/setQs", {
+                                  state: {
+                                    type: "Easy",
+                                    sectionName: sectionName,
+                                    sid: sid,
+                                    navArr: easy,
+                                  },
+                                });
+                              }}
+                            >
+                              Easy
+                            </div>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col>
+                            <div
+                              className="basicRec easyMedHard"
+                              style={{
+                                marginBottom: "28px",
+                                padding: "11px 10px",
+                              }}
+                              onClick={(e) => {
+                                navigate("/admin/setQs", {
+                                  state: {
+                                    type: "Medium",
+                                    sectionName: sectionName,
+                                    sid: sid,
+                                    navArr: med,
+                                  },
+                                });
+                              }}
+                            >
+                              Medium
+                            </div>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col>
+                            <div
+                              className="basicRec easyMedHard"
+                              style={{ padding: "11px 10px" }}
+                              onClick={(e) => {
+                                navigate("/admin/setQs", {
+                                  state: {
+                                    type: "Hard",
+                                    sectionName: sectionName,
+                                    sid: sid,
+                                    navArr: hard,
+                                  },
+                                });
+                              }}
+                            >
+                              Hard
+                            </div>
+                          </Col>
+                        </Row>
+                      </>
+                    )}
+                    {parseInt(sid - 1) === 5 && (
+                      <>
+                        <Row style={{ margin: "10px 0" }}>
+                          <Col style={{ padding: "0px" }}>
+                            <div
+                              className="basicRec secNm"
+                              style={{
+                                margin: "0 3px 0px 3px",
+                                width: "100%",
+                                padding: "11px 10px",
+                              }}
+                            >
+                              <TimeField
+                                showSeconds
+                                className="timeFieldInput"
+                                id="timeFieldInput1"
+                                minTime="00:00:20"
+                                onChange={(e, value) => {
+                                  console.log(e.target.value);
+                                  var hms = e.target.value; // your input string
+                                  var a = hms.split(":"); // split it at the colons
+
+                                  // minutes are worth 60 seconds. Hours are worth 60 minutes.
+                                  var seconds =
+                                    +a[0] * 60 * 60 + +a[1] * 60 + +a[2];
+
+                                  console.log(seconds);
+                                  if (seconds > 19) {
+                                    if (sid - 1 === 1) {
+                                      setCFDic({
+                                        time: e.target.value,
+                                        totalQs: CurrentDic.totalQs,
+                                      });
+                                    } else if (sid - 1 === 2) {
+                                      setDDic({
+                                        time: e.target.value,
+                                        totalQs: CurrentDic.totalQs,
+                                      });
+                                    } else if (sid - 1 === 3) {
+                                      setPDic({
+                                        time: e.target.value,
+                                        totalQs: CurrentDic.totalQs,
+                                      });
+                                    } else if (sid - 1 == 4) {
+                                      setCDic({
+                                        time: e.target.value,
+                                        totalQs: CurrentDic.totalQs,
+                                      });
+                                    } else if (sid - 1 == 5) {
+                                      setAWDic({
+                                        time: e.target.value,
+                                        totalQs: CurrentDic.totalQs,
+                                      });
+                                    } else if (sid - 1 === 0) {
+                                      setAptDic({
+                                        time: e.target.value,
+                                        totalQs: CurrentDic.totalQs,
+                                      });
+                                    }
+                                    setCurrentDic({
+                                      time: e.target.value,
+                                      totalQs: CurrentDic.totalQs,
+                                    });
+                                  } else {
+                                    alert("Minimum time should be 20 secs");
+
+                                    if (sid - 1 === 1) {
+                                      setCFDic({
+                                        time: "00:59:59",
+                                        totalQs: CurrentDic.totalQs,
+                                      });
+                                    } else if (sid - 1 === 2) {
+                                      setDDic({
+                                        time: "00:59:59",
+                                        totalQs: CurrentDic.totalQs,
+                                      });
+                                    } else if (sid - 1 === 3) {
+                                      setPDic({
+                                        time: "00:59:59",
+                                        totalQs: CurrentDic.totalQs,
+                                      });
+                                    } else if (sid - 1 == 4) {
+                                      setCDic({
+                                        time: "00:59:59",
+                                        totalQs: CurrentDic.totalQs,
+                                      });
+                                    } else if (sid - 1 == 5) {
+                                      setAWDic({
+                                        time: "00:59:59",
+                                        totalQs: CurrentDic.totalQs,
+                                      });
+                                    } else if (sid - 1 === 0) {
+                                      setAptDic({
+                                        time: "00:59:59",
+                                        totalQs: CurrentDic.totalQs,
+                                      });
+                                    }
+                                    setCurrentDic({
+                                      time: "00:59:59",
+                                      totalQs: CurrentDic.totalQs,
+                                    });
+                                  }
+                                }}
+                                style={{ width: "80px", border: "none" }}
+                                value={CurrentDic.time}
+                              />
+                              <img
+                                style={{ height: "25px", float: "right" }}
+                                alt="logo"
+                                src={Clock}
+                                onClick={(e) => {
+                                  document
+                                    .getElementById("timeFieldInput1")
+                                    .focus();
+                                }}
+                              ></img>{" "}
+                            </div>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col style={{ padding: "0px" }}>
+                            <div
+                              className="basicRec secNm"
+                              style={{
+                                padding: "11px 10px",
+                                margin: "20px 0px 0px 15px",
+                                width: "95%",
+                              }}
+                            >
+                              Total number of questions:{" "}
+                              <input
+                                type="number"
+                                style={{
+                                  maxWidth: "60px",
+                                  background: "rgba(0,0,0,0)",
+                                }}
+                                onChange={(e) => {
+                                  console.log(e.target.valueAsNumber);
+                                  console.log(sid - 1);
+                                  console.log(
+                                    Math.min(
+                                      easy.length,
+                                      med.length,
+                                      hard.length
+                                    )
+                                  );
+                                  if (
+                                    0 <= e.target.valueAsNumber &&
+                                    e.target.valueAsNumber <=
+                                      (Math.min(
+                                        easy.length,
+                                        med.length,
+                                        hard.length
+                                      ) || med.length > 0
+                                        ? med.length
+                                        : 0)
+                                  ) {
+                                    if (sid - 1 === 1) {
+                                      setCFDic({
+                                        time: CurrentDic.time,
+                                        totalQs: e.target.valueAsNumber,
+                                      });
+                                    } else if (sid - 1 === 2) {
+                                      setDDic({
+                                        time: CurrentDic.time,
+                                        totalQs: e.target.valueAsNumber,
+                                      });
+                                    } else if (sid - 1 === 3) {
+                                      setPDic({
+                                        time: CurrentDic.time,
+                                        totalQs: e.target.valueAsNumber,
+                                      });
+                                    } else if (sid - 1 == 4) {
+                                      setCDic({
+                                        time: CurrentDic.time,
+                                        totalQs: e.target.valueAsNumber,
+                                      });
+                                    } else if (sid - 1 == 5) {
+                                      setAWDic({
+                                        time: CurrentDic.time,
+                                        totalQs: e.target.valueAsNumber,
+                                      });
+                                    } else if (sid - 1 === 0) {
+                                      setAptDic({
+                                        time: CurrentDic.time,
+                                        totalQs: e.target.valueAsNumber,
+                                      });
+                                    }
+                                    setCurrentDic({
+                                      time: CurrentDic.time,
+                                      totalQs: e.target.valueAsNumber,
+                                    });
+                                  }
+                                }}
+                                value={
+                                  sid === 6 || sid === 5 || sid === 4
+                                    ? sid === 6 || sid === 5
+                                      ? 3
+                                      : 75
+                                    : CurrentDic.totalQs
+                                }
+                              />
+                            </div>
+                          </Col>
+                        </Row>
+                      </>
+                    )}
                   </Col>
                 </Row>
-                <Row style={{ margin: "44px 0" }}>
-                  {" "}
-                  <Col>
-                    <div
-                      className="basicRec easyMedHard"
-                      style={{
-                        marginBottom: "28px",
-                        width: "90%",
-                        padding: "11px 10px",
-                      }}
-                    >
-                      <TimeField
-                        showSeconds
-                        className="timeFieldInput"
-                        id="timeFieldInput1"
-                        minTime="00:00:20"
-                        onChange={(e, value) => {
-                          console.log(e.target.value);
-                          var hms = e.target.value; // your input string
-                          var a = hms.split(":"); // split it at the colons
-
-                          // minutes are worth 60 seconds. Hours are worth 60 minutes.
-                          var seconds = +a[0] * 60 * 60 + +a[1] * 60 + +a[2];
-
-                          console.log(seconds);
-                          if (seconds > 19) {
-                            if (sid - 1 === 1) {
-                              setCFDic({
-                                time: e.target.value,
-                                totalQs: CurrentDic.totalQs,
-                              });
-                            } else if (sid - 1 === 2) {
-                              setDDic({
-                                time: e.target.value,
-                                totalQs: CurrentDic.totalQs,
-                              });
-                            } else if (sid - 1 === 3) {
-                              setPDic({
-                                time: e.target.value,
-                                totalQs: CurrentDic.totalQs,
-                              });
-                            } else if (sid - 1 == 4) {
-                              setCDic({
-                                time: e.target.value,
-                                totalQs: CurrentDic.totalQs,
-                              });
-                            } else if (sid - 1 == 5) {
-                              setAWDic({
-                                time: e.target.value,
-                                totalQs: CurrentDic.totalQs,
-                              });
-                            } else if (sid - 1 === 0) {
-                              setAptDic({
-                                time: e.target.value,
-                                totalQs: CurrentDic.totalQs,
-                              });
-                            }
-                            setCurrentDic({
-                              time: e.target.value,
-                              totalQs: CurrentDic.totalQs,
-                            });
-                          } else {
-                            alert("Minimum time should be 20 secs");
-
-                            if (sid - 1 === 1) {
-                              setCFDic({
-                                time: "00:59:59",
-                                totalQs: CurrentDic.totalQs,
-                              });
-                            } else if (sid - 1 === 2) {
-                              setDDic({
-                                time: "00:59:59",
-                                totalQs: CurrentDic.totalQs,
-                              });
-                            } else if (sid - 1 === 3) {
-                              setPDic({
-                                time: "00:59:59",
-                                totalQs: CurrentDic.totalQs,
-                              });
-                            } else if (sid - 1 == 4) {
-                              setCDic({
-                                time: "00:59:59",
-                                totalQs: CurrentDic.totalQs,
-                              });
-                            } else if (sid - 1 == 5) {
-                              setAWDic({
-                                time: "00:59:59",
-                                totalQs: CurrentDic.totalQs,
-                              });
-                            } else if (sid - 1 === 0) {
-                              setAptDic({
-                                time: "00:59:59",
-                                totalQs: CurrentDic.totalQs,
-                              });
-                            }
-                            setCurrentDic({
-                              time: "00:59:59",
-                              totalQs: CurrentDic.totalQs,
-                            });
-                          }
-                        }}
-                        style={{ width: "80px", border: "none" }}
-                        value={CurrentDic.time}
-                      />
-                      <img
-                        style={{ height: "25px", float: "right" }}
-                        alt="logo"
-                        src={Clock}
-                        onClick={(e) => {
-                          document.getElementById("timeFieldInput1").focus();
-                        }}
-                      ></img>{" "}
-                    </div>
-                  </Col>
-                  <Col style={{ padding: "0px" }}>
-                    <div
-                      className="basicRec secNm"
-                      style={{ marginBottom: "28px", padding: "11px 10px" }}
-                    >
-                      Total number of questions:{" "}
-                      <input
-                        type="number"
+                {parseInt(sid - 1) !== 5 && (
+                  <Row style={{ margin: "44px 0" }}>
+                    {" "}
+                    <Col>
+                      <div
+                        className="basicRec easyMedHard"
                         style={{
-                          maxWidth: "60px",
-                          background: "rgba(0,0,0,0)",
+                          marginBottom: "28px",
+                          width: "90%",
+                          padding: "11px 10px",
                         }}
-                        onChange={(e) => {
-                          console.log(e.target.valueAsNumber);
-                          console.log(sid - 1);
-                          console.log(
-                            Math.min(easy.length, med.length, hard.length)
-                          );
-                          if (
-                            0 <= e.target.valueAsNumber &&
-                            e.target.valueAsNumber <=
-                              (Math.min(easy.length, med.length, hard.length) ||
-                              med.length > 0
-                                ? med.length
-                                : 0)
-                          ) {
-                            if (sid - 1 === 1) {
-                              setCFDic({
-                                time: CurrentDic.time,
-                                totalQs: e.target.valueAsNumber,
+                      >
+                        <TimeField
+                          showSeconds
+                          className="timeFieldInput"
+                          id="timeFieldInput1"
+                          minTime="00:00:20"
+                          onChange={(e, value) => {
+                            console.log(e.target.value);
+                            var hms = e.target.value; // your input string
+                            var a = hms.split(":"); // split it at the colons
+
+                            // minutes are worth 60 seconds. Hours are worth 60 minutes.
+                            var seconds = +a[0] * 60 * 60 + +a[1] * 60 + +a[2];
+
+                            console.log(seconds);
+                            if (seconds > 19) {
+                              if (sid - 1 === 1) {
+                                setCFDic({
+                                  time: e.target.value,
+                                  totalQs: CurrentDic.totalQs,
+                                });
+                              } else if (sid - 1 === 2) {
+                                setDDic({
+                                  time: e.target.value,
+                                  totalQs: CurrentDic.totalQs,
+                                });
+                              } else if (sid - 1 === 3) {
+                                setPDic({
+                                  time: e.target.value,
+                                  totalQs: CurrentDic.totalQs,
+                                });
+                              } else if (sid - 1 == 4) {
+                                setCDic({
+                                  time: e.target.value,
+                                  totalQs: CurrentDic.totalQs,
+                                });
+                              } else if (sid - 1 == 5) {
+                                setAWDic({
+                                  time: e.target.value,
+                                  totalQs: CurrentDic.totalQs,
+                                });
+                              } else if (sid - 1 === 0) {
+                                setAptDic({
+                                  time: e.target.value,
+                                  totalQs: CurrentDic.totalQs,
+                                });
+                              }
+                              setCurrentDic({
+                                time: e.target.value,
+                                totalQs: CurrentDic.totalQs,
                               });
-                            } else if (sid - 1 === 2) {
-                              setDDic({
-                                time: CurrentDic.time,
-                                totalQs: e.target.valueAsNumber,
+                            } else {
+                              alert("Minimum time should be 20 secs");
+
+                              if (sid - 1 === 1) {
+                                setCFDic({
+                                  time: "00:59:59",
+                                  totalQs: CurrentDic.totalQs,
+                                });
+                              } else if (sid - 1 === 2) {
+                                setDDic({
+                                  time: "00:59:59",
+                                  totalQs: CurrentDic.totalQs,
+                                });
+                              } else if (sid - 1 === 3) {
+                                setPDic({
+                                  time: "00:59:59",
+                                  totalQs: CurrentDic.totalQs,
+                                });
+                              } else if (sid - 1 == 4) {
+                                setCDic({
+                                  time: "00:59:59",
+                                  totalQs: CurrentDic.totalQs,
+                                });
+                              } else if (sid - 1 == 5) {
+                                setAWDic({
+                                  time: "00:59:59",
+                                  totalQs: CurrentDic.totalQs,
+                                });
+                              } else if (sid - 1 === 0) {
+                                setAptDic({
+                                  time: "00:59:59",
+                                  totalQs: CurrentDic.totalQs,
+                                });
+                              }
+                              setCurrentDic({
+                                time: "00:59:59",
+                                totalQs: CurrentDic.totalQs,
                               });
-                            } else if (sid - 1 === 3) {
-                              setPDic({
-                                time: CurrentDic.time,
-                                totalQs: e.target.valueAsNumber,
-                              });
-                            } else if (sid - 1 == 4) {
-                              setCDic({
-                                time: CurrentDic.time,
-                                totalQs: e.target.valueAsNumber,
-                              });
-                            } else if (sid - 1 == 5) {
-                              setAWDic({
-                                time: CurrentDic.time,
-                                totalQs: e.target.valueAsNumber,
-                              });
-                            } else if (sid - 1 === 0) {
-                              setAptDic({
+                            }
+                          }}
+                          style={{ width: "80px", border: "none" }}
+                          value={CurrentDic.time}
+                        />
+                        <img
+                          style={{ height: "25px", float: "right" }}
+                          alt="logo"
+                          src={Clock}
+                          onClick={(e) => {
+                            document.getElementById("timeFieldInput1").focus();
+                          }}
+                        ></img>{" "}
+                      </div>
+                    </Col>
+                    <Col style={{ padding: "0px" }}>
+                      <div
+                        className="basicRec secNm"
+                        style={{ marginBottom: "28px", padding: "11px 10px" }}
+                      >
+                        Total number of questions:{" "}
+                        <input
+                          type="number"
+                          style={{
+                            maxWidth: "60px",
+                            background: "rgba(0,0,0,0)",
+                          }}
+                          onChange={(e) => {
+                            console.log(e.target.valueAsNumber);
+                            console.log(sid - 1);
+                            console.log(
+                              Math.min(easy.length, med.length, hard.length)
+                            );
+                            if (
+                              0 <= e.target.valueAsNumber &&
+                              e.target.valueAsNumber <=
+                                (Math.min(
+                                  easy.length,
+                                  med.length,
+                                  hard.length
+                                ) || med.length > 0
+                                  ? med.length
+                                  : 0)
+                            ) {
+                              if (sid - 1 === 1) {
+                                setCFDic({
+                                  time: CurrentDic.time,
+                                  totalQs: e.target.valueAsNumber,
+                                });
+                              } else if (sid - 1 === 2) {
+                                setDDic({
+                                  time: CurrentDic.time,
+                                  totalQs: e.target.valueAsNumber,
+                                });
+                              } else if (sid - 1 === 3) {
+                                setPDic({
+                                  time: CurrentDic.time,
+                                  totalQs: e.target.valueAsNumber,
+                                });
+                              } else if (sid - 1 == 4) {
+                                setCDic({
+                                  time: CurrentDic.time,
+                                  totalQs: e.target.valueAsNumber,
+                                });
+                              } else if (sid - 1 == 5) {
+                                setAWDic({
+                                  time: CurrentDic.time,
+                                  totalQs: e.target.valueAsNumber,
+                                });
+                              } else if (sid - 1 === 0) {
+                                setAptDic({
+                                  time: CurrentDic.time,
+                                  totalQs: e.target.valueAsNumber,
+                                });
+                              }
+                              setCurrentDic({
                                 time: CurrentDic.time,
                                 totalQs: e.target.valueAsNumber,
                               });
                             }
-                            setCurrentDic({
-                              time: CurrentDic.time,
-                              totalQs: e.target.valueAsNumber,
-                            });
+                          }}
+                          value={
+                            sid === 6 || sid === 5 || sid === 4
+                              ? sid === 6 || sid === 5
+                                ? 3
+                                : 75
+                              : CurrentDic.totalQs
                           }
-                        }}
-                        value={CurrentDic.totalQs}
-                      />
-                    </div>
-                  </Col>
-                </Row>
+                        />
+                      </div>
+                    </Col>
+                  </Row>
+                )}
               </div>
 
               <Row style={{ float: "right" }}>
