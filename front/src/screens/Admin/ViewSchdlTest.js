@@ -27,6 +27,26 @@ function ViewSchdlTest() {
           field: 'edate',
         },
         {
+          label: 'Aptitude',
+          field: 'apt',
+        },
+        {
+          label: 'Fundamentals',
+          field: 'fund',
+        },
+        {
+          label: 'Coding',
+          field: 'code',
+        },
+        {
+          label: 'Domain',
+          field: 'dom',
+        },
+        {
+          label: 'Analytical',
+          field: 'analy',
+        },
+        {
           label: 'Marks',
           field: 'marks',
         }
@@ -35,6 +55,11 @@ function ViewSchdlTest() {
         { label: "Student", key: "name" },
         { label: "Start Time", key: "sdate" },
         { label: "End Time", key: "edate" },
+        { label: "Aptitude", key: "apt" },
+        { label: "Fundamentals", key: "fund" },
+        { label: "Coding", key: "code" },
+        { label: "Domain", key: "dom" },
+        { label: "Analytical", key: "analy" },
         { label: "Marks", key: "marks" }
       ];
       

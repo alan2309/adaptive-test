@@ -15,6 +15,7 @@ import random
 from .serializers import CodingTestSerializer, SubjectSerializer,QuestionSerializer, TestSerializer ,ResultSerializer,OptionSerializer
 import math
 from django.db.models import Q
+from dateutil import tz
 CFG = {'DB': None}
 
 @csrf_exempt
@@ -48,14 +49,14 @@ def subqs(request,subject=0):
                     elif x.type==3:
                         c.append(aa)
             
-            return JsonResponse({'qs':sub.sub_qs,'time':sub.sub_time,'easy':a,'medium':b,'hard':c},safe=False)
+            return JsonResponse({'avg':sub.avg_score,'qs':sub.sub_qs,'time':sub.sub_time,'easy':a,'medium':b,'hard':c},safe=False)
         elif int(subject)==4:
             for x in qs:
                 aa={}
                 aa['ques']=x.title
                 aa['id']=x.id
                 a.append(aa)
-            return JsonResponse({'qs':sub.sub_qs,'time':sub.sub_time,'allQs':a},safe=False)
+            return JsonResponse({'qs':sub.sub_qs,'avg':sub.avg_score,'time':sub.sub_time,'allQs':a},safe=False)
 
 @csrf_exempt
 def subs(request):
@@ -173,6 +174,22 @@ def results(request,name):
     user = User.objects.get(username = name) 
     if request.method == 'POST':
         data=JSONParser().parse(request)['data']
+        subs = Subject.objects.all() #change this when we change the model for subjects
+        print(subs)
+        avg_ap,avg_cf,avg_c,avg_d,avg_p,avg_a=0,0,0,0,0,0
+        for sub in subs:
+            if sub.sub_name == 'Aptitude':
+                avg_ap=sub.avg_score
+            elif sub.sub_name == 'Computer Fundamentals':
+                avg_cf =sub.avg_score
+            elif sub.sub_name == 'Coding':
+                avg_c =sub.avg_score    
+            elif sub.sub_name == 'Domain':
+                avg_d =sub.avg_score    
+            elif sub.sub_name == 'Personality':
+                avg_p =sub.avg_score    
+            elif sub.sub_name == 'Analytical Writing':
+                avg_a =sub.avg_score  
         if(user):
             d = datetime.datetime.utcnow()
             try:
@@ -184,8 +201,8 @@ def results(request,name):
                     Results.objects.get(student = user,test=Test.objects.get(id=data['testId'])).delete()
             except Results.DoesNotExist:
                 print('No previous entry')
-            result = Results.objects.create(student = user,startTime = d.time(),test=Test.objects.get(id=data['testId']),
-            marks={"ap":0,'cf':0,'c':0,'d':0,'p':0,'a':0,'apMax':[],'cfMax':[],'cMax':[],'dMax':[],'pMax':[],'aMax':[],'apGot':[],'cfGot':[],'cGot':[],'dGot':[],'pGot':[],'aGot':[]}
+            result = Results.objects.create(student = user,startTime = d,test=Test.objects.get(id=data['testId']),
+            marks={"ap":0,'cf':0,'c':0,'d':0,'p':0,'a':0,"avg_ap":avg_ap,'avg_cf':avg_cf,'avg_c':avg_c,'avg_d':avg_d,'avg_p':avg_p,'avg_a':avg_a,'apMax':[],'cfMax':[],'cMax':[],'dMax':[],'pMax':[],'aMax':[],'apGot':[],'cfGot':[],'cGot':[],'dGot':[],'pGot':[],'aGot':[]}
             )
             result.save()
             return JsonResponse({'resultExists':False},safe=False)
@@ -198,22 +215,43 @@ def results(request,name):
             
             return JsonResponse(data,safe=False)
 
+def converttoist(datex):
+    from_zone = tz.tzutc()
+    to_zone = tz.tzlocal()
+    utc = datetime.datetime.strptime(datex, '%Y-%m-%d %H:%M:%S')
+    
+    # Tell the datetime object that it's in UTC time zone since 
+    # datetime objects are 'naive' by default
+    utc = utc.replace(tzinfo=from_zone)
+    # Convert time zone
+    central = str(utc.astimezone(to_zone))
+    central = central.split('+')[0]
+    central = central.split('T')
+    return central
+
 def chartData(user,testId=-1):
     totalQs=0
-    subs=Subject.objects.all()
+    # subs=Subject.objects.all()
     a=[]
     aa={}
     mrksScored=[]
     mrksScoredPercent=[]
-    for sub in subs:
-        if sub.sub_name!='Personality':
-            totalQs+=sub.sub_qs
-            avgMarks=sub.sub_qs*2*0.7 # 70% average
-            avgMarks=math.ceil(avgMarks)
-            aa[sub.sub_name]=avgMarks
-    a=[aa['Aptitude'],aa['Computer Fundamentals'],aa['Domain'],aa['Coding'],aa['Analytical Writing']]
+    # for sub in subs:
+    #     if sub.sub_name!='Personality':
+    #         totalQs+=sub.sub_qs
+    #         avgMarks=sub.sub_qs*2*0.7 # 70% average
+    #         avgMarks=math.ceil(avgMarks)
+    #         aa[sub.sub_name]=avgMarks
+
+    # a=[aa['Aptitude'],aa['Computer Fundamentals'],aa['Domain'],aa['Coding'],aa['Analytical Writing']]
     try:
         resl=Results.objects.get(student = user,test=Test.objects.get(id=testId))
+        aa['Aptitude']=resl.marks['avg_ap']
+        aa['Computer Fundamentals']=resl.marks['avg_cf']
+        aa['Domain']=resl.marks['avg_d']
+        aa['Coding']=resl.marks['avg_c']
+        aa['Analytical Writing']=resl.marks['avg_a']
+        a=[aa['Aptitude'],aa['Computer Fundamentals'],aa['Domain'],aa['Coding'],aa['Analytical Writing']]
         apMax=1
         cfMax=1
         dMax=1
@@ -252,9 +290,18 @@ def resultTest(request,id):
     for x in a.data:
         c={}
         c['name']=User.objects.get(id=x['student']).username
-        c['sdate']=x['startTime'].split('.')[0]
-        c['edate']=x['endTime'].split('.')[0]
-        c['marks']=x['marks']['ap']+x['marks']['cf']+x['marks']['c']+x['marks']['d']+x['marks']['p']+x['marks']['a']
+        c['sdate']="{0} {1}".format(x['startTime'].split('T')[0],x['startTime'].split('T')[1].split('.')[0])
+        c['sdate'] = converttoist(c['sdate'])
+
+        c['edate']="{0} {1}".format(x['endTime'].split('T')[0],x['endTime'].split('T')[1].split('.')[0])
+        c['edate'] = converttoist(c['edate'])
+        
+        c['apt'] = x['marks']['ap']
+        c['fund'] = x['marks']['cf']
+        c['code'] = x['marks']['c']
+        c['dom'] = x['marks']['d']
+        c['analy'] = x['marks']['a']
+        c['marks']=x['marks']['ap']+x['marks']['cf']+x['marks']['c']+x['marks']['d']+x['marks']['a']
         cc.append(c)
 
     return JsonResponse({'testData':a.data,'studentNameArr':cc},safe=False)
@@ -298,7 +345,7 @@ def marks(request,sid=0):
                 else:
                     print('**error**')
                     return JsonResponse("Error",safe=False)
-                result.endTime = d.time()
+                result.endTime = d
                 result.save()
                 data=chartData(user,data['testId'])
                 return JsonResponse(data,safe=False)

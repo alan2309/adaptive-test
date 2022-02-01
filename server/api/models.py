@@ -34,8 +34,8 @@ class Options(models.Model):
         return self.title
 
 class Results(models.Model):
-    startTime = models.TimeField()
-    endTime = models.TimeField(blank=True,null=True)
+    startTime = models.DateTimeField(blank=True,null=True)
+    endTime = models.DateTimeField(blank=True,null=True)
     marks = models.JSONField(null=True, blank=True)
     student = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     test=models.ForeignKey(Test,on_delete=models.CASCADE)
