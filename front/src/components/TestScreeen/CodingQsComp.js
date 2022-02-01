@@ -75,7 +75,7 @@ function CodingQsComp({ qs }) {
               <b>Explanation</b>
             </h5>
           )}
-          {qs.explanation !== null && (
+          {(qs.explanation !== null || qs.explanation !== '') && (
             <textarea
               defaultValue={qs.explanation}
               className="style-4"

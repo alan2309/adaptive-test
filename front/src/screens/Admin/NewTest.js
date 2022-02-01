@@ -359,7 +359,7 @@ function NewTest() {
                 <Row style={{ margin: "24px 0", padding: "0px 0px" }}>
                   <Col
                     md={6}
-                    className="onHoverDiv"
+                    className={(sid===6||sid===4)?'onHoverDiv':''}
                     style={{ padding: "0px" }}
                     onClick={(e) => {
                       if (parseInt(sid - 1) === 5 || sid===4) {
@@ -394,7 +394,7 @@ function NewTest() {
                             <Col style={{ padding: "0px 0px 0px 15px" }}>
                               Easy
                             </Col>
-                            <Col>Medium</Col>
+                            <Col >Medium</Col>
                             <Col>
                               <Row style={{ padding: "0px 0px 0px 15px" }}>
                                 Hard
@@ -425,7 +425,7 @@ function NewTest() {
                         <Row>
                           <Col>
                             <div
-                              className="basicRec easyMedHard"
+                              className="basicRec easyMedHard onHoverDiv"
                               style={{
                                 marginBottom: "28px",
                                 padding: "11px 10px",
@@ -448,7 +448,7 @@ function NewTest() {
                         <Row>
                           <Col>
                             <div
-                              className="basicRec easyMedHard"
+                              className="basicRec easyMedHard onHoverDiv"
                               style={{
                                 marginBottom: "28px",
                                 padding: "11px 10px",
@@ -471,7 +471,7 @@ function NewTest() {
                         <Row>
                           <Col>
                             <div
-                              className="basicRec easyMedHard"
+                              className="basicRec easyMedHard onHoverDiv"
                               style={{ padding: "11px 10px" }}
                               onClick={(e) => {
                                 navigate("/admin/setQs", {
@@ -531,17 +531,17 @@ function NewTest() {
                                     } else if (sid - 1 === 3) {
                                       setPDic({
                                         time: e.target.value,
-                                        totalQs: CurrentDic.totalQs,
+                                        totalQs: 35 //$,
                                       });
                                     } else if (sid - 1 == 4) {
                                       setCDic({
                                         time: e.target.value,
-                                        totalQs: CurrentDic.totalQs,
+                                        totalQs: 3,
                                       });
                                     } else if (sid - 1 == 5) {
                                       setAWDic({
                                         time: e.target.value,
-                                        totalQs: CurrentDic.totalQs,
+                                        totalQs: 3,
                                       });
                                     } else if (sid - 1 === 0) {
                                       setAptDic({
@@ -569,17 +569,17 @@ function NewTest() {
                                     } else if (sid - 1 === 3) {
                                       setPDic({
                                         time: "00:59:59",
-                                        totalQs: CurrentDic.totalQs,
+                                        totalQs: 35 //$,
                                       });
                                     } else if (sid - 1 == 4) {
                                       setCDic({
                                         time: "00:59:59",
-                                        totalQs: CurrentDic.totalQs,
+                                        totalQs: 3,
                                       });
                                     } else if (sid - 1 == 5) {
                                       setAWDic({
                                         time: "00:59:59",
-                                        totalQs: CurrentDic.totalQs,
+                                        totalQs: 3,
                                       });
                                     } else if (sid - 1 === 0) {
                                       setAptDic({
@@ -660,17 +660,17 @@ function NewTest() {
                                     } else if (sid - 1 === 3) {
                                       setPDic({
                                         time: CurrentDic.time,
-                                        totalQs: e.target.valueAsNumber,
+                                        totalQs: 35 //$,
                                       });
                                     } else if (sid - 1 == 4) {
                                       setCDic({
                                         time: CurrentDic.time,
-                                        totalQs: e.target.valueAsNumber,
+                                        totalQs: 3,
                                       });
                                     } else if (sid - 1 == 5) {
                                       setAWDic({
                                         time: CurrentDic.time,
-                                        totalQs: e.target.valueAsNumber,
+                                        totalQs: 3,
                                       });
                                     } else if (sid - 1 === 0) {
                                       setAptDic({
@@ -742,17 +742,17 @@ function NewTest() {
                               } else if (sid - 1 === 3) {
                                 setPDic({
                                   time: e.target.value,
-                                  totalQs: CurrentDic.totalQs,
+                                  totalQs: 35 //$,
                                 });
                               } else if (sid - 1 == 4) {
                                 setCDic({
                                   time: e.target.value,
-                                  totalQs: CurrentDic.totalQs,
+                                  totalQs: 3,
                                 });
                               } else if (sid - 1 == 5) {
                                 setAWDic({
                                   time: e.target.value,
-                                  totalQs: CurrentDic.totalQs,
+                                  totalQs: 3,
                                 });
                               } else if (sid - 1 === 0) {
                                 setAptDic({
@@ -780,17 +780,17 @@ function NewTest() {
                               } else if (sid - 1 === 3) {
                                 setPDic({
                                   time: "00:59:59",
-                                  totalQs: CurrentDic.totalQs,
+                                  totalQs: 35 //$,
                                 });
                               } else if (sid - 1 == 4) {
                                 setCDic({
                                   time: "00:59:59",
-                                  totalQs: CurrentDic.totalQs,
+                                  totalQs: 3,
                                 });
                               } else if (sid - 1 == 5) {
                                 setAWDic({
                                   time: "00:59:59",
-                                  totalQs: CurrentDic.totalQs,
+                                  totalQs: 3,
                                 });
                               } else if (sid - 1 === 0) {
                                 setAptDic({
@@ -859,17 +859,17 @@ function NewTest() {
                               } else if (sid - 1 === 3) {
                                 setPDic({
                                   time: CurrentDic.time,
-                                  totalQs: e.target.valueAsNumber,
+                                  totalQs: 35 //$,
                                 });
                               } else if (sid - 1 == 4) {
                                 setCDic({
                                   time: CurrentDic.time,
-                                  totalQs: e.target.valueAsNumber,
+                                  totalQs: 3,
                                 });
                               } else if (sid - 1 == 5) {
                                 setAWDic({
                                   time: CurrentDic.time,
-                                  totalQs: e.target.valueAsNumber,
+                                  totalQs: 3,
                                 });
                               } else if (sid - 1 === 0) {
                                 setAptDic({

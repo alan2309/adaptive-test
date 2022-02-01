@@ -377,7 +377,7 @@ function Result() {
                     <Chart
                       series={[
                         {
-                          name: "Series 1",
+                          name: "Score",
                           data: [
                             personalityData[0].SEP,
                             personalityData[0].SAP,

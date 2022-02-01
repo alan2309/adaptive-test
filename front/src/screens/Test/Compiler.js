@@ -364,7 +364,8 @@ export default function Compiler() {
     }
     e.preventDefault();
     if (inputT) {
-      if (customInputCheck || user_input === undefined) {
+      console.log(user_input)
+      if (customInputCheck && user_input === undefined) {
         alert("Please enter input");
       } else {
         if (current_qs === 1) {
@@ -391,7 +392,7 @@ export default function Compiler() {
               },
               body: JSON.stringify({
                 source_code: inputT,
-                stdin: user_input, //stateVarialble
+                stdin:customInputCheck? user_input:null, //stateVarialble
                 language_id: language_id,
               }),
             }
