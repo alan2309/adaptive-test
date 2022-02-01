@@ -366,6 +366,7 @@ def addQs(request):
                 for qs in qData:
                     f=Questions.objects.get(id=qs.split('question')[1])
                     f.title=qData[qs]
+                    f.type=data['type']
                     f.save()
                     Options.objects.filter(question=f).delete()
             optionData = {x: data[x] for x in data if 'Option' in x}

@@ -37,6 +37,7 @@ function SetQuestion() {
   const [para_title, set_para_title] = useState();
   const [para, set_para] = useState();
   const [para_qs, set_para_qs] = useState([]);
+  const [isPersonality,set_isPersonality]=useState(false)
 
   useEffect(() => {
     var divHeight = document.querySelector("#SETQS").clientHeight;
@@ -48,6 +49,8 @@ function SetQuestion() {
       setIsCoding(true);
     } else if (parseInt(location.state.sid) === 6) {
       setIsAnalytical(true);
+    }else if(parseInt(location.state.sid) === 4){
+      set_isPersonality(true)
     }
     if (temp[0] !== undefined) {
       if (location.state.sid !== 5 && location.state.sid !== 6) {
@@ -151,6 +154,7 @@ function SetQuestion() {
         dictionary[document.getElementById("qsSetTestCase3Output").name] =
           document.getElementById("qsSetTestCase3Output").value;
       }
+      
       var rightOpt = document.querySelector('input[name="correctOpt"]:checked');
 
       if (rightOpt !== null) {
@@ -162,7 +166,7 @@ function SetQuestion() {
         e.target[x] instanceof HTMLInputElement ||
         e.target[x] instanceof HTMLSelectElement
       ) {
-        if (e.target[x].name !== "type") {
+        if ((e.target[x].name).toString() !== "type") {
           if (isAnalytical) {
             console.log(e.target[x].name.split("Option")[0]);
             var key = e.target[x].name.split("Option")[0].toString();
@@ -173,14 +177,17 @@ function SetQuestion() {
           dictionary[e.target[x].name] = e.target[x].value;
         } else {
           if (e.target[x].value == "Easy") {
-            dictionary[e.target[x].name] = 1;
+            dictionary['type'] = 1;
           } else if (e.target[x].value == "Medium") {
-            dictionary[e.target[x].name] = 2;
+            dictionary['type'] = 2;
           } else {
-            dictionary[e.target[x].name] = 3;
+            dictionary['type'] = 3;
           }
         }
       }
+    }
+    if(parseInt(location.state.sid) === 4){
+      dictionary['type']=2
     }
     console.log(dictionary);
     axiosInstance.post("api/admin/addQs", { data: dictionary }).then((res) => {
@@ -409,10 +416,11 @@ function SetQuestion() {
               className="basicRec SetQuestion"
               style={{
                 margin: "0px 50px",
+                minHeight:window.screen.height-500
               }}
             >
               <div style={{ padding: "20px 36px 0 36px" }}>
-                {!isCoding && (
+                {!isCoding&&!isPersonality && (
                   <div
                     style={{ marginBottom: "20px" }}
                     hidden={isAnalytical ? true : false}
@@ -1189,7 +1197,7 @@ function SetQuestion() {
                   </div>
                 )}
               </div>
-              {isUpdate && !isCoding && (
+              {isUpdate && !isCoding&&!isPersonality && (
                 <>
                   <button
                     class="btn"
@@ -1249,6 +1257,7 @@ function SetQuestion() {
                     borderRadius: "100px",
                     marginLeft: "5%",
                     marginBottom: "10px",
+                    marginTop:'20px'
                   }}
                 >
                   <i class="fa fa-edit" style={{ color: "white" }}></i>
@@ -1265,6 +1274,7 @@ function SetQuestion() {
                     borderRadius: "100px",
                     marginLeft: "5%",
                     marginBottom: "10px",
+                    marginTop:'20px'
                   }}
                 >
                   <i class="fa fa-edit" style={{ color: "white" }}></i>
@@ -1297,7 +1307,7 @@ function SetQuestion() {
                   <div
                     class="scrollbar"
                     style={{
-                      height: windowHeight,
+                      height:window.screen.height-500,
                       padding: "5px",
                       maxWidth: "100%",
                       backgroundColor: "#e9ecef",
@@ -1395,7 +1405,7 @@ function SetQuestion() {
                   <div
                     class="scrollbar"
                     style={{
-                      height: windowHeight,
+                      height:window.screen.height-500,
                       padding: "5px",
                       maxWidth: "100%",
                       backgroundColor: "white",

@@ -347,13 +347,13 @@ function NewTest() {
             <div
               className="mainRec"
               style={{
-                height: sid === 6 ? 310 : 460,
-                marginTop: sid === 6 ? "50px" : "0",
+                height: (sid === 6 ||sid === 4) ? 310 : 460,
+                marginTop: (sid === 6||sid === 4) ? "50px" : "0",
               }}
             >
               <div
                 className="AdminSetSection"
-                style={{ marginBottom: sid === 6 ? "70px" : "0" }}
+                style={{ marginBottom: (sid === 6||sid === 4) ? "70px" : "0" }}
               >
                 <div className="basicRec secNm">{sectionName}</div>
                 <Row style={{ margin: "24px 0", padding: "0px 0px" }}>
@@ -362,7 +362,7 @@ function NewTest() {
                     className="onHoverDiv"
                     style={{ padding: "0px" }}
                     onClick={(e) => {
-                      if (parseInt(sid - 1) === 5) {
+                      if (parseInt(sid - 1) === 5 || sid===4) {
                         navigate("/admin/setQs", {
                           state: {
                             type: "Medium",
@@ -377,7 +377,7 @@ function NewTest() {
                     <div className="basicRec avQs">
                       Available{" "}
                       {parseInt(sid - 1) !== 5 ? "Question" : "Paragraph"}
-                      {sid - 1 !== 5 && (
+                      {(sid - 1 !== 5 && sid !== 4) && (
                         <>
                           <Row style={{ padding: "20px 10px 0px 40px" }}>
                             <Col>
@@ -403,7 +403,7 @@ function NewTest() {
                           </Row>
                         </>
                       )}
-                      {sid - 1 === 5 && (
+                      {(sid - 1 === 5 ||sid===4) && (
                         <div style={{ marginLeft: "20%" }}>
                           <Row style={{ padding: "20px 10px 0px 40px" }}>
                             <Col>
@@ -420,7 +420,7 @@ function NewTest() {
                     </div>
                   </Col>
                   <Col md={6} style={{ padding: "0px" }}>
-                    {sid - 1 !== 5 && (
+                    {sid - 1 !== 5 && sid!==4 && (
                       <>
                         <Row>
                           <Col>
@@ -490,7 +490,7 @@ function NewTest() {
                         </Row>
                       </>
                     )}
-                    {parseInt(sid - 1) === 5 && (
+                    {(parseInt(sid - 1) === 5 || parseInt(sid)===4) && (
                       <>
                         <Row style={{ margin: "10px 0" }}>
                           <Col style={{ padding: "0px" }}>
@@ -688,9 +688,12 @@ function NewTest() {
                                   sid === 6 || sid === 5 || sid === 4
                                     ? sid === 6 || sid === 5
                                       ? 3
-                                      : 75
+                                      : 35 //$
                                     : CurrentDic.totalQs
                                 }
+                                disabled={sid === 6 || sid === 5 || sid === 4
+                                  ? true:false}
+                                  
                               />
                             </div>
                           </Col>
@@ -699,7 +702,7 @@ function NewTest() {
                     )}
                   </Col>
                 </Row>
-                {parseInt(sid - 1) !== 5 && (
+                {parseInt(sid - 1) !== 5 &&parseInt(sid) !== 4 && (
                   <Row style={{ margin: "44px 0" }}>
                     {" "}
                     <Col>
@@ -884,9 +887,11 @@ function NewTest() {
                             sid === 6 || sid === 5 || sid === 4
                               ? sid === 6 || sid === 5
                                 ? 3
-                                : 75
+                                : 35 //$
                               : CurrentDic.totalQs
                           }
+                          disabled={sid === 6 || sid === 5 || sid === 4
+                            ? true:false}
                         />
                       </div>
                     </Col>
