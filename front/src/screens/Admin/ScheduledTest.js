@@ -266,8 +266,8 @@ function ScheduledTest() {
                       {t.test_name}
                     </button>
                     </Col>
-                    <Col md={2}>
-                    <i onClick={()=>delSTest(t.id)} class="fa fa-trash" style={{backgroundColor: "white", color: "red",float:"right",marginRight:"20px",marginTop:'10px'}}></i>
+                    <Col md={1}>
+                    <i onClick={()=>delSTest(t.id)} class="fa fa-trash" style={{backgroundColor: "white", color: "red",float:"right",marginRight:"15px",marginTop:'10px'}}></i>
                     </Col>
                   </Row>
                 );
