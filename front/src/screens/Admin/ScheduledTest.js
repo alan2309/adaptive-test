@@ -145,6 +145,20 @@ function ScheduledTest() {
         console.log(e);
       });
   }
+  function delSTest(idd){
+    if(window.confirm('Delete this test?')){
+      axios.delete(`http://127.0.0.1:8000/api/test/${idd}`)
+      .then(res=>{
+        let arr = stests.filter(test=>{
+          return test.id!==idd
+        })
+        setSTests(arr)
+      })
+      .catch(e=>{
+        console.log(e)
+      })
+    }
+  }
   return (
     <div className="SchdlTest">
       <Modal show={show} onHide={handleClose}>
@@ -224,7 +238,11 @@ function ScheduledTest() {
             >
               {stests.map((t, index) => {
                 return (
-                  <>
+                  <Row style={{
+                  backgroundColor: "white",
+                  borderColor: "#F0F0F0",
+                  marginBottom: "1px",}}>
+                    <Col>
                     <button
                       type="button"
                       onClick={(e) => {
@@ -247,7 +265,11 @@ function ScheduledTest() {
                     >
                       {t.test_name}
                     </button>
-                  </>
+                    </Col>
+                    <Col md={2}>
+                    <i onClick={()=>delSTest(t.id)} class="fa fa-trash" style={{backgroundColor: "white", color: "red",float:"right",marginRight:"20px",marginTop:'10px'}}></i>
+                    </Col>
+                  </Row>
                 );
               })}
             </div>
