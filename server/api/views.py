@@ -475,7 +475,7 @@ def saveTest(request):
         return JsonResponse('success',safe=False)
 
 @csrf_exempt
-def tests(request):
+def tests(request,idd=0):
     if request.method == 'GET':
         d = datetime.datetime.utcnow()
         ll=Test.objects.filter(test_start__lte = d,test_end__gte=d)
@@ -486,6 +486,7 @@ def tests(request):
 
     elif request.method == 'POST':
         data=JSONParser().parse(request)['data']
+        print(data)
         if not data['delete']:
             if not data['update']:
                 test = Test.objects.create(test_name =data['name'],test_start=data['start'],test_end=data['end'])
@@ -498,7 +499,9 @@ def tests(request):
                 test.save()
         else:
             Test.objects.get(id=data['id']).delete()
-        return JsonResponse('Created',safe=False)
+    elif request.method == 'DELETE':
+        Test.objects.get(id=idd).delete()        
+        return JsonResponse('Created',safe=False)   
 
 @csrf_exempt    
 def getTests(request):
