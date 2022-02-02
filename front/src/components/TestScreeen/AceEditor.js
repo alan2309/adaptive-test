@@ -1,34 +1,52 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-java";
+import "ace-builds/src-noconflict/mode-c_cpp";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/ext-language_tools";
 import "../../css/AceEditor.css";
 
-function ACEEditor({ inputT, height }) {
+function ACEEditor({ inputT, language_id, height }) {
+  const [language, setLanguage] = useState();
+  useEffect(() => {
+    if (parseInt(language_id) === 54) {
+      setLanguage("cpp");
+    } else if (parseInt(language_id) === 50) {
+      setLanguage("c");
+    } else if (parseInt(language_id) === 62) {
+      setLanguage("java");
+    } else if (parseInt(language_id) === 71) {
+      setLanguage("python");
+    }
+  }, []);
+
   return (
-    <AceEditor
-      mode="python"
-      theme="github"
-      width="100%"
-      name="editor"
-      editorProps={{ $blockScrolling: true }}
-      value={inputT}
-      height={`100%`}
-      fontSize={14}
-      showPrintMargin={true}
-      showGutter={true}
-      highlightActiveLine={true}
-      setOptions={{
-        enableBasicAutocompletion: false,
-        enableLiveAutocompletion: false,
-        enableSnippets: false,
-        showLineNumbers: true,
-        tabSize: 2,
-      }}
-    />
+    <>
+      {language !== undefined && (
+        <AceEditor
+          mode={language}
+          theme="github"
+          width="100%"
+          name="editor"
+          editorProps={{ $blockScrolling: true }}
+          value={inputT}
+          height={`100%`}
+          fontSize={14}
+          showPrintMargin={true}
+          showGutter={true}
+          highlightActiveLine={true}
+          setOptions={{
+            enableBasicAutocompletion: false,
+            enableLiveAutocompletion: false,
+            enableSnippets: false,
+            showLineNumbers: true,
+            tabSize: 2,
+          }}
+        />
+      )}
+    </>
   );
 }
 

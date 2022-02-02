@@ -14,10 +14,10 @@ import { isExpired, decodeToken } from "react-jwt";
 import ACEEditor from "../../components/TestScreeen/AceEditor";
 
 export default function Compiler() {
-  const [inputT, setInput] = useState("");
-  const [inputT_question_1, setInput_question_1] = useState("");
-  const [inputT_question_2, setInput_question_2] = useState("");
-  const [inputT_question_3, setInput_question_3] = useState("");
+  const [inputT, setInput] = useState();
+  const [inputT_question_1, setInput_question_1] = useState();
+  const [inputT_question_2, setInput_question_2] = useState();
+  const [inputT_question_3, setInput_question_3] = useState();
   const [current_qs, set_current_qs] = useState(1);
 
   const [language_id, setLanguage_id] = useState();
@@ -274,33 +274,47 @@ export default function Compiler() {
               }
             });
         getData();
-        setInput(localStorage.getItem("test4")["input_1"] || ``);
-        setInput_question_1(localStorage.getItem("test4")["input_1"] || ``);
-        setInput_question_2(localStorage.getItem("test4")["input_2"] || ``);
-        setInput_question_3(localStorage.getItem("test4")["input_3"] || ``);
+        console.log(JSON.parse(localStorage.getItem("test4"))["input_1"]);
+        setInput(JSON.parse(localStorage.getItem("test4"))["input_1"]);
+        setInput_question_1(
+          JSON.parse(localStorage.getItem("test4"))["input_1"]
+        );
+        setInput_question_2(
+          JSON.parse(localStorage.getItem("test4"))["input_2"]
+        );
+        setInput_question_3(
+          JSON.parse(localStorage.getItem("test4"))["input_3"]
+        );
 
         setUser_input(localStorage.getItem("test4")["user_input_1"] || ``);
+        setUser_input(
+          JSON.parse(localStorage.getItem("test4"))["user_input_1"] || ``
+        );
         setUser_input_question_1(
-          localStorage.getItem("test4")["user_input_1"] || ``
+          JSON.parse(localStorage.getItem("test4"))["user_input_1"] || ``
         );
         setUser_input_question_2(
-          localStorage.getItem("test4")["user_input_2"] || ``
+          JSON.parse(localStorage.getItem("test4"))["user_input_2"] || ``
         );
         setUser_input_question_3(
-          localStorage.getItem("test4")["user_input_3"] || ``
+          JSON.parse(localStorage.getItem("test4"))["user_input_3"] || ``
         );
 
         setLanguage_id(
-          localStorage.getItem("test4")["language_Id_question_1"] || 54
+          JSON.parse(localStorage.getItem("test4"))["language_Id_question_1"] ||
+            54
         );
         setLanguage_id_question_1(
-          localStorage.getItem("test4")["language_Id_question_1"] || 54
+          JSON.parse(localStorage.getItem("test4"))["language_Id_question_1"] ||
+            54
         );
         setLanguage_id_question_2(
-          localStorage.getItem("test4")["language_Id_question_2"] || 54
+          JSON.parse(localStorage.getItem("test4"))["language_Id_question_2"] ||
+            54
         );
         setLanguage_id_question_3(
-          localStorage.getItem("test4")["language_Id_question_3"] || 54
+          JSON.parse(localStorage.getItem("test4"))["language_Id_question_3"] ||
+            54
         );
       }
     }
@@ -312,16 +326,28 @@ export default function Compiler() {
     return secs;
   }
 
-  function input(value) {
-    setInput(value);
+  function inputCodeToLocal() {
+    //below func to get value from ace editor
+    let inputCode = $(".ace_layer .ace_line");
+    console.log(inputCode);
+    let code = "";
+    for (let x = 0; x < inputCode.length; x++) {
+      console.log(inputCode[x].innerText);
+      code += inputCode[x].innerText;
+      if (inputCode.length - 1 !== x) {
+        code += "\n";
+      }
+    }
+    setInput(code);
     let test = JSON.parse(localStorage.getItem("test4"));
-    test[`input_${current_qs}`] = value;
+    test[`input_${current_qs}`] = code;
     localStorage.setItem("test4", JSON.stringify(test));
     current_qs === 1
-      ? setInput_question_1(value)
+      ? setInput_question_1(code)
       : current_qs === 2
-      ? setInput_question_2(value)
-      : setInput_question_3(value);
+      ? setInput_question_2(code)
+      : setInput_question_3(code);
+    return code;
   }
 
   function userInput(event) {
@@ -355,270 +381,265 @@ export default function Compiler() {
   }
 
   async function submit(e) {
-    //below func to get value from ace editor
-    // let inputCode= $(".ace_layer .ace_line")
-    // console.log(inputCode)
-    // let code =''
-    // for (let x=0;x<inputCode.length;x++){
-    //   console.log(inputCode[x].innerText)
-    //    code+=inputCode[x].innerText
-    //    code+='\n'
-    // }
-    // console.log(code)
     //below function to set to localStorage
-    // input(code)
-    // if (current_qs === 1) {
-    //   set_q1_testCase_Current_output("");
-    // } else if (current_qs === 2) {
-    //   set_q2_testCase_Current_output("");
-    // } else if (current_qs === 3) {
-    //   set_q3_testCase_Current_output("");
-    // }
-    // e.preventDefault();
-    // if (code!=='') {
-    //   console.log(user_input)
-    //   if (customInputCheck && user_input === undefined) {
-    //     alert("Please enter input");
-    //   } else {
-    //     if (current_qs === 1) {
-    //       set_q1_run_output("Creating Submission ...\n");
-    //     } else if (current_qs === 2) {
-    //       set_q2_run_output("Creating Submission ...\n");
-    //     } else if (current_qs === 3) {
-    //       set_q3_run_output("Creating Submission ...\n");
-    //     }
-    //     let response,
-    //       count = 0,
-    //       keyArr = key(),
-    //       selectedKey;
-    //     do {
-    //       response = await fetch(
-    //         "https://judge0-ce.p.rapidapi.com/submissions",
-    //         {
-    //           method: "POST",
-    //           headers: {
-    //             "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
-    //             "x-rapidapi-key": `${keyArr[count]}`, // Get yours for free at https://rapidapi.com/judge0-official/api/judge0-ce/
-    //             "content-type": "application/json",
-    //             accept: "application/json",
-    //           },
-    //           body: JSON.stringify({
-    //             source_code: code,
-    //             stdin:customInputCheck? user_input:null, //stateVarialble
-    //             language_id: language_id,
-    //           }),
-    //         }
-    //       );
-    //       selectedKey = keyArr[count];
-    //       count += 1;
-    //       console.log(response);
-    //       console.log(parseInt(response.status) !== 201);
-    //       console.log(typeof response.status);
-    //     } while (parseInt(response.status) !== 201 && keyArr.length > count);
-    //     console.log(response);
-    //     if (response.status === 201) {
-    //       if (current_qs === 1) {
-    //         set_q1_run_output(q1_run_output + "Submission Created ...\n");
-    //       } else if (current_qs === 2) {
-    //         set_q2_run_output(q2_run_output + "Submission Created ...\n");
-    //       } else if (current_qs === 3) {
-    //         set_q3_run_output(q2_run_output + "Submission Created ...\n");
-    //       }
-    //       const jsonResponse = await response.json();
-    //       let jsonGetSolution = {
-    //         status: { description: "Queue" },
-    //         stderr: null,
-    //         compile_output: null,
-    //       };
-    //       let flag = false;
-    //       while (flag !== true) {
-    //         if (current_qs === 1) {
-    //           set_q1_run_output(
-    //             `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.status.description}`
-    //           );
-    //         } else if (current_qs === 2) {
-    //           set_q2_run_output(
-    //             `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.status.description}`
-    //           );
-    //         } else if (current_qs === 3) {
-    //           set_q3_run_output(
-    //             `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.status.description}`
-    //           );
-    //         }
-    //         if (jsonResponse.token) {
-    //           let url = `https://judge0-ce.p.rapidapi.com/submissions/${jsonResponse.token}?base64_encoded=true`;
-    //           const getSolution = await fetch(url, {
-    //             method: "GET",
-    //             headers: {
-    //               "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
-    //               "x-rapidapi-key": `${selectedKey}`, // Get yours for free at https://rapidapi.com/judge0-official/api/judge0-ce/
-    //               "content-type": "application/json",
-    //             },
-    //           });
-    //           jsonGetSolution = await getSolution.json();
-    //           console.log(jsonGetSolution);
-    //           if (
-    //             jsonGetSolution.status.description === "Accepted" &&
-    //             jsonGetSolution.stderr === null &&
-    //             jsonGetSolution.compile_output === null
-    //           ) {
-    //             flag = true;
-    //           } else if (
-    //             jsonGetSolution.stderr !== null &&
-    //             jsonGetSolution.status.description !== "Accepted"
-    //           ) {
-    //             flag = true;
-    //           } else if (
-    //             jsonGetSolution.stderr === null &&
-    //             jsonGetSolution.status.description === "Compilation Error"
-    //           ) {
-    //             flag = true;
-    //           } else if (
-    //             jsonGetSolution.compile_output !== null &&
-    //             jsonGetSolution.status.description === "Accepted"
-    //           ) {
-    //             flag = true;
-    //           }
-    //         }
-    //       }
-    //       console.log(jsonGetSolution);
-    //       if (
-    //         jsonGetSolution.stdout &&
-    //         jsonGetSolution.stderr === null &&
-    //         jsonGetSolution.compile_output === null
-    //       ) {
-    //         var b = new Buffer(jsonGetSolution.stdout, "base64");
-    //         const output = b.toString();
-    //         if (current_qs === 1) {
-    //           set_q1_testCase_Current_output(
-    //             `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
-    //           );
-    //           set_q1_run_output(
-    //             `${output}\n\nExxecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
-    //           );
-    //           let test = JSON.parse(localStorage.getItem("test4"));
-    //           test[`question_1`] = JSON.stringify({
-    //             run_output: `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
-    //             q1_testCase_1_output: q1_testCase_1_output,
-    //             q1_testCase_2_output: q1_testCase_2_output,
-    //             q1_testCase_3_output: q1_testCase_3_output,
-    //           });
-    //           localStorage.setItem("test4", JSON.stringify(test));
-    //         } else if (current_qs === 2) {
-    //           set_q2_testCase_Current_output(
-    //             `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
-    //           );
-    //           set_q2_run_output(
-    //             `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
-    //           );
-    //           let test = JSON.parse(localStorage.getItem("test4"));
-    //           test[`question_2`] = JSON.stringify({
-    //             run_output: `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
-    //             q2_testCase_1_output: q2_testCase_1_output,
-    //             q2_testCase_2_output: q2_testCase_2_output,
-    //             q2_testCase_3_output: q2_testCase_3_output,
-    //           });
-    //           localStorage.setItem("test4", JSON.stringify(test));
-    //         } else if (current_qs === 3) {
-    //           set_q3_testCase_Current_output(
-    //             `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
-    //           );
-    //           set_q3_run_output(
-    //             `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
-    //           );
-    //           let test = JSON.parse(localStorage.getItem("test4"));
-    //           test[`question_3`] = JSON.stringify({
-    //             run_output: `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
-    //             q3_testCase_1_output: q3_testCase_1_output,
-    //             q3_testCase_2_output: q3_testCase_2_output,
-    //             q3_testCase_3_output: q3_testCase_3_output,
-    //           });
-    //           localStorage.setItem("test4", JSON.stringify(test));
-    //         }
-    //       } else if (jsonGetSolution.stderr) {
-    //         var b = new Buffer(jsonGetSolution.stderr, "base64");
-    //         const error = b.toString();
-    //         console.log(error);
-    //         if (current_qs === 1) {
-    //           set_q1_testCase_Current_output(`Error :${error}`);
-    //           set_q1_run_output(`Error :${error}`);
-    //           let test = JSON.parse(localStorage.getItem("test4"));
-    //           test[`question_1`] = JSON.stringify({
-    //             run_output: `Error :${error}`,
-    //             q1_testCase_1_output: q1_testCase_1_output,
-    //             q1_testCase_2_output: q1_testCase_2_output,
-    //             q1_testCase_3_output: q1_testCase_3_output,
-    //           });
-    //           localStorage.setItem("test4", JSON.stringify(test));
-    //         } else if (current_qs === 2) {
-    //           set_q2_testCase_Current_output(`\n Error :${error}`);
-    //           set_q2_run_output(`\n Error :${error}`);
-    //           let test = JSON.parse(localStorage.getItem("test4"));
-    //           test[`question_2`] = JSON.stringify({
-    //             run_output: `\n Error :${error}`,
-    //             q2_testCase_1_output: q2_testCase_1_output,
-    //             q2_testCase_2_output: q2_testCase_2_output,
-    //             q2_testCase_3_output: q2_testCase_3_output,
-    //           });
-    //           localStorage.setItem("test4", JSON.stringify(test));
-    //         } else if (current_qs === 3) {
-    //           set_q3_testCase_Current_output(`\n Error :${error}`);
-    //           set_q3_run_output(`\n Error :${error}`);
-    //           let test = JSON.parse(localStorage.getItem("test4"));
-    //           test[`question_3`] = JSON.stringify({
-    //             run_output: `\n Error :${error}`,
-    //             q3_testCase_1_output: q3_testCase_1_output,
-    //             q3_testCase_2_output: q3_testCase_2_output,
-    //             q3_testCase_3_output: q3_testCase_3_output,
-    //           });
-    //           localStorage.setItem("test4", JSON.stringify(test));
-    //         }
-    //       } else {
-    //         var b = new Buffer(jsonGetSolution.compile_output, "base64");
-    //         const compilation_error = b.toString();
-    //         if (current_qs === 1) {
-    //           set_q1_testCase_Current_output(`\n Error :${compilation_error}`);
-    //           set_q1_run_output(`\n Error :${compilation_error}`);
-    //           let test = JSON.parse(localStorage.getItem("test4"));
-    //           test[`question_1`] = JSON.stringify({
-    //             run_output: `\n Error :${compilation_error}`,
-    //             q1_testCase_1_output: q1_testCase_1_output,
-    //             q1_testCase_2_output: q1_testCase_2_output,
-    //             q1_testCase_3_output: q1_testCase_3_output,
-    //           });
-    //           localStorage.setItem("test4", JSON.stringify(test));
-    //         } else if (current_qs === 2) {
-    //           set_q2_testCase_Current_output(`\n Error :${compilation_error}`);
-    //           set_q2_run_output(`\n Error :${compilation_error}`);
-    //           let test = JSON.parse(localStorage.getItem("test4"));
-    //           test[`question_2`] = JSON.stringify({
-    //             run_output: `\n Error :${compilation_error}`,
-    //             q2_testCase_1_output: q2_testCase_1_output,
-    //             q2_testCase_2_output: q2_testCase_2_output,
-    //             q2_testCase_3_output: q2_testCase_3_output,
-    //           });
-    //           localStorage.setItem("test4", JSON.stringify(test));
-    //         } else if (current_qs === 3) {
-    //           set_q3_testCase_Current_output(`\n Error :${compilation_error}`);
-    //           set_q3_run_output(`\n Error :${compilation_error}`);
-    //           let test = JSON.parse(localStorage.getItem("test4"));
-    //           JSON.stringify({
-    //             run_output: `\n Error :${compilation_error}`,
-    //             q3_testCase_1_output: q3_testCase_1_output,
-    //             q3_testCase_2_output: q3_testCase_2_output,
-    //             q3_testCase_3_output: q3_testCase_3_output,
-    //           });
-    //           localStorage.setItem("test4", JSON.stringify(test));
-    //         }
-    //       }
-    //     } else {
-    //       alert("Contact Administrator");
-    //     }
-    //   }
-    // }
+    let code = inputCodeToLocal();
+
+    if (current_qs === 1) {
+      set_q1_testCase_Current_output("");
+    } else if (current_qs === 2) {
+      set_q2_testCase_Current_output("");
+    } else if (current_qs === 3) {
+      set_q3_testCase_Current_output("");
+    }
+    e.preventDefault();
+    if (code !== "") {
+      console.log(user_input);
+      if (customInputCheck && (user_input === undefined || user_input === "")) {
+        alert("Please enter input");
+      } else {
+        if (current_qs === 1) {
+          set_q1_run_output("Creating Submission ...\n");
+        } else if (current_qs === 2) {
+          set_q2_run_output("Creating Submission ...\n");
+        } else if (current_qs === 3) {
+          set_q3_run_output("Creating Submission ...\n");
+        }
+        let response,
+          count = 0,
+          keyArr = key(),
+          selectedKey;
+        do {
+          response = await fetch(
+            "https://judge0-ce.p.rapidapi.com/submissions",
+            {
+              method: "POST",
+              headers: {
+                "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
+                "x-rapidapi-key": `${keyArr[count]}`, // Get yours for free at https://rapidapi.com/judge0-official/api/judge0-ce/
+                "content-type": "application/json",
+                accept: "application/json",
+              },
+              body: JSON.stringify({
+                source_code: code,
+                stdin: customInputCheck ? user_input : null, //stateVarialble
+                language_id: language_id,
+              }),
+            }
+          );
+          selectedKey = keyArr[count];
+          count += 1;
+          console.log(response);
+          console.log(parseInt(response.status) !== 201);
+          console.log(typeof response.status);
+        } while (parseInt(response.status) !== 201 && keyArr.length > count);
+        console.log(response);
+        if (response.status === 201) {
+          if (current_qs === 1) {
+            set_q1_run_output(q1_run_output + "Submission Created ...\n");
+          } else if (current_qs === 2) {
+            set_q2_run_output(q2_run_output + "Submission Created ...\n");
+          } else if (current_qs === 3) {
+            set_q3_run_output(q2_run_output + "Submission Created ...\n");
+          }
+          const jsonResponse = await response.json();
+          let jsonGetSolution = {
+            status: { description: "Queue" },
+            stderr: null,
+            compile_output: null,
+          };
+          let flag = false;
+          while (flag !== true) {
+            if (current_qs === 1) {
+              set_q1_run_output(
+                `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.status.description}`
+              );
+            } else if (current_qs === 2) {
+              set_q2_run_output(
+                `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.status.description}`
+              );
+            } else if (current_qs === 3) {
+              set_q3_run_output(
+                `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.status.description}`
+              );
+            }
+            if (jsonResponse.token) {
+              let url = `https://judge0-ce.p.rapidapi.com/submissions/${jsonResponse.token}?base64_encoded=true`;
+              const getSolution = await fetch(url, {
+                method: "GET",
+                headers: {
+                  "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
+                  "x-rapidapi-key": `${selectedKey}`, // Get yours for free at https://rapidapi.com/judge0-official/api/judge0-ce/
+                  "content-type": "application/json",
+                },
+              });
+              jsonGetSolution = await getSolution.json();
+              console.log(jsonGetSolution);
+              if (
+                jsonGetSolution.status.description === "Accepted" &&
+                jsonGetSolution.stderr === null &&
+                jsonGetSolution.compile_output === null
+              ) {
+                flag = true;
+              } else if (
+                jsonGetSolution.stderr !== null &&
+                jsonGetSolution.status.description !== "Accepted"
+              ) {
+                flag = true;
+              } else if (
+                jsonGetSolution.stderr === null &&
+                jsonGetSolution.status.description === "Compilation Error"
+              ) {
+                flag = true;
+              } else if (
+                jsonGetSolution.compile_output !== null &&
+                jsonGetSolution.status.description === "Accepted"
+              ) {
+                flag = true;
+              }
+            }
+          }
+          console.log(jsonGetSolution);
+          if (
+            jsonGetSolution.stdout &&
+            jsonGetSolution.stderr === null &&
+            jsonGetSolution.compile_output === null
+          ) {
+            var b = new Buffer(jsonGetSolution.stdout, "base64");
+            const output = b.toString();
+            if (current_qs === 1) {
+              set_q1_testCase_Current_output(
+                `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
+              );
+              set_q1_run_output(
+                `${output}\n\nExxecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
+              );
+              let test = JSON.parse(localStorage.getItem("test4"));
+              test[`question_1`] = JSON.stringify({
+                run_output: `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
+                q1_testCase_1_output: q1_testCase_1_output,
+                q1_testCase_2_output: q1_testCase_2_output,
+                q1_testCase_3_output: q1_testCase_3_output,
+              });
+              localStorage.setItem("test4", JSON.stringify(test));
+            } else if (current_qs === 2) {
+              set_q2_testCase_Current_output(
+                `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
+              );
+              set_q2_run_output(
+                `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
+              );
+              let test = JSON.parse(localStorage.getItem("test4"));
+              test[`question_2`] = JSON.stringify({
+                run_output: `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
+                q2_testCase_1_output: q2_testCase_1_output,
+                q2_testCase_2_output: q2_testCase_2_output,
+                q2_testCase_3_output: q2_testCase_3_output,
+              });
+              localStorage.setItem("test4", JSON.stringify(test));
+            } else if (current_qs === 3) {
+              set_q3_testCase_Current_output(
+                `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
+              );
+              set_q3_run_output(
+                `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
+              );
+              let test = JSON.parse(localStorage.getItem("test4"));
+              test[`question_3`] = JSON.stringify({
+                run_output: `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
+                q3_testCase_1_output: q3_testCase_1_output,
+                q3_testCase_2_output: q3_testCase_2_output,
+                q3_testCase_3_output: q3_testCase_3_output,
+              });
+              localStorage.setItem("test4", JSON.stringify(test));
+            }
+          } else if (jsonGetSolution.stderr) {
+            var b = new Buffer(jsonGetSolution.stderr, "base64");
+            const error = b.toString();
+            console.log(error);
+            if (current_qs === 1) {
+              set_q1_testCase_Current_output(`Error :${error}`);
+              set_q1_run_output(`Error :${error}`);
+              let test = JSON.parse(localStorage.getItem("test4"));
+              test[`question_1`] = JSON.stringify({
+                run_output: `Error :${error}`,
+                q1_testCase_1_output: q1_testCase_1_output,
+                q1_testCase_2_output: q1_testCase_2_output,
+                q1_testCase_3_output: q1_testCase_3_output,
+              });
+              localStorage.setItem("test4", JSON.stringify(test));
+            } else if (current_qs === 2) {
+              set_q2_testCase_Current_output(`\n Error :${error}`);
+              set_q2_run_output(`\n Error :${error}`);
+              let test = JSON.parse(localStorage.getItem("test4"));
+              test[`question_2`] = JSON.stringify({
+                run_output: `\n Error :${error}`,
+                q2_testCase_1_output: q2_testCase_1_output,
+                q2_testCase_2_output: q2_testCase_2_output,
+                q2_testCase_3_output: q2_testCase_3_output,
+              });
+              localStorage.setItem("test4", JSON.stringify(test));
+            } else if (current_qs === 3) {
+              set_q3_testCase_Current_output(`\n Error :${error}`);
+              set_q3_run_output(`\n Error :${error}`);
+              let test = JSON.parse(localStorage.getItem("test4"));
+              test[`question_3`] = JSON.stringify({
+                run_output: `\n Error :${error}`,
+                q3_testCase_1_output: q3_testCase_1_output,
+                q3_testCase_2_output: q3_testCase_2_output,
+                q3_testCase_3_output: q3_testCase_3_output,
+              });
+              localStorage.setItem("test4", JSON.stringify(test));
+            }
+          } else {
+            console.log(jsonGetSolution.compile_output);
+            var b = new Buffer(jsonGetSolution.compile_output, "base64");
+            const compilation_error = b.toString();
+            if (current_qs === 1) {
+              set_q1_testCase_Current_output(`\n Error :${compilation_error}`);
+              set_q1_run_output(`\n Error :${compilation_error}`);
+              let test = JSON.parse(localStorage.getItem("test4"));
+              test[`question_1`] = JSON.stringify({
+                run_output: `\n Error :${compilation_error}`,
+                q1_testCase_1_output: q1_testCase_1_output,
+                q1_testCase_2_output: q1_testCase_2_output,
+                q1_testCase_3_output: q1_testCase_3_output,
+              });
+              localStorage.setItem("test4", JSON.stringify(test));
+            } else if (current_qs === 2) {
+              set_q2_testCase_Current_output(`\n Error :${compilation_error}`);
+              set_q2_run_output(`\n Error :${compilation_error}`);
+              let test = JSON.parse(localStorage.getItem("test4"));
+              test[`question_2`] = JSON.stringify({
+                run_output: `\n Error :${compilation_error}`,
+                q2_testCase_1_output: q2_testCase_1_output,
+                q2_testCase_2_output: q2_testCase_2_output,
+                q2_testCase_3_output: q2_testCase_3_output,
+              });
+              localStorage.setItem("test4", JSON.stringify(test));
+            } else if (current_qs === 3) {
+              set_q3_testCase_Current_output(`\n Error :${compilation_error}`);
+              set_q3_run_output(`\n Error :${compilation_error}`);
+              let test = JSON.parse(localStorage.getItem("test4"));
+              JSON.stringify({
+                run_output: `\n Error :${compilation_error}`,
+                q3_testCase_1_output: q3_testCase_1_output,
+                q3_testCase_2_output: q3_testCase_2_output,
+                q3_testCase_3_output: q3_testCase_3_output,
+              });
+              localStorage.setItem("test4", JSON.stringify(test));
+            }
+          }
+        } else {
+          alert("Contact Administrator");
+        }
+      }
+    }
   }
 
   async function submitCode(e) {
+    //below function to set to localStorage
+    console.log("asd");
+    let code = inputCodeToLocal();
     if (current_qs === 1) {
       set_submitCode_qs1(true);
       setIsSubmitCode_qs1(true);
@@ -639,7 +660,7 @@ export default function Compiler() {
       set_q3_testCase_3_output_error();
     }
     e.preventDefault();
-    if (inputT) {
+    if (code) {
       if (current_qs === 1) {
         set_q1_testCase_Current_output("Creating Submission ...\n");
       } else if (current_qs === 2) {
@@ -666,7 +687,7 @@ export default function Compiler() {
             body: JSON.stringify({
               submissions: [
                 {
-                  source_code: inputT,
+                  source_code: code,
                   stdin:
                     current_qs === 1
                       ? q1_testCase_1_input
@@ -682,7 +703,7 @@ export default function Compiler() {
                       : q3_testCase_1_expected_output, //stateVarialble
                 },
                 {
-                  source_code: inputT,
+                  source_code: code,
                   stdin:
                     current_qs === 1
                       ? q1_testCase_2_input
@@ -698,7 +719,7 @@ export default function Compiler() {
                       : q3_testCase_2_expected_output, //stateVarialble
                 },
                 {
-                  source_code: inputT,
+                  source_code: code,
                   stdin:
                     current_qs === 1
                       ? q1_testCase_3_input
@@ -769,7 +790,7 @@ export default function Compiler() {
           );
         } else if (current_qs === 2) {
           set_q2_testCase_Current_output(
-            `Creating Submisxxxxxxxxxxxxxxxxxxxxxxsion ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.submissions[0].status.description}`
+            `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.submissions[0].status.description}`
           );
         } else if (current_qs === 3) {
           set_q3_testCase_Current_output(
@@ -795,18 +816,15 @@ export default function Compiler() {
           console.log(jsonGetSolution);
           if (
             (jsonGetSolution.submissions[0].status.description === "Accepted" ||
-              jsonGetSolution.submissions[0].status.description ===
-                "Wrong Answer") &&
+              jsonGetSolution.submissions[0].status.id === 4) &&
             jsonGetSolution.submissions[0].stderr === null &&
             jsonGetSolution.submissions[0].compile_output === null &&
             (jsonGetSolution.submissions[1].status.description === "Accepted" ||
-              jsonGetSolution.submissions[1].status.description ===
-                "Wrong Answer") &&
+              jsonGetSolution.submissions[1].status.id === 4) &&
             jsonGetSolution.submissions[1].stderr === null &&
             jsonGetSolution.submissions[1].compile_output === null &&
             (jsonGetSolution.submissions[2].status.description === "Accepted" ||
-              jsonGetSolution.submissions[2].status.description ===
-                "Wrong Answer") &&
+              jsonGetSolution.submissions[2].status.id === 4) &&
             jsonGetSolution.submissions[2].stderr === null &&
             jsonGetSolution.submissions[2].compile_output === null
           ) {
@@ -848,18 +866,15 @@ export default function Compiler() {
             flag = true;
           } else if (
             (jsonGetSolution.submissions[0].status.description === "Accepted" ||
-              jsonGetSolution.submissions[0].status.description ===
-                "Wrong Answer") &&
+              jsonGetSolution.submissions[0].status.id === 4) &&
             jsonGetSolution.submissions[0].stderr === null &&
             jsonGetSolution.submissions[0].compile_output !== null &&
             (jsonGetSolution.submissions[1].status.description === "Accepted" ||
-              jsonGetSolution.submissions[1].status.description ===
-                "Wrong Answer") &&
+              jsonGetSolution.submissions[1].status.id === 4) &&
             jsonGetSolution.submissions[1].stderr === null &&
             jsonGetSolution.submissions[1].compile_output !== null &&
             (jsonGetSolution.submissions[2].status.description === "Accepted" ||
-              jsonGetSolution.submissions[2].status.description ===
-                "Wrong Answer") &&
+              jsonGetSolution.submissions[2].status.id === 4) &&
             jsonGetSolution.submissions[2].stderr === null &&
             jsonGetSolution.submissions[2].compile_output !== null
           ) {
@@ -1002,7 +1017,7 @@ export default function Compiler() {
               \nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
                   );
                 } else if (y === 1) {
-                  set_q2_testCase_2_output_error(false);
+                  set_q2_testCase_2_output_error(true);
                   set_q2_testCase_2_output(
                     `Wrong Answer\nYour Output:\n${output}\nExpected Output:\n${q2_testCase_2_expected_output}
               \nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
@@ -1071,17 +1086,17 @@ export default function Compiler() {
               }
             } else if (current_qs === 2) {
               if (y === 0) {
-                set_q2_testCase_1_output(`EEEEEEEEError :${error}`);
-                set_q2_testCase_Current_output(`EEEEEEError :${error}`);
+                set_q2_testCase_1_output(`Error :${error}`);
+                set_q2_testCase_Current_output(`Error :${error}`);
                 set_q2_testCase_1_output_error(true);
-                t1Output = `EEEEEError :${error}`;
+                t1Output = `Error :${error}`;
               } else if (y === 1) {
-                set_q2_testCase_2_output(`EEEEEEEEError :${error}`);
-                t2Output = `EEEEEEEEEError :${error}`;
+                set_q2_testCase_2_output(`Error :${error}`);
+                t2Output = `Error :${error}`;
                 set_q2_testCase_2_output_error(true);
               } else if (y == 2) {
-                set_q2_testCase_3_output(`EEEEEError :${error}`);
-                t3Output = `EEEEEError :${error}`;
+                set_q2_testCase_3_output(`Error :${error}`);
+                t3Output = `Error :${error}`;
                 set_q2_testCase_3_output_error(true);
               }
             } else if (current_qs === 3) {
@@ -1108,16 +1123,14 @@ export default function Compiler() {
             const compilation_error = b.toString();
             if (current_qs === 1) {
               if (y === 0) {
-                set_q1_testCase_1_output(`EYyyyyrror :${compilation_error}`);
+                set_q1_testCase_1_output(`Error :${compilation_error}`);
                 set_q1_testCase_1_output_error(true);
-                set_q1_testCase_Current_output(
-                  `yyyyyyError :${compilation_error}`
-                );
-                t1Output = `Eyyyyyrror :${compilation_error}`;
+                set_q1_testCase_Current_output(`Error :${compilation_error}`);
+                t1Output = `Error :${compilation_error}`;
               } else if (y === 1) {
                 set_q1_testCase_2_output_error(true);
-                set_q1_testCase_2_output(`EEEEEEError :${compilation_error}`);
-                t2Output = `EEEEEEError :${compilation_error}`;
+                set_q1_testCase_2_output(`Error :${compilation_error}`);
+                t2Output = `Error :${compilation_error}`;
               } else if (y === 2) {
                 set_q1_testCase_3_output_error(true);
                 set_q1_testCase_3_output(`Error :${compilation_error}`);
@@ -1438,8 +1451,7 @@ export default function Compiler() {
                   if (parseInt(qsNo) === 1) {
                     set_question_current(question_1);
                     setInput(inputT_question_1);
-                    document.getElementById("codeEditor").value =
-                      inputT_question_1;
+                    document.getElementById("editor").value = inputT_question_1;
                     document.getElementsByClassName("customInput")[0].value =
                       user_input_question_1;
                     setUser_input(user_input_question_1);
@@ -1469,8 +1481,7 @@ export default function Compiler() {
                   } else if (parseInt(qsNo) === 2) {
                     set_question_current(question_2);
                     setInput(inputT_question_2);
-                    document.getElementById("codeEditor").value =
-                      inputT_question_2;
+                    document.getElementById("editor").value = inputT_question_2;
                     document.getElementsByClassName("customInput")[0].value =
                       user_input_question_2;
                     setUser_input(user_input_question_2);
@@ -1504,8 +1515,7 @@ export default function Compiler() {
                   } else if (parseInt(qsNo) === 3) {
                     set_question_current(question_3);
                     setInput(inputT_question_3);
-                    document.getElementById("codeEditor").value =
-                      inputT_question_3;
+                    document.getElementById("editor").value = inputT_question_3;
                     document.getElementsByClassName("customInput")[0].value =
                       user_input_question_3;
                     setUser_input(user_input_question_3);
@@ -1615,21 +1625,26 @@ export default function Compiler() {
                   height: window.screen.height - 500,
                 }}
               >
-                {current_qs === 1 && (
+                {current_qs === 1 && language_id_question_1 !== undefined && (
                   <ACEEditor
-                    inputT={inputT}
+                    inputT={inputT_question_1}
+                    language_id={language_id_question_1}
                     height={window.screen.height - 500}
                   ></ACEEditor>
                 )}
-                {current_qs === 2 && (
+
+                {current_qs === 2 && language_id_question_2 !== undefined && (
                   <ACEEditor
-                    inputT={inputT}
+                    inputT={inputT_question_2}
+                    language_id={language_id_question_2}
                     height={window.screen.height - 500}
                   ></ACEEditor>
                 )}
-                {current_qs === 3 && (
+
+                {current_qs === 3 && language_id_question_3 !== undefined && (
                   <ACEEditor
-                    inputT={inputT}
+                    inputT={inputT_question_3}
+                    language_id={language_id_question_3}
                     height={window.screen.height - 500}
                   ></ACEEditor>
                 )}
@@ -1696,16 +1711,14 @@ export default function Compiler() {
                   className="btn scTest ml-2 mr-2 "
                   style={{ color: "white", width: "fit-content" }}
                   onClick={(e) => {
-                    if (inputT) {
-                      if (current_qs === 1) {
-                        set_submitCode_qs1(true);
-                      } else if (current_qs === 2) {
-                        set_submitCode_qs2(true);
-                      } else if (current_qs === 3) {
-                        set_submitCode_qs3(true);
-                      }
-                      submitCode(e);
+                    if (current_qs === 1) {
+                      set_submitCode_qs1(true);
+                    } else if (current_qs === 2) {
+                      set_submitCode_qs2(true);
+                    } else if (current_qs === 3) {
+                      set_submitCode_qs3(true);
                     }
+                    submitCode(e);
                   }}
                 >
                   <i className="fas fa-cog fa-fw"></i> Submit
