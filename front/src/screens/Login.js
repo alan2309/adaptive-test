@@ -97,7 +97,7 @@ function Login() {
   async function availabilty() {
     let aa = 0;
     await axios
-      .get("http://127.0.0.1:8000/api/test")
+      .get("http://127.0.0.1:8000/api/test/0")
       .then((res) => {
         aa = res.data.testId;
       })

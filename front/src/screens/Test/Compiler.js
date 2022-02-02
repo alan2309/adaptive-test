@@ -132,6 +132,7 @@ export default function Compiler() {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [reload, isReload] = useState(false);
+  const [render_state, set_render_state] = useState(false);
   const handleClose = () => {
     setShow(false);
     setMd(true);
@@ -368,6 +369,7 @@ export default function Compiler() {
   function language(event) {
     event.preventDefault();
     setLanguage_id(event.target.value);
+    set_render_state(true);
     current_qs === 1
       ? setLanguage_id_question_1(event.target.value)
       : current_qs === 2
@@ -1456,6 +1458,7 @@ export default function Compiler() {
                       user_input_question_1;
                     setUser_input(user_input_question_1);
                     setLanguage_id(language_id_question_1);
+                    set_render_state(true);
                     if (
                       document.getElementsByClassName("codeOutput")[0] !==
                       undefined
@@ -1486,6 +1489,7 @@ export default function Compiler() {
                       user_input_question_2;
                     setUser_input(user_input_question_2);
                     setLanguage_id(language_id_question_2);
+                    set_render_state(true);
 
                     console.log(
                       document.getElementsByClassName("codeOutput")[0]
@@ -1520,6 +1524,7 @@ export default function Compiler() {
                       user_input_question_3;
                     setUser_input(user_input_question_3);
                     setLanguage_id(language_id_question_3);
+                    set_render_state(true);
 
                     if (
                       document.getElementsByClassName("codeOutput")[0] !==
@@ -1628,6 +1633,8 @@ export default function Compiler() {
                 {current_qs === 1 && language_id_question_1 !== undefined && (
                   <ACEEditor
                     inputT={inputT_question_1}
+                    render_state={render_state}
+                    set_render_state={set_render_state}
                     language_id={language_id_question_1}
                     height={window.screen.height - 500}
                   ></ACEEditor>
@@ -1636,6 +1643,8 @@ export default function Compiler() {
                 {current_qs === 2 && language_id_question_2 !== undefined && (
                   <ACEEditor
                     inputT={inputT_question_2}
+                    render_state={render_state}
+                    set_render_state={set_render_state}
                     language_id={language_id_question_2}
                     height={window.screen.height - 500}
                   ></ACEEditor>
@@ -1644,6 +1653,8 @@ export default function Compiler() {
                 {current_qs === 3 && language_id_question_3 !== undefined && (
                   <ACEEditor
                     inputT={inputT_question_3}
+                    render_state={render_state}
+                    set_render_state={set_render_state}
                     language_id={language_id_question_3}
                     height={window.screen.height - 500}
                   ></ACEEditor>

@@ -1,5 +1,4 @@
 import json
-from django.shortcuts import render
 from django.http.response import JsonResponse
 from rest_framework.views import APIView
 from api.models import Questions,Options,Results,Subject,Test,CodingTest,Para,Paraopt,Paraqs
@@ -20,7 +19,6 @@ CFG = {'DB': None}
 
 @csrf_exempt
 def subqs(request,subject=0):
-
     if request.method == 'GET': 
         a=[]
         b=[]

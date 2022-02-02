@@ -1,8 +1,5 @@
-from pyexpat import model
-from tkinter import CASCADE
 from django.db import models
 from django.conf import settings
-from django.forms import IntegerField
 
 class Test(models.Model):
     test_name = models.CharField(max_length=150)

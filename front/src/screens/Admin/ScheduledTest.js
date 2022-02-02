@@ -98,7 +98,7 @@ function ScheduledTest() {
       if (valueStart !== valueStartCheck || valueEnd !== valueEndCheck) {
         if(!clash(valueStart.getTime(),valueEnd.getTime(),testId)){
         axiosInstance
-          .post("api/test", {
+          .post("api/test/0", {
             data: {
               name: header,
               start: valueStart,
@@ -128,7 +128,7 @@ function ScheduledTest() {
   }
   function delTest(e) {
     axiosInstance
-      .post("api/test", {
+      .post("api/test/0", {
         data: {
           name: header,
           start: valueStart,

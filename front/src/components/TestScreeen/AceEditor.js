@@ -8,7 +8,13 @@ import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/ext-language_tools";
 import "../../css/AceEditor.css";
 
-function ACEEditor({ inputT, language_id, height }) {
+function ACEEditor({
+  inputT,
+  set_render_state,
+  render_state,
+  language_id,
+  height,
+}) {
   const [language, setLanguage] = useState();
   useEffect(() => {
     if (parseInt(language_id) === 54) {
@@ -20,7 +26,8 @@ function ACEEditor({ inputT, language_id, height }) {
     } else if (parseInt(language_id) === 71) {
       setLanguage("python");
     }
-  }, []);
+    set_render_state(false);
+  }, [render_state]);
 
   return (
     <>
