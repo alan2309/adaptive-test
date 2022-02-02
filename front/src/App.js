@@ -22,6 +22,7 @@ import Compiler from "./screens/Test/Compiler";
 import CompScreen from "./screens/Test/compScreen";
 import Personality from "./screens/Test/Personality";
 import PersonalityResultComp from "./components/Result/personalityResultComp";
+import ACEEditor from "./components/TestScreeen/AceEditor";
 
 function App() {
   return (
@@ -97,6 +98,11 @@ function App() {
                   path="/per/result"
                   exact
                   element={<PersonalityResultComp />}
+                />
+                <Route
+                  path="/per/editor"
+                  exact
+                  element={<ACEEditor />}
                 />
               </Routes>
             </Router>

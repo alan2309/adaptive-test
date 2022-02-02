@@ -70,12 +70,12 @@ function CodingQsComp({ qs }) {
             disabled
             className="style-4"
           ></textarea>
-          {qs.explanation !== null && (
+          {qs.explanation !== null && qs.explanation !== "" && (
             <h5>
               <b>Explanation</b>
             </h5>
           )}
-          {(qs.explanation !== null || qs.explanation !== '') && (
+          {qs.explanation !== null && qs.explanation !== "" && (
             <textarea
               defaultValue={qs.explanation}
               className="style-4"
