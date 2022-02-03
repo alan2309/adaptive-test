@@ -145,6 +145,7 @@ function Result() {
         })
         .then((res) => {
           console.log("done");
+          localStorage.setItem('result',true)
           if (tNo !== 1) {
             localStorage.removeItem(`test${tNo}`);
           } else {
