@@ -389,13 +389,13 @@ function CompScreen() {
           </Row>
 
           <Row style={{ height: window.screen.height - 300 }}>
-            <Col className="passage scrollbar" id="style-4">
+            <Col className="passage" style={{overflow:'none'}}>
               <div
                 style={{
                   backgroundColor: "#293E6F",
                   boxShadow: "1px 1px 7px 2px rgba(0, 0, 0, 0.25)",
                   borderRadius: "14px",
-                  margin: "5px 5px 15px 5px",
+                  margin: "5px 5px 15px 5px",          
                 }}
               >
                 <div
@@ -425,20 +425,21 @@ function CompScreen() {
               >
                 {passage[parano].title}
               </h3>
-              <h5
+              <textarea
                 style={{
                   fontFamily: "Poppins",
                   fontStyle: "normal",
                   fontWeight: "normal",
                   padding: "0 10px",
                   fontSize: "18px",
+                  width:'100%',
+                  height:'75%',
                   lineHeight: "27px",
-                  color: "#000000",
+                  backgroundColor:'#F7F7F7'
                 }}
-              >
-                {" "}
-                {passage[parano].para}
-              </h5>
+                value={passage[parano].para}
+                className="style-4"
+              />
             </Col>
             <Col className="question scrollbar" id="style-4">
               <div style={{ marginBottom: "10px", padding: "30px" }}>
