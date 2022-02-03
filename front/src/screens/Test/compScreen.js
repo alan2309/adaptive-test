@@ -389,13 +389,13 @@ function CompScreen() {
           </Row>
 
           <Row style={{ height: window.screen.height - 300 }}>
-            <Col className="passage" style={{overflow:'none'}}>
+            <Col className="passage" style={{ overflow: "none" }}>
               <div
                 style={{
                   backgroundColor: "#293E6F",
                   boxShadow: "1px 1px 7px 2px rgba(0, 0, 0, 0.25)",
                   borderRadius: "14px",
-                  margin: "5px 5px 15px 5px",          
+                  margin: "5px 5px 15px 5px",
                 }}
               >
                 <div
@@ -416,27 +416,34 @@ function CompScreen() {
                   Read the passage and answer the associated questions
                 </div>
               </div>
-              <h3
+              <h6
                 style={{
                   textAlign: "center",
                   fontWeight: "bold",
-                  marginTop: "20px",
+                  marginTop: "19.5px",
+                  fontSize: "20px",
                 }}
               >
                 {passage[parano].title}
-              </h3>
+              </h6>
               <textarea
                 style={{
                   fontFamily: "Poppins",
                   fontStyle: "normal",
                   fontWeight: "normal",
                   padding: "0 10px",
-                  fontSize: "18px",
-                  width:'100%',
-                  height:'75%',
-                  lineHeight: "27px",
-                  backgroundColor:'#F7F7F7'
+                  fontSize: "17.5px",
+                  width: "100%",
+                  height: "75%",
+                  fontSize: "17.5px",
+                  lineHeight: "22px",
+                  backgroundColor: "#F7F7F7",
+                  contentEditable: false,
+                  outline: "none",
+                  border: "none",
+                  color:'black'
                 }}
+                disabled
                 value={passage[parano].para}
                 className="style-4"
               />
