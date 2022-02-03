@@ -62,9 +62,10 @@ function TestScreen() {
       if (localStorage.getItem("result")) {
         navigate("/result");
       } else {
+        let xx =localStorage.getItem("testId");
         const getData = async () =>
           await axios
-            .get("http://127.0.0.1:8000/api/subs/1")
+            .get(`http://127.0.0.1:8000/api/subs/1/${xx}`)
             .then((res) => {
               let a = converttime(res.data.time);
               var tf = a;

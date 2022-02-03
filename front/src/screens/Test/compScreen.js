@@ -89,9 +89,10 @@ function CompScreen() {
         navigate("/result");
       } else {
         if (parseInt(test["parano"]) === -1 && parseInt(test["qsno"]) === -1) {
+          let xx =localStorage.getItem("testId");
           const data = async () => {
             await axios
-              .get("http://127.0.0.1:8000/api/para")
+              .get(`http://127.0.0.1:8000/api/para/${xx}`)
               .then((res) => {
                 let aa = converttime(res.data.time);
                 var tf = aa;

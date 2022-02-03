@@ -1,4 +1,5 @@
 import json
+from pydoc import TextDoc
 from django.http.response import JsonResponse
 from rest_framework.views import APIView
 from api.models import Questions,Options,Results,Subject,Test,CodingTest,Para,Paraopt,Paraqs
@@ -18,13 +19,41 @@ from dateutil import tz
 CFG = {'DB': None}
 
 @csrf_exempt
-def subqs(request,subject=0):
+def subqs(request,subject=0,tid=0):
     if request.method == 'GET': 
         a=[]
         b=[]
         c=[]
+        test = Test.objects.get(id=tid)
         sub =Subject.objects.get(id=subject)
         qs = Questions.objects.filter(subject=sub)
+        # if() to get time and avg score
+        avg,time,qsno=0,"00:00:00",0
+        if sub.sub_name == 'Aptitude':
+            avg=test.apt['avg']
+            time=test.apt['time']
+            qsno=test.apt['qs']
+        elif sub.sub_name == 'Computer Fundamentals':
+            avg =test.cf['avg']
+            time=test.cf['time']
+            qsno=test.cf['qs']
+        elif sub.sub_name == 'Coding':
+            avg =test.c['avg']
+            time=test.c['time'] 
+            qsno=test.c['qs']  
+        elif sub.sub_name == 'Domain':
+            avg =test.dom['avg']
+            time=test.dom['time'] 
+            qsno=test.dom['qs']   
+        elif sub.sub_name == 'Personality':
+            avg =test.p['avg'] 
+            time=test.p['time'] 
+            qsno=test.p['qs']  
+        elif sub.sub_name == 'Analytical Writing':
+            avg =test.aw['avg']
+            time=test.aw['time']
+            qsno=test.aw['qs']
+
         if int(subject)!=4:
             for x in qs:
                     aa={}
@@ -47,14 +76,14 @@ def subqs(request,subject=0):
                     elif x.type==3:
                         c.append(aa)
             
-            return JsonResponse({'avg':sub.avg_score,'qs':sub.sub_qs,'time':sub.sub_time,'easy':a,'medium':b,'hard':c},safe=False)
+            return JsonResponse({'avg':avg,'qs':qsno,'time':time,'easy':a,'medium':b,'hard':c},safe=False)
         elif int(subject)==4:
             for x in qs:
                 aa={}
                 aa['ques']=x.title
                 aa['id']=x.id
                 a.append(aa)
-            return JsonResponse({'qs':sub.sub_qs,'avg':sub.avg_score,'time':sub.sub_time,'allQs':a},safe=False)
+            return JsonResponse({'qs':qsno,'avg':avg,'time':time,'allQs':a},safe=False )#error for personality
 
 @csrf_exempt
 def subs(request):
@@ -172,22 +201,23 @@ def results(request,name):
     user = User.objects.get(username = name) 
     if request.method == 'POST':
         data=JSONParser().parse(request)['data']
+        test = Test.objects.get(id=data['testId'])
         subs = Subject.objects.all() #change this when we change the model for subjects
         print(subs)
         avg_ap,avg_cf,avg_c,avg_d,avg_p,avg_a=0,0,0,0,0,0
         for sub in subs:
             if sub.sub_name == 'Aptitude':
-                avg_ap=sub.avg_score
+                avg_ap=test.apt['avg']
             elif sub.sub_name == 'Computer Fundamentals':
-                avg_cf =sub.avg_score
+                avg_cf =test.cf['avg']
             elif sub.sub_name == 'Coding':
-                avg_c =sub.avg_score    
+                avg_c =test.c['avg']   
             elif sub.sub_name == 'Domain':
-                avg_d =sub.avg_score    
+                avg_d =test.dom['avg']    
             elif sub.sub_name == 'Personality':
-                avg_p =sub.avg_score    
+                avg_p =test.p['avg']    
             elif sub.sub_name == 'Analytical Writing':
-                avg_a =sub.avg_score  
+                avg_a =test.aw['avg']  
         if(user):
             d = datetime.datetime.utcnow()
             try:
@@ -457,7 +487,6 @@ def saveTest(request):
     if request.method == 'POST':
         data=JSONParser().parse(request)['data']
         tst=Test(test_name=data['createTest']['testName'],test_start=data['createTest']['sTime'],test_end=data['createTest']['eTime'])
-        tst.save()
 
         for x in range(0,len(data['saveTest'])):
             avgMrk=0
@@ -466,10 +495,49 @@ def saveTest(request):
             else:
                 avgMrk=math.ceil(int(data['saveTest'][x]['totalQs'])*2*0.7) # 70% average
             b=Subject.objects.get(sub_name=data['saveTest'][x]['sub'])
+            if(b.sub_name=="Aptitude"):
+                tst.apt = {
+                    "qs":data['saveTest'][x]['totalQs'],
+                    "time":data['saveTest'][x]['time'],
+                    "avg":avgMrk
+                }
+            elif(b.sub_name=="Computer Fundamentals"):
+                tst.cf = {
+                    "qs":data['saveTest'][x]['totalQs'],
+                    "time":data['saveTest'][x]['time'],
+                    "avg":avgMrk
+                }
+            elif(b.sub_name=="Domain"):
+                tst.dom = {
+                    "qs":data['saveTest'][x]['totalQs'],
+                    "time":data['saveTest'][x]['time'],
+                    "avg":avgMrk
+                }
+            elif(b.sub_name=="Personality"):
+                tst.p = {
+                    "qs":data['saveTest'][x]['totalQs'],
+                    "time":data['saveTest'][x]['time'],
+                    "avg":avgMrk
+                }
+            elif(b.sub_name=="Coding"):
+                tst.c = {
+                    "qs":3,
+                    "time":data['saveTest'][x]['time'],
+                    "avg":avgMrk
+                }
+            else:
+                tst.aw = {
+                    "qs":3,
+                    "time":data['saveTest'][x]['time'],
+                    "avg":avgMrk
+                }                   
+            print(b.sub_name)
+            print("*****************")
             b.sub_qs=data['saveTest'][x]['totalQs']
             b.sub_time=data['saveTest'][x]['time']
             b.avg_score=avgMrk
             b.save()
+            tst.save()
         return JsonResponse('success',safe=False)
 
 @csrf_exempt
@@ -513,8 +581,9 @@ def getTests(request):
 
 
 @csrf_exempt
-def getCodingTests(request):
+def getCodingTests(request,tid=0):
     if request.method == 'GET':
+        test = Test.objects.get(id=tid)
         t1=CodingTestSerializer(CodingTest.objects.filter(type=1),many=True).data
         t2=CodingTestSerializer(CodingTest.objects.filter(type=2),many=True).data
         t3=CodingTestSerializer(CodingTest.objects.filter(type=3),many=True).data
@@ -531,10 +600,11 @@ def getCodingTests(request):
             itemsType3=CodingTest.objects.get(id=list(random.sample(t3,1)[0].items())[0][1])
             itemsType3=CodingTestSerializer(itemsType3).data
         sub =Subject.objects.get(id=6)
-        return JsonResponse({'time':sub.sub_time,'cQs':[itemsType1,itemsType2,itemsType3]},safe=False)
+        return JsonResponse({'time':test.c['time'],'cQs':[itemsType1,itemsType2,itemsType3]},safe=False)
 @csrf_exempt
-def comprehension(request):
+def comprehension(request,tid=0):
     if request.method == 'GET':
+        test = Test.objects.get(id=tid)
         sub = Subject.objects.get(id=5)
         paras = Para.objects.order_by('?')[:3]
         f=[]
@@ -552,7 +622,7 @@ def comprehension(request):
                 qs.append(op)
             x['questions'] = qs 
             f.append(x)    
-        return JsonResponse({'data':f,'time':sub.sub_time},safe=False)   
+        return JsonResponse({'data':f,'time':test.aw['time']},safe=False)   
 
 
 

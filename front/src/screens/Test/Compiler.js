@@ -209,9 +209,10 @@ export default function Compiler() {
         navigate("/result");
       } else {
         let data;
+        let xx =localStorage.getItem("testId");
         const getData = async () =>
           await axios
-            .get("http://127.0.0.1:8000/api/codingTests")
+            .get(`http://127.0.0.1:8000/api/codingTests/${xx}`)
             .then((res) => {
               console.log(res.data.cQs);
               let a = converttime(res.data.time);
