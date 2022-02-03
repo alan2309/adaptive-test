@@ -3,7 +3,7 @@ import axios from "axios";
 import { Row, Col, Modal, Button } from "react-bootstrap";
 import "../../css/Comprehension.css";
 import TestHeaderComp from "../../components/TestScreeen/TestHeaderComp";
-
+import crypt from "../../components/TestScreeen/crypt";
 import { useNavigate } from "react-router";
 import CustomTimer from "../Admin/CustomTimer";
 import getCurrentTime from "../../components/TestScreeen/dateCalc";
@@ -224,7 +224,7 @@ function CompScreen() {
     for (let i = 0; i < radio.length; i++) {
       if (radio[i].checked) {
         let ar = ans;
-        ar[count] = parseInt(radio[i].value);
+        ar[count] = parseInt(crypt.decryptVal(radio[i].value));
         test["marks"] = ar;
         test["gotMarks"] = ar;
         test["count"] = count + 1;
@@ -483,7 +483,7 @@ function CompScreen() {
                           id={opt.id}
                           name={`question-${qsno}`}
                           class="radio qsRadio"
-                          value={opt.marks}
+                          value={crypt.encryptVal(opt.marks)}
                         />
                         <label
                           class="option"

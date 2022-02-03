@@ -8,6 +8,7 @@ import "../css/TestScreen.css";
 import { useNavigate } from "react-router";
 import { isExpired, decodeToken } from "react-jwt";
 import CustomTimer from "./Admin/CustomTimer";
+import crypt from "../components/TestScreeen/crypt";
 
 function TestScreen() {
   const [hard, setHard] = useState([]);
@@ -224,11 +225,10 @@ function TestScreen() {
 
   function click(e) {
     e.preventDefault();
-
     var myans = -1;
     const formData = new FormData(e.target);
     for (var pair of formData.entries()) {
-      myans = pair[1];
+      myans = crypt.decryptVal(pair[1]);
     }
     setTotal(total + parseInt(myans));
     var x;

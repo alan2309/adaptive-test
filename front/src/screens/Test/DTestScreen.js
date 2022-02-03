@@ -10,6 +10,7 @@ import { isExpired, decodeToken } from "react-jwt";
 import CustomTimer from "../Admin/CustomTimer";
 import getCurrentTime from "../../components/TestScreeen/dateCalc";
 import axiosInstance from "../../axios";
+import crypt from "../../components/TestScreeen/crypt";
 
 function DTestScreen() {
   const [hard, setHard] = useState([]);
@@ -278,21 +279,18 @@ function DTestScreen() {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
   }
-
   function click(e) {
     e.preventDefault();
-
     var myans = -1;
     const formData = new FormData(e.target);
     for (var pair of formData.entries()) {
-      myans = pair[1];
+      myans = crypt.decryptVal(pair[1]);
     }
     setTotal(total + parseInt(myans));
     var x;
     ans[qsno] = parseInt(myans);
     setAns(ans);
     var test = JSON.parse(localStorage.getItem("test5"));
-
     if (myans > 0) {
       if (current < 3) {
         setCurrent(current + 1);

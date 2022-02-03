@@ -10,6 +10,7 @@ import { isExpired, decodeToken } from "react-jwt";
 import CustomTimer from "../Admin/CustomTimer";
 import getCurrentTime from "../../components/TestScreeen/dateCalc";
 import axiosInstance from "../../axios";
+import crypt from "../../components/TestScreeen/crypt";
 
 function CFTestScreen() {
   const [hard, setHard] = useState([]);
@@ -47,7 +48,6 @@ function CFTestScreen() {
       let user = localStorage.getItem("username");
       if (localStorage.getItem("test")) {
         let ax = JSON.parse(localStorage.getItem("test"));
-
         let ar = ax["marks"];
         let maxMarks = ax["maxMarks"];
         let gotMarks = ax["marks"];
@@ -284,18 +284,16 @@ function CFTestScreen() {
 
   function click(e) {
     e.preventDefault();
-
     var myans = -1;
     const formData = new FormData(e.target);
     for (var pair of formData.entries()) {
-      myans = pair[1];
+      myans = crypt.decryptVal(pair[1]);
     }
     setTotal(total + parseInt(myans));
     var x;
     ans[qsno] = parseInt(myans);
     setAns(ans);
     var test = JSON.parse(localStorage.getItem("test2"));
-
     if (myans > 0) {
       if (current < 3) {
         setCurrent(current + 1);

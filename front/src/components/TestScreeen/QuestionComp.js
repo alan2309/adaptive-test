@@ -1,5 +1,6 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
+import crypt from "./crypt";
 
 function QuestionComp({
   ans,
@@ -47,7 +48,7 @@ function QuestionComp({
                       id={index}
                       name={question}
                       class="radio qsRadio"
-                      value={option.mrks}
+                      value={crypt.encryptVal(option.mrks)}
                       style={{ height: "13px" }}
                     />
                     <label
