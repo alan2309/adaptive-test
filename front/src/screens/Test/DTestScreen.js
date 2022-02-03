@@ -44,28 +44,28 @@ function DTestScreen() {
       isReload(true);
     }
     if (!localStorage.getItem("test5")) {
-      let user = localStorage.getItem('username');
-      if(localStorage.getItem("test4")){
-      let ax = JSON.parse(localStorage.getItem("test4"));
-      let ar = ax["marks"];
-      let maxMarks = ax["maxMarks"];
-      let gotMarks = ax["marks"];
-      let total = ax["total_q_marks"];
-      axiosInstance
-        .post("api/marks/3", {
-          data: {
-            username: user,
-            marks: total,
-            maxMarks: maxMarks,
-            testId: localStorage.getItem("testId"),
-            gotMarks: gotMarks,
-          },
-        })
-        .then((res) => {
-          console.log("done");
-          localStorage.removeItem("test4");
-        })
-        .catch((e) => console.log(e));
+      let user = localStorage.getItem("username");
+      if (localStorage.getItem("test4")) {
+        let ax = JSON.parse(localStorage.getItem("test4"));
+        let ar = ax["marks"];
+        let maxMarks = ax["maxMarks"];
+        let gotMarks = ax["marks"];
+        let total = ax["total_q_marks"];
+        axiosInstance
+          .post("api/marks/3", {
+            data: {
+              username: user,
+              marks: total,
+              maxMarks: maxMarks,
+              testId: localStorage.getItem("testId"),
+              gotMarks: gotMarks,
+            },
+          })
+          .then((res) => {
+            console.log("done");
+            localStorage.removeItem("test4");
+          })
+          .catch((e) => console.log(e));
       }
       let txx = getCurrentTime();
       let hh = txx.hh;
@@ -79,7 +79,7 @@ function DTestScreen() {
           FSTimer: "10",
           question: [],
           strtTime: +hh + ":" + mm + ":" + ss,
-          marks:[],
+          marks: [],
           currentQsNo: 1,
         })
       );
@@ -464,19 +464,24 @@ function DTestScreen() {
                       )}
                     {countWindowAwayModal && (
                       <>
-                        <h1 style={{ color: "red" }}>
+                        <h4 style={{ color: "red" }}>
                           Screen Change Detected !!{" "}
                           {countWindowAway === 1 ? "1st" : "LAST"} WARNING
-                        </h1>
-                        <h3>
+                        </h4>
+                        <h6>
                           Screen changed detected.Test will get auto submitted
                           if you try to change screen again !!
-                        </h3>
+                        </h6>
                         <button
-                          className="btn btn-secondary"
+                          className="btn"
                           onClick={(e) => handleCloseSChange(e)}
+                          style={{
+                            backgroundColor: "#10B65C",
+                            margin: "0px 0px 10px 3px",
+                            color: "white",
+                          }}
                         >
-                          OKay
+                          Okay
                         </button>
                       </>
                     )}

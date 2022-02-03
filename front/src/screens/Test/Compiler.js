@@ -1407,10 +1407,15 @@ export default function Compiler() {
             change screen again !!
           </h3>
           <button
-            className="btn btn-secondary"
+            className="btn"
             onClick={(e) => handleCloseSChange(e)}
+            style={{
+              backgroundColor: "#10B65C",
+              margin: "0px 0px 10px 3px",
+              color: "white",
+            }}
           >
-            OKay
+            Okay
           </button>
         </>
       )}
@@ -1741,7 +1746,7 @@ export default function Compiler() {
                 className="basicRec"
                 style={{
                   marginTop: "5px",
-                  height: "210px",
+                  height: "240px",
                   backgroundColor: "#F7F7F7",
                 }}
               >
@@ -1756,7 +1761,7 @@ export default function Compiler() {
                       className="scrollbar customInput"
                       spellCheck={false}
                       defaultValue={user_input}
-                      style={{ height: 140 }}
+                      style={{ height: 170 }}
                       onChange={userInput}
                     ></textarea>
                   </Tab>

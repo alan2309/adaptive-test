@@ -40,9 +40,9 @@ function CompScreen() {
       isReload(true);
     }
     if (!localStorage.getItem("test3")) {
-        let user = localStorage.getItem("username");
+      let user = localStorage.getItem("username");
       if (localStorage.getItem("test6")) {
-        let ax = JSON.parse(localStorage.getItem("test6")); 
+        let ax = JSON.parse(localStorage.getItem("test6"));
         let ar = ax["marks"];
         let total = 0;
         axiosInstance
@@ -310,19 +310,24 @@ function CompScreen() {
       </Modal>
       {countWindowAwayModal && (
         <>
-          <h1 style={{ color: "red" }}>
+          <h4 style={{ color: "red" }}>
             Screen Change Detected !! {countWindowAway === 1 ? "1st" : "LAST"}{" "}
             WARNING
-          </h1>
-          <h3>
+          </h4>
+          <h6>
             Screen changed detected.Test will get auto submitted if you try to
             change screen again !!
-          </h3>
+          </h6>
           <button
-            className="btn btn-secondary"
+            className="btn"
             onClick={(e) => handleCloseSChange(e)}
+            style={{
+              backgroundColor: "#10B65C",
+              margin: "0px 0px 10px 3px",
+              color: "white",
+            }}
           >
-            OKay
+            Okay
           </button>
         </>
       )}
