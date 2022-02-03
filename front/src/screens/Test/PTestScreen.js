@@ -142,7 +142,7 @@ function PTestScreen() {
                   localStorage.setItem("test6", JSON.stringify(test));
                 } else {
                   var qss = test["question"];
-                  var y = res.data.medium;
+                  var y = res.data.allQs;
 
                   for (let i = 0; i < qss.length; i++) {
                     if (

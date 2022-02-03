@@ -13,14 +13,16 @@ function QuestionComp({
     <div id="quesComp" style={{ padding: "10px 20px" }}>
       {qsno <= ans.length && (
         <>
-          <Row>
-            <Col>
-              <div style={{ float: "right", fontWeight: "500" }}>
-                Difficulty Level :{" "}
-                {level === 2 ? "Medium" : level === 3 ? "Hard" : "Easy"}
-              </div>
-            </Col>
-          </Row>
+          {!isPersonality && (
+            <Row>
+              <Col>
+                <div style={{ float: "right", fontWeight: "500" }}>
+                  Difficulty Level :{" "}
+                  {level === 2 ? "Medium" : level === 3 ? "Hard" : "Easy"}
+                </div>
+              </Col>
+            </Row>
+          )}
           <Row>
             <Col>
               <div style={{ padding: "10px 0 20px 0", fontWeight: "600" }}>
