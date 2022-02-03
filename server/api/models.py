@@ -24,14 +24,14 @@ class Subject(models.Model):
 
 class Questions(models.Model):
     subject = models.ForeignKey(Subject,on_delete=models.CASCADE)
-    title = models.CharField(max_length=255)
+    title = models.TextField(blank=True,null=True)
     type = models.IntegerField()
     def __str__(self):
         return self.title
 
 class Options(models.Model):
     question = models.ForeignKey(Questions,on_delete=models.CASCADE)
-    title = models.CharField(max_length=255)
+    title = models.TextField(blank=True,null=True)
     marks = models.IntegerField()  
     def __str__(self):
         return self.title

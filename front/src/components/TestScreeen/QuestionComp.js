@@ -33,9 +33,9 @@ function QuestionComp({
           </Row>
           <Row>
             <Col>
-              <div style={{ padding: "5px 0 20px 0px", fontWeight: "700" }}>
-                {question}
-              </div>
+              <textarea className="style-4" value={question} style={{width:"100%", padding: "5px 0 20px 0px", fontWeight: "700" }}>
+                
+              </textarea>
             </Col>
           </Row>
           <div style={{ padding: "15px 0 10px 0" }}>
@@ -51,13 +51,13 @@ function QuestionComp({
                       value={crypt.encryptVal(option.mrks)}
                       style={{ height: "13px" }}
                     />
-                    <label
-                      class="option"
+                    <textarea
+                    value={option.opt}
+                      className="option style-4"
                       id="option-one-label"
-                      style={{ marginLeft: "15px", fontWeight: "400" }}
+                      style={{width:"100%",marginLeft: "15px", fontWeight: "400" }}
                     >
-                      {option.opt}
-                    </label>
+                    </textarea>
                   </p>
                 );
               })}
