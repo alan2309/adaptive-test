@@ -1,10 +1,17 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import Page_404_svg from "../img/Page_404.svg";
+import ProtectUrl from "../components/TestScreeen/ProtectUrl";
 import "../css/Page_404.css";
 function Page_404() {
   const navigate = useNavigate();
+  useEffect(()=>{
+    let xx = ProtectUrl.protect()
+    if(!(xx === "/result")){
+      navigate(xx)
+    }
+  },[])
   return (
     <div>
       <Row>

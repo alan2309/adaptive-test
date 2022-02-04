@@ -9,6 +9,7 @@ import CustomTimer from "../Admin/CustomTimer";
 import getCurrentTime from "../../components/TestScreeen/dateCalc";
 import axiosInstance from "../../axios";
 import { isExpired, decodeToken } from "react-jwt";
+import ProtectUrl from "../../components/TestScreeen/ProtectUrl";
 
 function CompScreen() {
   //prev pages
@@ -32,6 +33,14 @@ function CompScreen() {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
+    let flag=true
+    if(!(localStorage.getItem("test6") && !localStorage.getItem("test3"))){
+      if(!localStorage.getItem("test3")){
+        navigate(ProtectUrl.protect())
+        flag=false
+      }  
+    }
+    if(flag){
     var full_screen_element = document.fullscreenElement;
 
     if (full_screen_element === null) {
@@ -88,6 +97,7 @@ function CompScreen() {
       if (localStorage.getItem("result")) {
         navigate("/result");
       } else {
+        // navigate(ProtectUrl.protect())
         if (parseInt(test["parano"]) === -1 && parseInt(test["qsno"]) === -1) {
           let xx =localStorage.getItem("testId");
           const data = async () => {
@@ -170,7 +180,7 @@ function CompScreen() {
           setAns(test["marks"]);
         }
       }
-    }
+    }}
   }, []);
 
   function converttime(timex) {

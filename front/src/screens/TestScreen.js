@@ -9,6 +9,7 @@ import { useNavigate } from "react-router";
 import { isExpired, decodeToken } from "react-jwt";
 import CustomTimer from "./Admin/CustomTimer";
 import crypt from "../components/TestScreeen/crypt";
+import ProtectUrl from "../components/TestScreeen/ProtectUrl";
 
 function TestScreen() {
   const [hard, setHard] = useState([]);
@@ -31,6 +32,10 @@ function TestScreen() {
   const [timeFF, setTimeFF] = useState();
 
   useEffect(() => {
+    if(!localStorage.getItem('test')){
+      navigate(ProtectUrl.protect())
+    }
+    else{
     var test = JSON.parse(localStorage.getItem("test"));
     const token = localStorage.getItem("access_token");
     const isMyTokenExpired = isExpired(token);
@@ -178,7 +183,7 @@ function TestScreen() {
             });
         getData();
       }
-    }
+    }}
   }, []);
   function GoInFullscreen(element) {
     if (document.fullscreenElement === null) {

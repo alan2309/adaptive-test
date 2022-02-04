@@ -12,6 +12,7 @@ import getCurrentTime from "../../components/TestScreeen/dateCalc";
 import axiosInstance from "../../axios";
 import { isExpired, decodeToken } from "react-jwt";
 import ACEEditor from "../../components/TestScreeen/AceEditor";
+import ProtectUrl from "../../components/TestScreeen/ProtectUrl";
 
 export default function Compiler() {
   const [inputT, setInput] = useState();
@@ -144,6 +145,14 @@ export default function Compiler() {
   const [timeFF, setTimeFF] = useState();
 
   useEffect(() => {
+    let flag=true
+    if(!(localStorage.getItem("test2") && !localStorage.getItem("test4"))){
+      if(!localStorage.getItem("test4")){
+        navigate(ProtectUrl.protect())
+        flag=false
+      }  
+    }
+    if(flag){
     var full_screen_element = document.fullscreenElement;
 
     if (full_screen_element === null) {
@@ -208,6 +217,7 @@ export default function Compiler() {
       if (localStorage.getItem("result")) {
         navigate("/result");
       } else {
+        // navigate(ProtectUrl.protect())
         let data;
         let xx =localStorage.getItem("testId");
         const getData = async () =>
@@ -319,7 +329,7 @@ export default function Compiler() {
             54
         );
       }
-    }
+    }}
   }, []);
   function converttime(timex) {
     let secs = 0;

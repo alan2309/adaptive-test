@@ -11,6 +11,7 @@ import CustomTimer from "../Admin/CustomTimer";
 import getCurrentTime from "../../components/TestScreeen/dateCalc";
 import axiosInstance from "../../axios";
 import crypt from "../../components/TestScreeen/crypt";
+import ProtectUrl from "../../components/TestScreeen/ProtectUrl";
 
 function DTestScreen() {
   const [hard, setHard] = useState([]);
@@ -37,6 +38,14 @@ function DTestScreen() {
   const [timeFF, setTimeFF] = useState();
 
   useEffect(() => {
+    let flag=true
+    if(!(localStorage.getItem("test4") && !localStorage.getItem("test5"))){
+      if(!localStorage.getItem("test5")){
+        navigate(ProtectUrl.protect())
+        flag=false
+      }  
+    }
+    if(flag){
     var full_screen_element = document.fullscreenElement;
 
     if (full_screen_element === null) {
@@ -117,6 +126,7 @@ function DTestScreen() {
       if (localStorage.getItem("result")) {
         navigate("/result");
       } else {
+        // navigate(ProtectUrl.protect())s
         let xx =localStorage.getItem("testId");
         const getData = async () =>
           await axios
@@ -233,7 +243,7 @@ function DTestScreen() {
             });
         getData();
       }
-    }
+    }}
   }, []);
   function GoInFullscreen(element) {
     if (document.fullscreenElement === null) {

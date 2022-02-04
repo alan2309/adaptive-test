@@ -10,6 +10,7 @@ import { isExpired, decodeToken } from "react-jwt";
 import CustomTimer from "../Admin/CustomTimer";
 import getCurrentTime from "../../components/TestScreeen/dateCalc";
 import axiosInstance from "../../axios";
+import ProtectUrl from "../../components/TestScreeen/ProtectUrl";
 
 function PTestScreen() {
   const [hard, setHard] = useState([]);
@@ -36,6 +37,14 @@ function PTestScreen() {
   const [timeFF, setTimeFF] = useState();
 
   useEffect(() => {
+    let flag=true
+    if(!(localStorage.getItem("test5") && !localStorage.getItem("test6"))){
+      if(!localStorage.getItem("test6")){
+        navigate(ProtectUrl.protect())
+        flag=false
+      }  
+    }
+    if(flag){
     var full_screen_element = document.fullscreenElement;
 
     if (full_screen_element === null) {
@@ -119,6 +128,7 @@ function PTestScreen() {
       if (localStorage.getItem("result")) {
         navigate("/result");
       } else {
+        // navigate(ProtectUrl.protect())
         let xx =localStorage.getItem("testId");
         const getData = async () =>
           await axios
@@ -202,7 +212,7 @@ function PTestScreen() {
             });
         getData();
       }
-    }
+    }}
   }, []);
   function GoInFullscreen(element) {
     if (document.fullscreenElement === null) {
