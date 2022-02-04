@@ -1,6 +1,7 @@
 import json
 from pydoc import TextDoc
 from django.http.response import JsonResponse
+from numpy import size
 from rest_framework.views import APIView
 from api.models import Questions,Options,Results,Subject,Test,CodingTest,Para,Paraopt,Paraqs
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -455,16 +456,26 @@ def addQs(request):
                 Paraqs.objects.filter(para=para).delete()
             elif action=='Save':
                 para=Para(title=paragraphTitle,data=paragraph)
-                para.save()
+                para.save()     
+            qslen = len(qsDict)
+            qsmrks = 0
+            if qslen>1:    
+                if qslen%2==0:
+                    qsmrks= (20/qslen)
+                else:
+                    qsmrks=math.ceil(20/qslen)
+            else:
+                qsmrks=20          
             for x in qsDict:
                 qs=Paraqs(para=para,title=qsDict[x]['title'])
                 qs.save()
                 for y in qsDict[x]['options']:
                     if str(rightOptArrAnalytical[x])==str(y):
-                        marks=2
+                        marks=qsmrks
                     else:
                         marks=0
                     paraOpt=Paraopt(paraqs=qs,title=data[y],marks=marks)
+                    print(paraOpt.marks)
                     paraOpt.save()
 
         return JsonResponse("Done",safe=False) 
