@@ -205,6 +205,8 @@ function CompScreen() {
       else if (element.webkitRequestFullscreen)
         element.webkitRequestFullscreen();
       else if (element.msRequestFullscreen) element.msRequestFullscreen();
+      element.style.overflowY = `auto`;
+      element.classList.add(`style-4`);
     }
   }
   document.addEventListener("fullscreenchange", function () {
