@@ -45,8 +45,7 @@ function QuestionComp({
           </Row>
           <Row>
             <Col>
-            {qsimg!==null && 
-                <Zoom>
+              {qsimg !== null && (
                 <Image
                   cloudName="chaitanya1911"
                   publicId={qsimg}
@@ -54,8 +53,7 @@ function QuestionComp({
                   crop="scale"
                   alt="img"
                 ></Image>
-              </Zoom>
-                }
+              )}
               <div className="TestQs">
                 <TextAreaAutoSize
                   text={question}
