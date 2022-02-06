@@ -71,6 +71,7 @@ function TestScreen() {
             await axios
               .get(`http://127.0.0.1:8000/api/subs/1/${xx}`)
               .then((res) => {
+                console.log(res.data)
                 let a = converttime(res.data.time);
                 var tf = a;
                 var totalQs = res.data.qs;
@@ -408,6 +409,7 @@ function TestScreen() {
                           level={current}
                           question={qs[qsno].ques}
                           options={qs[qsno].options}
+                          qsimg={qs[qsno].img}
                         ></QuestionComp>
                       )}
                     {countWindowAwayModal && (

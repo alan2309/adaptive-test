@@ -475,6 +475,7 @@ function CFTestScreen() {
                           level={current}
                           question={qs[qsno].ques}
                           options={qs[qsno].options}
+                          qsimg={qs[qsno].img}
                         ></QuestionComp>
                       )}
                     {countWindowAwayModal && (

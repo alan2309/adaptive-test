@@ -61,6 +61,7 @@ def subqs(request,subject=0,tid=0):
                     aaOption=[]
                     aa['ques']=x.title
                     aa['id']=x.id
+                    aa['img'] = x.imgId
                     ans = Options.objects.filter(question=x)
                     for asss in ans:
                         aaaOpt={}

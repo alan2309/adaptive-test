@@ -3,6 +3,9 @@ import { Col, Row } from "react-bootstrap";
 import crypt from "./crypt";
 import TextAreaAutoSize from "./TextAreaAutoSize";
 import $ from "jquery";
+import { Image } from "cloudinary-react";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
 
 function QuestionComp({
   ans,
@@ -11,6 +14,7 @@ function QuestionComp({
   options,
   level,
   qsno,
+  qsimg,
 }) {
   function checkBoxToggle(e, optId) {
     $(".form-check input.qsRadio").removeAttr("checked");
@@ -41,6 +45,17 @@ function QuestionComp({
           </Row>
           <Row>
             <Col>
+            {qsimg!==null && 
+                <Zoom>
+                <Image
+                  cloudName="chaitanya1911"
+                  publicId={qsimg}
+                  width="500"
+                  crop="scale"
+                  alt="img"
+                ></Image>
+              </Zoom>
+                }
               <div className="TestQs">
                 <TextAreaAutoSize
                   text={question}

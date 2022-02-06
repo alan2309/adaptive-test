@@ -415,6 +415,7 @@ function PTestScreen() {
                           level={current}
                           question={qs[qsno].ques}
                           options={[]}
+                          qsimg={null}
                         ></QuestionComp>
                       )}
                     {countWindowAwayModal && (

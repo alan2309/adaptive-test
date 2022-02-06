@@ -79,7 +79,7 @@ export default function ImageUpload() {
       <Zoom>
         <Image
           cloudName="chaitanya1911"
-          publicId="adaptive_test/Aptitude/wkdof7jube0myqhraqoh"
+          publicId="adaptive_test/Aptitude/adaptive_test/Aptitude/qnetyrmml5qrijrsityo"
           width="500"
           crop="scale"
           alt="img"
