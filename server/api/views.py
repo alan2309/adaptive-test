@@ -1,7 +1,5 @@
 import json
-from pydoc import TextDoc
 from django.http.response import JsonResponse
-from numpy import size
 from rest_framework.views import APIView
 from api.models import Questions,Options,Results,Subject,Test,CodingTest,Para,Paraopt,Paraqs
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -17,6 +15,8 @@ from .serializers import CodingTestSerializer, SubjectSerializer,QuestionSeriali
 import math
 from django.db.models import Q
 from dateutil import tz
+import cloudinary
+import cloudinary.search
 CFG = {'DB': None}
 
 @csrf_exempt
@@ -381,21 +381,63 @@ def marks(request,sid=0):
             else:
                 return JsonResponse("Restart Test",safe=False)
         else:
-            return JsonResponse("User Doesn't exist",safe=False)  
+            return JsonResponse("User Doesn't exist",safe=False) 
+
+@csrf_exempt
+def uploadCloudinary(request):
+    if request.method=='POST':
+        data=JSONParser().parse(request)['data']
+        try:
+            cloudinary.uploader.upload(data['image'],folder='demo',public_id='imageId',overwrite=True,resource_type='image')
+            return JsonResponse("successfully uploaded",safe=False)
+        except:
+            print('Something went wrong')
+            return JsonResponse("Error occured",safe=False)
+@csrf_exempt
+def getImgs(request):
+    if request.method=='GET':
+        try:
+            imgs=cloudinary.Search().expression('folder=demo').execute()
+            print(imgs)
+            return JsonResponse(imgs["resources"],safe=False)
+        except:
+            print('Something went wrong')
+            return JsonResponse("Error occured",safe=False)
+
 @csrf_exempt        
 def addQs(request):
     if request.method == 'POST':
         data=JSONParser().parse(request)['data']
         if str(data['sectionName'])!='Coding' and str(data['sectionName'])!='Analytical Writing':
             if data['action']=='Save':
-                f=Questions(subject=Subject.objects.get(sub_name=data['sectionName']),title=data['questionNew'],type=data['type'])
+                if data['image']!='':
+                    try:
+                        imgU=cloudinary.uploader.upload(data['image'],folder='adaptive_test/{0}'.format(data['sectionName']),overwrite=True,resource_type='image')
+                        imgId=imgU['public_id']
+                    except:
+                        imgId=None
+                else:
+                    imgId=None
+                f=Questions(subject=Subject.objects.get(sub_name=data['sectionName']),imgId=imgId,title=data['questionNew'],type=data['type'])
                 f.save()
-            elif data['action']=='Update':
+            elif data['action']=='Update':               
                 qData = {x: data[x] for x in data if 'question' in x}
-                for qs in qData:
+                for qs in qData:                   
                     f=Questions.objects.get(id=qs.split('question')[1])
                     f.title=qData[qs]
                     f.type=data['type']
+                    if data['image']!='':
+                        try:
+                            imgU=cloudinary.uploader.upload(data['image'],folder='adaptive_test/{0}'.format(data['sectionName']),public_id=f.imgId,overwrite=True,resource_type='image')
+                            f.imgId=imgU['public_id']
+                        except:
+                            pass
+                    else:
+                        try:
+                            cloudinary.uploader.destroy(public_id=f.imgId)
+                            f.imgId=None
+                        except:
+                            pass
                     f.save()
                     Options.objects.filter(question=f).delete()
             optionData = {x: data[x] for x in data if 'Option' in x}

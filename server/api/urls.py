@@ -13,7 +13,10 @@ urlpatterns = [
    path('api/para/<int:tid>',views.comprehension),
    path('api/personality/res',views.personalityR),
    path('api/personality/res',views.personalityR),
-   
+
+   # testing
+   path('api/testing',views.uploadCloudinary),
+   path('api/getImgs',views.getImgs),
 
    # admin
    path('api/admin/addQs',views.addQs),

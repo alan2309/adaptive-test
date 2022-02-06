@@ -26,6 +26,7 @@ class Questions(models.Model):
     subject = models.ForeignKey(Subject,on_delete=models.CASCADE)
     title = models.TextField(blank=True,null=True)
     type = models.IntegerField()
+    imgId=models.TextField(blank=True,null=True)
     def __str__(self):
         return self.title
 
