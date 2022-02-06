@@ -135,6 +135,7 @@ def subs(request):
             if str(q.subject.sub_name)!='Coding' and str(q.subject.sub_name)!='Analytical Writing':
                 a['ques']=q.title
                 a['id']=q.id
+                a['imgId']=q.imgId
                 a['options']=[]
                 opts=Options.objects.filter(question=q)
                 for opt in opts:
@@ -426,19 +427,16 @@ def addQs(request):
                 for qs in qData:                   
                     f=Questions.objects.get(id=qs.split('question')[1])
                     f.title=qData[qs]
-                    f.type=data['type']
+                    f.type=data['type']     
                     if data['image']!='':
                         try:
-                            imgU=cloudinary.uploader.upload(data['image'],folder='adaptive_test/{0}'.format(data['sectionName']),public_id=f.imgId,overwrite=True,resource_type='image')
+                            cloudinary.uploader.destroy(public_id=f.imgId)
+                            imgU=cloudinary.uploader.upload(data['image'],folder='adaptive_test/{0}'.format(data['sectionName']),overwrite=True,resource_type='image')
                             f.imgId=imgU['public_id']
                         except:
-                            pass
+                            print('error occured') 
                     else:
-                        try:
-                            cloudinary.uploader.destroy(public_id=f.imgId)
-                            f.imgId=None
-                        except:
-                            pass
+                        f.imgId=None
                     f.save()
                     Options.objects.filter(question=f).delete()
             optionData = {x: data[x] for x in data if 'Option' in x}

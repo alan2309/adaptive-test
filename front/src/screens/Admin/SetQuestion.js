@@ -9,6 +9,7 @@ import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import AnalyticalQsComp from "../../components/Admin/AnalyticalQsComp";
 import Alert from "../../components/Admin/Alert";
+import { Image } from "cloudinary-react";
 
 function SetQuestion() {
   const navigate = useNavigate();
@@ -47,6 +48,7 @@ function SetQuestion() {
   const [selectedFile, setSelectedFile] = useState();
   const [successMsg, setSuccessMsg] = useState("");
   const [errMsg, setErrMsg] = useState("");
+  const [imgDB, setImgDb] = useState("");
 
   useEffect(() => {
     document.getElementById(location.state.type).selected = "selected";
@@ -67,6 +69,7 @@ function SetQuestion() {
         setCurrentQsID(temp[0].id);
         setCurrentQs(temp[0].ques);
         setOpt(temp[0].options);
+        setImgDb(temp[0].imgId);
       } else if (location.state.sid === 5) {
         setCurrentQsID(temp[0].id);
         setCurrentQs(temp[0].question || "");
@@ -375,6 +378,7 @@ function SetQuestion() {
         setCurrentQs(navArray[e.target.id].ques);
         setCurrentQsID(navArray[e.target.id].id);
         setOpt(navArray[e.target.id].options);
+        setImgDb(navArray[e.target.id].imgId);
         setCurrentQsNo(`${parseInt(e.target.id) + 1}`);
       } else if (location.state.sid === 5) {
         setCurrentQsID(navArray[e.target.id].id);
@@ -638,70 +642,97 @@ function SetQuestion() {
                     </div>
                   )}
                 </Row>
-               {!isCoding&&!isPersonality&&!isAnalytical&& isNew && currentQsNo === navArray.length &&(<Row>
-                  <div style={{ margin: "10px 0" }}>
-                    <div class="form-group">
-                      <label for="selectSetQs">Image :</label>
-                      <input
-                        id="fileInput"
-                        type="file"
-                        name="image"
-                        style={{ marginLeft: "20px" }}
-                        onChange={handleFileInputChange}
-                        value=''
-                        className="form-input"
-                      />
-                      {previewSource && (
-                        <div id="zoomImg">
-                          <Zoom>
-                            <img
-                              src={previewSource}
-                              alt="chosen"
-                              style={{
-                                height: "200px",
-                                padding: "30px",
-                                outline: "none",
-                                border: "0",
-                              }}
-                            />
-                          </Zoom>{" "}
+                {!isCoding &&
+                  !isPersonality &&
+                  !isAnalytical &&
+                  isNew &&
+                  currentQsNo === navArray.length && (
+                    <Row>
+                      <div style={{ margin: "10px 0" }}>
+                        <div class="form-group">
+                          <label for="selectSetQs">Image :</label>
+                          <input
+                            id="fileInput"
+                            type="file"
+                            name="image"
+                            style={{ marginLeft: "20px" }}
+                            onChange={handleFileInputChange}
+                            value=""
+                            className="form-input"
+                          />
+                          {previewSource && (
+                            <div id="zoomImg">
+                              <Zoom>
+                                <img
+                                  src={previewSource}
+                                  alt="chosen"
+                                  style={{
+                                    height: "200px",
+                                    padding: "30px",
+                                    outline: "none",
+                                    border: "0",
+                                  }}
+                                />
+                              </Zoom>{" "}
+                            </div>
+                          )}
                         </div>
-                      )}
+                      </div>
+                    </Row>
+                  )}
+                {!isCoding && !isPersonality && !isAnalytical && !isNew && (
+                  <Row>
+                    <div style={{ margin: "10px 0" }}>
+                      <div class="form-group">
+                        <label for="selectSetQs">Image :</label>
+                        <input
+                          id="fileInput"
+                          type="file"
+                          name="image"
+                          style={{ marginLeft: "20px" }}
+                          onChange={handleFileInputChange}
+                          value={fileInputState}
+                          className="form-input"
+                        />
+                        {previewSource && (
+                          <div id="zoomImg">
+                            <Zoom>
+                              <img
+                                src={previewSource}
+                                alt="chosen"
+                                style={{
+                                  height: "200px",
+                                  padding: "30px",
+                                  outline: "none",
+                                  border: "0",
+                                }}
+                              />
+                            </Zoom>{" "}
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </Row>)}
-               {!isCoding&&!isPersonality&&!isAnalytical&& !isNew &&(<Row>
-                  <div style={{ margin: "10px 0" }}>
-                    <div class="form-group">
-                      <label for="selectSetQs">Image :</label>
-                      <input
-                        id="fileInput"
-                        type="file"
-                        name="image"
-                        style={{ marginLeft: "20px" }}
-                        onChange={handleFileInputChange}
-                        value={fileInputState}
-                        className="form-input"
-                      />
-                      {previewSource && (
-                        <div id="zoomImg">
+                  </Row>
+                )}
+                {!isCoding && !isPersonality && !isAnalytical && !isNew && (
+                  <Row>
+                    {imgDB !== null && (
+                      <div style={{ margin: "10px 0" }}>
+                        <div id="zoomImg" class="form-group">
                           <Zoom>
-                            <img
-                              src={previewSource}
-                              alt="chosen"
-                              style={{
-                                height: "200px",
-                                padding: "30px",
-                                outline: "none",
-                                border: "0",
-                              }}
-                            />
-                          </Zoom>{" "}
+                            <Image
+                              cloudName="chaitanya1911"
+                              public_id={imgDB}
+                              width="500"
+                              crop="scale"
+                            ></Image>
+                          </Zoom>
                         </div>
-                      )}
-                    </div>
-                  </div>
-                </Row>)}
+                      </div>
+                    )}
+                  </Row>
+                )}
+
                 {!isCoding && (
                   <div
                     class="scrollbar"
@@ -891,6 +922,7 @@ function SetQuestion() {
                         {isCoding && (
                           <div style={{ marginBottom: "20px" }}>
                             <div class="form-group">
+                              <b style={{ color: "red" }}>*</b>
                               <label for="selectSetQs">Type :</label>
                               <select
                                 class="form-select"
@@ -1635,7 +1667,7 @@ function SetQuestion() {
                 setCurrentQsID("New");
                 set_para_qs([]);
                 setOpt([]);
-                setPreviewSource("")
+                setPreviewSource("");
               }}
             >
               Add new Question
