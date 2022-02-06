@@ -638,7 +638,39 @@ function SetQuestion() {
                     </div>
                   )}
                 </Row>
-                <Row>
+               {!isCoding&&!isPersonality&&!isAnalytical&& isNew && currentQsNo === navArray.length &&(<Row>
+                  <div style={{ margin: "10px 0" }}>
+                    <div class="form-group">
+                      <label for="selectSetQs">Image :</label>
+                      <input
+                        id="fileInput"
+                        type="file"
+                        name="image"
+                        style={{ marginLeft: "20px" }}
+                        onChange={handleFileInputChange}
+                        value=''
+                        className="form-input"
+                      />
+                      {previewSource && (
+                        <div id="zoomImg">
+                          <Zoom>
+                            <img
+                              src={previewSource}
+                              alt="chosen"
+                              style={{
+                                height: "200px",
+                                padding: "30px",
+                                outline: "none",
+                                border: "0",
+                              }}
+                            />
+                          </Zoom>{" "}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </Row>)}
+               {!isCoding&&!isPersonality&&!isAnalytical&& !isNew &&(<Row>
                   <div style={{ margin: "10px 0" }}>
                     <div class="form-group">
                       <label for="selectSetQs">Image :</label>
@@ -669,7 +701,7 @@ function SetQuestion() {
                       )}
                     </div>
                   </div>
-                </Row>
+                </Row>)}
                 {!isCoding && (
                   <div
                     class="scrollbar"
@@ -1603,6 +1635,7 @@ function SetQuestion() {
                 setCurrentQsID("New");
                 set_para_qs([]);
                 setOpt([]);
+                setPreviewSource("")
               }}
             >
               Add new Question
