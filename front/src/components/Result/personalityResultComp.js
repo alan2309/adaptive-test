@@ -401,7 +401,9 @@ export default function PersonalityResultComp({
           {valC1 !== [] && (
             <Chart
               series={[
+
                 {
+                  name:'Score',
                   data: valC1,
                 },
               ]}
@@ -554,6 +556,7 @@ export default function PersonalityResultComp({
             <Chart
               series={[
                 {
+                  name:'Score',
                   data: valC2,
                 },
               ]}
@@ -727,6 +730,7 @@ export default function PersonalityResultComp({
             <Chart
               series={[
                 {
+                  name:'Score',
                   data: valC3,
                 },
               ]}
@@ -867,6 +871,7 @@ export default function PersonalityResultComp({
             <Chart
               series={[
                 {
+                  name:'Score',
                   data: valC4,
                 },
               ]}
@@ -1023,6 +1028,7 @@ export default function PersonalityResultComp({
             <Chart
               series={[
                 {
+                  name:'Score',
                   data: valC5,
                 },
               ]}
