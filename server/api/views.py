@@ -427,10 +427,13 @@ def addQs(request):
                 for qs in qData:                   
                     f=Questions.objects.get(id=qs.split('question')[1])
                     f.title=qData[qs]
-                    f.type=data['type']     
+                    f.type=data['type']    
+                    try:
+                        cloudinary.uploader.destroy(public_id=f.imgId)
+                    except:
+                        pass 
                     if data['image']!='':
                         try:
-                            cloudinary.uploader.destroy(public_id=f.imgId)
                             imgU=cloudinary.uploader.upload(data['image'],folder='adaptive_test/{0}'.format(data['sectionName']),overwrite=True,resource_type='image')
                             f.imgId=imgU['public_id']
                         except:

@@ -692,6 +692,7 @@ function SetQuestion() {
                           style={{ marginLeft: "20px" }}
                           onChange={handleFileInputChange}
                           value={fileInputState}
+                          disabled={!isUpdate}
                           className="form-input"
                         />
                         {previewSource && (
