@@ -756,7 +756,7 @@ function SetQuestion() {
                               >
                                 <input
                                   type="radio"
-                                  className="setQsRadio"
+                                  className="form-check-radio setQsRadio"
                                   name="correctOpt"
                                   disabled={!isUpdate}
                                   checked={x.mrks !== 0 ? true : null}
@@ -765,7 +765,7 @@ function SetQuestion() {
                                   required
                                 />
                                 <label
-                                  class="form-check-label"
+                                  className="form-check-label"
                                   style={{
                                     marginLeft: "15px",
                                     fontWeight: "400",

@@ -4,7 +4,7 @@ import CodingQsComp from "../../components/TestScreeen/CodingQsComp";
 import TestHeaderComp from "../../components/TestScreeen/TestHeaderComp";
 import "../../css/Compiler.css";
 import $ from "jquery";
-import key from "../../components/TestScreeen/keys";
+import keys from "../../components/TestScreeen/keys"
 import axios from "axios";
 import { useNavigate } from "react-router";
 import CustomTimer from "../Admin/CustomTimer";
@@ -440,11 +440,14 @@ export default function Compiler() {
         } else if (current_qs === 3) {
           set_q3_run_output("Creating Submission ...\n");
         }
-        let response,
-          count = 0,
-          keyArr = key(),
-          selectedKey;
+        let response;
+        let count = 0;
+        let keyArr = keys.key();
+        let selectedKey;
+          console.log('########')
         do {
+          console.log('llllllllllllll')
+          try{
           response = await fetch(
             "https://judge0-ce.p.rapidapi.com/submissions",
             {
@@ -467,6 +470,9 @@ export default function Compiler() {
           console.log(response);
           console.log(parseInt(response.status) !== 201);
           console.log(typeof response.status);
+          }catch(e){
+            console.log(e)
+          }
         } while (parseInt(response.status) !== 201 && keyArr.length > count);
         console.log(response);
         if (response.status === 201) {
@@ -705,7 +711,7 @@ export default function Compiler() {
         set_q3_testCase_Current_output("Creating Submission ...\n");
       }
       let count = 0;
-      let keyArr = key(),
+      let keyArr = keys.key(),
         selectedKey;
       let jsonResponse;
       do {
