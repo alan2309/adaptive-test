@@ -4,7 +4,7 @@ import CodingQsComp from "../../components/TestScreeen/CodingQsComp";
 import TestHeaderComp from "../../components/TestScreeen/TestHeaderComp";
 import "../../css/Compiler.css";
 import $ from "jquery";
-import keys from "../../components/TestScreeen/keys"
+import keys from "../../components/TestScreeen/keys";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import CustomTimer from "../Admin/CustomTimer";
@@ -444,34 +444,34 @@ export default function Compiler() {
         let count = 0;
         let keyArr = keys.key();
         let selectedKey;
-          console.log('########')
+        console.log("########");
         do {
-          console.log('llllllllllllll')
-          try{
-          response = await fetch(
-            "https://judge0-ce.p.rapidapi.com/submissions",
-            {
-              method: "POST",
-              headers: {
-                "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
-                "x-rapidapi-key": `${keyArr[count]}`, // Get yours for free at https://rapidapi.com/judge0-official/api/judge0-ce/
-                "content-type": "application/json",
-                accept: "application/json",
-              },
-              body: JSON.stringify({
-                source_code: code,
-                stdin: customInputCheck ? user_input : null, //stateVarialble
-                language_id: language_id,
-              }),
-            }
-          );
-          selectedKey = keyArr[count];
-          count += 1;
-          console.log(response);
-          console.log(parseInt(response.status) !== 201);
-          console.log(typeof response.status);
-          }catch(e){
-            console.log(e)
+          console.log("llllllllllllll");
+          try {
+            response = await fetch(
+              "https://judge0-ce.p.rapidapi.com/submissions",
+              {
+                method: "POST",
+                headers: {
+                  "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
+                  "x-rapidapi-key": `${keyArr[count]}`, // Get yours for free at https://rapidapi.com/judge0-official/api/judge0-ce/
+                  "content-type": "application/json",
+                  accept: "application/json",
+                },
+                body: JSON.stringify({
+                  source_code: code,
+                  stdin: customInputCheck ? user_input : null, //stateVarialble
+                  language_id: language_id,
+                }),
+              }
+            );
+            selectedKey = keyArr[count];
+            count += 1;
+            console.log(response);
+            console.log(parseInt(response.status) !== 201);
+            console.log(typeof response.status);
+          } catch (e) {
+            console.log(e);
           }
         } while (parseInt(response.status) !== 201 && keyArr.length > count);
         console.log(response);
@@ -2127,10 +2127,16 @@ export default function Compiler() {
                           disabled
                           value={
                             current_qs === 1
-                              ? q1_testCase_Current_output
+                              ? isSubmitCode_qs1
+                                ? q1_testCase_Current_output
+                                : q1_run_output
                               : current_qs === 2
-                              ? q2_testCase_Current_output
-                              : q3_testCase_Current_output
+                              ? isSubmitCode_qs2
+                                ? q2_testCase_Current_output
+                                : q2_run_output
+                              : isSubmitCode_qs3
+                              ? q3_testCase_Current_output
+                              : q3_run_output
                           }
                           readOnly
                           className="scrollbar codeOutput"
