@@ -79,7 +79,13 @@ function Login() {
                       })
                       .then((res) => {
                         if (res.data.resultExists) {
-                          navigate("/result");
+                          if(res.data.end){
+                            navigate("/result");
+                          }
+                          else{
+                            alert("Already started on different device");
+                            navigate("/logout");
+                          }
                         } else {
                           navigate("/details");
                         }

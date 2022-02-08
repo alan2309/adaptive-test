@@ -252,7 +252,10 @@ def results(request,name):
                 if name != 'a':
                     rr=Results.objects.get(student = user,test=Test.objects.get(id=data['testId']))
                     if rr:
-                        return JsonResponse({'resultExists':True},safe=False)
+                        if rr.endTime!=None:
+                            return JsonResponse({'end':True,'resultExists':True},safe=False)
+                        else:    
+                            return JsonResponse({'end':False,'resultExists':True},safe=False)
                 else:
                     Results.objects.get(student = user,test=Test.objects.get(id=data['testId'])).delete()
             except Results.DoesNotExist:
@@ -261,7 +264,7 @@ def results(request,name):
             marks={"ap":0,'cf':0,'c':0,'d':0,'p':0,'a':0,"avg_ap":avg_ap,'avg_cf':avg_cf,'avg_c':avg_c,'avg_d':avg_d,'avg_p':avg_p,'avg_a':avg_a,'apMax':[],'cfMax':[],'cMax':[],'dMax':[],'pMax':[],'aMax':[],'apGot':[],'cfGot':[],'cGot':[],'dGot':[],'pGot':[evaluate(request,{'Nick':name,'Sex':'Male','Age':21,'Q':[0]*(121),'Country':'India'})],'aGot':[]}
             )
             result.save()
-            return JsonResponse({'resultExists':False},safe=False)
+            return JsonResponse({'end':False,'resultExists':False},safe=False)
         else:
             return JsonResponse("User Doesn't exist",safe=False)
     elif request.method=='GET':
@@ -401,7 +404,8 @@ def marks(request,sid=0):
                 else:
                     print('**error**')
                     return JsonResponse("Error",safe=False)
-                result.endTime = d
+                if data['check_result']:
+                    result.endTime = d
                 result.save()
                 data=chartData(user,data['testId'])
                 return JsonResponse(data,safe=False)
