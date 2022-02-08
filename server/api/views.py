@@ -17,7 +17,25 @@ from django.db.models import Q
 from dateutil import tz
 import cloudinary
 import cloudinary.search
+from django.contrib.auth.models import User,auth
 CFG = {'DB': None}
+
+@csrf_exempt
+def login(request):
+     if request.method == 'POST' :
+        data=JSONParser().parse(request)['data']
+        username = data['username']
+        password = data['password']
+        
+        user = auth.authenticate(username = username,password = password)
+        if user is not None:
+            auth.login(request,user)
+            if User.objects.get(username=username).is_staff ==True:
+                return JsonResponse({"exist":1,"admin":1},safe=False)
+            else :
+                return JsonResponse({"exist":1,"admin":0},safe=False)   
+        else:
+            return JsonResponse({"exist":0},safe=False)
 
 @csrf_exempt
 def subqs(request,subject=0,tid=0):
