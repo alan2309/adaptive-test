@@ -249,7 +249,7 @@ def results(request,name):
         if(user):
             d = datetime.datetime.utcnow()
             try:
-                if name != 'a':
+                if name != 'a' and user.is_staff!=True:
                     rr=Results.objects.get(student = user,test=Test.objects.get(id=data['testId']))
                     if rr:
                         if rr.endTime!=None:
@@ -407,7 +407,8 @@ def marks(request,sid=0):
                 if data['check_result']:
                     result.endTime = d
                 result.save()
-                data=chartData(user,data['testId'])
+                if data['check_result']:
+                    data=chartData(user,data['testId'])
                 return JsonResponse(data,safe=False)
             else:
                 return JsonResponse("Restart Test",safe=False)

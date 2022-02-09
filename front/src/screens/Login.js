@@ -55,7 +55,7 @@ function Login() {
       .then(async (res) => {
         console.log(res.data);
         if (res.data.exist) {
-          if (!res.data.admin) {
+          let adminn = res.data.admin
             axiosInstance
               .post("token/", {
                 username: formData.username,
@@ -63,8 +63,9 @@ function Login() {
               })
               .then(async (res) => {
                 let xx = await availabilty();
-                if (xx !== -1) {
+                if (xx !== -1 || adminn) {
                   localStorage.setItem("testId", xx); //imp
+                  localStorage.setItem("admin","user");
                   var ob = new Date();
                   var h = (ob.getHours() < 10 ? "0" : "") + ob.getHours();
                   var m = (ob.getMinutes() < 10 ? "0" : "") + ob.getMinutes();
@@ -87,17 +88,22 @@ function Login() {
                             navigate("/logout");
                           }
                         } else {
-                          navigate("/details");
+                            navigate("/details");
                         }
                       });
-                  data();
+                      if(adminn){
+                        localStorage.setItem("admin","admin");
+                        localStorage.removeItem("testId");
+                        navigate("/admin/home");
+                      }
+                      else{
+                        data();
+                      }
                 } else {
                   alert("test not available");
                 }
               });
-          } else {
-            navigate("/admin/home");
-          }
+          
         } else {
           alert("User Doesn't exists");
         }

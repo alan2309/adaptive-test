@@ -163,6 +163,41 @@ function ScheduledTest() {
         });
     }
   }
+
+  function startTest(tid){
+    localStorage.setItem("testId",tid);
+    localStorage.setItem("admin","admin");
+    var ob = new Date();
+        var h = (ob.getHours() < 10 ? "0" : "") + ob.getHours();
+        var m = (ob.getMinutes() < 10 ? "0" : "") + ob.getMinutes();
+        var s = (ob.getMinutes() < 10 ? "0" : "") + ob.getSeconds();
+        var usern = localStorage.getItem("username") 
+        const data = async () =>
+        axiosInstance
+          .post(`api/results/${usern}`, {
+            data: { testId: tid },
+          })
+          .then(res=>{
+            localStorage.setItem(
+              "test",
+              JSON.stringify({
+                username:usern ,
+                STime: Date(),
+                strtTime: +h + ":" + m + ":" + s,
+                FSTimer: "10",
+                question: [],
+                marks: [],
+                currentQsNo: 1,
+              })
+            );
+            axiosInstance.defaults.headers["Authorization"] =
+              "JWT " + localStorage.getItem("access_token");
+            navigate("/testScreen");
+          })
+          .catch(e=>console.log(e))
+          data();
+  }
+
   return (
     <div className="SchdlTest">
       <Modal show={show} onHide={handleClose}>
@@ -296,19 +331,6 @@ function ScheduledTest() {
                         }}
                       ></i>
                     </Col>
-                    <Col md={1}>
-                      <i
-                        onClick={() => {}}
-                        class="fa fa-eye"
-                        style={{
-                          backgroundColor: "white",
-                          color: "green",
-                          float: "right",
-                          marginRight: "15px",
-                          marginTop: "10px",
-                        }}
-                      ></i>
-                    </Col>
                   </Row>
                 );
               })}
@@ -363,7 +385,7 @@ function ScheduledTest() {
                     </Col>
                     <Col md={1}>
                       <i
-                        onClick={() => {}}
+                        onClick={() => {startTest(t.id)}}
                         class="fa fa-eye"
                         style={{
                           backgroundColor: "white",
