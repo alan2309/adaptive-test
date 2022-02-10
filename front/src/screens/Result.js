@@ -128,7 +128,7 @@ function Result() {
           maxMarks: maxMarks,
           gotMarks: gotMarks,
           testId: localStorage.getItem("testId"),
-          check_result:1
+          check_result: 1,
         };
       } else {
         let ax = JSON.parse(current);
@@ -138,6 +138,7 @@ function Result() {
           username: user,
           marks: total,
           testId: localStorage.getItem("testId"),
+          check_result: 1,
         };
       }
       axiosInstance
@@ -625,36 +626,40 @@ function Result() {
       {personalityData[0]!==undefined&&  <PersonalityResultComp SEP={personalityData[0].SEP} SEFP={personalityData[0].SEFP} LO={personalityData[0].LO} HI={personalityData[0].HI} SE={personalityData[0].SE} SAP={personalityData[0].SAP} SAFP={personalityData[0].SAFP} SA={personalityData[0].SA} SC={personalityData[0].SC} SCP={personalityData[0].SCP} SCFP={personalityData[0].SCFP} flev={personalityData[0].flev} SOP={personalityData[0].SOP} SOFP={personalityData[0].SOFP} SO={personalityData[0].SO} Nick={personalityData[0].Nick} Country={personalityData[0].Country}
         SNP={personalityData[0].SNP} SNFP={personalityData[0].SNFP} Category={personalityData[0].Category} SN={personalityData[0].SN} />
      } </Row> */}
-      {localStorage.getItem("admin")==="admin" &&  <button
-        type="button"
-        className="btn"
-        onClick={(e) => {
-          localStorage.removeItem("testId");
-          localStorage.removeItem("result");
-          navigate("/admin/home");
-        }}
-        style={{
-          marginTop: "20px",
-          backgroundColor: "red",
-          color: "white",
-          border: "none",
-        }}
-      >
-        Back
-      </button>}
-      {localStorage.getItem("admin")==="user" &&  <button
-        type="button"
-        className="btn"
-        onClick={(e) => navigate("/logout")}
-        style={{
-          marginTop: "20px",
-          backgroundColor: "red",
-          color: "white",
-          border: "none",
-        }}
-      >
-        Logout
-      </button>}
+      {localStorage.getItem("admin") === "admin" && (
+        <button
+          type="button"
+          className="btn"
+          onClick={(e) => {
+            localStorage.removeItem("testId");
+            localStorage.removeItem("result");
+            navigate("/admin/scheduledTest");
+          }}
+          style={{
+            marginTop: "20px",
+            backgroundColor: "red",
+            color: "white",
+            border: "none",
+          }}
+        >
+          Back
+        </button>
+      )}
+      {localStorage.getItem("admin") === "user" && (
+        <button
+          type="button"
+          className="btn"
+          onClick={(e) => navigate("/logout")}
+          style={{
+            marginTop: "20px",
+            backgroundColor: "red",
+            color: "white",
+            border: "none",
+          }}
+        >
+          Logout
+        </button>
+      )}
       <button
         type="button"
         className="btn"

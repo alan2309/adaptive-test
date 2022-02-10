@@ -72,7 +72,6 @@ function TestScreen() {
             await axiosInstance
               .get(`http://127.0.0.1:8000/api/subs/1/${xx}`)
               .then((res) => {
-                console.log(res.data);
                 let a = converttime(res.data.time);
                 var tf = a;
                 var totalQs = res.data.qs;
@@ -298,7 +297,6 @@ function TestScreen() {
       localStorage.setItem("test", JSON.stringify(test));
       e.target.reset();
       checkBoxToggle(e);
-      console.log(e.target);
     }
   }
   function handleCloseSChange(e) {
