@@ -6,7 +6,7 @@ import illustration1 from "../img/illustration1.svg";
 import illustration2 from "../img/illustration2.svg";
 import illustration3 from "../img/illustration3.svg";
 import Chaitanya from "../img/Chaitanya.jpeg";
-import Alankrit from "../img/Alankrit.jpeg";
+import alan from "../img/alan.jpg";
 import Shivam from "../img/Shivam.jpeg";
 import Group_10 from "../img/Group 10.png";
 
@@ -15,9 +15,9 @@ function Home() {
     const navigate = useNavigate();
     return (
         <div>
-            <div className="welcomeDiv">
+            <div className="welcomeDiv" >
                 <div>
-                    <div className="titleDiv">
+                    <div className="titleDiv" style={{height:'400px'}}>
                         <label className="mainheading">Welcome to the<br />Placement Test Portal</label>
                         <label className="subHeadingsProfile">One Step towards a successful career</label>
                         <div>
@@ -82,7 +82,7 @@ function Home() {
                             <Col style={{ textAlign: "center", marginTop: "35px" }} md={4}>
                                 <div style={{ display: "flex", alignItems: 'center', justifyContent: "center" }}>
                                     <div>
-                                        <img className="user" alt="logo" src={Alankrit}></img>
+                                        <img className="user" alt="logo" src={alan}></img>
                                         <div className="username">Alankrit Arya</div>
                                         <div className="role">Developer</div>
                                     </div>
