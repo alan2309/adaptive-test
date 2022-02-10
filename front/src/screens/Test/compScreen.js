@@ -60,7 +60,7 @@ function CompScreen() {
                 username: user,
                 marks: ar,
                 testId: localStorage.getItem("testId"),
-                check_result:0
+                check_result: 0,
               },
             })
             .then((res) => {
@@ -143,7 +143,7 @@ function CompScreen() {
                     n = n + a[i].questions.length;
                   }
                   let ar = new Array(n).fill(-1);
-                  let Maxar = new Array(n).fill(2);
+                  let Maxar = [60];
                   test["marks"] = ar;
                   test["parano"] = 0;
                   test["qsno"] = 0;
