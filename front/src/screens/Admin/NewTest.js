@@ -5,7 +5,6 @@ import { useNavigate } from "react-router";
 import Clock from "../../img/Clock.svg";
 import "../../css/AdminHomeScreen.css";
 import $ from "jquery";
-import axios from "axios";
 import sidFunc from "./sidFunc";
 import DateTimePicker from "react-datetime-picker";
 import TimeField from "react-simple-timefield";
@@ -51,7 +50,7 @@ function NewTest() {
       setSid(ssid + 1);
     }
     const data = async () =>
-      await axios
+      await axiosInstance
         .get(`http://127.0.0.1:8000/api/subs`)
         .then((res) => {
           var d = res.data.data;
@@ -75,7 +74,7 @@ function NewTest() {
           console.log(e);
         });
     const getTest = async () => {
-      await axios
+      await axiosInstance
         .get("http://127.0.0.1:8000/api/admin/tests")
         .then((res) => {
           let ar = [];

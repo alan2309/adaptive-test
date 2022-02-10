@@ -26,7 +26,7 @@ function ScheduledTest() {
 
   useEffect(() => {
     const data = async () => {
-      await axios
+      await axiosInstance
         .get("http://127.0.0.1:8000/api/admin/tests")
         .then((res) => {
           console.log(res.data);
@@ -150,7 +150,7 @@ function ScheduledTest() {
   }
   function delSTest(idd) {
     if (window.confirm("Delete this test?")) {
-      axios
+      axiosInstance
         .delete(`http://127.0.0.1:8000/api/test/${idd}`)
         .then((res) => {
           let arr = stests.filter((test) => {

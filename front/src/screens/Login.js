@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { isExpired, decodeToken } from "react-jwt";
 import $ from "jquery";
 import "../css/LoginScreen.css";
-import axios from "axios";
+// import axios from "axios";
 
 function Login() {
   const navigate = useNavigate();
@@ -71,6 +71,7 @@ function Login() {
                   var m = (ob.getMinutes() < 10 ? "0" : "") + ob.getMinutes();
                   var s = (ob.getMinutes() < 10 ? "0" : "") + ob.getSeconds();
                   localStorage.setItem("access_token", res.data.access);
+                  axiosInstance.defaults.headers["Authorization"] = "JWT "+res.data.access;
                   localStorage.setItem("username", formData.username);
                   localStorage.setItem("refresh_token", res.data.refresh);
                   const data = async () =>
@@ -111,7 +112,7 @@ function Login() {
   };
   async function availabilty() {
     let aa = 0;
-    await axios
+    await axiosInstance
       .get("http://127.0.0.1:8000/api/test/0")
       .then((res) => {
         aa = res.data.testId;

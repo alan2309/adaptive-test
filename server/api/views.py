@@ -2,7 +2,7 @@ import json
 from django.http.response import JsonResponse
 from rest_framework.views import APIView
 from api.models import Questions,Options,Results,Subject,Test,CodingTest,Para,Paraopt,Paraqs,MyUser
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import RefreshToken,AccessToken
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -39,7 +39,7 @@ def login(request):
 
 @csrf_exempt
 def subqs(request,subject=0,tid=0):
-    if request.method == 'GET': 
+    if request.method == 'GET':
         a=[]
         b=[]
         c=[]
@@ -107,6 +107,17 @@ def subqs(request,subject=0,tid=0):
 
 @csrf_exempt
 def subs(request):
+    if (request.headers["Authorization"]!='null'):
+        refresh_token=request.headers["Authorization"].split(" ")[1]
+        print(refresh_token)
+        try:
+            token=AccessToken(refresh_token)
+            if(token):
+                print("exists###########")
+            else:
+                print("nooo#########")
+        except:
+            print("nooo#########")      
     if request.method == 'GET':
         f={}
         subs=Subject.objects.all()
