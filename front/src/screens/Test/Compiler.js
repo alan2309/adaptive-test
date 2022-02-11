@@ -1260,6 +1260,11 @@ export default function Compiler() {
     "use strict";
 
     if (submitCode_qs1) {
+      if(
+        q1_testCase_1_output_error!==undefined &&
+        q1_testCase_2_output_error!==undefined &&
+        q1_testCase_3_output_error!==undefined 
+        ){
       if (
         !q1_testCase_1_output_error &&
         !q1_testCase_2_output_error &&
@@ -1277,8 +1282,20 @@ export default function Compiler() {
         document.getElementById("uncontrolled-tab-example-tab-Q1").style.color =
           "white";
       }
+      }else{
+        document.getElementById(
+          "uncontrolled-tab-example-tab-Q1"
+        ).style.backgroundColor = "#6c757d"; //grey
+        document.getElementById("uncontrolled-tab-example-tab-Q1").style.color =
+          "white";
+      }
     }
     if (submitCode_qs2) {
+      if(
+        q2_testCase_1_output_error!==undefined &&
+        q2_testCase_2_output_error!==undefined &&
+        q2_testCase_3_output_error!==undefined 
+        ){
       if (
         !q2_testCase_1_output_error &&
         !q2_testCase_2_output_error &&
@@ -1296,8 +1313,20 @@ export default function Compiler() {
         document.getElementById("uncontrolled-tab-example-tab-Q2").style.color =
           "white";
       }
+    }else{
+      document.getElementById(
+        "uncontrolled-tab-example-tab-Q2"
+      ).style.backgroundColor = "#6c757d"; //grey
+      document.getElementById("uncontrolled-tab-example-tab-Q2").style.color =
+        "white";
+    }
     }
     if (submitCode_qs3) {
+      if(
+        q3_testCase_1_output_error!==undefined &&
+        q3_testCase_2_output_error!==undefined &&
+        q3_testCase_3_output_error!==undefined 
+        ){
       if (
         !q3_testCase_1_output_error &&
         !q3_testCase_2_output_error &&
@@ -1315,6 +1344,13 @@ export default function Compiler() {
         document.getElementById("uncontrolled-tab-example-tab-Q3").style.color =
           "white";
       }
+    }else{
+      document.getElementById(
+        "uncontrolled-tab-example-tab-Q3"
+      ).style.backgroundColor = "#6c757d"; //grey
+      document.getElementById("uncontrolled-tab-example-tab-Q3").style.color =
+        "white";
+    }
     }
     let sum = 0;
     let sum1 = 0;
