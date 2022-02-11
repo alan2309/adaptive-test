@@ -25,7 +25,6 @@ function CompScreen() {
   const [testFinshBool, setTestFinishBool] = useState(false);
   const [md, setMd] = useState(false);
   const [timeFF, setTimeFF] = useState();
-
   const [passage, setPassage] = useState();
   const [qsno, setQsNo] = useState(0);
   const [parano, setParano] = useState(0);
@@ -36,7 +35,9 @@ function CompScreen() {
     let flag = true;
     if (!(localStorage.getItem("test6") && !localStorage.getItem("test3"))) {
       if (!localStorage.getItem("test3")) {
-        navigate(ProtectUrl.protect());
+        let az = ProtectUrl.protect();
+        if (az !== "") navigate(az);
+        navigate(-1);
         flag = false;
       }
     }

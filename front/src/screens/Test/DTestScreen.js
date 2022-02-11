@@ -42,7 +42,9 @@ function DTestScreen() {
     let flag = true;
     if (!(localStorage.getItem("test4") && !localStorage.getItem("test5"))) {
       if (!localStorage.getItem("test5")) {
-        navigate(ProtectUrl.protect());
+        let az = ProtectUrl.protect();
+        if (az !== "") navigate(az);
+        navigate(-1);
         flag = false;
       }
     }

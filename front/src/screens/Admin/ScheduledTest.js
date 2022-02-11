@@ -166,7 +166,6 @@ function ScheduledTest() {
 
   function startTest(tid) {
     localStorage.setItem("testId", tid);
-    localStorage.setItem("admin", "admin");
     var ob = new Date();
     var h = (ob.getHours() < 10 ? "0" : "") + ob.getHours();
     var m = (ob.getMinutes() < 10 ? "0" : "") + ob.getMinutes();

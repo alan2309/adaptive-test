@@ -42,7 +42,9 @@ function CFTestScreen() {
     let flag = true;
     if (!(localStorage.getItem("test") && !localStorage.getItem("test2"))) {
       if (!localStorage.getItem("test2")) {
-        navigate(ProtectUrl.protect());
+        let az = ProtectUrl.protect();
+        if (az !== "") navigate(az);
+        navigate(-1);
         flag = false;
       }
     }

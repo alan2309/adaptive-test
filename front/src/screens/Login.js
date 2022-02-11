@@ -7,6 +7,7 @@ import $ from "jquery";
 import { MDBDataTable } from "mdbreact";
 import CustomTimer from "./Admin/CustomTimer";
 import "../css/LoginScreen.css";
+import ProtectUrl from "../components/TestScreeen/ProtectUrl";
 
 function Login() {
   const navigate = useNavigate();
@@ -61,7 +62,8 @@ function Login() {
         navigate("/result");
       } else {
         setMd(true);
-        navigate("/details");
+        let pathTo = ProtectUrl.protect();
+        navigate(pathTo === "" ? "/details" : pathTo);
       }
     }
     const data = async () => {

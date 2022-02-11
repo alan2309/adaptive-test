@@ -300,7 +300,7 @@ def results(request,name):
 def converttoist(datex):
     from_zone = tz.tzutc()
     to_zone = tz.tzlocal()
-    utc = datetime.datetime.strptime(datex, '%Y-%m-%d %H:%M:%S')
+    utc = datetime.datetime.strptime(datex.split('.')[0], '%Y-%m-%d %H:%M:%S')
     
     # Tell the datetime object that it's in UTC time zone since 
     # datetime objects are 'naive' by default

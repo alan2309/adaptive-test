@@ -179,7 +179,7 @@ export default function Compiler() {
                 maxMarks: maxMarks,
                 testId: localStorage.getItem("testId"),
                 gotMarks: gotMarks,
-                check_result:0
+                check_result: 0,
               },
             })
             .then((res) => {
@@ -1353,13 +1353,14 @@ export default function Compiler() {
       sum = sum + 15;
     }
     let ax = JSON.parse(localStorage.getItem("test4"));
-
-    ax["total_q_marks"] = sum;
-    ax["q1_marks"] = sum1;
-    ax["q2_marks"] = sum2;
-    ax["q3_marks"] = sum3;
-    ax["marks"] = [sum1, sum2, sum3];
-    localStorage.setItem("test4", JSON.stringify(ax));
+    if (ax !== undefined) {
+      ax["total_q_marks"] = sum;
+      ax["q1_marks"] = sum1;
+      ax["q2_marks"] = sum2;
+      ax["q3_marks"] = sum3;
+      ax["marks"] = [sum1, sum2, sum3];
+      localStorage.setItem("test4", JSON.stringify(ax));
+    }
   });
 
   function GoInFullscreen(element) {
