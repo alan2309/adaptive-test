@@ -143,16 +143,23 @@ export default function Compiler() {
   const [testFinshBool, setTestFinishBool] = useState(false);
   const [md, setMd] = useState(false);
   const [timeFF, setTimeFF] = useState();
+  const [isValidPath, setIsValidPath] = useState(false);
 
   useEffect(() => {
     let flag = true;
     if (!(localStorage.getItem("test2") && !localStorage.getItem("test4"))) {
       if (!localStorage.getItem("test4")) {
-        navigate(ProtectUrl.protect());
+        let az = ProtectUrl.protect();
+        if (az !== "") {
+          navigate(az);
+        } else {
+          navigate(-1);
+        }
         flag = false;
       }
     }
     if (flag) {
+      setIsValidPath(true);
       var full_screen_element = document.fullscreenElement;
 
       if (full_screen_element === null) {
@@ -1353,7 +1360,7 @@ export default function Compiler() {
       sum = sum + 15;
     }
     let ax = JSON.parse(localStorage.getItem("test4"));
-    if (ax !== undefined) {
+    if (ax !== undefined && isValidPath) {
       ax["total_q_marks"] = sum;
       ax["q1_marks"] = sum1;
       ax["q2_marks"] = sum2;

@@ -35,8 +35,11 @@ function TestScreen() {
   useEffect(() => {
     if (!localStorage.getItem("test")) {
       let az = ProtectUrl.protect();
-      if (az !== "") navigate(az);
-      navigate(-1);
+      if (az !== "") {
+        navigate(az);
+      } else {
+        navigate(-1);
+      }
     } else {
       var test = JSON.parse(localStorage.getItem("test"));
       const token = localStorage.getItem("access_token");
