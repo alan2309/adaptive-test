@@ -690,6 +690,7 @@ def tests(request,idd=0):
                     test.test_start=data['start']
                     test.test_end=data['end']
                     test.save()
+                return JsonResponse('done',safe=False) 
         elif request.method == 'DELETE':
             Test.objects.get(id=idd).delete()        
             return JsonResponse('Created',safe=False) 
