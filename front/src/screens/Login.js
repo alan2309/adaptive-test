@@ -337,7 +337,7 @@ function Login() {
                     entries={4}
                     pagesAmount={1}
                     paging={false}
-                    noRecordsFoundLabel={"No recent upcoming Test"}
+                    noRecordsFoundLabel={"No Upcoming Test"}
                     data={dataUpcoming}
                   />
                 </div>
