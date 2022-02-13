@@ -1,12 +1,11 @@
 import React from "react";
 import logo from "../../img/logo.png";
-import { Col, Modal, Row, Card, Navbar } from "react-bootstrap";
-import { isExpired, decodeToken } from "react-jwt";
-import { useNavigate } from "react-router";
-import Chart from "react-apexcharts";
+import svkmLogo from "../../img/svkmLogo.png";
+import { Col, Row, Card, Navbar } from "react-bootstrap";
 import "../../css/ResultScreen.css";
 import Chart_score from "./Chart_score";
 import ReactSpeedometer from "react-d3-speedometer";
+import BulletChart from "./BulletChart";
 
 function DetailedReportComp({
   SEP,
@@ -33,35 +32,64 @@ function DetailedReportComp({
   mrksScoredPercent,
   opt1,
 }) {
-  const textColor = "#AAA";
   return (
-    <div>
+    <div id="generatePdf">
       <Navbar
         style={{
           backgroundColor: "#fff",
-          boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
           color: "black",
           paddingTop: "0px",
           paddingBottom: "0px",
-          marginBottom: "20px",
+          marginBottom: "0px",
           height: "100%",
         }}
         expand="xl"
       >
-        <Navbar.Brand className="navBrand">
-          <img
-            className="logoImage"
-            height="80px"
-            width="80px"
-            alt="logo"
-            src={logo}
-          ></img>
-          <div className="logoTitle">
-            <h5 className="djsce">DJSCE INFORMATION TECHNOLOGY </h5>
-            <h5 className="it">Placement Portal</h5>
-          </div>
+        <Navbar.Brand>
+          <Row style={{ marginLeft: "120px" }}>
+            <Col>
+              {" "}
+              <img
+                className="logoImage"
+                height="80px"
+                width="80px"
+                alt="logo"
+                src={logo}
+              ></img>
+            </Col>
+            <Col>
+              {" "}
+              <div
+                style={{
+                  margin: "0 20px",
+                  alignItems: "center",
+                  paddingTop: "10px",
+                }}
+              >
+                <h5 className="djsce" style={{ textAlign: "center" }}>
+                  DJSCE INFORMATION TECHNOLOGY{" "}
+                </h5>
+                <h5 className="it" style={{ textAlign: "center" }}>
+                  Placement Portal
+                </h5>
+              </div>
+            </Col>
+            <Col>
+              {" "}
+              <img
+                className="logoImage"
+                height="80px"
+                width="80px"
+                alt="logo"
+                src={svkmLogo}
+              ></img>
+            </Col>
+          </Row>
         </Navbar.Brand>
       </Navbar>
+      <Row>
+        <div className="line_through" style={{ width: "95%" }}></div>
+      </Row>
       <Row>
         <Col md="6">
           <Card>
@@ -186,23 +214,39 @@ function DetailedReportComp({
             <Card.Body>
               <Card.Text>
                 <Row>
-                  <Col md="3" style={{ marginLeft: "90px" }}>
-                    <Chart_score percent={mrksScoredPercent[0]} />
-                  </Col>
-                  <Col md="3">
-                    <Chart_score percent={mrksScoredPercent[1]} />
-                  </Col>
-                  <Col md="3">
-                    <Chart_score percent={mrksScoredPercent[2]} />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md="3" style={{ marginLeft: "200px" }}>
-                    <Chart_score percent={mrksScoredPercent[3]} />
-                  </Col>
-                  <Col md="3">
-                    <Chart_score percent={mrksScoredPercent[4]} />
-                  </Col>
+                  <Row>
+                    <Col md={4}>
+                      <Chart_score
+                        percent={mrksScoredPercent[0]}
+                        label="Aptitude"
+                      />
+                    </Col>
+                    <Col md={4}>
+                      <Chart_score
+                        percent={mrksScoredPercent[1]}
+                        label="Computer Fundamentals"
+                      />
+                    </Col>
+                    <Col md={4}>
+                      <Chart_score
+                        percent={mrksScoredPercent[2]}
+                        label="Domain"
+                      />
+                    </Col>
+
+                    <Col>
+                      <Chart_score
+                        percent={mrksScoredPercent[3]}
+                        label="Coding"
+                      />
+                    </Col>
+                    <Col>
+                      <Chart_score
+                        percent={mrksScoredPercent[4]}
+                        label="Analytical Writing"
+                      />
+                    </Col>
+                  </Row>
                   <p
                     style={{
                       fontFamily: "Poppins",
@@ -225,7 +269,7 @@ function DetailedReportComp({
         </Col>
       </Row>
       <Row>
-        <Col md="12">
+        <Col md="12" style={{ marginTop: "25px" }}>
           <Card style={{ marginTop: "20px" }}>
             <Card.Header
               style={{
@@ -233,6 +277,7 @@ function DetailedReportComp({
                 borderRadius: "14px 14px 0px 0px",
                 color: "white",
                 textAlign: "center",
+
                 fontSize: "18px",
               }}
             >
@@ -241,7 +286,18 @@ function DetailedReportComp({
             <Card.Body>
               <Card.Text>
                 <div>
-                  <h4 className="factor_5_modal">Extraversion</h4>
+                  <h4 className="factor_5_modal">
+                    Extraversion
+                    <small style={{ fontSize: "15px" }}>
+                      {" "}
+                      - Characterized by positive emotions. Enjoying company of
+                      others
+                    </small>
+                  </h4>
+                  <BulletChart
+                    secId={0}
+                    score={SE < LO ? 30 : SE >= LO && SE <= HI ? 60 : 85}
+                  ></BulletChart>
 
                   <h5 className="factor_5_modal_result">
                     {" "}
@@ -285,7 +341,17 @@ function DetailedReportComp({
                     )}
                   </h5>
 
-                  <h4 className="factor_5_modal">Agreeableness</h4>
+                  <h4 className="factor_5_modal">
+                    Agreeableness
+                    <small style={{ fontSize: "15px" }}>
+                      {" "}
+                      - Tendency to be compassionate and cooperative
+                    </small>
+                  </h4>
+                  <BulletChart
+                    secId={1}
+                    score={SA < LO ? 30 : SA >= LO && SA <= HI ? 60 : 85}
+                  ></BulletChart>
 
                   <h5 className="factor_5_modal_result">
                     {" "}
@@ -315,7 +381,18 @@ function DetailedReportComp({
                     )}
                   </h5>
 
-                  <h4 className="factor_5_modal">Conscientiousness</h4>
+                  <h4 className="factor_5_modal">
+                    Conscientiousness
+                    <small style={{ fontSize: "15px" }}>
+                      {" "}
+                      - Tendency to show self-discipline. Planned rather than
+                      spontaneous behavior.
+                    </small>
+                  </h4>
+                  <BulletChart
+                    secId={2}
+                    score={SC < LO ? 30 : SC >= LO && SC <= HI ? 60 : 85}
+                  ></BulletChart>
                   <h5 className="factor_5_modal_result">
                     {" "}
                     {SC < LO && (
@@ -341,7 +418,18 @@ function DetailedReportComp({
                     )}
                   </h5>
 
-                  <h4 className="factor_5_modal">Neuroticism</h4>
+                  <h4 className="factor_5_modal">
+                    Neuroticism
+                    <small style={{ fontSize: "15px" }}>
+                      {" "}
+                      - Tendency to remain balanced in ordinary situations.
+                      Desirable trait
+                    </small>
+                  </h4>
+                  <BulletChart
+                    secId={3}
+                    score={SN < LO ? 30 : SN >= LO && SN <= HI ? 60 : 85}
+                  ></BulletChart>
                   <h5 className="factor_5_modal_result">
                     {" "}
                     {SN < LO && (
@@ -372,7 +460,18 @@ function DetailedReportComp({
                     )}
                   </h5>
 
-                  <h4 className="factor_5_modal">Openness</h4>
+                  <h4 className="factor_5_modal">
+                    Openness
+                    <small style={{ fontSize: "15px" }}>
+                      {" "}
+                      - General appreciation for imagination and variety of
+                      experience.
+                    </small>
+                  </h4>
+                  <BulletChart
+                    secId={4}
+                    score={SO < LO ? 30 : SO >= LO && SO <= HI ? 60 : 85}
+                  ></BulletChart>
                   <h5 className="factor_5_modal_result">
                     {SO < LO && (
                       <p>
