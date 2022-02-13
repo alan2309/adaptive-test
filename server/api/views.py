@@ -327,7 +327,7 @@ def chartData(user,testId=-1):
 
     # a=[aa['Aptitude'],aa['Computer Fundamentals'],aa['Domain'],aa['Coding'],aa['Analytical Writing']]
     try:
-        resl=Results.objects.get(student = user,test=Test.objects.get(id=testId))
+        resl=Results.objects.get(student = user,test=Test.objects.get(id=testId))     
         aa['Aptitude']=resl.marks['avg_ap']
         aa['Computer Fundamentals']=resl.marks['avg_cf']
         aa['Domain']=resl.marks['avg_d']
@@ -360,7 +360,7 @@ def chartData(user,testId=-1):
     except Results.DoesNotExist:
         print('No previous entry')
         resl=0
-    return {'startTime':resl.startTime,'endTime':resl.endTime,'personalityData':resl.marks['pGot'],'marks':resl.marks,'totalQs':totalQs,'avgMarksArr':a,'mrksScored':mrksScored,'mrksScoredPercent':mrksScoredPercent,'totalMarksScored':sum(mrksScored),'timeTaken':tdelta.seconds}
+    return {'startTime':resl.startTime,'endTime':resl.endTime,'personalityData':resl.marks['pGot'],'marks':resl.marks,'totalQs':totalQs,'avgMarksArr':a,'mrksScored':mrksScored,'mrksScoredPercent':mrksScoredPercent,'totalMarksScored':sum(mrksScored),'timeTaken':tdelta.seconds,'res_id':resl.id}
 
 @csrf_exempt
 def resultTest(request,id):
@@ -372,6 +372,7 @@ def resultTest(request,id):
         cc=[]
         for x in a.data:
             c={}
+            c['id']=x['id']
             c['name']=User.objects.get(id=x['student']).username
             c['sdate']="{0} {1}".format(x['startTime'].split('T')[0],x['startTime'].split('T')[1].split('.')[0])
             c['sdate'] = converttoist(c['sdate'])
@@ -823,6 +824,15 @@ def comprehension(request,tid=0):
             return JsonResponse({'data':f,'time':test.aw['time']},safe=False)   
     else:
         return HttpResponseBadRequest()
+
+@csrf_exempt
+def deleteres(request,id):
+    if request.method=="DELETE":
+        try:
+            Results.objects.get(id=id).delete()
+        except:
+            print("Error in Deleting the result object")    
+        return JsonResponse("done",safe=False) 
 
 @csrf_exempt
 def personalityR(request):

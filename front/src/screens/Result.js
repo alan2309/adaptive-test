@@ -23,6 +23,7 @@ function Result() {
   const [opt1, setOpt1] = useState({});
   const [optRadar, setOptRadar] = useState({});
   const [show, setShow] = useState(false);
+  const [idx, setIdx] = useState();
 
   useEffect(() => {
     var t = localStorage.getItem("test");
@@ -182,6 +183,7 @@ function Result() {
             setTotalMarksScored(res.data.totalMarksScored);
             setTimeTaken(res.data.timeTaken);
             setPersonalityData(res.data.personalityData);
+            setIdx(res.data.res_id);
           })
           .catch((e) => console.log(e));
       }
@@ -625,14 +627,19 @@ function Result() {
       {personalityData[0]!==undefined&&  <PersonalityResultComp SEP={personalityData[0].SEP} SEFP={personalityData[0].SEFP} LO={personalityData[0].LO} HI={personalityData[0].HI} SE={personalityData[0].SE} SAP={personalityData[0].SAP} SAFP={personalityData[0].SAFP} SA={personalityData[0].SA} SC={personalityData[0].SC} SCP={personalityData[0].SCP} SCFP={personalityData[0].SCFP} flev={personalityData[0].flev} SOP={personalityData[0].SOP} SOFP={personalityData[0].SOFP} SO={personalityData[0].SO} Nick={personalityData[0].Nick} Country={personalityData[0].Country}
         SNP={personalityData[0].SNP} SNFP={personalityData[0].SNFP} Category={personalityData[0].Category} SN={personalityData[0].SN} />
      } </Row> */}
-      {localStorage.getItem("admin") === "admin" && (
+      {localStorage.getItem("admin") === "admin" && idx !== undefined && (
         <button
           type="button"
           className="btn"
-          onClick={(e) => {
+          onClick={async (e) => {
             localStorage.removeItem("testId");
             localStorage.removeItem("result");
-            navigate("/admin/scheduledTest");
+            await axiosInstance
+              .delete(`api/delres/${idx}`)
+              .then((res) => {
+                navigate("/admin/scheduledTest");
+              })
+              .catch((e) => console.log(e));
           }}
           style={{
             marginTop: "20px",
