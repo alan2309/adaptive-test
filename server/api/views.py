@@ -625,28 +625,28 @@ def saveTest(request):
                         "qs":data['saveTest'][x]['totalQs'],
                         "time":data['saveTest'][x]['time'],
                         "avg":avgMrk,
-                        "maxQs":b.sub_qs
+                        "maxQs":data['saveTest'][x]['maxQs']
                     }
                 elif(b.sub_name=="Computer Fundamentals"):
                     tst.cf = {
                         "qs":data['saveTest'][x]['totalQs'],
                         "time":data['saveTest'][x]['time'],
                         "avg":avgMrk,
-                        "maxQs":b.sub_qs
+                        "maxQs":data['saveTest'][x]['maxQs']
                     }
                 elif(b.sub_name=="Domain"):
                     tst.dom = {
                         "qs":data['saveTest'][x]['totalQs'],
                         "time":data['saveTest'][x]['time'],
                         "avg":avgMrk,
-                        "maxQs":b.sub_qs
+                        "maxQs":data['saveTest'][x]['maxQs']
                     }
                 elif(b.sub_name=="Personality"):
                     tst.p = {
                         "qs":data['saveTest'][x]['totalQs'],
                         "time":data['saveTest'][x]['time'],
                         "avg":avgMrk,
-                        "maxQs":b.sub_qs
+                        "maxQs":data['saveTest'][x]['maxQs']
                     }
                 elif(b.sub_name=="Coding"):
                     tst.c = {
@@ -663,6 +663,7 @@ def saveTest(request):
                         "maxQs":3 #
                     }
                 b.sub_qs=data['saveTest'][x]['totalQs']
+                b.max_qs=data['saveTest'][x]['maxQs']
                 b.sub_time=data['saveTest'][x]['time']
                 b.avg_score=avgMrk
                 b.save()
