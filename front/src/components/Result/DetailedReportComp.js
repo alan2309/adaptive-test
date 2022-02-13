@@ -31,7 +31,6 @@ function DetailedReportComp({
   Category,
   SN,
   mrksScoredPercent,
-  opt1,
   user_detail,
   timeTaken,
   totalMarksScored,
@@ -112,10 +111,10 @@ function DetailedReportComp({
             <Card.Body>
               <Card.Text>
                 <p>
-                  <b>Name :</b> {user_detail?.name || "default_name"}
+                  <b>Name :</b> {user_detail.name || "default_name"}
                 </p>
                 <p style={{ marginTop: "35px" }}>
-                  <b>Email :</b> {user_detail?.email || "default_email"}
+                  <b>Email :</b> {user_detail.email || "default_email"}
                 </p>
                 <p style={{ marginTop: "35px" }}>
                   <b>Test Time :</b> 45 mins{" "}
@@ -125,7 +124,7 @@ function DetailedReportComp({
                   <CustomTimer start={false} time={timeTaken} />
                 </p>
                 <p style={{ marginTop: "35px" }}>
-                  <b>Test Date :</b> {startTime?.split("T")[0]}
+                  <b>Test Date :</b> {startTime.split("T")[0] || 0}
                 </p>
                 <p style={{ marginTop: "35px" }}>
                   <b>Marks Scored :</b> {totalMarksScored}

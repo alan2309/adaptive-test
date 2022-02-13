@@ -337,7 +337,6 @@ function Result() {
         </Modal.Header>
         <Modal.Body>
           {personalityData[0] !== undefined &&
-            opt1 !== undefined &&
             userDetails !== undefined &&
             timeTaken !== undefined &&
             totalMarksScored !== undefined &&
@@ -365,7 +364,6 @@ function Result() {
                 Category={personalityData[0].Category}
                 SN={personalityData[0].SN}
                 mrksScoredPercent={mrksScoredPercent}
-                opt1={opt1}
                 user_detail={userDetails}
                 timeTaken={timeTaken}
                 totalMarksScored={totalMarksScored}
