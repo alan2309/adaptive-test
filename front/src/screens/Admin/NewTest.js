@@ -89,7 +89,8 @@ function NewTest() {
     let sx = new Date(sDate);
     let ex = new Date(eDate);
     if (ex.getTime() > sx.getTime()) {
-      if (!clash(sx.getTime(), ex.getTime())) {
+      let objClash = clash(sx.getTime(), ex.getTime());
+      if (!objClash.bool) {
         let creaTest = { testName: tName, sTime: sDate, eTime: eDate };
         let a = [
           {
@@ -152,23 +153,27 @@ function NewTest() {
             navigate("/admin/home");
           });
       } else {
-        alert("This test will clash with an existing test");
+        alert(objClash.msg);
       }
     } else {
       alert("Start time should be less than End time");
     }
   }
+  function name_check(val) {}
   function clash(stx, etx) {
     for (let i = 0; i < tests.length; i++) {
       let ss = new Date(tests[i].test_start).getTime();
       let ee = new Date(tests[i].test_end).getTime();
+      if (tests[i].test_name === tName) {
+        return { bool: 1, msg: "Name cannot be same as other test" };
+      }
       if ((stx >= ss && stx <= ee) || (etx >= ss && etx <= ee)) {
-        return 1;
+        return { bool: 1, msg: "This test will clash with an existing test" };
       } else if ((ss >= stx && ss <= etx) || (ee > stx && ee <= etx)) {
-        return 1;
+        return { bool: 1, msg: "This test will clash with an existing test" };
       }
     }
-    return 0;
+    return { bool: 0 };
   }
 
   function secOnCLick(e, index) {

@@ -53,14 +53,16 @@ function ScheduledTest() {
       if (tId === tests[i].id) continue;
       let ss = new Date(tests[i].test_start).getTime();
       let ee = new Date(tests[i].test_end).getTime();
-
+      if (tests[i].test_name === header) {
+        return { bool: 1, msg: "Name cannot be same as other test" };
+      }
       if ((stx >= ss && stx <= ee) || (etx >= ss && etx <= ee)) {
-        return 1;
+        return { bool: 1, msg: "This test will clash with an existing test" };
       } else if ((ss >= stx && ss <= etx) || (ee > stx && ee <= etx)) {
-        return 1;
+        return { bool: 1, msg: "This test will clash with an existing test" };
       }
     }
-    return 0;
+    return { bool: 0 };
   }
   function upcomingTest(e, test) {
     let s = new Date(test.test_start);
@@ -111,7 +113,8 @@ function ScheduledTest() {
       console.log(valueEnd);
 
       if (valueStart !== valueStartCheck || valueEnd !== valueEndCheck) {
-        if (!clash(valueStart.getTime(), valueEnd.getTime(), testId)) {
+        let objClash = clash(valueStart.getTime(), valueEnd.getTime(), testId);
+        if (!objClash.bool) {
           axiosInstance
             .post("api/test/0", {
               data: {
@@ -137,10 +140,9 @@ function ScheduledTest() {
               console.log(e);
             });
         } else {
-          alert("This test will clash with an existing test");
+          alert(objClash.msg);
         }
       }
-      handleClose(e);
     } else {
       valueStart > cDate
         ? alert("ENDATE should be GREATER than start Date")
