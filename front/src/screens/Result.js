@@ -24,6 +24,8 @@ function Result() {
   const [optRadar, setOptRadar] = useState({});
   const [show, setShow] = useState(false);
   const [idx, setIdx] = useState();
+  const [userDetails, setUserDetails] = useState();
+  const [startTime, setStartTime] = useState();
 
   useEffect(() => {
     var t = localStorage.getItem("test");
@@ -131,6 +133,9 @@ function Result() {
           gotMarks: gotMarks,
           testId: localStorage.getItem("testId"),
           check_result: 1,
+          name: localStorage.getItem("name"),
+          age: localStorage.getItem("age"),
+          gender: localStorage.getItem("gender"),
         };
       } else {
         let ax = JSON.parse(current);
@@ -141,6 +146,9 @@ function Result() {
           marks: total,
           testId: localStorage.getItem("testId"),
           check_result: 1,
+          name: localStorage.getItem("name"),
+          age: localStorage.getItem("age"),
+          gender: localStorage.getItem("gender"),
         };
       }
       axiosInstance
@@ -184,6 +192,8 @@ function Result() {
             setTimeTaken(res.data.timeTaken);
             setPersonalityData(res.data.personalityData);
             setIdx(res.data.res_id);
+            setUserDetails(res.data.user_detail);
+            setStartTime(res.data.startTime);
           })
           .catch((e) => console.log(e));
       }
@@ -326,33 +336,42 @@ function Result() {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {personalityData[0] !== undefined && (
-            <DetailedReportComp
-              SEP={personalityData[0].SEP}
-              SEFP={personalityData[0].SEFP}
-              LO={personalityData[0].LO}
-              HI={personalityData[0].HI}
-              SE={personalityData[0].SE}
-              SAP={personalityData[0].SAP}
-              SAFP={personalityData[0].SAFP}
-              SA={personalityData[0].SA}
-              SC={personalityData[0].SC}
-              SCP={personalityData[0].SCP}
-              SCFP={personalityData[0].SCFP}
-              flev={personalityData[0].flev}
-              SOP={personalityData[0].SOP}
-              SOFP={personalityData[0].SOFP}
-              SO={personalityData[0].SO}
-              Nick={personalityData[0].Nick}
-              Country={personalityData[0].Country}
-              SNP={personalityData[0].SNP}
-              SNFP={personalityData[0].SNFP}
-              Category={personalityData[0].Category}
-              SN={personalityData[0].SN}
-              mrksScoredPercent={mrksScoredPercent}
-              opt1={opt1}
-            />
-          )}{" "}
+          {personalityData[0] !== undefined &&
+            opt1 !== undefined &&
+            userDetails !== undefined &&
+            timeTaken !== undefined &&
+            totalMarksScored !== undefined &&
+            startTime !== undefined && (
+              <DetailedReportComp
+                SEP={personalityData[0].SEP}
+                SEFP={personalityData[0].SEFP}
+                LO={personalityData[0].LO}
+                HI={personalityData[0].HI}
+                SE={personalityData[0].SE}
+                SAP={personalityData[0].SAP}
+                SAFP={personalityData[0].SAFP}
+                SA={personalityData[0].SA}
+                SC={personalityData[0].SC}
+                SCP={personalityData[0].SCP}
+                SCFP={personalityData[0].SCFP}
+                flev={personalityData[0].flev}
+                SOP={personalityData[0].SOP}
+                SOFP={personalityData[0].SOFP}
+                SO={personalityData[0].SO}
+                Nick={personalityData[0].Nick}
+                Country={personalityData[0].Country}
+                SNP={personalityData[0].SNP}
+                SNFP={personalityData[0].SNFP}
+                Category={personalityData[0].Category}
+                SN={personalityData[0].SN}
+                mrksScoredPercent={mrksScoredPercent}
+                opt1={opt1}
+                user_detail={userDetails}
+                timeTaken={timeTaken}
+                totalMarksScored={totalMarksScored}
+                startTime={startTime}
+              />
+            )}{" "}
         </Modal.Body>
       </Modal>
       <Row>

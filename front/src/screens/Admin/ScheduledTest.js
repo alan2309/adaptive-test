@@ -211,6 +211,9 @@ function ScheduledTest() {
           );
           axiosInstance.defaults.headers["Authorization"] =
             "JWT " + localStorage.getItem("access_token");
+          localStorage.setItem("name", usern);
+          localStorage.setItem("gender", "Male");
+          localStorage.setItem("age", 30);
           navigate("/testScreen");
         })
         .catch((e) => console.log(e));

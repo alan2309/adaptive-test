@@ -6,6 +6,7 @@ import "../../css/ResultScreen.css";
 import Chart_score from "./Chart_score";
 import ReactSpeedometer from "react-d3-speedometer";
 import BulletChart from "./BulletChart";
+import CustomTimer from "../../screens/Admin/CustomTimer";
 
 function DetailedReportComp({
   SEP,
@@ -31,6 +32,10 @@ function DetailedReportComp({
   SN,
   mrksScoredPercent,
   opt1,
+  user_detail,
+  timeTaken,
+  totalMarksScored,
+  startTime,
 }) {
   return (
     <div id="generatePdf">
@@ -107,22 +112,23 @@ function DetailedReportComp({
             <Card.Body>
               <Card.Text>
                 <p>
-                  <b>Name :</b> Chaitanya Kumbhar
+                  <b>Name :</b> {user_detail?.name || "default_name"}
                 </p>
                 <p style={{ marginTop: "35px" }}>
-                  <b>Email :</b> kchaitanya1911@gmail.com
+                  <b>Email :</b> {user_detail?.email || "default_email"}
                 </p>
                 <p style={{ marginTop: "35px" }}>
                   <b>Test Time :</b> 45 mins{" "}
                 </p>
                 <p style={{ marginTop: "35px" }}>
-                  <b>Time Taken :</b> 00:43:34
+                  <b>Time Taken :</b>{" "}
+                  <CustomTimer start={false} time={timeTaken} />
                 </p>
                 <p style={{ marginTop: "35px" }}>
-                  <b>Test Date :</b> 02/13/2022
+                  <b>Test Date :</b> {startTime?.split("T")[0]}
                 </p>
                 <p style={{ marginTop: "35px" }}>
-                  <b>Marks Scored :</b> 77
+                  <b>Marks Scored :</b> {totalMarksScored}
                 </p>
               </Card.Text>
             </Card.Body>
@@ -146,9 +152,9 @@ function DetailedReportComp({
                 <ReactSpeedometer
                   width={400}
                   needleHeightRatio={0.7}
-                  value={750} //$
+                  value={totalMarksScored * 2} //$
                   customSegmentStops={[0, 200, 400, 600, 800, 1000]}
-                  currentValueText=""
+                  currentValueText=" "
                   customSegmentLabels={[
                     {
                       position: "OUTSIDE",

@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 import datetime
 from rest_framework.parsers import JSONParser
 import random
-from .serializers import CodingTestSerializer, SubjectSerializer,QuestionSerializer, TestSerializer ,ResultSerializer,OptionSerializer
+from .serializers import CodingTestSerializer, MyUserSerializer, SubjectSerializer,QuestionSerializer, TestSerializer ,ResultSerializer,OptionSerializer,AllUserSerializer
 import math
 from django.db.models import Q
 from dateutil import tz
@@ -360,7 +360,11 @@ def chartData(user,testId=-1):
     except Results.DoesNotExist:
         print('No previous entry')
         resl=0
-    return {'startTime':resl.startTime,'endTime':resl.endTime,'personalityData':resl.marks['pGot'],'marks':resl.marks,'totalQs':totalQs,'avgMarksArr':a,'mrksScored':mrksScored,'mrksScoredPercent':mrksScoredPercent,'totalMarksScored':sum(mrksScored),'timeTaken':tdelta.seconds,'res_id':resl.id}
+    if(user.is_staff):
+        user_detail=AllUserSerializer(user).data
+    else:    
+        user_detail=MyUserSerializer(MyUser.objects.get(user=user)).data
+    return {'startTime':resl.startTime,'endTime':resl.endTime,'personalityData':resl.marks['pGot'],'marks':resl.marks,'totalQs':totalQs,'avgMarksArr':a,'mrksScored':mrksScored,'mrksScoredPercent':mrksScoredPercent,'totalMarksScored':sum(mrksScored),'timeTaken':tdelta.seconds,'res_id':resl.id,'user_detail':user_detail}
 
 @csrf_exempt
 def resultTest(request,id):
@@ -422,7 +426,7 @@ def marks(request,sid=0):
                         result.marks['dGot'] = data['gotMarks']
                     elif sid == 5:
                         result.marks['p'] = data['marks']
-                        result.marks['pGot']=[evaluate(request,{'Nick':data['username'],'Sex':'Male','Age':21,'Q':data['marks'],'Country':'India'})]
+                        result.marks['pGot']=[evaluate(request,{'Nick':data['name'],'Sex':data['gender'],'Age':data['age'],'Q':data['marks'],'Country':'India'})]
                     elif sid == 6:
                         result.marks['a'] = data['marks'] 
                         result.marks['aMax'] = data['maxMarks']
