@@ -340,6 +340,8 @@ function ScheduledTest() {
               <Col md={3}>
                 <input
                   type="time"
+                  min={"00:00:20"}
+                  step={1}
                   style={{ width: "fit-content" }}
                   defaultValue={cf.time}
                   onChange={(e) => {
@@ -376,6 +378,8 @@ function ScheduledTest() {
               <Col md={3}>
                 <input
                   type="time"
+                  min={"00:00:20"}
+                  step={1}
                   style={{ width: "fit-content" }}
                   defaultValue={c.time}
                   onChange={(e) => {
@@ -417,6 +421,8 @@ function ScheduledTest() {
               <Col md={3}>
                 <input
                   type="time"
+                  min={"00:00:20"}
+                  step={1}
                   style={{ width: "fit-content" }}
                   defaultValue={domain.time}
                   onChange={(e) => {
@@ -458,6 +464,8 @@ function ScheduledTest() {
               <Col md={3}>
                 <input
                   type="time"
+                  min={"00:00:20"}
+                  step={1}
                   style={{ width: "fit-content" }}
                   defaultValue={p.time}
                   onChange={(e) => {
@@ -494,6 +502,8 @@ function ScheduledTest() {
               <Col md={3}>
                 <input
                   type="time"
+                  min={"00:00:20"}
+                  step={1}
                   style={{ width: "fit-content" }}
                   defaultValue={aw.time}
                   onChange={(e) => {
