@@ -5,6 +5,8 @@ import { isExpired, decodeToken } from "react-jwt";
 import { useNavigate } from "react-router";
 import Chart from "react-apexcharts";
 import "../../css/ResultScreen.css";
+import Chart_score from "./Chart_score";
+import ReactSpeedometer from "react-d3-speedometer";
 
 function DetailedReportComp({
   SEP,
@@ -31,6 +33,7 @@ function DetailedReportComp({
   mrksScoredPercent,
   opt1,
 }) {
+  const textColor = "#AAA";
   return (
     <div>
       <Navbar
@@ -112,13 +115,40 @@ function DetailedReportComp({
             </Card.Header>
             <Card.Body>
               <Card.Text>
-                <Chart
-                  series={mrksScoredPercent}
-                  options={opt1}
-                  type="radialBar"
-                  height={`300px`}
+                <ReactSpeedometer
+                  width={400}
+                  needleHeightRatio={0.7}
+                  value={750} //$
+                  customSegmentStops={[0, 200, 400, 600, 800, 1000]}
+                  currentValueText=""
+                  customSegmentLabels={[
+                    {
+                      position: "OUTSIDE",
+                      color: "#d8dee9",
+                    },
+                    {
+                      position: "OUTSIDE",
+                      color: "#d8dee9",
+                    },
+                    {
+                      position: "OUTSIDE",
+                      color: "#d8dee9",
+                    },
+                    {
+                      position: "OUTSIDE",
+                      color: "#d8dee9",
+                    },
+                    {
+                      position: "OUTSIDE",
+                      color: "#d8dee9",
+                    },
+                  ]}
+                  ringWidth={47}
+                  needleTransitionDuration={3333}
+                  needleTransition="easeElastic"
+                  needleColor={"black"}
+                  textColor={"#d8dee9"}
                 />
-
                 <p
                   style={{
                     fontFamily: "Poppins",
@@ -157,46 +187,21 @@ function DetailedReportComp({
               <Card.Text>
                 <Row>
                   <Col md="3" style={{ marginLeft: "90px" }}>
-                    <Chart
-                      series={mrksScoredPercent}
-                      options={opt1}
-                      type="radialBar"
-                      height={`200px`}
-                    />
+                    <Chart_score percent={mrksScoredPercent[0]} />
                   </Col>
                   <Col md="3">
-                    <Chart
-                      series={mrksScoredPercent}
-                      options={opt1}
-                      type="radialBar"
-                      height={`200px`}
-                    />
+                    <Chart_score percent={mrksScoredPercent[1]} />
                   </Col>
                   <Col md="3">
-                    <Chart
-                      series={mrksScoredPercent}
-                      options={opt1}
-                      type="radialBar"
-                      height={`200px`}
-                    />
+                    <Chart_score percent={mrksScoredPercent[2]} />
                   </Col>
                 </Row>
                 <Row>
                   <Col md="3" style={{ marginLeft: "200px" }}>
-                    <Chart
-                      series={mrksScoredPercent}
-                      options={opt1}
-                      type="radialBar"
-                      height={`200px`}
-                    />
+                    <Chart_score percent={mrksScoredPercent[3]} />
                   </Col>
                   <Col md="3">
-                    <Chart
-                      series={mrksScoredPercent}
-                      options={opt1}
-                      type="radialBar"
-                      height={`200px`}
-                    />
+                    <Chart_score percent={mrksScoredPercent[4]} />
                   </Col>
                   <p
                     style={{
