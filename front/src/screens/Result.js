@@ -24,8 +24,8 @@ function Result() {
   const [optRadar, setOptRadar] = useState({});
   const [show, setShow] = useState(false);
   const [idx, setIdx] = useState();
-  const [userDetails, setUserDetails] = useState();
-  const [startTime, setStartTime] = useState();
+  const [userDetails, setUserDetails] = useState({});
+  const [startTime, setStartTime] = useState("");
 
   useEffect(() => {
     var t = localStorage.getItem("test");
@@ -336,6 +336,11 @@ function Result() {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          {console.log("a " + personalityData[0])}
+          {console.log("b " + userDetails)}
+          {console.log("c " + timeTaken)}
+          {console.log("d " + totalMarksScored)}
+          {console.log("e " + startTime)}
           {personalityData[0] !== undefined &&
             userDetails !== undefined &&
             timeTaken !== undefined &&

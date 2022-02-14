@@ -111,23 +111,24 @@ function DetailedReportComp({
             <Card.Body>
               <Card.Text>
                 <p>
-                  <b>Name :</b> {user_detail.name || "default_name"}
+                  <b>Name :</b> {user_detail.name || "Chaitanya Kmbhar"}
                 </p>
                 <p style={{ marginTop: "35px" }}>
-                  <b>Email :</b> {user_detail.email || "default_email"}
+                  <b>Email :</b>{" "}
+                  {user_detail.email || "kchaitanya1911@gmail.com"}
                 </p>
                 <p style={{ marginTop: "35px" }}>
                   <b>Test Time :</b> 45 mins{" "}
                 </p>
                 <p style={{ marginTop: "35px" }}>
                   <b>Time Taken :</b>{" "}
-                  <CustomTimer start={false} time={timeTaken} />
+                  <CustomTimer start={false} time={timeTaken || "00:00:20"} />
                 </p>
                 <p style={{ marginTop: "35px" }}>
                   <b>Test Date :</b> {startTime.split("T")[0] || 0}
                 </p>
                 <p style={{ marginTop: "35px" }}>
-                  <b>Marks Scored :</b> {totalMarksScored}
+                  <b>Marks Scored :</b> {totalMarksScored || 45}
                 </p>
               </Card.Text>
             </Card.Body>
