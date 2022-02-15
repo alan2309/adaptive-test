@@ -8,21 +8,13 @@ import Chaitanya from "../img/Chaitanya.jpeg";
 import alan from "../img/alan.jpg";
 import Shivam from "../img/Shivam.jpeg";
 import ReactPlayer from "react-player/lazy";
-import $ from 'jquery';
 import "../css/Home.css";
 
 function Home() {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
   return (
-
     <div>
-      <style>
-     
-      </style>
-      <style >
-      
-          </style>
       <Modal
         id="preview_video"
         show={show}
@@ -42,7 +34,7 @@ function Home() {
             playbackRate={2}
             loop={true}
             url="https://youtu.be/OgtDzJHB5Po"
-            config={{ youtube: { playerVars: { disablekb: 1,fs:0 } } }}
+            config={{ youtube: { playerVars: { disablekb: 1, fs: 0 } } }}
           />
         </Modal.Body>
       </Modal>
@@ -78,17 +70,6 @@ function Home() {
                 className="buttonDiv"
                 onClick={() => {
                   setShow(true);
-                  
-                  // ytp-hide-controls 
-                  
-                   
-                  // ytp-embed 
-                  // ytp-embed-playlist 
-                  // ytp-large-width-mode 
-                  // ytp-pause-overlay-controls-hidden 
-                  // ytp-iv-drawer-enabled paused-mode ytp-expand-pause-overlay
-
-
                 }}
                 style={{
                   background: "#10B65C",
