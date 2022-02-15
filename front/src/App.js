@@ -9,7 +9,6 @@ import Logout from "./screens/logout";
 import Result from "./screens/Result";
 import Error from "./screens/Error";
 import AdminHome from "./screens/Admin/Home";
-import AdminAddQs from "./screens/Admin/AddQs";
 import SetQuestion from "./screens/Admin/SetQuestion";
 import NewTest from "./screens/Admin/NewTest";
 import CFTestScreen from "./screens/Test/CFTestScreen";
@@ -19,13 +18,11 @@ import ScheduledTest from "./screens/Admin/ScheduledTest";
 import ViewSchdlTest from "./screens/Admin/ViewSchdlTest";
 import Compiler from "./screens/Test/Compiler";
 import CompScreen from "./screens/Test/compScreen";
-import PersonalityResultComp from "./components/Result/personalityResultComp";
-import ACEEditor from "./components/TestScreeen/AceEditor";
 import Page_404 from "./screens/Page_404";
-import "./css/App.css";
-import ImageUpload from "./components/Admin/ImageUpload";
 import DetailScreen from "./screens/DetailScreen";
 import PrivateRoute from "./components/PrivateRoute";
+import "./css/App.css";
+
 function App() {
   return (
     <div className="App" id="element">

@@ -42,13 +42,13 @@ function SetQuestion() {
   const [para, set_para] = useState();
   const [para_qs, set_para_qs] = useState([]);
   const [isPersonality, set_isPersonality] = useState(false);
-
-  const [fileInputState, setFileInputState] = useState("");
+  const [fileInputState, setFileInputState] = useState();
   const [previewSource, setPreviewSource] = useState("");
   const [selectedFile, setSelectedFile] = useState();
   const [successMsg, setSuccessMsg] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [imgDB, setImgDb] = useState("");
+  const [delImage, setDelImage] = useState(false);
 
   useEffect(() => {
     document.getElementById(location.state.type).selected = "selected";
@@ -110,8 +110,6 @@ function SetQuestion() {
     if (parseInt(location.state.sid) === 6) {
       dictionary["paraId"] = currentQsID;
       let txtAreaEle = $("textarea");
-      console.log(txtAreaEle);
-      console.log("................");
       dictionary["rightOptArrAnalytical"] = {};
       dictionary["qsDict"] = {};
       for (let y = 0; y < txtAreaEle.length; y++) {
@@ -130,7 +128,6 @@ function SetQuestion() {
 
       for (let x = 0; x < rightOptArr.length; x++) {
         if (rightOptArr[x] !== null) {
-          console.log(rightOptArr[x].value.split("Opt")[0]);
           dictionary["rightOptArrAnalytical"][
             rightOptArr[x].value.split("Option")[0]
           ] = rightOptArr[x].value;
@@ -181,7 +178,6 @@ function SetQuestion() {
       ) {
         if (e.target[x].name.toString() !== "type") {
           if (isAnalytical) {
-            console.log(e.target[x].name.split("Option")[0]);
             var key = e.target[x].name.split("Option")[0].toString();
             if (key in dictionary["qsDict"]) {
               dictionary["qsDict"][key].options.push(e.target[x].name);
@@ -202,8 +198,7 @@ function SetQuestion() {
     if (parseInt(location.state.sid) === 4) {
       dictionary["type"] = 2;
     }
-    console.log(dictionary);
-    dictionary["image"] = "";
+    dictionary["image"] = null;
     if (selectedFile) {
       const reader = new FileReader();
       reader.readAsDataURL(selectedFile);
@@ -214,13 +209,17 @@ function SetQuestion() {
         console.error("AHHHHHHHH!!");
         setErrMsg("something went wrong!");
       };
-    } else {
+    } else if (delImage) {
       uploadImage("", dictionary);
+    } else {
+      uploadImage(null, dictionary);
     }
   }
   const uploadImage = async (base64EncodedImagee, dictionary) => {
     try {
-      dictionary["image"] = base64EncodedImagee;
+      if (base64EncodedImagee !== null) {
+        dictionary["image"] = base64EncodedImagee;
+      }
       axiosInstance
         .post("api/admin/addQs", { data: dictionary })
         .then((res) => {
@@ -439,9 +438,15 @@ function SetQuestion() {
   }
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
-    previewFile(file);
-    setSelectedFile(file);
-    setFileInputState(e.target.value);
+    if (file !== undefined) {
+      previewFile(file);
+      setSelectedFile(file);
+      setFileInputState(e.target.value);
+    } else {
+      setPreviewSource("");
+      setSelectedFile();
+      setFileInputState();
+    }
   };
   const previewFile = (file) => {
     const reader = new FileReader();
@@ -450,7 +455,11 @@ function SetQuestion() {
       setPreviewSource(reader.result);
     };
   };
-
+  function del_Image() {
+    if (window.confirm("Remove this Image?")) {
+      setDelImage(true);
+    }
+  }
   return (
     <div>
       <Alert msg={errMsg} type="danger" />
@@ -659,6 +668,7 @@ function SetQuestion() {
                             onChange={handleFileInputChange}
                             value=""
                             className="form-input"
+                            accept="image/png, image/jpeg"
                           />
                           {previewSource && (
                             <div id="zoomImg">
@@ -694,6 +704,7 @@ function SetQuestion() {
                           value={fileInputState}
                           disabled={!isUpdate}
                           className="form-input"
+                          accept="image/png, image/jpeg"
                         />
                         {previewSource && (
                           <div id="zoomImg">
@@ -715,24 +726,56 @@ function SetQuestion() {
                     </div>
                   </Row>
                 )}
-                {!isCoding && !isPersonality && !isAnalytical && !isNew && (
-                  <Row>
-                    {imgDB !== null && (
-                      <div style={{ margin: "10px 0" }}>
-                        <div id="zoomImg" className="form-group">
-                          <Zoom>
-                            <Image
-                              cloudName="chaitanya1911"
-                              public_id={imgDB}
-                              width="500"
-                              crop="scale"
-                            ></Image>
-                          </Zoom>
-                        </div>
-                      </div>
-                    )}
-                  </Row>
-                )}
+                {!isCoding &&
+                  !isPersonality &&
+                  !isAnalytical &&
+                  !isNew &&
+                  !delImage && (
+                    <Row>
+                      {isUpdate && imgDB !== null && (
+                        <Col md={2}>
+                          <button
+                            type="button"
+                            className="btn"
+                            onClick={(e) => {
+                              del_Image();
+                            }}
+                            style={{
+                              backgroundColor: "red",
+                              borderRadius: "100px",
+                              height: "30px",
+                              width: "30px",
+
+                              padding: "0",
+                            }}
+                          >
+                            <i
+                              className="fa fa-x"
+                              title="Remove this image"
+                              style={{ color: "white" }}
+                            ></i>
+                          </button>
+                        </Col>
+                      )}
+                      <Col>
+                        {imgDB !== null && (
+                          <div style={{ margin: "10px 0" }}>
+                            <div id="zoomImg" className="form-group">
+                              <Zoom>
+                                <Image
+                                  cloudName="chaitanya1911"
+                                  public_id={imgDB}
+                                  width="300"
+                                  crop="scale"
+                                  alt="img"
+                                ></Image>
+                              </Zoom>
+                            </div>
+                          </div>
+                        )}
+                      </Col>
+                    </Row>
+                  )}
 
                 {!isCoding && (
                   <div
@@ -1571,7 +1614,6 @@ function SetQuestion() {
                                 color: `rgba(0, 0, 0, 0.85)`,
                               }}
                             >
-                              {console.log(navArray)}
                               <Row>
                                 <Col md={1}>
                                   <input
