@@ -1,6 +1,5 @@
-import React from "react";
-import { Container, Row, Col, Button, Footer } from "react-bootstrap";
-import "../css/Home.css";
+import React, { useState } from "react";
+import { Container, Row, Col, Button, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import illustration1 from "../img/illustration1.svg";
 import illustration2 from "../img/illustration2.svg";
@@ -8,12 +7,45 @@ import illustration3 from "../img/illustration3.svg";
 import Chaitanya from "../img/Chaitanya.jpeg";
 import alan from "../img/alan.jpg";
 import Shivam from "../img/Shivam.jpeg";
-import Group_10 from "../img/Group 10.png";
+import ReactPlayer from "react-player/lazy";
+import $ from 'jquery';
+import "../css/Home.css";
 
 function Home() {
+  const [show, setShow] = useState(false);
   const navigate = useNavigate();
   return (
+
     <div>
+      <style>
+     
+      </style>
+      <style >
+      
+          </style>
+      <Modal
+        id="preview_video"
+        show={show}
+        onHide={() => setShow(false)}
+        style={{ marginLeft: "-5%" }}
+      >
+        <Modal.Header closeButton></Modal.Header>
+        <Modal.Body style={{ padding: "0", margin: "0" }}>
+          <ReactPlayer
+            height="532px"
+            width="700px"
+            playing={true}
+            controls={false}
+            light={false}
+            pip={false}
+            muted={true}
+            playbackRate={2}
+            loop={true}
+            url="https://youtu.be/OgtDzJHB5Po"
+            config={{ youtube: { playerVars: { disablekb: 1,fs:0 } } }}
+          />
+        </Modal.Body>
+      </Modal>
       <div className="welcomeDiv">
         <div>
           <div className="titleDiv" style={{ height: "400px" }}>
@@ -44,6 +76,20 @@ function Home() {
               </Button>
               <Button
                 className="buttonDiv"
+                onClick={() => {
+                  setShow(true);
+                  
+                  // ytp-hide-controls 
+                  
+                   
+                  // ytp-embed 
+                  // ytp-embed-playlist 
+                  // ytp-large-width-mode 
+                  // ytp-pause-overlay-controls-hidden 
+                  // ytp-iv-drawer-enabled paused-mode ytp-expand-pause-overlay
+
+
+                }}
                 style={{
                   background: "#10B65C",
                   color: "#FFF",
@@ -51,9 +97,6 @@ function Home() {
                   fontSize: "20px",
                   marginTop: "2%",
                   border: "none",
-                }}
-                onClick={() => {
-                  navigate("/logout");
                 }}
               >
                 Preview
