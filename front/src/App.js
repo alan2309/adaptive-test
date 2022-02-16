@@ -8,7 +8,7 @@ import Login from "./screens/Login";
 import Logout from "./screens/logout";
 import Result from "./screens/Result";
 import Error from "./screens/Error";
-import AdminHome from "./screens/Admin/Home";
+import AdminHome from "./screens/Admin/AdminHome";
 import SetQuestion from "./screens/Admin/SetQuestion";
 import NewTest from "./screens/Admin/NewTest";
 import CFTestScreen from "./screens/Test/CFTestScreen";
