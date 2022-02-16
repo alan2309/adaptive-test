@@ -160,8 +160,8 @@ function Home() {
             <Row>
               <Col
                 style={{ textAlign: "center", marginTop: "35px" }}
-                sm={6}
-                md={4}
+                md={6}
+                lg={4}
               >
                 <div
                   style={{
@@ -179,8 +179,8 @@ function Home() {
               </Col>
               <Col
                 style={{ textAlign: "center", marginTop: "35px" }}
-                sm={6}
-                md={4}
+                md={6}
+                lg={4}
               >
                 <div
                   style={{
@@ -198,8 +198,8 @@ function Home() {
               </Col>
               <Col
                 style={{ textAlign: "center", marginTop: "35px" }}
-                sm={6}
-                md={4}
+                md={6}
+                lg={4}
               >
                 <div
                   style={{
