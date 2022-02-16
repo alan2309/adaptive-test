@@ -125,8 +125,8 @@ function App() {
                 path="/admin/home"
                 exact
                 element={
-                  <Row style={{ margin: "20px 0 0 0" }}>
-                    <Col style={{ padding: "10px 90px" }}>
+                  <Row style={{ margin: "0 0 0 0" }}>
+                    <Col style={{ padding: "0px 90px 0px 0px" }}>
                       <AdminHome />
                     </Col>
                   </Row>
@@ -162,9 +162,28 @@ function App() {
               />
             </Route>
 
-            <Route path="/home" exact element={<Home />} />
-
-            <Route path="/" exact element={<Home />} />
+            <Route
+              path="/home"
+              exact
+              element={
+                <Row style={{ margin: "0", overflowX: "hidden" }}>
+                  <Col style={{ padding: "0px" }}>
+                    <Home />
+                  </Col>
+                </Row>
+              }
+            />
+            <Route
+              path="/"
+              exact
+              element={
+                <Row style={{ margin: "0", overflowX: "hidden" }}>
+                  <Col style={{ padding: "0" }}>
+                    <Home />
+                  </Col>
+                </Row>
+              }
+            />
 
             <Route
               path="/admin/personality"

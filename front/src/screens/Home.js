@@ -11,37 +11,13 @@ import ReactPlayer from "react-player/lazy";
 import "../css/Home.css";
 
 function Home() {
-  const [show, setShow] = useState(false);
   const navigate = useNavigate();
   return (
     <div>
-      <Modal
-        id="preview_video"
-        show={show}
-        onHide={() => setShow(false)}
-        style={{ marginLeft: "-5%" }}
-      >
-        <Modal.Header closeButton></Modal.Header>
-        <Modal.Body style={{ padding: "0", margin: "0" }}>
-          <ReactPlayer
-            height="532px"
-            width="700px"
-            playing={true}
-            controls={false}
-            light={false}
-            pip={false}
-            muted={true}
-            playbackRate={2}
-            loop={true}
-            url="https://youtu.be/OgtDzJHB5Po"
-            config={{ youtube: { playerVars: { disablekb: 1, fs: 0 } } }}
-          />
-        </Modal.Body>
-      </Modal>
-      <div className="welcomeDiv">
-        <div>
-          <div className="titleDiv" style={{ height: "400px" }}>
-            <label className="mainheading">
+      <Row className="welcomeDiv">
+        <Col sm={12} md={12} lg={5}>
+          <Row className="titleDiv" style={{ height: "100%" }}>
+            <label className="mainheadingLanding">
               Welcome to the
               <br />
               Placement Test Portal
@@ -49,44 +25,41 @@ function Home() {
             <label className="subHeadingsProfile">
               One Step towards a successful career
             </label>
-            <div>
-              <Button
-                className="buttonDiv"
-                style={{
-                  background: "#10B65C",
-                  color: "#FFF",
-                  width: "200px",
-                  fontSize: "20px",
-                  marginTop: "2%",
-                  border: "none",
-                }}
-                onClick={() => {
-                  navigate("/login");
-                }}
-              >
-                Login
-              </Button>
-              <Button
-                className="buttonDiv"
-                onClick={() => {
-                  setShow(true);
-                }}
-                style={{
-                  background: "#10B65C",
-                  color: "#FFF",
-                  width: "200px",
-                  fontSize: "20px",
-                  marginTop: "2%",
-                  border: "none",
-                }}
-              >
-                Preview
-              </Button>
-              <br />
-            </div>
+            <Button
+              className="buttonDiv"
+              style={{
+                background: "#10B65C",
+                color: "#FFF",
+                width: "200px",
+                fontSize: "20px",
+                border: "none",
+              }}
+              onClick={() => {
+                navigate("/login");
+              }}
+            >
+              Login
+            </Button>
+          </Row>
+        </Col>
+        <Col sm={12} lg={7}>
+          <div className="videoPlayer">
+            <ReactPlayer
+              style={{ borderRadius: "10px" }}
+              playing={true}
+              controls={false}
+              light={false}
+              pip={false}
+              muted={true}
+              playbackRate={1}
+              loop={true}
+              url="https://vimeo.com/76979871"
+              config={{ youtube: { playerVars: { disablekb: 1, fs: 0 } } }}
+            />
           </div>
-        </div>
-      </div>
+        </Col>
+      </Row>
+
       <div>
         <div style={{ textAlign: "center", marginTop: "1%" }} id="initiative">
           <br />
@@ -185,7 +158,11 @@ function Home() {
               </h3>
             </div>
             <Row>
-              <Col style={{ textAlign: "center", marginTop: "35px" }} md={4}>
+              <Col
+                style={{ textAlign: "center", marginTop: "35px" }}
+                sm={6}
+                md={4}
+              >
                 <div
                   style={{
                     display: "flex",
@@ -200,7 +177,11 @@ function Home() {
                   </div>
                 </div>
               </Col>
-              <Col style={{ textAlign: "center", marginTop: "35px" }} md={4}>
+              <Col
+                style={{ textAlign: "center", marginTop: "35px" }}
+                sm={6}
+                md={4}
+              >
                 <div
                   style={{
                     display: "flex",
@@ -215,7 +196,11 @@ function Home() {
                   </div>
                 </div>
               </Col>
-              <Col style={{ textAlign: "center", marginTop: "35px" }} md={4}>
+              <Col
+                style={{ textAlign: "center", marginTop: "35px" }}
+                sm={6}
+                md={4}
+              >
                 <div
                   style={{
                     display: "flex",

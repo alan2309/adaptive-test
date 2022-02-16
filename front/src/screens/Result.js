@@ -2,12 +2,13 @@ import React, { useEffect, useState, useRef } from "react";
 import { isExpired, decodeToken } from "react-jwt";
 import { useNavigate } from "react-router";
 import axiosInstance from "../axios";
-import { Col, Modal, Row } from "react-bootstrap";
+import { Col, Modal, Row, Form } from "react-bootstrap";
 import TestHeaderComp from "../components/TestScreeen/TestHeaderComp";
 import Chart from "react-apexcharts";
 import "../css/ResultScreen.css";
 import { useReactToPrint } from "react-to-print";
 import DetailedReportComp from "../components/Result/DetailedReportComp";
+import Feedbackstar from "react-feedback-star-component";
 import Loader from "../components/Loader";
 
 function Result() {
@@ -23,6 +24,7 @@ function Result() {
   const [opt1, setOpt1] = useState({});
   const [optRadar, setOptRadar] = useState({});
   const [show, setShow] = useState(false);
+  const [show1, setShow1] = useState(false);
   const [idx, setIdx] = useState();
   const [userDetails, setUserDetails] = useState({});
   const [startTime, setStartTime] = useState("");
@@ -336,11 +338,74 @@ function Result() {
         <Loader />
       ) : (
         <div>
-          <style type="text/css" media="print">
-            {"\
-  @page { size: A4; margin : 40px 20px 20px 20px !important; }\
-"}
-          </style>
+          <Modal
+            id="feedback"
+            show={show1}
+            onHide={() => setShow1(false)}
+            aria-labelledby="example-custom-modal-styling-title"
+          >
+            <Modal.Header closeButton></Modal.Header>
+            <Modal.Body>
+              <Form>
+                <p
+                  style={{
+                    textAlign: "center",
+                    fontSize: "16px",
+                    textAlign: "center",
+                    color: "#081466",
+                  }}
+                >
+                  <b>How do you feel about this portal? </b>
+                </p>
+                <Feedbackstar
+                  fontSizeStar="3vw"
+                  colorStar="#081466"
+                ></Feedbackstar>
+                <p
+                  style={{
+                    textAlign: "center",
+                    fontSize: "16px",
+                    textAlign: "center",
+                    color: "#788094",
+                  }}
+                >
+                  Let us know if you have ideas for new features <br></br>or
+                  improvements below!
+                </p>
+                <Form.Group
+                  className="mb-3"
+                  controlId="exampleForm.ControlTextarea1"
+                >
+                  <Form.Label
+                    style={{
+                      fontSize: "14px",
+                      textAlign: "center",
+                      color: "#081466",
+                    }}
+                  >
+                    {" "}
+                    <b>Feedback</b>
+                  </Form.Label>
+                  <Form.Control as="textarea" rows={5} />
+                </Form.Group>
+              </Form>
+              <button
+                onClick={() => navigate("/logout")}
+                className="btn"
+                type="submit"
+                style={{
+                  fontSize: "14px",
+                  textAlign: "center",
+                  backgroundColor: "#10b65c",
+                  color: "white",
+                  marginLeft: "190px",
+                }}
+              >
+                {" "}
+                Submit{" "}
+              </button>
+            </Modal.Body>
+          </Modal>
           <Modal
             id="result_page"
             show={show}
@@ -731,6 +796,20 @@ function Result() {
             }}
           >
             View Detailed Report
+          </button>
+          <button
+            type="button"
+            className="btn"
+            onClick={(e) => setShow1(true)}
+            style={{
+              marginTop: "20px",
+              marginLeft: "5px",
+              backgroundColor: "#081466",
+              color: "white",
+              border: "none",
+            }}
+          >
+            Feedback
           </button>
         </div>
       )}

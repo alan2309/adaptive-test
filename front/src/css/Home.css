@@ -11,36 +11,53 @@
   width: 300px;
 }
 
+.videoPlayer {
+  margin-right: 15%;
+  margin-left: auto;
+  padding: 5px 5px 5px 5px;
+  width: 577px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.videoPlayer div {
+  border-radius: 14px !important;
+  height: 320px !important;
+  width: 567px !important;
+}
+
 .buttonDiv {
   width: 234px;
   background-color: #10b65c;
   border-radius: 14px;
-  margin-bottom: 50px;
-  margin-right: 10px;
-  margin-top: 20px;
+  margin-top: 70px;
 }
 
 .welcomeDiv {
   background-image: url("/src/img/Group 10.png");
+  height: 560px;
+  padding-top: 120px;
+  padding-left: 70px;
 }
 
-.mainheading {
+.mainheadingLanding {
   font-family: Poppins;
   font-style: normal;
   font-weight: 600;
-  font-size: 30px;
-  line-height: 55px;
+  font-size: 35px;
+  line-height: 58px;
   color: #293e6f;
-  text-align: center;
-  padding: 30px;
+  text-align: left;
+  padding-bottom: 30px;
 }
 
 .subHeadingsProfile {
   font-family: Poppins;
   font-style: normal;
   font-weight: 300;
-  font-size: 20px;
-  line-height: 57px;
+  font-size: 25px;
+  line-height: 35px;
   color: #293e6f;
 }
 
@@ -94,8 +111,7 @@
 .titleDiv {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  margin-left: 30px;
 }
 
 .introPara {
@@ -149,20 +165,51 @@
   color: #0f1420;
 }
 
-@media screen and (min-width: 780px) {
-  .firstPara {
-    border-right: 1px solid #293e6f;
+@media (max-width: 612px) {
+  .videoPlayer {
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+    width: 95% !important;
+  }
+  .videoPlayer div {
+    width: 100% !important;
+  }
+  .user {
+    height: 150px;
+    width: 150px;
   }
 }
+@media (max-width: 991px) {
+  .welcomeDiv {
+    height: 1000px;
+    padding-left: 0;
+  }
+  .videoPlayer {
+    margin-left: auto;
+    margin-right: auto;
+  }
 
-@media (max-width: 768px) {
   .titleDiv {
     margin-left: 0;
     text-align: center;
   }
-  .subHeadingsProfile {
-    text-align: start;
+
+  .mainheadingLanding {
+    margin-left: 0;
+    text-align: center;
+    font-size: 25px;
   }
+  .subHeadingsProfile {
+    margin-left: 0;
+    text-align: center;
+    font-size: 25px;
+  }
+
+  .buttonDiv {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
   .landingPara {
     text-align: start;
     margin-top: 5%;
