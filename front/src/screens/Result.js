@@ -24,18 +24,26 @@ function Result() {
   const [opt1, setOpt1] = useState({});
   const [optRadar, setOptRadar] = useState({});
   const [show, setShow] = useState(false);
-  const [show1, setShow1] = useState(false);
+  const [showFeedback, setShowFeedback] = useState();
   const [idx, setIdx] = useState();
   const [userDetails, setUserDetails] = useState({});
   const [startTime, setStartTime] = useState("");
   const componentRef = useRef(null);
   const [isLoading, setIsloading] = useState(true);
+  const [feedback_star, set_feedback_star] = useState(0);
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
     documentTitle: "detailed_report",
   });
 
   useEffect(() => {
+    let feedbackBool = localStorage.getItem("submittedFeedback");
+    if (feedbackBool !== null && feedbackBool !== undefined && feedbackBool) {
+      setShowFeedback(false);
+    } else {
+      localStorage.setItem("submittedFeedback", "false");
+      setShowFeedback(true);
+    }
     var t = localStorage.getItem("test");
     var t2 = localStorage.getItem("test2");
     var t3 = localStorage.getItem("test3");
@@ -166,14 +174,12 @@ function Result() {
         })
         .then((res) => {
           setIsloading(false);
-          console.log("done");
           localStorage.setItem("result", true);
           if (tNo !== 1) {
             localStorage.removeItem(`test${tNo}`);
           } else {
             localStorage.removeItem("test");
           }
-          console.log(res.data);
           setMrksScored(res.data.mrksScored);
           setAvgMarksArr(res.data.avgMarksArr);
           setMrksScoredPercent(res.data.mrksScoredPercent);
@@ -196,8 +202,6 @@ function Result() {
           })
           .then((res) => {
             setIsloading(false);
-            console.log("done");
-            console.log(res.data);
             setMrksScored(res.data.mrksScored);
             setAvgMarksArr(res.data.avgMarksArr);
             setMrksScoredPercent(res.data.mrksScoredPercent);
@@ -257,14 +261,12 @@ function Result() {
               label: "Total",
               formatter: function (w) {
                 // By default this function returns the average of all series. The below is just an example to show the use of custom formatter function
-                console.log(w.config.series);
                 const array = w.config.series;
                 let sum = 0;
 
                 for (let i = 0; i < array.length; i++) {
                   sum += array[i];
                 }
-                console.log(sum / array.length);
                 sum = parseFloat(sum / array.length).toFixed(2);
 
                 return sum + "%";
@@ -340,13 +342,22 @@ function Result() {
         <div>
           <Modal
             id="feedback"
-            show={show1}
-            onHide={() => setShow1(false)}
-            aria-labelledby="example-custom-modal-styling-title"
+            show={showFeedback}
+            onHide={() => setShowFeedback(false)}
+            backdrop="static"
+            keyboard={false}
+            centered
           >
-            <Modal.Header closeButton></Modal.Header>
             <Modal.Body>
-              <Form>
+              <Form
+                style={{ paddingTop: "15px" }}
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  localStorage.setItem("submittedFeedback", "true");
+                  alert("feedback Submitted");
+                  setShowFeedback(false);
+                }}
+              >
                 <p
                   style={{
                     textAlign: "center",
@@ -360,6 +371,9 @@ function Result() {
                 <Feedbackstar
                   fontSizeStar="3vw"
                   colorStar="#081466"
+                  sendFeedback={(e) => {
+                    set_feedback_star(e);
+                  }}
                 ></Feedbackstar>
                 <p
                   style={{
@@ -372,10 +386,7 @@ function Result() {
                   Let us know if you have ideas for new features <br></br>or
                   improvements below!
                 </p>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlTextarea1"
-                >
+                <Form.Group className="mb-3">
                   <Form.Label
                     style={{
                       fontSize: "14px",
@@ -388,32 +399,32 @@ function Result() {
                   </Form.Label>
                   <Form.Control as="textarea" rows={5} />
                 </Form.Group>
+                <button
+                  className="btn"
+                  type="submit"
+                  disabled={feedback_star !== 0 ? false : true}
+                  style={{
+                    fontSize: "14px",
+                    textAlign: "center",
+                    backgroundColor: "#10b65c",
+                    color: "white",
+                    marginLeft: "190px",
+                  }}
+                >
+                  {" "}
+                  Submit{" "}
+                </button>
               </Form>
-              <button
-                onClick={() => navigate("/logout")}
-                className="btn"
-                type="submit"
-                style={{
-                  fontSize: "14px",
-                  textAlign: "center",
-                  backgroundColor: "#10b65c",
-                  color: "white",
-                  marginLeft: "190px",
-                }}
-              >
-                {" "}
-                Submit{" "}
-              </button>
             </Modal.Body>
           </Modal>
           <Modal
             id="result_page"
             show={show}
             onHide={() => setShow(false)}
-            aria-labelledby="example-custom-modal-styling-title"
+            aria-labelledby="det_report"
           >
             <Modal.Header closeButton>
-              <Modal.Title id="example-custom-modal-styling-title">
+              <Modal.Title id="det_report">
                 Detailed Report
                 <button
                   onClick={handlePrint}
@@ -429,11 +440,6 @@ function Result() {
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              {console.log("a " + personalityData[0])}
-              {console.log("b " + userDetails)}
-              {console.log("c " + timeTaken)}
-              {console.log("d " + totalMarksScored)}
-              {console.log("e " + startTime)}
               {personalityData[0] !== undefined &&
                 userDetails !== undefined &&
                 timeTaken !== undefined &&
@@ -749,6 +755,7 @@ function Result() {
               type="button"
               className="btn"
               onClick={async (e) => {
+                localStorage.removeItem("submittedFeedback");
                 localStorage.removeItem("testId");
                 localStorage.removeItem("result");
                 await axiosInstance
@@ -800,7 +807,7 @@ function Result() {
           <button
             type="button"
             className="btn"
-            onClick={(e) => setShow1(true)}
+            onClick={(e) => setShowFeedback(true)}
             style={{
               marginTop: "20px",
               marginLeft: "5px",

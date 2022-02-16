@@ -71,13 +71,13 @@ function AdminHome() {
                   navigate("/admin/newTest", { state: { sid: 0 } });
                 }}
                 style={{
-                  padding: "24px",
+                  padding: "23px",
                   borderRadius: "0px",
                   border: "2px solid #e0e0e0",
                   borderTop: "2px",
                   borderBottom: "2px",
                   color: "#293E6F",
-                  fontSize: "14px",
+                  fontSize: "15px",
                 }}
               >
                 New test
@@ -86,10 +86,10 @@ function AdminHome() {
                 action
                 href="/admin/scheduledTest"
                 style={{
-                  padding: "22px",
+                  padding: "23px",
                   border: "2px solid #e0e0e0",
                   color: "#293E6F",
-                  fontSize: "14px",
+                  fontSize: "15px",
                 }}
               >
                 Scheduled Test
@@ -99,11 +99,11 @@ function AdminHome() {
                 action
                 href="#link3"
                 style={{
-                  padding: "24px",
+                  padding: "23px",
                   border: "2px solid #e0e0e0",
                   borderTop: "0px",
                   color: "#293E6F",
-                  fontSize: "14px",
+                  fontSize: "15px",
                 }}
               >
                 View profile
@@ -112,11 +112,11 @@ function AdminHome() {
                 action
                 href="#link4"
                 style={{
-                  padding: "24px",
+                  padding: "23px",
                   border: "2px solid #e0e0e0",
                   borderTop: "0px",
                   color: "#293E6F",
-                  fontSize: "14px",
+                  fontSize: "15px",
                 }}
               >
                 Delete profile
@@ -125,11 +125,11 @@ function AdminHome() {
                 action
                 href="#link5"
                 style={{
-                  padding: "24px",
+                  padding: "23px",
                   border: "2px solid #e0e0e0",
                   borderTop: "0px",
                   color: "#293E6F",
-                  fontSize: "14px",
+                  fontSize: "15px",
                 }}
               >
                 Edit profile
@@ -138,11 +138,11 @@ function AdminHome() {
                 action
                 href="#link6"
                 style={{
-                  padding: "24px",
+                  padding: "23px",
                   border: "2px solid #e0e0e0",
                   borderTop: "0px",
                   color: "#293E6F",
-                  fontSize: "14px",
+                  fontSize: "15px",
                 }}
               >
                 Accept students
@@ -151,11 +151,11 @@ function AdminHome() {
                 action
                 href="#link7"
                 style={{
-                  padding: "24px",
+                  padding: "23px",
                   border: "2px solid #e0e0e0",
                   borderTop: "0px",
                   color: "#293E6F",
-                  fontSize: "14px",
+                  fontSize: "15px",
                 }}
               >
                 Feedback
@@ -164,11 +164,11 @@ function AdminHome() {
                 action
                 href="/logout"
                 style={{
-                  padding: "24px",
+                  padding: "23px",
                   border: "2px solid #e0e0e0",
                   borderTop: "0px",
                   color: "#293E6F",
-                  fontSize: "14px",
+                  fontSize: "15px",
                 }}
               >
                 Logout
