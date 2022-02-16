@@ -10,8 +10,11 @@ import "../css/LoginScreen.css";
 import ProtectUrl from "../components/TestScreeen/ProtectUrl";
 import AdminProtectUrl from "../components/Admin/AdminProtectUrl";
 import Loader from "../components/Loader";
+import { GoogleLogin, GoogleLogout } from "react-google-login";
+import keys from "../components/TestScreeen/keys";
 
 function Login() {
+  const clientId = keys.googlecId();
   const navigate = useNavigate();
   const [md, setMd] = useState(false);
   const [dataUpcoming, setTDataUpcoming] = useState({});
@@ -222,6 +225,14 @@ function Login() {
       });
     return parseInt(aa);
   }
+
+  const responseGoogle = async (res) => {
+    navigate("/signup", { state: { data: res.profileObj } });
+  };
+  const error = (res) => {
+    alert("Attempt to log in failed");
+  };
+
   return (
     <>
       {isLoading ? (
@@ -288,6 +299,18 @@ function Login() {
                         Start Test
                       </button>
                     </Col>
+                  </Row>
+                  <Row style={{ marginTop: "35px", paddingLeft: "200px" }}>
+                    <Col>SignUp:</Col>
+                    <Row>
+                      <GoogleLogin
+                        clientId={clientId}
+                        buttonText="Sign Up with Google"
+                        onSuccess={responseGoogle}
+                        onFailure={error}
+                        cookiePolicy={"single_host_origin"}
+                      />
+                    </Row>
                   </Row>
                 </form>
               </div>

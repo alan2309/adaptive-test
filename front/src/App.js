@@ -22,6 +22,7 @@ import Page_404 from "./screens/Page_404";
 import DetailScreen from "./screens/DetailScreen";
 import PrivateRoute from "./components/PrivateRoute";
 import "./css/App.css";
+import Signup from "./screens/Signup";
 
 function App() {
   return (
@@ -71,6 +72,17 @@ function App() {
                 <Row style={{ margin: "20px 0 0 0" }}>
                   <Col style={{ padding: "10px 90px" }}>
                     <Login />
+                  </Col>
+                </Row>
+              }
+            />
+            <Route
+              path="/signup"
+              exact
+              element={
+                <Row style={{ margin: "20px 0 0 0" }}>
+                  <Col style={{ padding: "10px 90px" }}>
+                    <Signup />
                   </Col>
                 </Row>
               }
