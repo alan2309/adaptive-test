@@ -68,7 +68,7 @@ function Home() {
         <br />
         <Container>
           <Row>
-            <Col md={7} lg={8}>
+            <Col sm={12} md={7} lg={8}>
               <div className="landingPara">
                 <label className="subHeadingsProfile1">
                   What does this portal do?
@@ -81,7 +81,7 @@ function Home() {
                 </label>
               </div>
             </Col>
-            <Col md={5} lg={4}>
+            <Col sm={12} md={5} lg={4}>
               <img
                 alt="illustration1"
                 src={illustration1}
@@ -91,15 +91,15 @@ function Home() {
           </Row>
         </Container>
         <Container>
-          <Row>
-            <Col md={5} lg={4}>
+          <Row id='middleLogoRow'>
+            <Col className='first_col' sm={12} md={5} lg={4}>
               <img
                 alt="logo"
                 src={illustration2}
                 className="welcomeImage3"
               ></img>
             </Col>
-            <Col md={7} lg={8}>
+            <Col className='second_col' sm={12} md={7} lg={8}>
               <div className="landingPara1">
                 <label className="subHeadingsProfile1">
                   Why should I attempt these tests?
@@ -118,7 +118,7 @@ function Home() {
         </Container>
         <Container>
           <Row>
-            <Col md={7} lg={8}>
+            <Col sm={12} md={7} lg={8}>
               <div className="landingPara">
                 <label className="subHeadingsProfile1">
                   How will this portal benefit the undergraduate?
@@ -134,7 +134,7 @@ function Home() {
                 <br />
               </div>
             </Col>
-            <Col md={5} lg={4} className="colImageDiv">
+            <Col sm={12} md={5} lg={4} className="colImageDiv">
               <img
                 alt="illustration2"
                 src={illustration3}
