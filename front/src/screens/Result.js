@@ -10,6 +10,7 @@ import { useReactToPrint } from "react-to-print";
 import DetailedReportComp from "../components/Result/DetailedReportComp";
 import Feedbackstar from "react-feedback-star-component";
 import Loader from "../components/Loader";
+import Alert from "../components/Admin/Alert";
 
 function Result() {
   const navigate = useNavigate();
@@ -31,6 +32,8 @@ function Result() {
   const componentRef = useRef(null);
   const [isLoading, setIsloading] = useState(true);
   const [feedback_star, set_feedback_star] = useState(0);
+  const [successMsg, setSuccessMsg] = useState("");
+  const [dangerMsg, setDangerMsg] = useState("");
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
     documentTitle: "detailed_report",
@@ -340,6 +343,8 @@ function Result() {
         <Loader />
       ) : (
         <div>
+          <Alert msg={successMsg} type="success"></Alert>
+          <Alert msg={dangerMsg} type="danger"></Alert>
           <Modal
             id="feedback"
             show={showFeedback}
@@ -354,7 +359,7 @@ function Result() {
                 onSubmit={(e) => {
                   e.preventDefault();
                   localStorage.setItem("submittedFeedback", "true");
-                  alert("feedback Submitted");
+                  setSuccessMsg("Thank you for your feedback");
                   setShowFeedback(false);
                 }}
               >
@@ -803,20 +808,6 @@ function Result() {
             }}
           >
             View Detailed Report
-          </button>
-          <button
-            type="button"
-            className="btn"
-            onClick={(e) => setShowFeedback(true)}
-            style={{
-              marginTop: "20px",
-              marginLeft: "5px",
-              backgroundColor: "#081466",
-              color: "white",
-              border: "none",
-            }}
-          >
-            Feedback
           </button>
         </div>
       )}

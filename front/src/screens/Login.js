@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Col, Row, Modal } from "react-bootstrap";
 import axiosInstance from "../axios";
 import { useNavigate } from "react-router-dom";
-import { isExpired, decodeToken } from "react-jwt";
+import { isExpired } from "react-jwt";
 import $ from "jquery";
 import { MDBDataTable } from "mdbreact";
 import CustomTimer from "./Admin/CustomTimer";
@@ -12,6 +12,8 @@ import AdminProtectUrl from "../components/Admin/AdminProtectUrl";
 import Loader from "../components/Loader";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
 import keys from "../components/TestScreeen/keys";
+import { FcGoogle } from "react-icons/fc";
+import Alert from "../components/Admin/Alert";
 
 function Login() {
   const clientId = keys.googlecId();
@@ -21,6 +23,8 @@ function Login() {
   const [dataPresent, setTDataPresent] = useState({});
   const [isLoading, setIsloading] = useState(true);
   const [show, setShow] = useState(false);
+  const [successMsg, setSuccessMsg] = useState("");
+  const [dangerMsg, setDangerMsg] = useState("");
   const columnsP = [
     {
       label: "NAME",
@@ -188,7 +192,7 @@ function Login() {
                           navigate("/result");
                         } else {
                           setMd(true);
-                          alert("Already started on different device");
+                          setDangerMsg("Already started on different device");
                           navigate("/logout");
                         }
                       } else {
@@ -206,12 +210,12 @@ function Login() {
                 }
               } else {
                 setIsloading(false);
-                alert("test not available");
+                setDangerMsg("You are not allowed to login");
               }
             });
         } else {
           setIsloading(false);
-          alert("User Doesn't exists");
+          setDangerMsg("Invalid username or password");
         }
       });
   };
@@ -232,11 +236,13 @@ function Login() {
     navigate("/signup", { state: { data: res.profileObj } });
   };
   const error = (res) => {
-    alert("Attempt to log in failed");
+    setDangerMsg("Attempt to log in failed");
   };
 
   return (
     <>
+      <Alert msg={successMsg} type="success"></Alert>
+      <Alert msg={dangerMsg} type="danger"></Alert>
       {isLoading ? (
         <Loader />
       ) : (
@@ -344,7 +350,7 @@ function Login() {
                         ></span>
                       </Col>
                     </Row>
-                    <Row style={{ marginTop: "35px", paddingLeft: "200px" }}>
+                    <Row style={{ marginTop: "35px", paddingLeft: "180px" }}>
                       <Col>
                         <button
                           style={{
@@ -363,11 +369,37 @@ function Login() {
                       Forgot Password
                     </button>
                     <Row style={{ marginTop: "35px", paddingLeft: "200px" }}>
-                      <Col>SignUp:</Col>
-                      <Row>
+                      <Col style={{ marginLeft: "-60px" }}>
+                        Not Registered? Sign up now{" "}
+                      </Col>
+                      <Row style={{ marginTop: "35px", paddingLeft: "55px" }}>
                         <GoogleLogin
+                          render={(renderProps) => (
+                            <button
+                              style={{
+                                width: "45px",
+                                height: "45px",
+                                backgroundColor: "rgb(255, 255, 255)",
+                                display: "inline-flex",
+                                alignItems: "center",
+                                color: "rgba(0, 0, 0, 0.54)",
+                                boxShadow:
+                                  "rgb(0 0 0 / 24%) 0px 2px 2px 0px, rgb(0 0 0 / 24%) 0px 0px 1px 0px",
+                                padding: "10px",
+                                borderRadius: "40%",
+                                border: "1px solid transparent",
+                                fontSize: "14px",
+                                fontWeight: "500",
+                                fontFamily: "Roboto, sans-serif",
+                              }}
+                              onClick={renderProps.onClick}
+                              disabled={renderProps.disabled}
+                            >
+                              <FcGoogle style={{ marginLeft: "5px" }} />
+                            </button>
+                          )}
                           clientId={clientId}
-                          buttonText="Sign Up with Google"
+                          buttonText="Google"
                           onSuccess={responseGoogle}
                           onFailure={error}
                           cookiePolicy={"single_host_origin"}

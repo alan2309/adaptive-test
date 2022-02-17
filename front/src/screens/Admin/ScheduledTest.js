@@ -5,8 +5,11 @@ import DateTimePicker from "react-datetime-picker";
 import axiosInstance from "../../axios";
 import Loader from "../../components/Loader";
 import "../../css/SchdlTest.css";
+import Alert from "../../components/Admin/Alert";
 
 function ScheduledTest() {
+  const [successMsg, setSuccessMsg] = useState("");
+  const [dangerMsg, setDangerMsg] = useState("");
   const [isLoading, setIsloading] = useState(true);
   const [stests, setSTests] = useState([]);
   const [utests, setUTests] = useState([]);
@@ -147,14 +150,14 @@ function ScheduledTest() {
             });
         } else {
           setIsloading(false);
-          alert(objClash.msg);
+          setDangerMsg("Test cannot be saved");
         }
       }
     } else {
       setIsloading(false);
       valueStart > cDate
-        ? alert("ENDATE should be GREATER than start Date")
-        : alert("start Date time should be greater than current date time");
+        ? setDangerMsg("Start date cannot be greater than current date")
+        : setDangerMsg("End date cannot be less than start date");
     }
   }
   function delTest(e) {
@@ -254,6 +257,9 @@ function ScheduledTest() {
       {isLoading ? (
         <Loader />
       ) : (
+        <>
+        <Alert msg={successMsg} type="success"></Alert>
+        <Alert msg={dangerMsg} type="danger"></Alert>
         <div className="SchdlTest">
           <Modal show={show} onHide={handleClose}>
             <form
@@ -712,6 +718,7 @@ function ScheduledTest() {
             </Col>
           </Row>
         </div>
+        </>
       )}
     </>
   );
