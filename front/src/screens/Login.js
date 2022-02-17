@@ -186,13 +186,16 @@ function Login() {
                     })
                     .then((res) => {
                       setIsloading(false);
+                      localStorage.setItem("name", res.data.name);
+                      localStorage.setItem("age", res.data.age);
+                      localStorage.setItem("gender", res.data.gender);
                       if (res.data.resultExists) {
                         if (res.data.end) {
                           setMd(true);
                           navigate("/result");
                         } else {
                           setMd(true);
-                          setDangerMsg("Already started on different device");
+                          alert("Already started on different device");
                           navigate("/logout");
                         }
                       } else {

@@ -11,10 +11,21 @@ function SignUpModified() {
   const navigate = useNavigate();
   const location = useLocation();
   const initialFormData = Object.freeze({
-    name: "",
-    email: "",
     pass: "",
     cpass: "",
+    name: "",
+    email: "",
+    age: "",
+    gender: "",
+    mobileNo: "",
+    percent_10_std: "",
+    percent_12_std: "",
+    college: "",
+    branch: "",
+    graduationYear: "",
+    avgCGPA: "",
+    backlogs: "",
+    internships: "",
   });
   const [formData, updateFormData] = useState(initialFormData);
   const [successMsg, setSuccessMsg] = useState("");
@@ -50,11 +61,9 @@ function SignUpModified() {
         .then((res) => {
           setIsloading(true);
           if (res.data.exists) {
-            setDangerMsg("User already exists");
-            navigate("/login");
-          } else {
-            navigate("/login");
+            alert("User already exists");
           }
+          navigate("/login");
         })
         .catch((e) => {
           console.log(e);
@@ -65,10 +74,12 @@ function SignUpModified() {
   };
 
   const handleChange = (e) => {
-    updateFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    if (e.target.name !== "") {
+      updateFormData({
+        ...formData,
+        [e.target.name]: e.target.value,
+      });
+    }
   };
 
   return (
@@ -176,6 +187,7 @@ function SignUpModified() {
                   <Form.Control
                     type="number"
                     type="text"
+                    onChange={handleChange}
                     placeholder="age"
                     name="age"
                     required
@@ -183,8 +195,8 @@ function SignUpModified() {
                 </Form.Group>
                 <Form.Group className="mb-3" style={{ marginTop: "25px" }}>
                   <Form.Label> Gender </Form.Label>
-                  <Form.Select aria-label="Default select example">
-                    <option>Gender</option>
+                  <Form.Select onChange={handleChange} name="gender" required>
+                    <option selected></option>
                     <option value="1">Male</option>
                     <option value="2">Female</option>
                     <option value="3">Other</option>
@@ -200,6 +212,7 @@ function SignUpModified() {
                       placeholder="Mobile Number"
                       onChange={handleChange}
                       pattern="[7-9]{1}[0-9]{9}"
+                      required
                     />
                   </InputGroup>
                 </Form.Group>
@@ -213,7 +226,8 @@ function SignUpModified() {
                     type="number"
                     type="text"
                     placeholder="10th percentage"
-                    name="percentage"
+                    onChange={handleChange}
+                    name="percent_10_std"
                     required
                   />
                 </Form.Group>
@@ -227,13 +241,14 @@ function SignUpModified() {
                     type="number"
                     type="text"
                     placeholder="12th percentage"
-                    name="percentage"
+                    onChange={handleChange}
+                    name="percent_12_std"
                     required
                   />
                 </Form.Group>
                 <Form.Group className="mb-3" style={{ marginTop: "25px" }}>
                   <Form.Label> College </Form.Label>
-                  <Form.Select aria-label="Default select example">
+                  <Form.Select onChange={handleChange} name="college" required>
                     <option selected disabled="true">
                       Colleges
                     </option>
@@ -258,7 +273,8 @@ function SignUpModified() {
                     type="number"
                     type="text"
                     placeholder="Branch"
-                    name="Branch"
+                    onChange={handleChange}
+                    name="branch"
                     required
                   />
                 </Form.Group>
@@ -272,7 +288,8 @@ function SignUpModified() {
                     type="number"
                     type="text"
                     placeholder="graduation"
-                    name="graduation"
+                    onChange={handleChange}
+                    name="graduationYear"
                     required
                   />
                 </Form.Group>
@@ -286,7 +303,8 @@ function SignUpModified() {
                     type="number"
                     type="text"
                     placeholder=" C.G.P.A "
-                    name=" C.G.P.A "
+                    onChange={handleChange}
+                    name="avgCGPA"
                     required
                   />
                 </Form.Group>
@@ -300,7 +318,8 @@ function SignUpModified() {
                     type="number"
                     type="text"
                     placeholder=" Backlogs "
-                    name=" Backlogs "
+                    onChange={handleChange}
+                    name="backlogs"
                     required
                   />
                 </Form.Group>
@@ -314,33 +333,31 @@ function SignUpModified() {
                     type="number"
                     type="text"
                     placeholder="internship"
+                    onChange={handleChange}
                     name="internships"
                     required
                   />
                 </Form.Group>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <button
+                    type="submit"
+                    style={{
+                      marginTop: "5%",
+                      border: "none",
+                      outline: "none",
+                      borderRadius: "5px",
+                      fontWeight: "bolder",
+                      backgroundColor: "#10B65C",
+                      fontFamily: "Poppins",
+                      padding: "5px 45px",
+                      color: "#FFFFFF",
+                    }}
+                  >
+                    Login
+                  </button>
+                </div>
               </Form>
-
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                <button
-                  type="submit"
-                  onClick={() => navigate("/logout")}
-                  style={{
-                    marginTop: "5%",
-                    border: "none",
-                    outline: "none",
-                    borderRadius: "5px",
-                    fontWeight: "bolder",
-                    backgroundColor: "#10B65C",
-                    fontFamily: "Poppins",
-                    padding: "5px 45px",
-                    color: "#FFFFFF",
-                  }}
-                >
-                  Login
-                </button>
-              </div>
             </div>
-            <br />
           </Container>
         </div>
       )}

@@ -37,7 +37,7 @@
 }
 
 input {
-  border: 0px !important;
+  border: 0px;
   outline: none;
 }
 input:focus {
