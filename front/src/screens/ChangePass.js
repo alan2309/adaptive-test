@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../axios";
 
-function ForgotPass() {
+function ChangePass() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const initialFormData = Object.freeze({
@@ -85,4 +85,4 @@ function ForgotPass() {
   );
 }
 
-export default ForgotPass;
+export default ChangePass;
