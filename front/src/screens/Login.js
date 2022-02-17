@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Modal } from "react-bootstrap";
 import axiosInstance from "../axios";
 import { useNavigate } from "react-router-dom";
 import { isExpired, decodeToken } from "react-jwt";
@@ -20,6 +20,7 @@ function Login() {
   const [dataUpcoming, setTDataUpcoming] = useState({});
   const [dataPresent, setTDataPresent] = useState({});
   const [isLoading, setIsloading] = useState(true);
+  const [show, setShow] = useState(false);
   const columnsP = [
     {
       label: "NAME",
@@ -133,6 +134,7 @@ function Login() {
     password: "",
   });
   const [formData, updateFormData] = useState(initialFormData);
+  const [formData2, updateFormData2] = useState({ email: "" });
   const handleChange = (e) => {
     updateFormData({
       ...formData,
@@ -238,147 +240,208 @@ function Login() {
       {isLoading ? (
         <Loader />
       ) : (
-        <div style={{ color: "#788094" }}>
-          <Row>
-            <Col>
-              <div style={{ margin: "60px 60px" }}>
-                <Row>
-                  <Col>
-                    <div id="title">Placement Aptitude Portal</div>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <div id="subTitle">
-                      Dwarkadas J. Sanghvi College of Engineering
-                    </div>
-                  </Col>
-                </Row>
-                <form onSubmit={(e) => handleSubmit(e)}>
-                  <Row style={{ marginTop: "70px" }}>
+        <>
+          <Modal
+            id="result_page"
+            show={show}
+            onHide={() => setShow(false)}
+            aria-labelledby="det_report"
+          >
+            <Modal.Header closeButton>
+              <Modal.Title id="forgotpass">Change Password</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  axiosInstance
+                    .post("api/forgotpass", {
+                      data: { email: formData2.email },
+                    })
+                    .then((res) => {
+                      if (res.data.exists) {
+                        setShow(false);
+                      } else {
+                        alert("Error occured");
+                      }
+                    })
+                    .catch((e) => console.log(e));
+                }}
+              >
+                <input
+                  className="loginInpRec"
+                  onChange={(e) => {
+                    updateFormData2({
+                      ...formData2,
+                      email: e.target.value,
+                    });
+                  }}
+                  name="email"
+                  type="email"
+                  placeholder="* Email Id"
+                  style={{ width: "100%", background: "grey" }}
+                  required
+                  value={formData2.email}
+                ></input>
+                <button
+                  style={{
+                    backgroundColor: "#10B65C",
+                    width: "150px",
+                    border: "none",
+                  }}
+                  type="submit"
+                  className="btn btn-primary"
+                >
+                  send
+                </button>
+              </form>
+            </Modal.Body>
+          </Modal>
+          <div style={{ color: "#788094" }}>
+            <Row>
+              <Col>
+                <div style={{ margin: "60px 60px" }}>
+                  <Row>
                     <Col>
-                      <input
-                        className="loginInpRec"
-                        onChange={handleChange}
-                        name="username"
-                        type="text"
-                        placeholder="Username"
-                        style={{ width: "100%" }}
-                      ></input>
+                      <div id="title">Placement Aptitude Portal</div>
                     </Col>
                   </Row>
-                  <Row style={{ marginTop: "25px" }}>
+                  <Row>
                     <Col>
-                      <input
-                        className="loginInpRec"
-                        onChange={handleChange}
-                        id="password-field"
-                        name="password"
-                        type="password"
-                        placeholder="Password"
-                        style={{ width: "100%" }}
-                      ></input>
-                      <span
-                        toggle="#password-field"
-                        className="fa fa-fw fa-eye field-icon toggle-password"
-                        onClick={(e) => showHide(e)}
-                      ></span>
+                      <div id="subTitle">
+                        Dwarkadas J. Sanghvi College of Engineering
+                      </div>
                     </Col>
                   </Row>
-                  <Row style={{ marginTop: "35px", paddingLeft: "200px" }}>
-                    <Col>
-                      <button
-                        style={{
-                          backgroundColor: "#10B65C",
-                          width: "150px",
-                          border: "none",
-                        }}
-                        type="submit"
-                        className="btn btn-primary"
-                      >
-                        Start Test
-                      </button>
-                    </Col>
-                  </Row>
-                  <Row style={{ marginTop: "35px", paddingLeft: "200px" }}>
-                    <Col>SignUp:</Col>
-                    <Row>
-                      <GoogleLogin
-                        clientId={clientId}
-                        buttonText="Sign Up with Google"
-                        onSuccess={responseGoogle}
-                        onFailure={error}
-                        cookiePolicy={"single_host_origin"}
-                      />
+                  <form onSubmit={(e) => handleSubmit(e)}>
+                    <Row style={{ marginTop: "70px" }}>
+                      <Col>
+                        <input
+                          className="loginInpRec"
+                          onChange={handleChange}
+                          name="username"
+                          type="text"
+                          placeholder="Username"
+                          style={{ width: "100%" }}
+                        ></input>
+                      </Col>
                     </Row>
+                    <Row style={{ marginTop: "25px" }}>
+                      <Col>
+                        <input
+                          className="loginInpRec"
+                          onChange={handleChange}
+                          id="password-field"
+                          name="password"
+                          type="password"
+                          placeholder="Password"
+                          style={{ width: "100%" }}
+                        ></input>
+                        <span
+                          toggle="#password-field"
+                          className="fa fa-fw fa-eye field-icon toggle-password"
+                          onClick={(e) => showHide(e)}
+                        ></span>
+                      </Col>
+                    </Row>
+                    <Row style={{ marginTop: "35px", paddingLeft: "200px" }}>
+                      <Col>
+                        <button
+                          style={{
+                            backgroundColor: "#10B65C",
+                            width: "150px",
+                            border: "none",
+                          }}
+                          type="submit"
+                          className="btn btn-primary"
+                        >
+                          Start Test
+                        </button>
+                      </Col>
+                    </Row>
+                    <button type="button" onClick={() => setShow(true)}>
+                      Forgot Password
+                    </button>
+                    <Row style={{ marginTop: "35px", paddingLeft: "200px" }}>
+                      <Col>SignUp:</Col>
+                      <Row>
+                        <GoogleLogin
+                          clientId={clientId}
+                          buttonText="Sign Up with Google"
+                          onSuccess={responseGoogle}
+                          onFailure={error}
+                          cookiePolicy={"single_host_origin"}
+                        />
+                      </Row>
+                    </Row>
+                  </form>
+                </div>
+              </Col>
+              <Col style={{ padding: "0", marginTop: "40px" }}>
+                <div>
+                  <Row style={{ margin: "0 0 20px 10%" }}>
+                    <Col style={{ marginRight: "0%" }}>
+                      {" "}
+                      <div className="basicRec">
+                        <h5
+                          style={{
+                            paddingTop: "10px",
+                            color: "#293e6f",
+                            textAlign: "center",
+                          }}
+                        >
+                          Ongoing Test
+                        </h5>
+                        <MDBDataTable
+                          striped
+                          bordered
+                          noBottomColumns
+                          hover
+                          searching={false}
+                          displayEntries={false}
+                          entries={1}
+                          pagesAmount={1}
+                          paging={false}
+                          noRecordsFoundLabel={"No Ongoing Test"}
+                          data={dataPresent}
+                        />
+                      </div>
+                    </Col>
                   </Row>
-                </form>
-              </div>
-            </Col>
-            <Col style={{ padding: "0", marginTop: "40px" }}>
-              <div>
-                <Row style={{ margin: "0 0 20px 10%" }}>
-                  <Col style={{ marginRight: "0%" }}>
-                    {" "}
-                    <div className="basicRec">
-                      <h5
-                        style={{
-                          paddingTop: "10px",
-                          color: "#293e6f",
-                          textAlign: "center",
-                        }}
-                      >
-                        Ongoing Test
-                      </h5>
-                      <MDBDataTable
-                        striped
-                        bordered
-                        noBottomColumns
-                        hover
-                        searching={false}
-                        displayEntries={false}
-                        entries={1}
-                        pagesAmount={1}
-                        paging={false}
-                        noRecordsFoundLabel={"No Ongoing Test"}
-                        data={dataPresent}
-                      />
-                    </div>
-                  </Col>
-                </Row>
-                <Row style={{ margin: "0 0 0 10%" }}>
-                  <Col style={{ marginRight: "0%" }}>
-                    {" "}
-                    <div className="basicRec">
-                      <h5
-                        style={{
-                          paddingTop: "10px",
-                          color: "#293e6f",
-                          textAlign: "center",
-                        }}
-                      >
-                        Upcoming Test
-                      </h5>
-                      <MDBDataTable
-                        striped
-                        bordered
-                        noBottomColumns
-                        hover
-                        searching={false}
-                        displayEntries={false}
-                        entries={4}
-                        pagesAmount={1}
-                        paging={false}
-                        noRecordsFoundLabel={"No Upcoming Test"}
-                        data={dataUpcoming}
-                      />
-                    </div>
-                  </Col>
-                </Row>
-              </div>
-            </Col>
-          </Row>
-        </div>
+                  <Row style={{ margin: "0 0 0 10%" }}>
+                    <Col style={{ marginRight: "0%" }}>
+                      {" "}
+                      <div className="basicRec">
+                        <h5
+                          style={{
+                            paddingTop: "10px",
+                            color: "#293e6f",
+                            textAlign: "center",
+                          }}
+                        >
+                          Upcoming Test
+                        </h5>
+                        <MDBDataTable
+                          striped
+                          bordered
+                          noBottomColumns
+                          hover
+                          searching={false}
+                          displayEntries={false}
+                          entries={4}
+                          pagesAmount={1}
+                          paging={false}
+                          noRecordsFoundLabel={"No Upcoming Test"}
+                          data={dataUpcoming}
+                        />
+                      </div>
+                    </Col>
+                  </Row>
+                </div>
+              </Col>
+            </Row>
+          </div>
+        </>
       )}
     </>
   );
