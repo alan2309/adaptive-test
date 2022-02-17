@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Col, Row, Modal } from "react-bootstrap";
+import { Col, Row, Modal, Form } from "react-bootstrap";
 import axiosInstance from "../axios";
 import { useNavigate } from "react-router-dom";
 import { isExpired } from "react-jwt";
@@ -14,6 +14,7 @@ import { GoogleLogin, GoogleLogout } from "react-google-login";
 import keys from "../components/TestScreeen/keys";
 import { FcGoogle } from "react-icons/fc";
 import Alert from "../components/Admin/Alert";
+import logo from "../img/logo.png";
 
 function Login() {
   const clientId = keys.googlecId();
@@ -186,9 +187,6 @@ function Login() {
                     })
                     .then((res) => {
                       setIsloading(false);
-                      localStorage.setItem("name", res.data.name);
-                      localStorage.setItem("age", res.data.age);
-                      localStorage.setItem("gender", res.data.gender);
                       if (res.data.resultExists) {
                         if (res.data.end) {
                           setMd(true);
@@ -225,7 +223,7 @@ function Login() {
   async function availabilty() {
     let aa = 0;
     await axiosInstance
-      .get("http://127.0.0.1:8000/api/test/0")
+      .get("/api/test/0")
       .then((res) => {
         aa = res.data.testId;
       })
@@ -251,16 +249,57 @@ function Login() {
       ) : (
         <>
           <Modal
-            id="result_page"
+            id="Login_page"
             show={show}
             onHide={() => setShow(false)}
-            aria-labelledby="det_report"
+            centered
           >
-            <Modal.Header closeButton>
-              <Modal.Title id="forgotpass">Change Password</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <form
+            <Modal.Body
+              style={{ textAlign: "center", padding: "20px 20px 15px 20px" }}
+            >
+              <img
+                src={logo}
+                alt="chosen"
+                style={{ height: "100px", marginBottom: "20px" }}
+              />
+              <p
+                style={{
+                  fontFamily: "Poppins",
+                  fontStyle: "normal",
+                  fontWeight: "600",
+                  fontSize: "16px",
+                  color: "#293E6F",
+                  textAlign: "center",
+                }}
+              >
+                Did someone forget their password?
+              </p>
+              <p
+                style={{
+                  fontFamily: "Poppins",
+                  fontStyle: "normal",
+                  fontWeight: "normal",
+                  fontSize: "14px",
+                  color: "#293E6F",
+                  textAlign: "center",
+                }}
+              >
+                That's ok
+              </p>
+              <p
+                style={{
+                  fontFamily: "Poppins",
+                  fontStyle: "normal",
+                  fontWeight: "normal",
+                  fontSize: "14px",
+                  color: "#293E6F",
+                  textAlign: "center",
+                }}
+              >
+                Just enter the email address you've used to register with us and
+                we'll send you a reset link
+              </p>
+              <Form
                 onSubmit={(e) => {
                   e.preventDefault();
                   axiosInstance
@@ -277,33 +316,36 @@ function Login() {
                     .catch((e) => console.log(e));
                 }}
               >
-                <input
-                  className="loginInpRec"
-                  onChange={(e) => {
-                    updateFormData2({
-                      ...formData2,
-                      email: e.target.value,
-                    });
-                  }}
-                  name="email"
-                  type="email"
-                  placeholder="* Email Id"
-                  style={{ width: "100%", background: "grey" }}
-                  required
-                  value={formData2.email}
-                ></input>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Control
+                    onChange={(e) => {
+                      updateFormData2({
+                        ...formData2,
+                        email: e.target.value,
+                      });
+                    }}
+                    name="email"
+                    type="email"
+                    placeholder="Email Id"
+                    style={{ width: "100%" }}
+                    required
+                    value={formData2.email}
+                  />
+                </Form.Group>
                 <button
                   style={{
                     backgroundColor: "#10B65C",
-                    width: "150px",
+                    width: "100px",
                     border: "none",
+                    marginLeft: "40%",
+                    marginTop: "20px",
                   }}
                   type="submit"
                   className="btn btn-primary"
                 >
-                  send
+                  Send
                 </button>
-              </form>
+              </Form>
             </Modal.Body>
           </Modal>
           <div style={{ color: "#788094" }}>
@@ -353,13 +395,36 @@ function Login() {
                         ></span>
                       </Col>
                     </Row>
-                    <Row style={{ marginTop: "35px", paddingLeft: "180px" }}>
+                    <Row style={{ marginTop: "3px" }}>
                       <Col>
+                        <div
+                          style={{
+                            textAlign: "right",
+                            marginTop: "10px",
+                            marginBottom: "30px",
+                          }}
+                        >
+                          <label
+                            onClick={() => setShow(true)}
+                            style={{
+                              cursor: "pointer",
+                              fontFamily: "Poppins",
+                              color: "#788094",
+                              fontWeight: "500",
+                              marginRight: "10px",
+                              marginTop: "2px",
+                              fontSize: "15px",
+                            }}
+                          >
+                            Forgot Password{" "}
+                          </label>
+                        </div>
                         <button
                           style={{
                             backgroundColor: "#10B65C",
                             width: "150px",
                             border: "none",
+                            marginLeft: "36%",
                           }}
                           type="submit"
                           className="btn btn-primary"
@@ -368,46 +433,42 @@ function Login() {
                         </button>
                       </Col>
                     </Row>
-                    <button type="button" onClick={() => setShow(true)}>
-                      Forgot Password
-                    </button>
-                    <Row style={{ marginTop: "35px", paddingLeft: "200px" }}>
-                      <Col style={{ marginLeft: "-60px" }}>
-                        Not Registered? Sign up now{" "}
-                      </Col>
-                      <Row style={{ marginTop: "35px", paddingLeft: "55px" }}>
-                        <GoogleLogin
-                          render={(renderProps) => (
-                            <button
+                    <Row style={{ marginTop: "40px", marginLeft: "29%" }}>
+                      Not Registered? Sign up now{" "}
+                    </Row>
+                    <Row style={{ marginTop: "10px", marginLeft: "45%" }}>
+                      <GoogleLogin
+                        render={(renderProps) => (
+                          <button
+                            style={{
+                              width: "45px",
+                              height: "45px",
+                              backgroundColor: "rgb(255, 255, 255)",
+                              color: "rgba(0, 0, 0, 0.54)",
+                              boxShadow:
+                                "rgb(0 0 0 / 24%) 0px 2px 2px 0px, rgb(0 0 0 / 24%) 0px 0px 1px 0px",
+                              padding: "0px 0 2px 2px",
+                              borderRadius: "50px",
+                              border: "1px solid transparent",
+                            }}
+                            onClick={renderProps.onClick}
+                            disabled={renderProps.disabled}
+                          >
+                            <FcGoogle
                               style={{
-                                width: "45px",
-                                height: "45px",
-                                backgroundColor: "rgb(255, 255, 255)",
-                                display: "inline-flex",
-                                alignItems: "center",
-                                color: "rgba(0, 0, 0, 0.54)",
-                                boxShadow:
-                                  "rgb(0 0 0 / 24%) 0px 2px 2px 0px, rgb(0 0 0 / 24%) 0px 0px 1px 0px",
-                                padding: "10px",
-                                borderRadius: "40%",
-                                border: "1px solid transparent",
-                                fontSize: "14px",
-                                fontWeight: "500",
-                                fontFamily: "Roboto, sans-serif",
+                                height: "30px",
+                                width: "30px",
+                                marginLeft: "5px",
                               }}
-                              onClick={renderProps.onClick}
-                              disabled={renderProps.disabled}
-                            >
-                              <FcGoogle style={{ marginLeft: "5px" }} />
-                            </button>
-                          )}
-                          clientId={clientId}
-                          buttonText="Google"
-                          onSuccess={responseGoogle}
-                          onFailure={error}
-                          cookiePolicy={"single_host_origin"}
-                        />
-                      </Row>
+                            />
+                          </button>
+                        )}
+                        clientId={clientId}
+                        buttonText="Google"
+                        onSuccess={responseGoogle}
+                        onFailure={error}
+                        cookiePolicy={"single_host_origin"}
+                      />
                     </Row>
                   </form>
                 </div>
