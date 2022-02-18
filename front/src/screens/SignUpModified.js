@@ -30,6 +30,7 @@ function SignUpModified() {
   const [formData, updateFormData] = useState(initialFormData);
   const [successMsg, setSuccessMsg] = useState("");
   const [dangerMsg, setDangerMsg] = useState("");
+  const [isAlertMsgLoaded, setIsAlertMsgLoaded] = useState(false);
 
   useEffect(() => {
     const check = async () =>
@@ -37,6 +38,7 @@ function SignUpModified() {
         .get("api/newuser", { params: { email: location.state.data.email } })
         .then((res) => {
           if (res.data.exists) {
+            setIsAlertMsgLoaded(true);
             setDangerMsg("User already exists");
             navigate("/login");
           } else {
@@ -69,6 +71,7 @@ function SignUpModified() {
           console.log(e);
         });
     } else {
+      setIsAlertMsgLoaded(true);
       setDangerMsg("Passwords do not match");
     }
   };
@@ -84,8 +87,18 @@ function SignUpModified() {
 
   return (
     <>
-      <Alert msg={successMsg} type="primary"></Alert>
-      <Alert msg={dangerMsg} type="danger"></Alert>
+      <Alert
+        msg={successMsg}
+        setIsAlertMsgLoaded={setIsAlertMsgLoaded}
+        isAlertMsgLoaded={isAlertMsgLoaded}
+        type="success"
+      ></Alert>
+      <Alert
+        msg={dangerMsg}
+        setIsAlertMsgLoaded={setIsAlertMsgLoaded}
+        isAlertMsgLoaded={isAlertMsgLoaded}
+        type="danger"
+      ></Alert>
       {isLoading ? (
         <Loader />
       ) : (

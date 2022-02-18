@@ -26,6 +26,7 @@ function Login() {
   const [show, setShow] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
   const [dangerMsg, setDangerMsg] = useState("");
+  const [isAlertMsgLoaded, setIsAlertMsgLoaded] = useState(false);
   const columnsP = [
     {
       label: "NAME",
@@ -211,11 +212,13 @@ function Login() {
                 }
               } else {
                 setIsloading(false);
+                setIsAlertMsgLoaded(true);
                 setDangerMsg("You are not allowed to login");
               }
             });
         } else {
           setIsloading(false);
+          setIsAlertMsgLoaded(true);
           setDangerMsg("Invalid username or password");
         }
       });
@@ -237,13 +240,24 @@ function Login() {
     navigate("/signup", { state: { data: res.profileObj } });
   };
   const error = (res) => {
+    setIsAlertMsgLoaded(true);
     setDangerMsg("Attempt to log in failed");
   };
 
   return (
     <>
-      <Alert msg={successMsg} type="success"></Alert>
-      <Alert msg={dangerMsg} type="danger"></Alert>
+      <Alert
+        msg={successMsg}
+        setIsAlertMsgLoaded={setIsAlertMsgLoaded}
+        isAlertMsgLoaded={isAlertMsgLoaded}
+        type="success"
+      ></Alert>
+      <Alert
+        msg={dangerMsg}
+        setIsAlertMsgLoaded={setIsAlertMsgLoaded}
+        isAlertMsgLoaded={isAlertMsgLoaded}
+        type="danger"
+      ></Alert>
       {isLoading ? (
         <Loader />
       ) : (
@@ -351,7 +365,7 @@ function Login() {
           <div style={{ color: "#788094" }}>
             <Row>
               <Col>
-                <div style={{ margin: "60px 60px" }}>
+                <div style={{ margin: "45px 60px" }}>
                   <Row>
                     <Col>
                       <div id="title">Placement Aptitude Portal</div>
