@@ -3,7 +3,7 @@ import json
 from django.http import HttpResponseBadRequest
 from django.http.response import JsonResponse
 from rest_framework.views import APIView
-from api.models import Questions,Options,Results,Subject,Test,CodingTest,Para,Paraopt,Paraqs,MyUser
+from api.models import Questions,Options,Results,Subject,Test,CodingTest,Para,Paraopt,Paraqs,MyUser,Feedback
 from rest_framework_simplejwt.tokens import RefreshToken,AccessToken
 from rest_framework import status
 from rest_framework.permissions import AllowAny
@@ -362,7 +362,7 @@ def results(request,name):
         elif request.method=='GET':
             if user:
                 testId=request.GET.get('testId')
-                data=chartData(user,testId)
+                data=chartData(user,testId,False)
             
             return JsonResponse(data,safe=False)
     else:
@@ -381,7 +381,7 @@ def converttoist(datex):
     central = central.split('T')
     return central
 
-def chartData(user,testId=-1):
+def chartData(user,testId=-1,isPost=False):
     totalQs=0
     # subs=Subject.objects.all()
     a=[]
@@ -430,11 +430,19 @@ def chartData(user,testId=-1):
     except Results.DoesNotExist:
         print('No previous entry')
         resl=0
+    takeFeedback=False
     if(user.is_staff):
         user_detail=AllUserSerializer(user).data
-    else:    
-        user_detail=MyUserSerializer(MyUser.objects.get(user=user)).data
-    return {'startTime':resl.startTime,'endTime':resl.endTime,'personalityData':resl.marks['pGot'],'marks':resl.marks,'totalQs':totalQs,'avgMarksArr':a,'mrksScored':mrksScored,'mrksScoredPercent':mrksScoredPercent,'totalMarksScored':sum(mrksScored),'timeTaken':tdelta.seconds,'res_id':resl.id,'user_detail':user_detail}
+    else:
+        myUser=MyUser.objects.get(user=user)    
+        if isPost:
+            takeFeedback=Feedback.objects.filter(user=myUser)
+            if takeFeedback.exists():
+                takeFeedback=takeFeedback[0].takeFeedback
+            else:
+                takeFeedback=True
+        user_detail=MyUserSerializer(myUser).data
+    return {'startTime':resl.startTime,'endTime':resl.endTime,'personalityData':resl.marks['pGot'],'marks':resl.marks,'totalQs':totalQs,'avgMarksArr':a,'mrksScored':mrksScored,'mrksScoredPercent':mrksScoredPercent,'totalMarksScored':sum(mrksScored),'timeTaken':tdelta.seconds,'res_id':resl.id,'user_detail':user_detail,'takeFeedback':takeFeedback}
 
 @csrf_exempt
 def resultTest(request,id):
@@ -509,7 +517,7 @@ def marks(request,sid=0):
                         result.endTime = d
                     result.save()
                     if data['check_result']:
-                        data=chartData(user,data['testId'])
+                        data=chartData(user,data['testId'],True)
                     return JsonResponse(data,safe=False)
                 else:
                     return JsonResponse("Restart Test",safe=False)
@@ -928,6 +936,26 @@ def personalityR(request):
     if request.headers.get('Authorization') and checkAuthorization(request.headers["Authorization"]):
         if request.method=='POST':
             return evaluate(request, CFG['DB'])
+    else:
+        return HttpResponseBadRequest()
+@csrf_exempt
+def feedback(request):
+    if request.headers.get('Authorization') and checkAuthorization(request.headers["Authorization"]):
+        if request.method=='POST':
+            data=JSONParser().parse(request)['data']
+            user=MyUser.objects.get(email=data['username'])
+            feedback=Feedback.objects.filter(user=user)
+            flag=False
+            if feedback.exists():
+                feedback.rating=data['rating']
+                feedback.comment=data['comment']
+                feedback.save()
+                flag=True
+            else:
+                newFeedback=Feedback(user=user,rating=data['rating'],comment=data['comment'])
+                newFeedback.save()
+                flag=True
+            return JsonResponse({'success':flag},safe=False)          
     else:
         return HttpResponseBadRequest()
 

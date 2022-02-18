@@ -213,7 +213,7 @@ function Login() {
               } else {
                 setIsloading(false);
                 setIsAlertMsgLoaded(true);
-                setDangerMsg("You are not allowed to login");
+                setDangerMsg("You are not allowed to Login yet.Please wait!");
               }
             });
         } else {

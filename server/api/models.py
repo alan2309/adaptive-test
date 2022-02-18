@@ -42,6 +42,14 @@ class Subject(models.Model):
    def __str__(self):
         return self.sub_name
 
+class Feedback(models.Model):
+    user = models.ForeignKey(MyUser,on_delete=models.CASCADE)
+    takeFeeback=models.IntegerField(default=1)
+    rating = models.IntegerField()
+    comment = models.TextField(blank=True)
+    def __str__(self):
+            return self.user.email
+
 class Questions(models.Model):
     subject = models.ForeignKey(Subject,on_delete=models.CASCADE)
     title = models.TextField(blank=True,null=True)

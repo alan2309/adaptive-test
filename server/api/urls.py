@@ -21,6 +21,7 @@ urlpatterns = [
    path('api/newuser',views.newuser),
    path("api/forgotpass",views.forgotpass),
    path("api/changepass",views.changepass),
+   path("api/feedback",views.feedback),
 
    # admin
    path('api/admin/addQs',views.addQs),

@@ -26,6 +26,7 @@ import Signup from "./screens/Signup";
 import SignUpModified from "./screens/SignUpModified";
 import ChangePass from "./screens/ChangePass";
 import DetailPageModified from "./screens/DetailPageModified";
+import Feedback from "./screens/Admin/Feedback";
 function App() {
   return (
     <div className="App" id="element">
@@ -239,6 +240,19 @@ function App() {
                   <Row style={{ margin: "20px 0 0 0" }}>
                     <Col style={{ padding: "10px 90px" }}>
                       <ScheduledTest />
+                    </Col>
+                  </Row>
+                }
+              />
+            </Route>
+            <Route exact path="/admin/feedback" element={<PrivateRoute />}>
+              <Route
+                path="/admin/feedback"
+                exact
+                element={
+                  <Row style={{ margin: "20px 0 0 0" }}>
+                    <Col style={{ padding: "10px 90px" }}>
+                      <Feedback />
                     </Col>
                   </Row>
                 }

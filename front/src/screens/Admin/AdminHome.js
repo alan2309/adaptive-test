@@ -149,7 +149,7 @@ function AdminHome() {
               </ListGroup.Item>
               <ListGroup.Item
                 action
-                href="#link7"
+                href="/admin/feedback"
                 style={{
                   padding: "23px",
                   border: "2px solid #e0e0e0",
