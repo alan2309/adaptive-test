@@ -35,7 +35,7 @@
   box-shadow: 1px 1px 7px 2px rgba(0, 0, 0, 0.25);
   border-radius: 14px;
 }
-.modal-dialog {
+#Login_page .modal-dialog {
   width: 460px !important;
 }
 
