@@ -5,6 +5,8 @@ import { Container, FormControl, InputGroup, Form } from "react-bootstrap";
 import Colleges from "./Colleges";
 import Alert from "../components/Admin/Alert";
 import Loader from "../components/Loader";
+import createFilterOptions from "react-select-fast-filter-options";
+import Select from "react-select";
 
 function SignUpModified() {
   const [isLoading, setIsloading] = useState(true);
@@ -31,7 +33,7 @@ function SignUpModified() {
   const [successMsg, setSuccessMsg] = useState("");
   const [dangerMsg, setDangerMsg] = useState("");
   const [isAlertMsgLoaded, setIsAlertMsgLoaded] = useState(false);
-
+  const filterOptions = createFilterOptions(Colleges.CollegeData);
   useEffect(() => {
     const check = async () =>
       await axiosInstance
@@ -261,20 +263,10 @@ function SignUpModified() {
                 </Form.Group>
                 <Form.Group className="mb-3" style={{ marginTop: "25px" }}>
                   <Form.Label> College </Form.Label>
-                  <Form.Select onChange={handleChange} name="college" required>
-                    <option selected disabled="true">
-                      Colleges
-                    </option>
-                    {Colleges.CollegeData.map((result) => (
-                      <option
-                        style={{ backgroundColor: "white", whiteSpace: "pre" }}
-                        key={result.Id}
-                        value={result.CollegeNames}
-                      >
-                        {result.CollegeNames}
-                      </option>
-                    ))}
-                  </Form.Select>
+                  <Select
+                    filterOptions={filterOptions}
+                    options={Colleges.CollegeData}
+                  />
                 </Form.Group>
                 <Form.Group
                   className="mb-3"
