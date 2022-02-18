@@ -88,7 +88,7 @@ function Login() {
     }
     const data = async () => {
       await axiosInstance
-        .get("http://127.0.0.1:8000/api/admin/tests")
+        .get("api/admin/tests")
         .then((res) => {
           let ong = res.data.ongoing_test;
           if (ong.length > 0)

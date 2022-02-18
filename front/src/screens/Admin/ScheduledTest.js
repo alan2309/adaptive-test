@@ -39,7 +39,7 @@ function ScheduledTest() {
     const data = async () => {
       setIsloading(true);
       await axiosInstance
-        .get("http://127.0.0.1:8000/api/admin/tests")
+        .get("api/admin/tests")
         .then((res) => {
           console.log(res.data);
           let ar = [];

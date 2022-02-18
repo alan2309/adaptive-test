@@ -232,7 +232,7 @@ export default function Compiler() {
           let xx = localStorage.getItem("testId");
           const getData = async () =>
             await axiosInstance
-              .get(`http://127.0.0.1:8000/api/codingTests/${xx}`)
+              .get(`api/codingTests/${xx}`)
               .then((res) => {
                 console.log(res.data.cQs);
                 let a = converttime(res.data.time);
