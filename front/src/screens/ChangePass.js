@@ -61,9 +61,11 @@ function ChangePass() {
     <div>
       <Container
         style={{
-          width: "620px",
+          width: "635px",
+          height: "445px",
           boxShadow: "1.5px 1.5px 7px 3px rgba(0,0,0,0.2)",
           borderRadius: "40px",
+          marginTop: "50px",
         }}
       >
         <div>
@@ -82,11 +84,27 @@ function ChangePass() {
               marginTop: "15px",
             }}
           >
-            Change Password
+            Create new password
           </h3>
+          <p
+            style={{
+              fontFamily: "Poppins",
+              fontStyle: "normal",
+              fontWeight: "normal",
+              fontSize: "15px",
+              color: "#788094",
+              textAlign: "center",
+              marginTop: "-15px",
+            }}
+          >
+            Your new password must be different from previous used passwords
+          </p>
           <Form onSubmit={(e) => handleSubmit(e)}>
             <Form.Group>
-              <Form.Label className="customBoldFont inputLabel">
+              <Form.Label
+                style={{ marginTop: "10px" }}
+                className="customBoldFont inputLabel"
+              >
                 Password
               </Form.Label>
               <Form.Control
@@ -95,7 +113,6 @@ function ChangePass() {
                 id="password-field"
                 name="pass"
                 type="password"
-                placeholder="Password"
                 style={{ width: "100%" }}
                 required
               />
@@ -106,9 +123,12 @@ function ChangePass() {
                 style={{ marginTop: "-28px" }}
               ></span>
             </Form.Group>
+            <Form.Text id="passwordHelpBlock" muted>
+              Your password must be 8 characters.
+            </Form.Text>
             <Form.Group className="mt-3 mb-2">
               <Form.Label className="customBoldFont inputLabel">
-                Re-enter Password
+                Confirm Password
               </Form.Label>
               <Form.Control
                 className="inputField"
@@ -116,7 +136,6 @@ function ChangePass() {
                 id="password-field"
                 name="cpass"
                 type="password"
-                placeholder="Confirm Password"
                 style={{ width: "100%" }}
                 required
               />
@@ -127,6 +146,9 @@ function ChangePass() {
                 style={{ marginTop: "-28px" }}
               ></span>
             </Form.Group>
+            <Form.Text id="passwordHelpBlock" muted>
+              Your password must be 8 characters.
+            </Form.Text>
             <div style={{ display: "flex", justifyContent: "center" }}>
               <button
                 type="submit"
@@ -143,7 +165,7 @@ function ChangePass() {
                 }}
               >
                 {" "}
-                Change Password{" "}
+                Reset Password{" "}
               </button>
             </div>
           </Form>

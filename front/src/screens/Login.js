@@ -14,7 +14,7 @@ import { GoogleLogin, GoogleLogout } from "react-google-login";
 import keys from "../components/TestScreeen/keys";
 import { FcGoogle } from "react-icons/fc";
 import Alert from "../components/Admin/Alert";
-import logo from "../img/logo.png";
+import forgotPass from "../img/forgotPass.png";
 
 function Login() {
   const clientId = keys.googlecId();
@@ -258,7 +258,7 @@ function Login() {
               style={{ textAlign: "center", padding: "20px 20px 15px 20px" }}
             >
               <img
-                src={logo}
+                src={forgotPass}
                 alt="chosen"
                 style={{ height: "100px", marginBottom: "20px" }}
               />
