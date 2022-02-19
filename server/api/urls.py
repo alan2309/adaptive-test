@@ -22,6 +22,7 @@ urlpatterns = [
    path("api/forgotpass",views.forgotpass),
    path("api/changepass",views.changepass),
    path("api/feedback",views.feedback),
+   path("api/takeFeedback",views.takeFeedback),
 
    # admin
    path('api/admin/addQs',views.addQs),
@@ -29,4 +30,6 @@ urlpatterns = [
    path('api/admin/saveTest',views.saveTest),
    path('api/admin/tests',views.getTests),
    path('api/delres/<int:id>',views.deleteres),
+   path('api/getuserslist',views.getuserslist),
+   path('api/permission',views.permission)
 ]

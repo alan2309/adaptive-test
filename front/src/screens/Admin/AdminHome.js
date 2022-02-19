@@ -136,7 +136,7 @@ function AdminHome() {
               </ListGroup.Item>
               <ListGroup.Item
                 action
-                href="#link6"
+                href="/Permissions"
                 style={{
                   padding: "23px",
                   border: "2px solid #e0e0e0",

@@ -27,6 +27,7 @@ import SignUpModified from "./screens/SignUpModified";
 import ChangePass from "./screens/ChangePass";
 import DetailPageModified from "./screens/DetailPageModified";
 import Feedback from "./screens/Admin/Feedback";
+import Permissions from "./screens/Admin/Permissions";
 function App() {
   return (
     <div className="App" id="element">
@@ -297,6 +298,18 @@ function App() {
                 </Row>
               }
             />
+            <Route exact path="/Permissions" element={<PrivateRoute />}>
+              <Route
+                path="/Permissions"
+                element={
+                  <Row style={{ margin: "20px 0 0 0" }}>
+                    <Col style={{ padding: "10px 90px" }}>
+                      <Permissions />
+                    </Col>
+                  </Row>
+                }
+              />
+            </Route>
             <Route
               path="/change-pass"
               element={

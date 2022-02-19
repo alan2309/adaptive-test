@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CodingTest, MyUser, Results, Subject,Questions,Test,Paraopt,Para
+from .models import CodingTest, MyUser, Results, Subject,Questions,Test,Paraopt,Para,Feedback
 from django.contrib.auth.models import User
 
 class SubjectSerializer(serializers.ModelSerializer):
@@ -41,3 +41,7 @@ class AllUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields='__all__'     
+class FeedbackSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Feedback
+        fields='__all__'        

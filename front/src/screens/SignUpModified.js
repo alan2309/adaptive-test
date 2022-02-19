@@ -155,7 +155,7 @@ function SignUpModified() {
                 >
                   <Form.Label> Name </Form.Label>
                   <Form.Control
-                    type="name"
+                    name="name"
                     type="text"
                     placeholder="Name"
                     onChange={handleChange}

@@ -27,6 +27,7 @@ function Login() {
   const [successMsg, setSuccessMsg] = useState("");
   const [dangerMsg, setDangerMsg] = useState("");
   const [isAlertMsgLoaded, setIsAlertMsgLoaded] = useState(false);
+  const [myid, setMyId] = useState(0);
   const columnsP = [
     {
       label: "NAME",
@@ -91,6 +92,7 @@ function Login() {
         .get("api/admin/tests")
         .then((res) => {
           let ong = res.data.ongoing_test;
+          setMyId(ong[0].id);
           if (ong.length > 0)
             ong[0]["ends_in"] = (
               <CustomTimer
@@ -156,66 +158,73 @@ function Login() {
         data: {
           username: formData.username,
           password: formData.password,
+          mytid: myid,
         },
       })
       .then(async (res) => {
         console.log(res.data);
         if (res.data.exist) {
-          let adminn = res.data.admin;
-          axiosInstance
-            .post("token/", {
-              username: formData.username,
-              password: formData.password,
-            })
-            .then(async (res) => {
-              let acc_token = "JWT " + res.data.access;
-              axiosInstance.defaults.headers["Authorization"] = acc_token;
-              let xx = await availabilty(acc_token);
-              if (xx !== -1 || adminn) {
-                localStorage.setItem("testId", xx); //imp
-                localStorage.setItem("admin", "user");
-                var ob = new Date();
-                var h = (ob.getHours() < 10 ? "0" : "") + ob.getHours();
-                var m = (ob.getMinutes() < 10 ? "0" : "") + ob.getMinutes();
-                var s = (ob.getMinutes() < 10 ? "0" : "") + ob.getSeconds();
-                localStorage.setItem("access_token", res.data.access);
-                localStorage.setItem("username", formData.username);
-                localStorage.setItem("refresh_token", res.data.refresh);
-                const data = async () =>
-                  axiosInstance
-                    .post(`api/results/${formData.username}`, {
-                      data: { testId: xx },
-                    })
-                    .then((res) => {
-                      setIsloading(false);
-                      if (res.data.resultExists) {
-                        if (res.data.end) {
-                          setMd(true);
-                          navigate("/result");
+          if (res.data.allowed) {
+            let adminn = res.data.admin;
+            axiosInstance
+              .post("token/", {
+                username: formData.username,
+                password: formData.password,
+              })
+              .then(async (res) => {
+                let acc_token = "JWT " + res.data.access;
+                axiosInstance.defaults.headers["Authorization"] = acc_token;
+                let xx = await availabilty(acc_token);
+                if (xx !== -1 || adminn) {
+                  localStorage.setItem("testId", xx); //imp
+                  localStorage.setItem("admin", "user");
+                  var ob = new Date();
+                  var h = (ob.getHours() < 10 ? "0" : "") + ob.getHours();
+                  var m = (ob.getMinutes() < 10 ? "0" : "") + ob.getMinutes();
+                  var s = (ob.getMinutes() < 10 ? "0" : "") + ob.getSeconds();
+                  localStorage.setItem("access_token", res.data.access);
+                  localStorage.setItem("username", formData.username);
+                  localStorage.setItem("refresh_token", res.data.refresh);
+                  const data = async () =>
+                    axiosInstance
+                      .post(`api/results/${formData.username}`, {
+                        data: { testId: xx },
+                      })
+                      .then((res) => {
+                        setIsloading(false);
+                        if (res.data.resultExists) {
+                          if (res.data.end) {
+                            setMd(true);
+                            navigate("/result");
+                          } else {
+                            setMd(true);
+                            alert("Already started on different device");
+                            navigate("/logout");
+                          }
                         } else {
                           setMd(true);
-                          alert("Already started on different device");
-                          navigate("/logout");
+                          navigate("/details");
                         }
-                      } else {
-                        setMd(true);
-                        navigate("/details");
-                      }
-                    });
-                if (adminn) {
-                  localStorage.setItem("admin", "admin");
-                  localStorage.removeItem("testId");
-                  setMd(true);
-                  navigate("/admin/home");
+                      });
+                  if (adminn) {
+                    localStorage.setItem("admin", "admin");
+                    localStorage.removeItem("testId");
+                    setMd(true);
+                    navigate("/admin/home");
+                  } else {
+                    data();
+                  }
                 } else {
-                  data();
+                  setIsloading(false);
+                  setIsAlertMsgLoaded(true);
+                  setDangerMsg("You are not allowed to Login yet.Please wait!");
                 }
-              } else {
-                setIsloading(false);
-                setIsAlertMsgLoaded(true);
-                setDangerMsg("You are not allowed to Login yet.Please wait!");
-              }
-            });
+              });
+          } else {
+            setIsloading(false);
+            setIsAlertMsgLoaded(true);
+            alert("You Are Not Allowed To Give this Test");
+          }
         } else {
           setIsloading(false);
           setIsAlertMsgLoaded(true);

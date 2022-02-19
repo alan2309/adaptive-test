@@ -1,3 +1,4 @@
+from multiprocessing import managers
 from django.contrib.auth.hashers import make_password
 import json
 from django.http import HttpResponseBadRequest
@@ -73,14 +74,17 @@ def login(request):
         data=JSONParser().parse(request)['data']
         username = data['username']
         password = data['password']
-        
+        testx = Test.objects.get(id=int(data['mytid']))
         user = auth.authenticate(username = username,password = password)
         if user is not None:
             auth.login(request,user)
             if User.objects.get(username=username).is_staff ==True:
-                return JsonResponse({"exist":1,"admin":1},safe=False)
+                return JsonResponse({"exist":1,"allowed":1,"admin":1},safe=False)
             else :
-                return JsonResponse({"exist":1,"admin":0},safe=False)   
+                if testx.token == user.last_name:
+                    return JsonResponse({"exist":1,"allowed":1,"admin":0},safe=False)
+                else:
+                    return JsonResponse({"exist":1,"allowed":0,"admin":0},safe=False)       
         else:
             return JsonResponse({"exist":0},safe=False)
 @csrf_exempt
@@ -115,6 +119,42 @@ def forgotpass(request):
         myuser = MyUser.objects.get(user=user)
         myuser.token = token
         myuser.save()
+        return JsonResponse({'exists':1},safe=False)
+
+@csrf_exempt
+def getuserslist(request):
+    if request.method == "GET":
+        d = datetime.datetime.utcnow()
+        presentTest=Test.objects.filter(test_start__lte = d,test_end__gt=d)
+        if not presentTest.exists():   
+            return JsonResponse({'exists':0},safe=False) 
+        testx = presentTest[0]   
+        allowed = AllUserSerializer(User.objects.filter(last_name = testx.token).exclude(is_staff=True),many=True).data
+        notallowed = AllUserSerializer(User.objects.all().exclude(last_name = testx.token).exclude(is_staff=True),many=True).data
+        return JsonResponse({'exists':1,'allowed':allowed,'notallowed':notallowed},safe=False)
+
+@csrf_exempt
+def permission(request):
+    if request.method == "POST":
+        data=JSONParser().parse(request)['data']
+        d = datetime.datetime.utcnow()
+        presentTest=Test.objects.filter(test_start__lte = d,test_end__gt=d)
+        if not presentTest.exists():   
+            return JsonResponse({'exists':0},safe=False)
+
+        testx = presentTest[0]
+        users = data['users']
+        userrs=[]
+        for user in users:
+            x = User.objects.get(id=int(user))
+            x.last_name = testx.token
+            userrs.append(x.email)
+            x.save()
+        subject = "Invitation Link For Aptitude Test"
+        message = f'You have been granted permission to attempt Aptitude Test: {testx.test_name}\n Go to link- http://localhost:3000/login'
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = userrs
+        send_mail(subject,message,email_from,recipient_list)
         return JsonResponse({'exists':1},safe=False)
 
 @csrf_exempt
@@ -367,6 +407,7 @@ def results(request,name):
             return JsonResponse(data,safe=False)
     else:
         return HttpResponseBadRequest()
+        
 def converttoist(datex):
     from_zone = tz.tzutc()
     to_zone = tz.tzlocal()
@@ -430,19 +471,24 @@ def chartData(user,testId=-1,isPost=False):
     except Results.DoesNotExist:
         print('No previous entry')
         resl=0
-    takeFeedback=False
+    takeFeedback=0
     if(user.is_staff):
         user_detail=AllUserSerializer(user).data
     else:
-        myUser=MyUser.objects.get(user=user)    
+        myUser=MyUser.objects.get(user=user)
         if isPost:
-            takeFeedback=Feedback.objects.filter(user=myUser)
-            if takeFeedback.exists():
-                takeFeedback=takeFeedback[0].takeFeedback
-            else:
-                takeFeedback=True
+            takeFeedback=myUser.takeFeedback
         user_detail=MyUserSerializer(myUser).data
     return {'startTime':resl.startTime,'endTime':resl.endTime,'personalityData':resl.marks['pGot'],'marks':resl.marks,'totalQs':totalQs,'avgMarksArr':a,'mrksScored':mrksScored,'mrksScoredPercent':mrksScoredPercent,'totalMarksScored':sum(mrksScored),'timeTaken':tdelta.seconds,'res_id':resl.id,'user_detail':user_detail,'takeFeedback':takeFeedback}
+
+@csrf_exempt
+def takeFeedback(request):
+    if request.headers.get('Authorization') and checkAuthorization(request.headers["Authorization"]):
+        if request.method=='POST':
+            data=JSONParser().parse(request)['data']
+            qs=MyUser.objects.all()
+            qs.update(takeFeeback=int(data['takeFeedback']))
+            return JsonResponse({'success':1},safe=False)
 
 @csrf_exempt
 def resultTest(request,id):
@@ -710,8 +756,7 @@ def saveTest(request):
     if request.headers.get('Authorization') and checkAuthorization(request.headers["Authorization"]):
         if request.method == 'POST':
             data=JSONParser().parse(request)['data']
-            tst=Test(test_name=data['createTest']['testName'],test_start=data['createTest']['sTime'],test_end=data['createTest']['eTime'])
-
+            tst=Test(test_name=data['createTest']['testName'],test_start=data['createTest']['sTime'],test_end=data['createTest']['eTime'],token=str(uuid.uuid4()))
             for x in range(0,len(data['saveTest'])):
                 avgMrk=0
                 if str(data['saveTest'][x]['sub'])=='Coding' or str(data['saveTest'][x]['sub'])=='Analytical Writing':
@@ -818,6 +863,7 @@ def getTests(request):
         bb=[]
         if(presentTest.exists()):
             b={}
+            b['id'] = presentTest[0].id
             b['name']=presentTest[0].test_name
             b['start']="{0} {1}".format(presentTest[0].test_start.date(),str(presentTest[0].test_start.time()).split('.')[0])
             b['start'] = converttoist(b['start'])
@@ -938,6 +984,7 @@ def personalityR(request):
             return evaluate(request, CFG['DB'])
     else:
         return HttpResponseBadRequest()
+
 @csrf_exempt
 def feedback(request):
     if request.headers.get('Authorization') and checkAuthorization(request.headers["Authorization"]):
@@ -955,7 +1002,21 @@ def feedback(request):
                 newFeedback=Feedback(user=user,rating=data['rating'],comment=data['comment'])
                 newFeedback.save()
                 flag=True
-            return JsonResponse({'success':flag},safe=False)          
+            return JsonResponse({'success':flag},safe=False)    
+        elif request.method=="GET":
+            users=User.objects.filter(is_staff=False)
+            newArr=[]
+            takeFeedback=True
+            for user in users:
+                myuser=MyUser.objects.get(user=user)
+                feedback=Feedback.objects.filter(user=myuser)
+                takeFeedback=takeFeedback and myuser.takeFeedback
+                if feedback.exists():
+                    newDict={'email':myuser.email,'userId':myuser.id,'comment':feedback[0].comment,'rating':feedback[0].rating,'checkBtn':myuser.takeFeedback}
+                else:
+                    newDict={'email':myuser.email,'userId':myuser.id,'comment':'-','rating':'-','checkBtn':myuser.takeFeedback}
+                newArr.append(newDict)
+            return JsonResponse({'feedback_data':newArr,'takeFeedback':takeFeedback},safe=False)   
     else:
         return HttpResponseBadRequest()
 
