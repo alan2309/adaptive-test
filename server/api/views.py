@@ -128,10 +128,25 @@ def getuserslist(request):
         presentTest=Test.objects.filter(test_start__lte = d,test_end__gt=d)
         if not presentTest.exists():   
             return JsonResponse({'exists':0},safe=False) 
-        testx = presentTest[0]   
-        allowed = AllUserSerializer(User.objects.filter(last_name = testx.token).exclude(is_staff=True),many=True).data
-        notallowed = AllUserSerializer(User.objects.all().exclude(last_name = testx.token).exclude(is_staff=True),many=True).data
-        return JsonResponse({'exists':1,'allowed':allowed,'notallowed':notallowed},safe=False)
+        testx = presentTest[0]
+        allowed = User.objects.filter(last_name = testx.token).exclude(is_staff=True)
+        notallowed = User.objects.all().exclude(last_name = testx.token).exclude(is_staff=True)
+        bb=[]
+        for xx in allowed:
+            b={}
+            b['id'] = xx.id
+            b['first_name'] = xx.first_name
+            b['email'] = xx.email
+            bb.append(b) 
+        aa=[]
+        for xx in notallowed:
+            a={}
+            a['id'] = xx.id
+            a['checkBtn'] = False
+            a['first_name'] = xx.first_name
+            a['email'] = xx.email
+            aa.append(a)
+        return JsonResponse({'exists':1,'allowed':bb,'notallowed':aa},safe=False)
 
 @csrf_exempt
 def permission(request):
