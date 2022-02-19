@@ -502,7 +502,15 @@ def takeFeedback(request):
         if request.method=='POST':
             data=JSONParser().parse(request)['data']
             qs=MyUser.objects.all()
-            qs.update(takeFeeback=int(data['takeFeedback']))
+            if int(data['isAllSelected'])==1:
+                qs.update(takeFeedback=1)
+            else:
+                qs.update(takeFeedback=0)
+                if len(data['userId'])!=0 and int(data['isAllSelected'])==0:
+                    for id in data['userId']:
+                        user=MyUser.objects.get(id=id)
+                        user.takeFeedback=1
+                        user.save()
             return JsonResponse({'success':1},safe=False)
 
 @csrf_exempt

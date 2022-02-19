@@ -33,7 +33,7 @@ class MyUser(models.Model):
     takeFeedback=models.IntegerField(default=1)
 
     def __str__(self):
-        return self.name
+        return '{0} -> {1}'.format(self.id,self.email)
 
 class Subject(models.Model):
    sub_name = models.CharField(max_length=255)

@@ -131,12 +131,21 @@ function Feedback() {
                 console.log(userId);
               } else {
                 console.log("all select");
-                if (!x.length === 0) {
-                } else {
+                if (!(x.length === 0)) {
                   isAllSelected = 1;
                 }
               }
-              // axiosInstance.post('api/takeFeedback')
+              axiosInstance
+                .post("api/takeFeedback", {
+                  data: { isAllSelected: isAllSelected, userId: userId },
+                })
+                .then((res) => {
+                  console.log(res.data);
+                  window.location.reload();
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
             }}
           >
             Take Feedbacks
