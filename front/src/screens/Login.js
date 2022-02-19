@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Col, Row, Modal, Form } from "react-bootstrap";
+import { Col, Row, Modal, Form, Container } from "react-bootstrap";
 import axiosInstance from "../axios";
 import { useNavigate } from "react-router-dom";
 import { isExpired } from "react-jwt";
@@ -30,39 +30,39 @@ function Login() {
   const [myid, setMyId] = useState(0);
   const columnsP = [
     {
-      label: "NAME",
+      label: "Name",
       field: "name",
     },
     {
-      label: "START",
+      label: "Start",
       field: "start",
     },
     {
-      label: "DURATION",
+      label: "Duration",
       field: "duration",
     },
 
     {
-      label: "ENDS IN",
+      label: "Ends in",
       field: "ends_in",
     },
   ];
   const columnsU = [
     {
-      label: "NAME",
+      label: "Name",
       field: "name",
     },
     {
-      label: "START",
+      label: "Start",
       field: "start",
     },
     {
-      label: "DURATION",
+      label: "Duration",
       field: "duration",
     },
 
     {
-      label: "STARTS IN",
+      label: "Starts in",
       field: "starts_in",
     },
   ];
@@ -371,146 +371,79 @@ function Login() {
               </Form>
             </Modal.Body>
           </Modal>
-          <div style={{ color: "#788094" }}>
-            <Row>
-              <Col>
-                <div style={{ margin: "45px 60px" }}>
-                  <Row>
-                    <Col>
-                      <div id="title">Placement Aptitude Portal</div>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <div id="subTitle">
-                        Dwarkadas J. Sanghvi College of Engineering
-                      </div>
-                    </Col>
-                  </Row>
-                  <form onSubmit={(e) => handleSubmit(e)}>
-                    <Row style={{ marginTop: "70px" }}>
-                      <Col>
-                        <input
-                          className="loginInpRec"
-                          onChange={handleChange}
-                          name="username"
-                          type="text"
-                          placeholder="Username"
-                          style={{ width: "100%" }}
-                        ></input>
-                      </Col>
-                    </Row>
-                    <Row style={{ marginTop: "25px" }}>
-                      <Col>
-                        <input
-                          className="loginInpRec"
-                          onChange={handleChange}
-                          id="password-field"
-                          name="password"
-                          type="password"
-                          placeholder="Password"
-                          style={{ width: "100%" }}
-                        ></input>
-                        <span
-                          toggle="#password-field"
-                          className="fa fa-fw fa-eye field-icon toggle-password"
-                          onClick={(e) => showHide(e)}
-                        ></span>
-                      </Col>
-                    </Row>
-                    <Row style={{ marginTop: "3px" }}>
-                      <Col>
-                        <div
-                          style={{
-                            textAlign: "right",
-                            marginTop: "10px",
-                            marginBottom: "30px",
-                          }}
-                        >
-                          <label
-                            onClick={() => setShow(true)}
-                            style={{
-                              cursor: "pointer",
-                              fontFamily: "Poppins",
-                              color: "#788094",
-                              fontWeight: "500",
-                              marginRight: "10px",
-                              marginTop: "2px",
-                              fontSize: "15px",
-                            }}
-                          >
-                            Forgot Password{" "}
-                          </label>
-                        </div>
-                        <button
-                          style={{
-                            backgroundColor: "#10B65C",
-                            width: "150px",
-                            border: "none",
-                            marginLeft: "36%",
-                          }}
-                          type="submit"
-                          className="btn btn-primary"
-                        >
-                          Start Test
-                        </button>
-                      </Col>
-                    </Row>
-                    <Row style={{ marginTop: "40px", marginLeft: "29%" }}>
-                      Not Registered? Sign up now{" "}
-                    </Row>
-                    <Row style={{ marginTop: "10px", marginLeft: "45%" }}>
-                      <GoogleLogin
-                        render={(renderProps) => (
-                          <button
-                            style={{
-                              width: "45px",
-                              height: "45px",
-                              backgroundColor: "rgb(255, 255, 255)",
-                              color: "rgba(0, 0, 0, 0.54)",
-                              boxShadow:
-                                "rgb(0 0 0 / 24%) 0px 2px 2px 0px, rgb(0 0 0 / 24%) 0px 0px 1px 0px",
-                              padding: "0px 0 2px 2px",
-                              borderRadius: "50px",
-                              border: "1px solid transparent",
-                            }}
-                            onClick={renderProps.onClick}
-                            disabled={renderProps.disabled}
-                          >
-                            <FcGoogle
-                              style={{
-                                height: "30px",
-                                width: "30px",
-                                marginLeft: "5px",
-                              }}
-                            />
-                          </button>
-                        )}
-                        clientId={clientId}
-                        buttonText="Google"
-                        onSuccess={responseGoogle}
-                        onFailure={error}
-                        cookiePolicy={"single_host_origin"}
-                      />
-                    </Row>
-                  </form>
-                </div>
-              </Col>
-              <Col style={{ padding: "0", marginTop: "40px" }}>
-                <div>
-                  <Row style={{ margin: "0 0 20px 10%" }}>
-                    <Col style={{ marginRight: "0%" }}>
+          <div>
+            <Row style={{ height: window.screen.height - 233, margin: "0px" }}>
+              <Col lg={7} style={{ backgroundColor: "white", padding: "0px" }}>
+                <div class="all_content" style={{ margin: "0px 50px" }}>
+                  <h5
+                    style={{
+                      fontStyle: " normal",
+                      fontWeight: "600",
+                      fontSize: "20px",
+                      lineHeight: "16px",
+                      textAlign: "center",
+                      marginTop: "70px",
+                      fontFamily: "Poppins",
+                      fontColor: "#788094",
+                    }}
+                  >
+                    Placement Test Portal
+                  </h5>
+                  <p
+                    style={{
+                      fontFamily: "Poppins",
+                      fontSize: "13px",
+                      fontStyle: "normal",
+                      fontWeight: "400",
+                      lineHeight: "31px",
+                      color: "#293e6f",
+                      marginTop: "20px",
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                    }}
+                  >
+                    This proctored placement test portal is designed and
+                    developed by the students for the students. It offers
+                    behavioral analysis, personalized recommendations, and
+                    intelligent practice. Log in to get started on your path to
+                    a successful career.
+                  </p>
+                  <h5
+                    style={{
+                      textAlign: "center",
+                      marginTop: "30px",
+                      color: "#293e6f",
+                      fontSize: "18px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Test Schedule
+                  </h5>
+                  <Row
+                    className="tb_margin"
+                    style={{ margin: "20px 35px 20px 35px" }}
+                  >
+                    <Col style={{ marginRight: "0%", padding: "0px" }}>
                       {" "}
-                      <div className="basicRec">
-                        <h5
+                      <div
+                        style={{
+                          background: "#FFFFFF",
+                          border: "2px solid #E5E5E5",
+                          boxSizing: "border-box",
+                          borderRadius: "14px",
+                        }}
+                      >
+                        <h6
                           style={{
                             paddingTop: "10px",
                             color: "#293e6f",
                             textAlign: "center",
+                            fontSize: "16px",
+                            fontWeight: "400",
                           }}
                         >
                           Ongoing Test
-                        </h5>
+                        </h6>
                         <MDBDataTable
                           striped
                           bordered
@@ -527,19 +460,30 @@ function Login() {
                       </div>
                     </Col>
                   </Row>
-                  <Row style={{ margin: "0 0 0 10%" }}>
-                    <Col style={{ marginRight: "0%" }}>
-                      {" "}
-                      <div className="basicRec">
-                        <h5
+                  <Row
+                    className="tb_margin"
+                    style={{ margin: "20px 35px 20px 35px" }}
+                  >
+                    <Col style={{ marginRight: "0%", padding: "0px" }}>
+                      <div
+                        style={{
+                          background: "#FFFFFF",
+                          border: "2px solid #E5E5E5",
+                          boxSizing: "border-box",
+                          borderRadius: "14px",
+                        }}
+                      >
+                        <h6
                           style={{
                             paddingTop: "10px",
                             color: "#293e6f",
                             textAlign: "center",
+                            fontSize: "16px",
+                            fontWeight: "400",
                           }}
                         >
                           Upcoming Test
-                        </h5>
+                        </h6>
                         <MDBDataTable
                           striped
                           bordered
@@ -556,6 +500,232 @@ function Login() {
                       </div>
                     </Col>
                   </Row>
+                </div>
+              </Col>
+              <Col lg={5} className="Background" style={{ padding: "0px" }}>
+                <div>
+                  <Container
+                    className="sign_in"
+                    style={{
+                      width: "352px",
+                      height: "495px",
+                      boxShadow: "1.5px 1.5px 7px 3px rgba(0,0,0,0.2)",
+                      backgroundColor: "white",
+                      marginTop: "10%",
+                    }}
+                  >
+                    <div>
+                      <h3
+                        style={{
+                          margin: "30px auto",
+                          marginBottom: "0px",
+                          paddingTop: "16px",
+                          paddingBottom: "10px",
+                          textAlign: "center",
+                          fontSize: "20px",
+                          lineHeight: "54px",
+                          fontWeight: "600",
+                          fontFamily: "Poppins",
+                          color: "#293E6F",
+                          marginTop: "15px",
+                        }}
+                      >
+                        Sign In
+                      </h3>
+                      <Form onSubmit={(e) => handleSubmit(e)}>
+                        <Form.Group>
+                          <Form.Label
+                            style={{
+                              marginTop: "10px",
+                              fontSize: "13px",
+                              fontWeight: "bold",
+                            }}
+                            className="customBoldFont inputLabel"
+                          >
+                            Email Id
+                          </Form.Label>
+                          <Form.Control
+                            className="inputField"
+                            onChange={handleChange}
+                            name="username"
+                            type="text"
+                            placeholder="alan@gmail.com"
+                            style={{
+                              width: "100%",
+                              borderTopStyle: "none",
+                              borderLeftStyle: "none",
+                              borderRightStyle: "none",
+                              fontSize: "13px",
+                            }}
+                            required
+                          />
+                        </Form.Group>
+                        <Form.Group className="mt-3 mb-2">
+                          <Form.Label
+                            className="customBoldFont inputLabel"
+                            style={{
+                              marginTop: "10px",
+                              fontSize: "13px",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            Password
+                          </Form.Label>
+                          <Form.Control
+                            className="inputField"
+                            onChange={handleChange}
+                            id="password-field"
+                            name="password"
+                            type="password"
+                            placeholder="Password"
+                            style={{
+                              width: "100%",
+                              borderTopStyle: "none",
+                              borderLeftStyle: "none",
+                              borderRightStyle: "none",
+                              fontSize: "13px",
+                            }}
+                            required
+                          />
+                          <span
+                            toggle="#password-field"
+                            className="fa fa-fw fa-eye field-icon toggle-password"
+                            onClick={(e) => showHide(e)}
+                            style={{ marginTop: "-24px", color: "black" }}
+                          ></span>
+                          <label
+                            onClick={() => setShow(true)}
+                            style={{
+                              cursor: "pointer",
+                              fontFamily: "Poppins",
+                              color: "rgb(3, 155, 229)",
+                              fontWeight: "500",
+                              marginLeft: "210px",
+                              marginTop: "20px",
+                              fontSize: "10px",
+                            }}
+                          >
+                            Forgot Password?{" "}
+                          </label>
+                        </Form.Group>
+                        <div
+                          style={{ display: "flex", justifyContent: "center" }}
+                        >
+                          <button
+                            style={{
+                              backgroundColor: "#10B65C",
+                              width: "100%",
+                              border: "none",
+                              marginTop: "10px",
+                              marginBottom: "10px",
+                            }}
+                            type="submit"
+                            className="btn btn-primary"
+                          >
+                            Login
+                          </button>
+                        </div>
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            flexDirection: "row",
+                          }}
+                        >
+                          <span
+                            style={{
+                              borderBottom: "1px solid rgb(224, 224, 224)",
+                              flexGrow: 1,
+                              display: "flex",
+                            }}
+                          />
+                          <span
+                            style={{
+                              margin: "12px 6px",
+                              color: "rgb(119, 119, 119)",
+                              fontSize: "14px",
+                            }}
+                          >
+                            OR
+                          </span>
+                          <span
+                            style={{
+                              borderBottom: "1px solid rgb(224, 224, 224)",
+                              flexGrow: 1,
+                              display: "flex",
+                            }}
+                          />
+                        </div>
+                        <Row
+                          style={{
+                            marginTop: "10px",
+                            marginLeft: "19%",
+                            marginBottom: "10px",
+                            fontSize: "13px",
+                          }}
+                        >
+                          Not Registered? Sign up now{" "}
+                        </Row>
+                        <Row
+                          style={{
+                            marginTop: "10px",
+                            marginLeft: "45%",
+                            marginBottom: "10px",
+                          }}
+                        >
+                          <GoogleLogin
+                            render={(renderProps) => (
+                              <button
+                                style={{
+                                  width: "45px",
+                                  height: "45px",
+                                  backgroundColor: "rgb(255, 255, 255)",
+                                  color: "rgba(0, 0, 0, 0.54)",
+                                  boxShadow:
+                                    "rgb(0 0 0 / 24%) 0px 2px 2px 0px, rgb(0 0 0 / 24%) 0px 0px 1px 0px",
+                                  padding: "0px 0 2px 2px",
+                                  borderRadius: "50px",
+                                  border: "1px solid transparent",
+                                  marginBottom: "20px",
+                                }}
+                                onClick={renderProps.onClick}
+                                disabled={renderProps.disabled}
+                              >
+                                <FcGoogle
+                                  style={{
+                                    height: "30px",
+                                    width: "30px",
+                                    marginLeft: "5px",
+                                  }}
+                                />
+                              </button>
+                            )}
+                            clientId={clientId}
+                            buttonText="Google"
+                            onSuccess={responseGoogle}
+                            onFailure={error}
+                            cookiePolicy={"single_host_origin"}
+                          />
+                        </Row>
+                      </Form>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                      <button
+                        onClick={() => navigate("/Home")}
+                        style={{
+                          backgroundColor: "#081466",
+                          width: "100%",
+                          border: "none",
+                          marginTop: "30px",
+                          marginBottom: "10px",
+                        }}
+                        type="submit"
+                        className="btn btn-primary"
+                      >
+                        Back to home
+                      </button>
+                    </div>
+                  </Container>
                 </div>
               </Col>
             </Row>

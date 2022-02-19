@@ -73,8 +73,8 @@ function App() {
               path="/login"
               exact
               element={
-                <Row style={{ margin: "20px 0 0 0" }}>
-                  <Col style={{ padding: "10px 90px" }}>
+                <Row style={{ margin: "0px" }}>
+                  <Col style={{ padding: "0px" }}>
                     <Login />
                   </Col>
                 </Row>
