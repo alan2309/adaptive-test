@@ -94,12 +94,14 @@ def login(request):
 def changepass(request):
     if request.method=="POST":
         data=JSONParser().parse(request)['data']
-        if not data['token'] == "":
-            if not MyUser.objects.filter(token=data['token']).exists():
+        if data['token'] != "":
+            if not MyUser.objects.filter(change_pass_token=data['token']).exists():
                 return JsonResponse({'exists':0},safe=False)  
-            myuser = MyUser.objects.get(token = data['token'])
+            myuser = MyUser.objects.get(change_pass_token = data['token'])
             user = User.objects.get(email=myuser.user.email)
             user.set_password(data['pass'])
+            myuser.change_pass_token=None
+            myuser.save()
             user.save() 
             return JsonResponse({'exists':1},safe=False)   
         else:
@@ -120,7 +122,7 @@ def forgotpass(request):
         recipient_list = [user.email]
         send_mail(subject,message,email_from,recipient_list)
         myuser = MyUser.objects.get(user=user)
-        myuser.token = token
+        myuser.change_pass_token = token
         myuser.save()
         return JsonResponse({'exists':1},safe=False)
 

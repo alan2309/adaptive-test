@@ -42,6 +42,7 @@ function SignUpModified() {
           if (res.data.exists) {
             setIsAlertMsgLoaded(true);
             setDangerMsg("User already exists");
+            alert("User already exists");
             navigate("/login");
           } else {
             updateFormData({

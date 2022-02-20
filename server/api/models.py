@@ -31,6 +31,7 @@ class MyUser(models.Model):
     college=models.CharField(max_length=100,default=None)
     year=models.CharField(max_length=6,default=0)
     takeFeedback=models.IntegerField(default=1)
+    change_pass_token = models.CharField(max_length=400,null=True,blank=True)
 
     def __str__(self):
         return '{0} -> {1}'.format(self.id,self.email)
