@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path,re_path
 from . import views
 
 urlpatterns = [
@@ -31,5 +31,6 @@ urlpatterns = [
    path('api/admin/tests',views.getTests),
    path('api/delres/<int:id>',views.deleteres),
    path('api/getuserslist',views.getuserslist),
-   path('api/permission',views.permission)
+   path('api/permission',views.permission),
+   re_path(r'/?',views.error_404)
 ]

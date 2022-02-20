@@ -1,6 +1,6 @@
 from django.contrib.auth.hashers import make_password
 import json
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponseBadRequest, HttpResponseForbidden
 from django.http.response import JsonResponse
 from rest_framework.views import APIView
 from api.models import Questions,Options,Results,Subject,Test,CodingTest,Para,Paraopt,Paraqs,MyUser,Feedback
@@ -37,6 +37,8 @@ def checkAuthorization(auth):
         except:
             return False
 
+def error_404(request):
+    return HttpResponseForbidden()
 @csrf_exempt
 def newuser(request):
     if request.method=="GET":
@@ -155,27 +157,30 @@ def getuserslist(request):
 
 @csrf_exempt
 def permission(request):
-    if request.method == "POST":
-        data=JSONParser().parse(request)['data']
-        d = datetime.datetime.utcnow()
-        presentTest=Test.objects.filter(test_start__lte = d,test_end__gt=d)
-        if not presentTest.exists():   
-            return JsonResponse({'exists':0},safe=False)
+    if request.headers.get('Authorization') and checkAuthorization(request.headers["Authorization"]):
+        if request.method == "POST":
+            data=JSONParser().parse(request)['data']
+            d = datetime.datetime.utcnow()
+            presentTest=Test.objects.filter(test_start__lte = d,test_end__gt=d)
+            if not presentTest.exists():   
+                return JsonResponse({'exists':0},safe=False)
 
-        testx = presentTest[0]
-        users = data['users']
-        userrs=[]
-        for user in users:
-            x = User.objects.get(id=int(user))
-            x.last_name = testx.token
-            userrs.append(x.email)
-            x.save()
-        subject = "Invitation Link For Aptitude Test"
-        message = f'You have been granted permission to attempt Aptitude Test: {testx.test_name}\n Go to link- http://localhost:3000/login'
-        email_from = settings.EMAIL_HOST_USER
-        recipient_list = userrs
-        send_mail(subject,message,email_from,recipient_list)
-        return JsonResponse({'exists':1},safe=False)
+            testx = presentTest[0]
+            users = data['users']
+            userrs=[]
+            for user in users:
+                x = User.objects.get(id=int(user))
+                x.last_name = testx.token
+                userrs.append(x.email)
+                x.save()
+            subject = "Invitation Link For Aptitude Test"
+            message = f'You have been granted permission to attempt Aptitude Test: {testx.test_name}\n Go to link- http://localhost:3000/login'
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = userrs
+            send_mail(subject,message,email_from,recipient_list)
+            return JsonResponse({'exists':1},safe=False)
+    else:
+        return HttpResponseBadRequest()
 
 @csrf_exempt
 def subqs(request,subject=0,tid=0):
