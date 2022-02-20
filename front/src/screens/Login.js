@@ -372,7 +372,7 @@ function Login() {
             </Modal.Body>
           </Modal>
           <div>
-            <Row style={{ height: window.screen.height - 233, margin: "0px" }}>
+            <Row style={{ height: '100%', margin: "0px" }}>
               <Col lg={7} style={{ backgroundColor: "white", padding: "0px" }}>
                 <div class="all_content" style={{ margin: "0px 50px" }}>
                   <h5
@@ -502,32 +502,28 @@ function Login() {
                   </Row>
                 </div>
               </Col>
-              <Col lg={5} className="Background" style={{ padding: "0px" }}>
-                <div>
+              <Col lg={5} className="Background" style={{padding: "3% 0 5% 0" }}>
                   <Container
                     className="sign_in"
                     style={{
                       width: "352px",
-                      height: "495px",
+                      height: "87%",
                       boxShadow: "1.5px 1.5px 7px 3px rgba(0,0,0,0.2)",
                       backgroundColor: "white",
-                      marginTop: "10%",
+                      
                     }}
                   >
                     <div>
                       <h3
                         style={{
-                          margin: "30px auto",
-                          marginBottom: "0px",
-                          paddingTop: "16px",
-                          paddingBottom: "10px",
+                          margin: "0 auto",
+                          padding: "4% 0",
                           textAlign: "center",
                           fontSize: "20px",
                           lineHeight: "54px",
                           fontWeight: "600",
                           fontFamily: "Poppins",
                           color: "#293E6F",
-                          marginTop: "15px",
                         }}
                       >
                         Sign In
@@ -536,7 +532,7 @@ function Login() {
                         <Form.Group>
                           <Form.Label
                             style={{
-                              marginTop: "10px",
+                              marginTop: "3%",
                               fontSize: "13px",
                               fontWeight: "bold",
                             }}
@@ -564,7 +560,7 @@ function Login() {
                           <Form.Label
                             className="customBoldFont inputLabel"
                             style={{
-                              marginTop: "10px",
+                              marginTop: "3%",
                               fontSize: "13px",
                               fontWeight: "bold",
                             }}
@@ -601,7 +597,7 @@ function Login() {
                               color: "rgb(3, 155, 229)",
                               fontWeight: "500",
                               marginLeft: "210px",
-                              marginTop: "20px",
+                              marginTop: "5%",
                               fontSize: "10px",
                             }}
                           >
@@ -616,8 +612,7 @@ function Login() {
                               backgroundColor: "#10B65C",
                               width: "100%",
                               border: "none",
-                              marginTop: "10px",
-                              marginBottom: "10px",
+                              margin: "5% 0",
                             }}
                             type="submit"
                             className="btn btn-primary"
@@ -641,7 +636,7 @@ function Login() {
                           />
                           <span
                             style={{
-                              margin: "12px 6px",
+                              margin: "3% 6px",
                               color: "rgb(119, 119, 119)",
                               fontSize: "14px",
                             }}
@@ -656,21 +651,18 @@ function Login() {
                             }}
                           />
                         </div>
-                        <Row
+                        <div
                           style={{
-                            marginTop: "10px",
-                            marginLeft: "19%",
-                            marginBottom: "10px",
+                            textAlign:'center',
                             fontSize: "13px",
+                            color:'#464646'
                           }}
                         >
                           Not Registered? Sign up now{" "}
-                        </Row>
+                        </div>
                         <Row
                           style={{
-                            marginTop: "10px",
-                            marginLeft: "45%",
-                            marginBottom: "10px",
+                            margin: "3% 0 3% 43%",
                           }}
                         >
                           <GoogleLogin
@@ -686,7 +678,6 @@ function Login() {
                                   padding: "0px 0 2px 2px",
                                   borderRadius: "50px",
                                   border: "1px solid transparent",
-                                  marginBottom: "20px",
                                 }}
                                 onClick={renderProps.onClick}
                                 disabled={renderProps.disabled}
@@ -709,15 +700,17 @@ function Login() {
                         </Row>
                       </Form>
                     </div>
-                    <div style={{ display: "flex", justifyContent: "center" }}>
+                    
+                  </Container>
+                  <div style={{ display: "flex", justifyContent: "center" }}>
                       <button
                         onClick={() => navigate("/Home")}
                         style={{
                           backgroundColor: "#081466",
-                          width: "100%",
+                          width: "40%",
                           border: "none",
-                          marginTop: "30px",
-                          marginBottom: "10px",
+                          marginTop: "6%",
+                          
                         }}
                         type="submit"
                         className="btn btn-primary"
@@ -725,8 +718,7 @@ function Login() {
                         Back to home
                       </button>
                     </div>
-                  </Container>
-                </div>
+               
               </Col>
             </Row>
           </div>
