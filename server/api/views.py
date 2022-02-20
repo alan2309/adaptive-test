@@ -1012,6 +1012,7 @@ def feedback(request):
             feedback=Feedback.objects.filter(user=user)
             flag=False
             if feedback.exists():
+                feedback=feedback[0]
                 feedback.rating=data['rating']
                 feedback.comment=data['comment']
                 feedback.save()
@@ -1396,19 +1397,6 @@ def evaluate(request, data=0):
 
     SEP, SEFP, LO, HI, SE, SAP, SAFP, SA, SC, SCP, SCFP, flev, SOP, SOFP, SO, \
             Nick, Country, SNP, SNFP, Category, SN, Sex, Age, Q = evaluate_api(request,data)
-
-    # Check sex and age
-    if Sex != "Male" and Sex != "Female":
-        return """You did not indicate your sex at the beginning of the
-    inventory. Your answers cannot be normed properly unless you indicate
-    whether you are male or female. Please return to the inventory and indicate
-    your sex."""
-
-    if Age < 10:
-        return """You did not indicate how old you are at the beginning of the
-    inventory, or you typed in an age that is too young. Your answers cannot be
-    normed properly unless type in a valid age. Please return to the inventory
-    and change your response."""
 
     # Save Data
     a={}

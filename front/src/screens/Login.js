@@ -11,13 +11,12 @@ import ProtectUrl from "../components/TestScreeen/ProtectUrl";
 import AdminProtectUrl from "../components/Admin/AdminProtectUrl";
 import Loader from "../components/Loader";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
-import keys from "../components/TestScreeen/keys";
 import { FcGoogle } from "react-icons/fc";
 import Alert from "../components/Admin/Alert";
 import forgotPass from "../img/forgotPass.png";
 
 function Login() {
-  const clientId = keys.googlecId();
+  const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID_API_KEY;
   const navigate = useNavigate();
   const [md, setMd] = useState(false);
   const [dataUpcoming, setTDataUpcoming] = useState({});
@@ -92,7 +91,7 @@ function Login() {
         .get("api/admin/tests")
         .then((res) => {
           let ong = res.data.ongoing_test;
-          if (ong.length > 0){
+          if (ong.length > 0) {
             setMyId(ong[0].id);
             ong[0]["ends_in"] = (
               <CustomTimer
@@ -103,7 +102,8 @@ function Login() {
                 start={!md}
                 style={{ fontSize: "18px" }}
               ></CustomTimer>
-            );}
+            );
+          }
           let upt = res.data.upcoming_test;
           for (let x = 0; x < upt.length; x++) {
             upt[x]["starts_in"] = (
@@ -174,7 +174,7 @@ function Login() {
               .then(async (res) => {
                 let acc_token = "JWT " + res.data.access;
                 axiosInstance.defaults.headers["Authorization"] = acc_token;
-                let xx = myid
+                let xx = myid;
                 if (xx !== -1 || adminn) {
                   localStorage.setItem("testId", xx); //imp
                   localStorage.setItem("admin", "user");
@@ -191,6 +191,9 @@ function Login() {
                         data: { testId: xx },
                       })
                       .then((res) => {
+                        localStorage.setItem("name", res.data.name);
+                        localStorage.setItem("age", res.data.age);
+                        localStorage.setItem("gender", res.data.gender);
                         setIsloading(false);
                         if (res.data.resultExists) {
                           if (res.data.end) {
@@ -237,8 +240,7 @@ function Login() {
     navigate("/signup", { state: { data: res.profileObj } });
   };
   const error = (res) => {
-    if(res.error==='idpiframe_initialization_failed')
-      return;
+    if (res.error === "idpiframe_initialization_failed") return;
     setIsAlertMsgLoaded(true);
     setDangerMsg("Attempt to log in failed");
   };
@@ -362,7 +364,7 @@ function Login() {
             </Modal.Body>
           </Modal>
           <div>
-            <Row style={{ height: '100%', margin: "0px" }}>
+            <Row style={{ height: "100%", margin: "0px" }}>
               <Col lg={7} style={{ backgroundColor: "white", padding: "0px" }}>
                 <div class="all_content" style={{ margin: "0px 50px" }}>
                   <h5
@@ -492,223 +494,223 @@ function Login() {
                   </Row>
                 </div>
               </Col>
-              <Col lg={5} className="Background" style={{padding: "3% 0 5% 0" }}>
-                  <Container
-                    className="sign_in"
-                    style={{
-                      width: "352px",
-                      height: "87%",
-                      boxShadow: "1.5px 1.5px 7px 3px rgba(0,0,0,0.2)",
-                      backgroundColor: "white",
-                      
-                    }}
-                  >
-                    <div>
-                      <h3
-                        style={{
-                          margin: "0 auto",
-                          padding: "4% 0",
-                          textAlign: "center",
-                          fontSize: "20px",
-                          lineHeight: "54px",
-                          fontWeight: "600",
-                          fontFamily: "Poppins",
-                          color: "#293E6F",
-                        }}
-                      >
-                        Sign In
-                      </h3>
-                      <Form onSubmit={(e) => handleSubmit(e)}>
-                        <Form.Group>
-                          <Form.Label
-                            style={{
-                              marginTop: "3%",
-                              fontSize: "13px",
-                              fontWeight: "bold",
-                            }}
-                            className="customBoldFont inputLabel"
-                          >
-                            Email Id
-                          </Form.Label>
-                          <Form.Control
-                            className="inputField"
-                            onChange={handleChange}
-                            name="username"
-                            type="text"
-                            placeholder="alan@gmail.com"
-                            style={{
-                              width: "100%",
-                              borderTopStyle: "none",
-                              borderLeftStyle: "none",
-                              borderRightStyle: "none",
-                              fontSize: "13px",
-                            }}
-                            required
-                          />
-                        </Form.Group>
-                        <Form.Group className="mt-3 mb-2">
-                          <Form.Label
-                            className="customBoldFont inputLabel"
-                            style={{
-                              marginTop: "3%",
-                              fontSize: "13px",
-                              fontWeight: "bold",
-                            }}
-                          >
-                            Password
-                          </Form.Label>
-                          <Form.Control
-                            className="inputField"
-                            onChange={handleChange}
-                            id="password-field"
-                            name="password"
-                            type="password"
-                            placeholder="Password"
-                            style={{
-                              width: "100%",
-                              borderTopStyle: "none",
-                              borderLeftStyle: "none",
-                              borderRightStyle: "none",
-                              fontSize: "13px",
-                            }}
-                            required
-                          />
-                          <span
-                            toggle="#password-field"
-                            className="fa fa-fw fa-eye field-icon toggle-password"
-                            onClick={(e) => showHide(e)}
-                            style={{ marginTop: "-24px", color: "black" }}
-                          ></span>
-                          <label
-                            onClick={() => setShow(true)}
-                            style={{
-                              cursor: "pointer",
-                              fontFamily: "Poppins",
-                              color: "rgb(3, 155, 229)",
-                              fontWeight: "500",
-                              marginLeft: "210px",
-                              marginTop: "5%",
-                              fontSize: "10px",
-                            }}
-                          >
-                            Forgot Password?{" "}
-                          </label>
-                        </Form.Group>
-                        <div
-                          style={{ display: "flex", justifyContent: "center" }}
-                        >
-                          <button
-                            style={{
-                              backgroundColor: "#10B65C",
-                              width: "100%",
-                              border: "none",
-                              margin: "5% 0",
-                            }}
-                            type="submit"
-                            className="btn btn-primary"
-                          >
-                            Login
-                          </button>
-                        </div>
-                        <div
+              <Col
+                lg={5}
+                className="Background"
+                style={{ padding: "3% 0 5% 0" }}
+              >
+                <Container
+                  className="sign_in"
+                  style={{
+                    width: "352px",
+                    height: "87%",
+                    boxShadow: "1.5px 1.5px 7px 3px rgba(0,0,0,0.2)",
+                    backgroundColor: "white",
+                  }}
+                >
+                  <div>
+                    <h3
+                      style={{
+                        margin: "0 auto",
+                        padding: "4% 0",
+                        textAlign: "center",
+                        fontSize: "20px",
+                        lineHeight: "54px",
+                        fontWeight: "600",
+                        fontFamily: "Poppins",
+                        color: "#293E6F",
+                      }}
+                    >
+                      Sign In
+                    </h3>
+                    <Form onSubmit={(e) => handleSubmit(e)}>
+                      <Form.Group>
+                        <Form.Label
                           style={{
-                            display: "flex",
-                            alignItems: "center",
-                            flexDirection: "row",
-                          }}
-                        >
-                          <span
-                            style={{
-                              borderBottom: "1px solid rgb(224, 224, 224)",
-                              flexGrow: 1,
-                              display: "flex",
-                            }}
-                          />
-                          <span
-                            style={{
-                              margin: "3% 6px",
-                              color: "rgb(119, 119, 119)",
-                              fontSize: "14px",
-                            }}
-                          >
-                            OR
-                          </span>
-                          <span
-                            style={{
-                              borderBottom: "1px solid rgb(224, 224, 224)",
-                              flexGrow: 1,
-                              display: "flex",
-                            }}
-                          />
-                        </div>
-                        <div
-                          style={{
-                            textAlign:'center',
+                            marginTop: "3%",
                             fontSize: "13px",
-                            color:'#464646'
+                            fontWeight: "bold",
                           }}
+                          className="customBoldFont inputLabel"
                         >
-                          Not Registered? Sign up now{" "}
-                        </div>
-                        <Row
+                          Email Id
+                        </Form.Label>
+                        <Form.Control
+                          className="inputField"
+                          onChange={handleChange}
+                          name="username"
+                          type="text"
+                          placeholder="alan@gmail.com"
                           style={{
-                            margin: "3% 0 3% 43%",
+                            width: "100%",
+                            borderTopStyle: "none",
+                            borderLeftStyle: "none",
+                            borderRightStyle: "none",
+                            fontSize: "13px",
+                          }}
+                          required
+                        />
+                      </Form.Group>
+                      <Form.Group className="mt-3 mb-2">
+                        <Form.Label
+                          className="customBoldFont inputLabel"
+                          style={{
+                            marginTop: "3%",
+                            fontSize: "13px",
+                            fontWeight: "bold",
                           }}
                         >
-                          <GoogleLogin
-                            render={(renderProps) => (
-                              <button
-                                style={{
-                                  width: "45px",
-                                  height: "45px",
-                                  backgroundColor: "rgb(255, 255, 255)",
-                                  color: "rgba(0, 0, 0, 0.54)",
-                                  boxShadow:
-                                    "rgb(0 0 0 / 24%) 0px 2px 2px 0px, rgb(0 0 0 / 24%) 0px 0px 1px 0px",
-                                  padding: "0px 0 2px 2px",
-                                  borderRadius: "50px",
-                                  border: "1px solid transparent",
-                                }}
-                                onClick={renderProps.onClick}
-                                disabled={renderProps.disabled}
-                              >
-                                <FcGoogle
-                                  style={{
-                                    height: "30px",
-                                    width: "30px",
-                                    marginLeft: "5px",
-                                  }}
-                                />
-                              </button>
-                            )}
-                            clientId={clientId}
-                            buttonText="Google"
-                            onSuccess={responseGoogle}
-                            onFailure={error}
-                            cookiePolicy={"single_host_origin"}
-                          />
-                        </Row>
-                      </Form>
-                    </div>
-                    
-                  </Container>
-                  <div style={{ display: "flex", justifyContent: "center" }}>
-                      <button
-                        onClick={() => navigate("/Home")}
-                        style={{
-                          backgroundColor: "#081466",
-                          width: "40%",
-                          border: "none",
-                          marginTop: "6%",
-                          
-                        }}
-                        type="submit"
-                        className="btn btn-primary"
+                          Password
+                        </Form.Label>
+                        <Form.Control
+                          className="inputField"
+                          onChange={handleChange}
+                          id="password-field"
+                          name="password"
+                          type="password"
+                          placeholder="Password"
+                          style={{
+                            width: "100%",
+                            borderTopStyle: "none",
+                            borderLeftStyle: "none",
+                            borderRightStyle: "none",
+                            fontSize: "13px",
+                          }}
+                          required
+                        />
+                        <span
+                          toggle="#password-field"
+                          className="fa fa-fw fa-eye field-icon toggle-password"
+                          onClick={(e) => showHide(e)}
+                          style={{ marginTop: "-24px", color: "black" }}
+                        ></span>
+                        <label
+                          onClick={() => setShow(true)}
+                          style={{
+                            cursor: "pointer",
+                            fontFamily: "Poppins",
+                            color: "rgb(3, 155, 229)",
+                            fontWeight: "500",
+                            marginLeft: "210px",
+                            marginTop: "5%",
+                            fontSize: "10px",
+                          }}
+                        >
+                          Forgot Password?{" "}
+                        </label>
+                      </Form.Group>
+                      <div
+                        style={{ display: "flex", justifyContent: "center" }}
                       >
-                        Back to home
-                      </button>
-                    </div>
-               
+                        <button
+                          style={{
+                            backgroundColor: "#10B65C",
+                            width: "100%",
+                            border: "none",
+                            margin: "5% 0",
+                          }}
+                          type="submit"
+                          className="btn btn-primary"
+                        >
+                          Login
+                        </button>
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          flexDirection: "row",
+                        }}
+                      >
+                        <span
+                          style={{
+                            borderBottom: "1px solid rgb(224, 224, 224)",
+                            flexGrow: 1,
+                            display: "flex",
+                          }}
+                        />
+                        <span
+                          style={{
+                            margin: "3% 6px",
+                            color: "rgb(119, 119, 119)",
+                            fontSize: "14px",
+                          }}
+                        >
+                          OR
+                        </span>
+                        <span
+                          style={{
+                            borderBottom: "1px solid rgb(224, 224, 224)",
+                            flexGrow: 1,
+                            display: "flex",
+                          }}
+                        />
+                      </div>
+                      <div
+                        style={{
+                          textAlign: "center",
+                          fontSize: "13px",
+                          color: "#464646",
+                        }}
+                      >
+                        Not Registered? Sign up now{" "}
+                      </div>
+                      <Row
+                        style={{
+                          margin: "3% 0 3% 43%",
+                        }}
+                      >
+                        <GoogleLogin
+                          render={(renderProps) => (
+                            <button
+                              style={{
+                                width: "45px",
+                                height: "45px",
+                                backgroundColor: "rgb(255, 255, 255)",
+                                color: "rgba(0, 0, 0, 0.54)",
+                                boxShadow:
+                                  "rgb(0 0 0 / 24%) 0px 2px 2px 0px, rgb(0 0 0 / 24%) 0px 0px 1px 0px",
+                                padding: "0px 0 2px 2px",
+                                borderRadius: "50px",
+                                border: "1px solid transparent",
+                              }}
+                              onClick={renderProps.onClick}
+                              disabled={renderProps.disabled}
+                            >
+                              <FcGoogle
+                                style={{
+                                  height: "30px",
+                                  width: "30px",
+                                  marginLeft: "5px",
+                                }}
+                              />
+                            </button>
+                          )}
+                          clientId={clientId}
+                          buttonText="Google"
+                          onSuccess={responseGoogle}
+                          onFailure={error}
+                          cookiePolicy={"single_host_origin"}
+                        />
+                      </Row>
+                    </Form>
+                  </div>
+                </Container>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <button
+                    onClick={() => navigate("/Home")}
+                    style={{
+                      backgroundColor: "#081466",
+                      width: "40%",
+                      border: "none",
+                      marginTop: "6%",
+                    }}
+                    type="submit"
+                    className="btn btn-primary"
+                  >
+                    Back to home
+                  </button>
+                </div>
               </Col>
             </Row>
           </div>
