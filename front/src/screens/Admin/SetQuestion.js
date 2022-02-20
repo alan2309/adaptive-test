@@ -777,7 +777,9 @@ function SetQuestion() {
                             <div id="zoomImg" className="form-group">
                               <Zoom>
                                 <Image
-                                  cloudName="chaitanya1911"
+                                  cloudName={
+                                    process.env.REACT_APP_CLOUDINARY_CLOUD_NAME
+                                  }
                                   public_id={imgDB}
                                   width="300"
                                   crop="scale"

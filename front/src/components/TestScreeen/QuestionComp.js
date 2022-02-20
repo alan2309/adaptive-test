@@ -41,7 +41,7 @@ function QuestionComp({
             <Col>
               {qsimg !== null && (
                 <Image
-                  cloudName="chaitanya1911"
+                  cloudName={process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}
                   publicId={qsimg}
                   width="500"
                   crop="scale"
