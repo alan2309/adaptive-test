@@ -71,12 +71,12 @@ function QuestionComp({
                       type="radio"
                       id={index}
                       name={question}
-                      value={crypt.encryptVal(option.mrks)}
+                      value={crypt.encryptVal(option.marks)}
                       style={{}}
                     />
 
                     <TextAreaAutoSize
-                      text={option.opt}
+                      text={option.title}
                       checkBoxToggle={checkBoxToggle}
                       optId={index}
                     ></TextAreaAutoSize>

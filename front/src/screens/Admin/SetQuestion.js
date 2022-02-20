@@ -816,7 +816,7 @@ function SetQuestion() {
                                   className="form-check-radio setQsRadio"
                                   name="correctOpt"
                                   disabled={!isUpdate}
-                                  checked={x.mrks !== 0 ? true : null}
+                                  checked={x.marks !== 0 ? true : null}
                                   value={`Option${index + 1}`}
                                   id={`flexCheckDefault${index + 1}`}
                                   required
@@ -834,7 +834,7 @@ function SetQuestion() {
                                     type="text"
                                     className="form-control"
                                     disabled={!isUpdate}
-                                    defaultValue={x.opt}
+                                    defaultValue={x.title}
                                     name={`Option${index + 1}`}
                                     placeholder={`Enter Option ${index + 1}`}
                                     id={`Option${index + 1}`}

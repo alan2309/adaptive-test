@@ -13,7 +13,7 @@ from django.contrib.auth.models import User
 import datetime
 from rest_framework.parsers import JSONParser
 import random
-from .serializers import CodingTestSerializer, MyUserSerializer, SubjectSerializer,QuestionSerializer, TestSerializer ,ResultSerializer,OptionSerializer,AllUserSerializer
+from .serializers import CodingTestSerializer, MyUserSerializer, OptSerializer, SubjectSerializer,QuestionSerializer, TestSerializer ,ResultSerializer,OptionSerializer,AllUserSerializer
 import math
 from django.db.models import Q
 from dateutil import tz
@@ -215,19 +215,18 @@ def subqs(request,subject=0,tid=0):
             if int(subject)!=4:
                 for x in qs:
                         aa={}
-                        aaOption=[]
+                        # aaOption=[]
                         aa['ques']=x.title
                         aa['id']=x.id
                         aa['img'] = x.imgId
                         ans = Options.objects.filter(question=x)
-                        for asss in ans:
-                            aaaOpt={}
-                            aaaOpt['opt']=asss.title
-                            aaaOpt['id']=asss.id
-                            aaaOpt['mrks']=asss.marks
-                            aaOption.append(aaaOpt)
-
-                        aa['options']=aaOption
+                        aa['options'] = OptSerializer(ans,many=True).data
+                        # for asss in ans:
+                        #     aaaOpt={}
+                        #     aaaOpt['opt']=asss.title
+                        #     aaaOpt['id']=asss.id
+                        #     aaaOpt['mrks']=asss.marks
+                        #     aaOption.append(aaaOpt)
                         if x.type==1:
                             a.append(aa)
                         elif x.type==2:
@@ -242,7 +241,7 @@ def subqs(request,subject=0,tid=0):
                     aa['ques']=x.title
                     aa['id']=x.id
                     a.append(aa)
-                return JsonResponse({'qs':qsno,'avg':avg,'time':time,'allQs':a},safe=False )#error for personality
+                return JsonResponse({'qs':qsno,'avg':avg,'time':time,'allQs':a},safe=False )
     else:
         return HttpResponseBadRequest()
 
@@ -290,20 +289,20 @@ def subs(request):
 
             qs=Questions.objects.all()
             for q in qs:
-                a={}
-                
+                a={} 
                 if str(q.subject.sub_name)!='Coding' and str(q.subject.sub_name)!='Analytical Writing':
                     a['ques']=q.title
                     a['id']=q.id
                     a['imgId']=q.imgId
-                    a['options']=[]
+                    # a['options']=[]
                     opts=Options.objects.filter(question=q)
-                    for opt in opts:
-                        o={}
-                        o['opt']=opt.title
-                        o['id']=opt.id
-                        o['mrks']=opt.marks
-                        a['options'].append(o)
+                    a['options'] = OptSerializer(opts,many=True).data
+                    # for opt in opts:
+                    #     o={}
+                    #     o['opt']=opt.title
+                    #     o['id']=opt.id
+                    #     o['mrks']=opt.marks
+                    #     a['options'].append(o)
                     if q.type==1:
                         f[str(q.subject)]['easy'].append(a)
                     if q.type==2:
@@ -337,14 +336,15 @@ def qs(request):
             qs = Questions.objects.all()
             for x in qs:
                 aa={}
-                aaOption=[]
+                # aaOption=[]
                 aa['ques']=x.title
                 ans = Options.objects.filter(question=x)
-                for asss in ans:
-                    aaaOpt={}
-                    aaaOpt['opt']=asss.title
-                    aaaOpt['mrks']=asss.marks
-                    aaOption.append(aaaOpt)
+                aaOption = OptSerializer(ans,many=True).data
+                # for asss in ans:
+                #     aaaOpt={}
+                #     aaaOpt['opt']=asss.title
+                #     aaaOpt['mrks']=asss.marks
+                #     aaOption.append(aaaOpt)
                 
                 aa['options']=aaOption
                 if x.type==1:
@@ -392,7 +392,7 @@ def results(request,name):
                     avg_p =test.p['avg']    
                 elif sub.sub_name == 'Analytical Writing':
                     avg_a =test.aw['avg']  
-            if(user):
+            if user:
                 d = datetime.datetime.utcnow()
                 myUser=MyUser.objects.get(user=user)
                 name=myUser.name
