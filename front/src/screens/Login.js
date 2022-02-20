@@ -27,7 +27,7 @@ function Login() {
   const [successMsg, setSuccessMsg] = useState("");
   const [dangerMsg, setDangerMsg] = useState("");
   const [isAlertMsgLoaded, setIsAlertMsgLoaded] = useState(false);
-  const [myid, setMyId] = useState(0);
+  const [myid, setMyId] = useState(-1);
   const columnsP = [
     {
       label: "Name",
@@ -92,8 +92,8 @@ function Login() {
         .get("api/admin/tests")
         .then((res) => {
           let ong = res.data.ongoing_test;
-          setMyId(ong[0].id);
-          if (ong.length > 0)
+          if (ong.length > 0){
+            setMyId(ong[0].id);
             ong[0]["ends_in"] = (
               <CustomTimer
                 isLogin={true}
@@ -103,7 +103,7 @@ function Login() {
                 start={!md}
                 style={{ fontSize: "18px" }}
               ></CustomTimer>
-            );
+            );}
           let upt = res.data.upcoming_test;
           for (let x = 0; x < upt.length; x++) {
             upt[x]["starts_in"] = (
@@ -174,7 +174,7 @@ function Login() {
               .then(async (res) => {
                 let acc_token = "JWT " + res.data.access;
                 axiosInstance.defaults.headers["Authorization"] = acc_token;
-                let xx = await availabilty(acc_token);
+                let xx = myid
                 if (xx !== -1 || adminn) {
                   localStorage.setItem("testId", xx); //imp
                   localStorage.setItem("admin", "user");
@@ -185,7 +185,7 @@ function Login() {
                   localStorage.setItem("access_token", res.data.access);
                   localStorage.setItem("username", formData.username);
                   localStorage.setItem("refresh_token", res.data.refresh);
-                  const data = async () =>
+                  const datax = async () =>
                     axiosInstance
                       .post(`api/results/${formData.username}`, {
                         data: { testId: xx },
@@ -212,7 +212,7 @@ function Login() {
                     setMd(true);
                     navigate("/admin/home");
                   } else {
-                    data();
+                    datax();
                   }
                 } else {
                   setIsloading(false);
@@ -223,7 +223,7 @@ function Login() {
           } else {
             setIsloading(false);
             setIsAlertMsgLoaded(true);
-            alert("You Are Not Allowed To Give this Test");
+            setDangerMsg("You Are not allowed To attempt this Test");
           }
         } else {
           setIsloading(false);
@@ -232,23 +232,13 @@ function Login() {
         }
       });
   };
-  async function availabilty() {
-    let aa = 0;
-    await axiosInstance
-      .get("/api/test/0")
-      .then((res) => {
-        aa = res.data.testId;
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-    return parseInt(aa);
-  }
 
   const responseGoogle = async (res) => {
     navigate("/signup", { state: { data: res.profileObj } });
   };
   const error = (res) => {
+    if(res.error==='idpiframe_initialization_failed')
+      return;
     setIsAlertMsgLoaded(true);
     setDangerMsg("Attempt to log in failed");
   };

@@ -1,4 +1,3 @@
-from multiprocessing import managers
 from django.contrib.auth.hashers import make_password
 import json
 from django.http import HttpResponseBadRequest
@@ -49,8 +48,9 @@ def newuser(request):
     if request.method=="POST":
         data=JSONParser().parse(request)['data']
         user = User.objects.create(first_name=data['name'],username = data['email'],email=data['email'],password=make_password(data['pass']))   
-        if(MyUser.objects.filter(user=user).exists()):
-            MyUser.objects.get(user=user).delete()
+        myuser = MyUser.objects.filter(user=user)
+        if(myuser.exists()):
+            myuser[0].delete()
         if int(data['gender'])==1:
             gender="Male"
         elif int(data['gender'])==2:
@@ -74,19 +74,22 @@ def login(request):
         data=JSONParser().parse(request)['data']
         username = data['username']
         password = data['password']
-        testx = Test.objects.get(id=int(data['mytid']))
         user = auth.authenticate(username = username,password = password)
         if user is not None:
             auth.login(request,user)
             if User.objects.get(username=username).is_staff ==True:
                 return JsonResponse({"exist":1,"allowed":1,"admin":1},safe=False)
             else :
+                if int(data['mytid'])==-1:
+                    return JsonResponse({"exist":1,"allowed":1,"admin":0},safe=False)
+                testx = Test.objects.get(id=int(data['mytid']))
                 if testx.token == user.last_name:
                     return JsonResponse({"exist":1,"allowed":1,"admin":0},safe=False)
                 else:
                     return JsonResponse({"exist":1,"allowed":0,"admin":0},safe=False)       
         else:
             return JsonResponse({"exist":0},safe=False)
+
 @csrf_exempt
 def changepass(request):
     if request.method=="POST":
@@ -112,7 +115,7 @@ def forgotpass(request):
         user = User.objects.get(email = data['email'])    
         token = str(uuid.uuid4())
         subject = "Your Forget PAssword Link"
-        message = f'Hi, Click on the link to to reset your password- http://localhost:3000/change-pass?token={token}'
+        message = f'Hi,\n Click on the link to to reset your password- http://localhost:3000/change-pass?token={token}'
         email_from = settings.EMAIL_HOST_USER
         recipient_list = [user.email]
         send_mail(subject,message,email_from,recipient_list)
@@ -840,16 +843,8 @@ def saveTest(request):
         return HttpResponseBadRequest()
 @csrf_exempt
 def tests(request,idd=0):
-    if request.headers.get('Authorization') and checkAuthorization(request.headers["Authorization"]):
-        if request.method == 'GET':
-            d = datetime.datetime.utcnow()
-            ll=Test.objects.filter(test_start__lte = d,test_end__gte=d)
-            if(ll.exists()):
-                return JsonResponse({'testId':ll[0].id},safe=False)
-            else:
-                return JsonResponse({'testId':-1},safe=False)    
-
-        elif request.method == 'POST':
+    if request.headers.get('Authorization') and checkAuthorization(request.headers["Authorization"]):  
+        if request.method == 'POST':
             data=JSONParser().parse(request)['data']
             if not data['delete']:
                 if not data['update']:
