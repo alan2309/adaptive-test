@@ -9,6 +9,8 @@ import createFilterOptions from "react-select-fast-filter-options";
 import Select from "react-select";
 
 function SignUpModified() {
+  const[colleges,setColleges] = useState([])
+  const[departments,setDepartments] = useState([])
   const [isLoading, setIsloading] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
@@ -33,7 +35,8 @@ function SignUpModified() {
   const [successMsg, setSuccessMsg] = useState("");
   const [dangerMsg, setDangerMsg] = useState("");
   const [isAlertMsgLoaded, setIsAlertMsgLoaded] = useState(false);
-  const filterOptions = createFilterOptions(Colleges.CollegeData);
+  const filterOptions = createFilterOptions(colleges);
+  const filterOptions2 = createFilterOptions(departments);
   useEffect(() => {
     const check = async () =>
       await axiosInstance
@@ -53,7 +56,15 @@ function SignUpModified() {
           }
         })
         .catch((e) => console.log(e));
+
+        const list =async ()=> await axiosInstance.get("api/const")
+        .then(res=>{
+          setColleges(res.data.colleges)
+          setDepartments(res.data.departments)
+        })
+        .catch(e=>console.log(e))
     check();
+    list();
     setIsloading(false);
   }, []);
 
@@ -61,18 +72,19 @@ function SignUpModified() {
     e.preventDefault();
     if (formData.pass === formData.cpass) {
       setIsloading(false);
-      axiosInstance
-        .post(`api/newuser`, { data: formData })
-        .then((res) => {
-          setIsloading(true);
-          if (res.data.exists) {
-            alert("User already exists");
-          }
-          navigate("/login");
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+      console.log(formData)
+      // axiosInstance
+      //   .post(`api/newuser`, { data: formData })
+      //   .then((res) => {
+      //     setIsloading(true);
+      //     if (res.data.exists) {
+      //       alert("User already exists");
+      //     }
+      //     navigate("/login");
+      //   })
+      //   .catch((e) => {
+      //     console.log(e);
+      //   });
     } else {
       setIsAlertMsgLoaded(true);
       setDangerMsg("Passwords do not match");
@@ -265,8 +277,9 @@ function SignUpModified() {
                 <Form.Group className="mb-3" style={{ marginTop: "25px" }}>
                   <Form.Label> College </Form.Label>
                   <Select
+                  name="college"
                     filterOptions={filterOptions}
-                    options={Colleges.CollegeData}
+                    options={colleges}
                   />
                 </Form.Group>
                 <Form.Group
@@ -275,14 +288,20 @@ function SignUpModified() {
                   controlId="formBasicEmail"
                 >
                   <Form.Label> Branch </Form.Label>
-                  <Form.Control
+                  <Select
+                  name="branch"
+                  onChange={(e)=>console.log(e)}
+                    filterOptions={filterOptions2}
+                    options={departments}
+                  />
+                  {/* <Form.Control
                     type="number"
                     type="text"
                     placeholder="Branch"
                     onChange={handleChange}
                     name="branch"
                     required
-                  />
+                  /> */}
                 </Form.Group>
                 <Form.Group
                   className="mb-3"
