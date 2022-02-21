@@ -19,15 +19,17 @@ import ViewSchdlTest from "./screens/Admin/ViewSchdlTest";
 import Compiler from "./screens/Test/Compiler";
 import CompScreen from "./screens/Test/compScreen";
 import Page_404 from "./screens/Page_404";
+import RegisterAdmin from "./screens/Admin/RegisterAdmin";
+import Profile from "./screens/Admin/Profile";
 import DetailScreen from "./screens/DetailScreen";
 import PrivateRoute from "./components/PrivateRoute";
-import "./css/App.css";
 import Signup from "./screens/Signup";
 import SignUpModified from "./screens/SignUpModified";
 import ChangePass from "./screens/ChangePass";
 import DetailPageModified from "./screens/DetailPageModified";
 import Feedback from "./screens/Admin/Feedback";
 import Permissions from "./screens/Admin/Permissions";
+import "./css/App.css";
 function App() {
   return (
     <div className="App" id="element">
@@ -76,6 +78,28 @@ function App() {
                 <Row style={{ margin: "0px" }}>
                   <Col style={{ padding: "0px" }}>
                     <Login />
+                  </Col>
+                </Row>
+              }
+            />
+            <Route
+              path="/admin/RegisterAdmin"
+              exact
+              element={
+                <Row style={{ margin: "0px" }}>
+                  <Col style={{ padding: "0px" }}>
+                    <RegisterAdmin />
+                  </Col>
+                </Row>
+              }
+            />
+            <Route
+              path="/admin/Profile"
+              exact
+              element={
+                <Row style={{ margin: "0px" }}>
+                  <Col style={{ padding: "0px" }}>
+                    <Profile />
                   </Col>
                 </Row>
               }
@@ -130,7 +154,7 @@ function App() {
                 exact
                 element={
                   <Row style={{ margin: "0 0 0 0" }}>
-                    <Col style={{ padding: "0px 90px 0px 0px" }}>
+                    <Col style={{ padding: "0px 0px 0px 0px" }}>
                       <AdminHome />
                     </Col>
                   </Row>

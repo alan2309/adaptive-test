@@ -6,6 +6,7 @@ import axiosInstance from "../../axios";
 import Loader from "../../components/Loader";
 import "../../css/SchdlTest.css";
 import Alert from "../../components/Admin/Alert";
+import { BsFillInfoCircleFill } from "react-icons/bs";
 
 function ScheduledTest() {
   const [successMsg, setSuccessMsg] = useState("");
@@ -589,17 +590,52 @@ function ScheduledTest() {
             >
               Back
             </button>
+            <p
+              style={{
+                fontSize: "20px",
+                fontWeight: "bold",
+                marginBottom: "20px",
+                marginTop: "10px",
+                color: "#293e6f",
+                textAlign: "center",
+                marginLeft: "30px",
+              }}
+            >
+              {" "}
+              View Tests{" "}
+              <BsFillInfoCircleFill
+                className="info"
+                style={{
+                  height: "12px",
+                  width: "12px",
+                  marginLeft: "5px",
+                  justifyContent: "center",
+                }}
+                title="Admins can view, delete and modify the tests scheduled by them. Click on delete button or eye button to delete/modify the tests and preview the scheduled tests"
+              />{" "}
+            </p>
+
             <Row style={{ margin: "0 0 0 10%" }}>
               <Col md={6} style={{ marginRight: "0%" }}>
                 {" "}
                 <div
-                  className="basicRec"
                   style={{
                     minHeight: window.screen.height - 400,
                     width: "90%",
+                    fontSize: "13.6px",
+                    background: "#FFFFFF",
+                    border: "2px solid #E5E5E5",
+                    boxSizing: "border-box",
+                    borderRadius: "14px",
                   }}
                 >
-                  <h4 style={{ paddingLeft: "30%", paddingTop: "10px" }}>
+                  <h4
+                    style={{
+                      paddingTop: "10px",
+                      fontSize: "15.6px",
+                      textAlign: "center",
+                    }}
+                  >
                     Scheduled Test
                   </h4>
                   <div className="lineThrough"></div>
@@ -615,8 +651,7 @@ function ScheduledTest() {
                             backgroundColor: "white",
                             borderColor: "#F0F0F0",
                             marginBottom: "1px",
-                            boxShadow:
-                              "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
+                            border: "1px solid #E5E5E5",
                             borderRadius: "10px",
                           }}
                         >
@@ -667,14 +702,25 @@ function ScheduledTest() {
               <Col md={6} style={{ marginRight: "0%" }}>
                 {" "}
                 <div
-                  className="basicRec"
                   style={{
                     minHeight: window.screen.height - 400,
                     maxHeight: window.screen.height - 400,
                     width: "90%",
+                    fontSize: "13.6px",
+                    background: "#FFFFFF",
+                    border: "2px solid #E5E5E5",
+                    boxSizing: "border-box",
+                    borderRadius: "14px",
+                    marginBottom: "40px",
                   }}
                 >
-                  <h4 style={{ paddingLeft: "30%", paddingTop: "10px" }}>
+                  <h4
+                    style={{
+                      paddingTop: "10px",
+                      fontSize: "15.6px",
+                      textAlign: "center",
+                    }}
+                  >
                     Upcoming Test
                   </h4>
                   <div className="lineThrough"></div>
@@ -690,8 +736,7 @@ function ScheduledTest() {
                             backgroundColor: "white",
                             borderColor: "#F0F0F0",
                             marginBottom: "1px",
-                            boxShadow:
-                              "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
+                            border: "1px solid #E5E5E5",
                             borderRadius: "10px",
                           }}
                         >

@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Col,
-  Row,
-  ListGroup,
-  Card,
-  Navbar,
-  Nav,
-} from "react-bootstrap";
+import { Col, Row, ListGroup, Card, Navbar, Nav } from "react-bootstrap";
 import "../../css/AdminHomeScreen.css";
 import Coding from "../../img/carbon_code.svg";
 import Setting from "../../img/Brain.svg";
@@ -41,19 +34,21 @@ function AdminHome() {
           backgroundColor: "#FFF",
           boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
           color: "black",
-          height: "75px",
-          padding: "0 10%",
-          display: "block",
+          paddingTop: "0px",
+          paddingBottom: "0px",
+          height: "80px",
+          paddingRight: "10%",
         }}
+        expand="lg"
       >
-        <Nav style={{ display: "block" }}>
+        <Nav style={{ width: "100%", left: "auto" }}>
           <ListGroup horizontal defaultActiveKey="#link1">
             <ListGroup.Item
               action
-              href="/"
+              href="/admin/Home"
               style={{
-                width: "50%",
-                height: "75px",
+                width: "8%",
+                height: "80px",
                 padding: "25px 0px",
                 display: "block",
                 textAlign: "center",
@@ -91,8 +86,8 @@ function AdminHome() {
                 navigate("/admin/newTest", { state: { sid: 0 } });
               }}
               style={{
-                width: "50%",
-                height: "75px",
+                width: "8%",
+                height: "80px",
                 padding: "25px 0px",
                 display: "block",
                 textAlign: "center",
@@ -128,8 +123,8 @@ function AdminHome() {
               action
               href="/admin/scheduledTest"
               style={{
-                width: "50%",
-                height: "75px",
+                width: "8%",
+                height: "80px",
                 padding: "25px 0px",
                 display: "block",
                 textAlign: "center",
@@ -163,10 +158,10 @@ function AdminHome() {
             </ListGroup.Item>
             <ListGroup.Item
               action
-              href="/admin/RegisterAdmin"
+              href="/admin/Permissions"
               style={{
-                width: "50%",
-                height: "75px",
+                width: "8%",
+                height: "80px",
                 padding: "25px 0px",
                 display: "block",
                 textAlign: "center",
@@ -202,8 +197,8 @@ function AdminHome() {
               action
               href="/Permissions"
               style={{
-                width: "50%",
-                height: "75px",
+                width: "8%",
+                height: "80px",
                 padding: "25px 0px",
                 display: "block",
                 textAlign: "center",
@@ -239,8 +234,8 @@ function AdminHome() {
               action
               href="/admin/Feedback"
               style={{
-                width: "50%",
-                height: "75px",
+                width: "8%",
+                height: "80px",
                 padding: "25px 0px",
                 display: "block",
                 textAlign: "center",
@@ -276,8 +271,8 @@ function AdminHome() {
               action
               href="/admin/Profile"
               style={{
-                width: "50%",
-                height: "75px",
+                width: "8%",
+                height: "80px",
                 padding: "25px 0px",
                 display: "block",
                 textAlign: "center",
@@ -311,10 +306,10 @@ function AdminHome() {
             </ListGroup.Item>
             <ListGroup.Item
               action
-              href="/logout"
+              href="/admin/Logout"
               style={{
-                width: "50%",
-                height: "75px",
+                width: "8%",
+                height: "80px",
                 padding: "25px 0px",
                 display: "block",
                 textAlign: "center",
@@ -326,7 +321,6 @@ function AdminHome() {
                 borderTop: "none",
                 borderBottom: "none",
                 borderLeft: "none",
-                borderRight: "none",
               }}
             >
               <RiLogoutCircleFill
