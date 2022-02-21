@@ -365,7 +365,7 @@ function Login() {
           <div>
             <Row style={{ height: "100%", margin: "0px" }}>
               <Col lg={7} style={{ backgroundColor: "white", padding: "0px" }}>
-                <div class="all_content" style={{ margin: "0px 50px" }}>
+                <div className="all_content" style={{ margin: "0px 50px" }}>
                   <h5
                     style={{
                       fontStyle: " normal",
