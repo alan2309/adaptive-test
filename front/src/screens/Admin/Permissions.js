@@ -20,8 +20,6 @@ function Permissions() {
 
   function checkAllSelected(rowLength) {
     let c = $(".checkboxFeedback:checkbox:checked").length;
-    console.log(rowLength);
-    console.log(c);
     let areAllSected = parseInt(c) === parseInt(rowLength);
     document.getElementById("selectAllCheckboc").checked = areAllSected
       ? true

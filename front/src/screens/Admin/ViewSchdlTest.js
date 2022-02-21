@@ -92,8 +92,6 @@ function ViewSchdlTest() {
     axiosInstance
       .get(`/api/admin/resultTest/${location.state.id}`)
       .then((res) => {
-        console.log(res.data);
-
         setRows(res.data.studentNameArr);
         setTData({
           columns: columns,

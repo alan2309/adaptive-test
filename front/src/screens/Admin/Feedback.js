@@ -23,8 +23,6 @@ function Feedback() {
 
   function checkAllSelected(rowLength) {
     let c = $(".checkboxFeedback:checkbox:checked").length;
-    console.log(rowLength);
-    console.log(c);
     let areAllSected = parseInt(c) === parseInt(rowLength);
     setAreAllChecked(areAllSected ? true : false);
     document.getElementById("selectAllCheckboc").checked = areAllSected
@@ -37,7 +35,6 @@ function Feedback() {
     axiosInstance
       .get("api/feedback")
       .then((res) => {
-        console.log(res.data);
         setIsloading(false);
         let rowArr = res.data.feedback_data.map((v, index) => ({
           ...v,
@@ -207,10 +204,7 @@ function Feedback() {
                     x.map((xx) =>
                       userId.push(parseInt(x[xx].id.split("checkbox")[1]))
                     );
-
-                    console.log(userId);
                   } else {
-                    console.log("all select");
                     if (!(x.length === 0)) {
                       isAllSelected = 1;
                     }
@@ -220,7 +214,6 @@ function Feedback() {
                       data: { isAllSelected: isAllSelected, userId: userId },
                     })
                     .then((res) => {
-                      console.log(res.data);
                       window.location.reload();
                     })
                     .catch((e) => {

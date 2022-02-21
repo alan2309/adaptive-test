@@ -42,7 +42,6 @@ function ScheduledTest() {
       await axiosInstance
         .get("api/admin/tests")
         .then((res) => {
-          console.log(res.data);
           let ar = [];
           setSTests(res.data.stests);
           setUTests(res.data.utests);
@@ -84,15 +83,9 @@ function ScheduledTest() {
     setP(test.p);
     setAW(test.aw);
     let date = s.toLocaleDateString();
-    console.log(date);
-    console.log(s);
-
     date = date.split("/");
     let time = s.toTimeString().split(" ")[0];
     time = time.split(":");
-    console.log(
-      new Date(date[2], date[0] - 1, date[1], time[0], time[1], time[2])
-    );
     onChangeStart(
       new Date(date[2], date[0] - 1, date[1], time[0], time[1], time[2])
     );
@@ -118,9 +111,6 @@ function ScheduledTest() {
     setIsloading(true);
     var cDate = new Date();
     if (valueStart <= valueEnd && valueStart > cDate) {
-      console.log(valueStart);
-      console.log(valueEnd);
-
       if (valueStart !== valueStartCheck || valueEnd !== valueEndCheck) {
         let objClash = clash(valueStart.getTime(), valueEnd.getTime(), testId);
         if (!objClash.bool) {
@@ -143,7 +133,6 @@ function ScheduledTest() {
             })
             .then((res) => {
               setIsloading(false);
-              console.log(res);
               window.location.reload();
             })
             .catch((e) => {
@@ -178,7 +167,6 @@ function ScheduledTest() {
       })
       .then((res) => {
         setIsloading(false);
-        console.log(res);
         window.location.reload();
       })
       .catch((e) => {
@@ -247,7 +235,6 @@ function ScheduledTest() {
     setIsloading(false);
   }
   function onSubmitModal(e) {
-    console.log(e.nativeEvent.submitter.id);
     e.preventDefault();
     if (e.nativeEvent.submitter.id === "delete_test") {
       delTest(e);

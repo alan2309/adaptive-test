@@ -679,7 +679,7 @@ def addQs(request):
                                     c=cloudinary.uploader.destroy(public_id=public_id)
                                     f.imgId=None
                                 except:
-                                    print('could del pic') 
+                                    pass
                         f.save()
                         Options.objects.filter(question=f).delete()
                 optionData = {x: data[x] for x in data if 'Option' in x}
@@ -780,7 +780,7 @@ def delQs(request):
                     try:       
                         c=cloudinary.uploader.destroy(public_id=public_id) #return {result:'ok'}
                     except:
-                        print('couldnt del pic') 
+                        pass
                     qs.delete()
                 elif sid==5:
                     CodingTest.objects.get(id=x).delete()

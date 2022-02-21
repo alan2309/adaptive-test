@@ -162,7 +162,6 @@ function Login() {
         },
       })
       .then(async (res) => {
-        console.log(res.data);
         if (res.data.exist) {
           if (res.data.allowed) {
             let adminn = res.data.admin;
