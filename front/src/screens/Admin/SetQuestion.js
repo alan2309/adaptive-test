@@ -56,6 +56,7 @@ function SetQuestion() {
   const [confirm_yes_func, set_confirm_yes_func] = useState();
   const [confirm_no_func, set_confirm_no_func] = useState();
   const [confirm_dialog_msg, set_confirm_dialog_msg] = useState("");
+  const [confirm_dialog_title, set_confirm_dialog_title] = useState("");
 
   useEffect(() => {
     document.getElementById(location.state.type).selected = "selected";
@@ -376,7 +377,10 @@ function SetQuestion() {
       } else {
         set_confirm_yes_func(() => confirm_del_yes);
         set_confirm_no_func(() => confirm_no);
-        set_confirm_dialog_msg("Are you sure you want to delete this question");
+        set_confirm_dialog_msg(
+          "Are you sure you want to delete this question?"
+        );
+        set_confirm_dialog_title("Delete it?");
         setShowConfirmDialogBox(true);
       }
     } else {
@@ -474,6 +478,7 @@ function SetQuestion() {
     set_confirm_yes_func(() => confirm_yes);
     set_confirm_no_func(() => confirm_no);
     set_confirm_dialog_msg("Are you sure you want to remove this image?");
+    set_confirm_dialog_title("Remove?");
     setShowConfirmDialogBox(true);
   }
   function confirm_yes() {
@@ -508,6 +513,7 @@ function SetQuestion() {
         confirm_no={confirm_no_func}
         confirm_yes={confirm_yes_func}
         arg={argConfirmModal}
+        title={confirm_dialog_title}
         msg={confirm_dialog_msg}
       />
       <form onSubmit={(e) => handleSubmit(e)} id="sbForm">
@@ -1472,6 +1478,7 @@ function SetQuestion() {
                     set_confirm_dialog_msg(
                       "Do you want to discard these changes?"
                     );
+                    set_confirm_dialog_title("Discard?");
                     setShowConfirmDialogBox(true);
                   }}
                   style={{

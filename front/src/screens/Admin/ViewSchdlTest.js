@@ -131,6 +131,7 @@ function ViewSchdlTest() {
             confirm_yes={confirm_yes}
             arg={argConfirmModal}
             msg={"Are you sure you want to delete this student result?"}
+            title={"Delete it?"}
           />
           <button
             style={{

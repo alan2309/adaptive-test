@@ -302,6 +302,7 @@ function ScheduledTest() {
             <ConfirmDialogBox
               showConfirmDialogBox={showConfirmDialogBox}
               setShowConfirmDialogBox={setShowConfirmDialogBox}
+              title={"Delete it?"}
               confirm_no={confirm_no_func}
               confirm_yes={confirm_yes_func}
               arg={argConfirmModal}
