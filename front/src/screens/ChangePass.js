@@ -15,10 +15,18 @@ function ChangePass() {
   const [formData, updateFormData] = useState(initialFormData);
 
   useEffect(() => {
-    updateFormData({
-      ...formData,
-      token: searchParams.get("token"),
-    });
+    axiosInstance.post('api/checkToken',{data:{'mail': searchParams.get("user"),'token':searchParams.get("token")}})
+    .then(res=>{
+      if(res.data.exists){
+        updateFormData({
+          ...formData,
+          token: searchParams.get("token"),
+        });
+      }
+      else{
+        navigate('/logout')
+      }
+    })
   }, []);
 
   const handleSubmit = (e) => {

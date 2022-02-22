@@ -114,6 +114,19 @@ def changepass(request):
         else:
            return JsonResponse({'exists':0},safe=False)         
 
+@csrf_exempt
+def checkpassToken(request):
+    if request.method=="POST":
+        data=JSONParser().parse(request)['data']
+        user = User.objects.filter(email = data['mail'])
+        if user.exists():
+            myuser = MyUser.objects.get(user=user[0])
+            if myuser.change_pass_token == data['token']:
+                return JsonResponse({'exists':1},safe=False)
+            else:
+                return JsonResponse({'exists':0},safe=False)
+        else:
+                return JsonResponse({'exists':0},safe=False)            
 
 @csrf_exempt
 def forgotpass(request):
@@ -124,7 +137,7 @@ def forgotpass(request):
         user = User.objects.get(email = data['email'])    
         token = str(uuid.uuid4())
         subject = "Your Forget PAssword Link"
-        message=f"Hello {user.first_name},\n\nSomeone (hopefully you!) has requested to change your password. Please click the link below to change your password now,\n\nhttp://localhost:3000/change-pass?token={token}\n\nIf you didn't make this request, please disregard this email.\nPlease note that your password will not change unless you click the link above and create a new one. If you've requested multiple reset emails, please make sure you click the link inside the most recent email.\n\nSincerely,\nThe Placement Portal Team"
+        message=f"Hello {user.first_name},\n\nSomeone (hopefully you!) has requested to change your password. Please click the link below to change your password now,\n\nhttp://localhost:3000/change-pass?token={token}&user={user.email}\n\nIf you didn't make this request, please disregard this email.\nPlease note that your password will not change unless you click the link above and create a new one. If you've requested multiple reset emails, please make sure you click the link inside the most recent email.\n\nSincerely,\nThe Placement Portal Team"
         email_from = settings.EMAIL_HOST_USER
         recipient_list = [user.email]
         send_mail(subject,message,email_from,recipient_list)
