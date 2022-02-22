@@ -14,6 +14,7 @@ import Loader from "../../components/Loader";
 import "../../css/SchdlTest.css";
 import Alert from "../../components/Admin/Alert";
 import { FiInfo } from "react-icons/fi";
+import ConfirmDialogBox from "../../components/ConfirmDialogBox";
 
 function ScheduledTest() {
   const popover = (
@@ -52,6 +53,11 @@ function ScheduledTest() {
   const [p, setP] = useState({});
   const [aw, setAW] = useState({});
   const navigate = useNavigate();
+  const [showConfirmDialogBox, setShowConfirmDialogBox] = useState(false);
+  const [argConfirmModal, setArgConfirmModal] = useState();
+  const [confirm_yes_func, set_confirm_yes_func] = useState();
+  const [confirm_no_func, set_confirm_no_func] = useState();
+  const [confirm_dialog_msg, set_confirm_dialog_msg] = useState("");
 
   useEffect(() => {
     const data = async () => {
@@ -170,7 +176,7 @@ function ScheduledTest() {
         : setDangerMsg("End date cannot be less than start date");
     }
   }
-  function delTest(e) {
+  function del_upcoming_test() {
     setIsloading(true);
     axiosInstance
       .delete(`api/test/${testId}`, {
@@ -191,8 +197,14 @@ function ScheduledTest() {
         console.log(e);
       });
   }
-  function delSTest(idd) {
-    if (window.confirm("Delete this test?")) {
+  function delTest(e) {
+    set_confirm_yes_func(() => del_upcoming_test);
+    set_confirm_no_func(() => confirm_no);
+    set_confirm_dialog_msg("Are you sure you want to delete this test");
+    setShowConfirmDialogBox(true);
+  }
+  function confirm_yes(idd) {
+    if (idd !== undefined) {
       setIsloading(true);
       axiosInstance
         .delete(`api/test/${idd}`)
@@ -208,6 +220,14 @@ function ScheduledTest() {
           console.log(e);
         });
     }
+  }
+  function confirm_no() {}
+  function delSTest(idd) {
+    setArgConfirmModal(idd);
+    set_confirm_yes_func(() => confirm_yes);
+    set_confirm_no_func(() => confirm_no);
+    set_confirm_dialog_msg("Are you sure you want to delete this test");
+    setShowConfirmDialogBox(true);
   }
 
   function startTest(tid) {
@@ -279,6 +299,14 @@ function ScheduledTest() {
             type="danger"
           ></Alert>
           <div className="SchdlTest">
+            <ConfirmDialogBox
+              showConfirmDialogBox={showConfirmDialogBox}
+              setShowConfirmDialogBox={setShowConfirmDialogBox}
+              confirm_no={confirm_no_func}
+              confirm_yes={confirm_yes_func}
+              arg={argConfirmModal}
+              msg={confirm_dialog_msg}
+            />
             <Modal show={show} onHide={handleClose}>
               <form
                 onSubmit={(e) => {
@@ -631,7 +659,6 @@ function ScheduledTest() {
                 </button>
               </OverlayTrigger>
             </p>
-
             <Row style={{ margin: "0 0 0 10%" }}>
               <Col md={6} style={{ marginRight: "0%" }}>
                 {" "}

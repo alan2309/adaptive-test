@@ -7,6 +7,7 @@ import { MDBDataTable } from "mdbreact";
 import { CSVLink } from "react-csv";
 import Loader from "../../components/Loader";
 import { SiMicrosoftexcel } from "react-icons/si";
+import ConfirmDialogBox from "../../components/ConfirmDialogBox";
 
 function ViewSchdlTest() {
   const [isLoading, setIsloading] = useState(true);
@@ -14,6 +15,8 @@ function ViewSchdlTest() {
   const location = useLocation();
   const [rows, setRows] = useState([]);
   const [data, setTData] = useState({ columns: [], rows: [] });
+  const [showConfirmDialogBox, setShowConfirmDialogBox] = useState(false);
+  const [argConfirmModal, setArgConfirmModal] = useState();
   // let addBtn;
   const columns = [
     {
@@ -69,24 +72,7 @@ function ViewSchdlTest() {
     { label: "Marks", key: "marks" },
     { label: "Delete", key: "addBtn" },
   ];
-  function deleteRow(id) {
-    if (window.confirm("Delete this test?")) {
-      setIsloading(true);
-      axiosInstance
-        .delete(`api/delres/${id}`)
-        .then((res) => {
-          setIsloading(false);
-          let arr = data.rows.filter((ex) => {
-            return ex.id !== id;
-          });
-          setTData({ columns: data.columns, rows: arr });
-        })
-        .catch((e) => {
-          setIsloading(false);
-          console.log(e);
-        });
-    }
-  }
+
   useEffect(() => {
     setIsloading(true);
     axiosInstance
@@ -111,12 +97,41 @@ function ViewSchdlTest() {
       });
     setIsloading(false);
   }, []);
+  function deleteRow(id) {
+    setArgConfirmModal(id);
+    setShowConfirmDialogBox(true);
+  }
+  function confirm_yes(id) {
+    setIsloading(true);
+    axiosInstance
+      .delete(`api/delres/${id}`)
+      .then((res) => {
+        setIsloading(false);
+        let arr = data.rows.filter((ex) => {
+          return ex.id !== id;
+        });
+        setTData({ columns: data.columns, rows: arr });
+      })
+      .catch((e) => {
+        setIsloading(false);
+        console.log(e);
+      });
+  }
+  function confirm_no() {}
   return (
     <>
       {isLoading ? (
         <Loader />
       ) : (
         <div>
+          <ConfirmDialogBox
+            showConfirmDialogBox={showConfirmDialogBox}
+            setShowConfirmDialogBox={setShowConfirmDialogBox}
+            confirm_no={confirm_no}
+            confirm_yes={confirm_yes}
+            arg={argConfirmModal}
+            msg={"Are you sure you want to delete this student result?"}
+          />
           <button
             style={{
               marginLeft: "1%",

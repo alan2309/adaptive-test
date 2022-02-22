@@ -787,13 +787,14 @@ def delQs(request):
             for x in data['delQs']:
                 if sid != 5 and sid != 6:
                     qs=Questions.objects.get(id=x)
-                    public_id_1='adaptive_test/{}'.format(qs.subject)
-                    public_id_2='{}'.format(qs.imgId.split('{}'.format(qs.subject))[1]).split('.')[0]
-                    public_id='{0}{1}'.format(public_id_1,public_id_2)
-                    try:       
-                        c=cloudinary.uploader.destroy(public_id=public_id) #return {result:'ok'}
-                    except:
-                        pass
+                    if qs.imgId != None:
+                        public_id_1='adaptive_test/{}'.format(qs.subject)
+                        public_id_2='{}'.format(qs.imgId.split('{}'.format(qs.subject))[1]).split('.')[0]
+                        public_id='{0}{1}'.format(public_id_1,public_id_2)
+                        try:
+                            c=cloudinary.uploader.destroy(public_id=public_id) #return {result:'ok'}
+                        except:
+                            pass
                     qs.delete()
                 elif sid==5:
                     CodingTest.objects.get(id=x).delete()
