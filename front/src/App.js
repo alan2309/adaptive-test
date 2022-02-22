@@ -27,39 +27,40 @@ import ChangePass from "./screens/ChangePass";
 import DetailPageModified from "./screens/DetailPageModified";
 import Feedback from "./screens/Admin/Feedback";
 import Permissions from "./screens/Admin/Permissions";
+import { useMediaQuery } from "react-responsive";
+import MobileWidth from "./components/MobileWidth";
 import "./css/App.css";
-import { useMediaQuery } from 'react-responsive'
 function App() {
   const isDesktopOrLaptop = useMediaQuery({
-    query: '(min-width: 1024px)'
-  })
+    query: "(min-width: 1024px)",
+  });
 
   return (
     <div className="App" id="element">
       <Navbar
-          style={{
-            backgroundColor: "#fff",
-            boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-            color: "black",
-            paddingTop: "0px",
-            paddingBottom: "0px",
-          }}
-          expand="xl"
-        >
-          <Navbar.Brand className="navBrand">
-            <img
-              className="logoImage"
-              height="80px"
-              width="80px"
-              alt="logo"
-              src={logo}
-            ></img>
-            <div className="logoTitle">
-              <h5 className="djsce">DJSCE</h5>
-              <h5 className="it">INFORMATION TECHNOLOGY</h5>
-            </div>
-          </Navbar.Brand>
-        </Navbar>
+        style={{
+          backgroundColor: "#fff",
+          boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+          color: "black",
+          paddingTop: "0px",
+          paddingBottom: "0px",
+        }}
+        expand="xl"
+      >
+        <Navbar.Brand className="navBrand">
+          <img
+            className="logoImage"
+            height="80px"
+            width="80px"
+            alt="logo"
+            src={logo}
+          ></img>
+          <div className="logoTitle">
+            <h5 className="djsce">DJSCE</h5>
+            <h5 className="it">INFORMATION TECHNOLOGY</h5>
+          </div>
+        </Navbar.Brand>
+      </Navbar>
       <div>
         <Router>
           <Routes>
@@ -67,96 +68,120 @@ function App() {
               path="/testScreen"
               exact
               element={
-                isDesktopOrLaptop?
-                <Row style={{ margin: "20px 0 0 0" }}>
-                  <Col style={{ padding: "10px 90px" }}>
-                    <TestScreen />
-                  </Col>
-                </Row>:<h1>Site Can Only be viewed on Laptop or Pc</h1>
+                isDesktopOrLaptop ? (
+                  <Row style={{ margin: "20px 0 0 0" }}>
+                    <Col style={{ padding: "10px 90px" }}>
+                      <TestScreen />
+                    </Col>
+                  </Row>
+                ) : (
+                  <MobileWidth />
+                )
               }
             />
             <Route
               path="/login"
               exact
               element={
-                isDesktopOrLaptop?
-                <Row style={{ margin: "0px" }}>
-                  <Col style={{ padding: "0px" }}>
-                    <Login />
-                  </Col>
-                </Row>:<h1>Site Can Only be viewed on Laptop or Pc</h1>
+                isDesktopOrLaptop ? (
+                  <Row style={{ margin: "0px" }}>
+                    <Col style={{ padding: "0px" }}>
+                      <Login />
+                    </Col>
+                  </Row>
+                ) : (
+                  <MobileWidth />
+                )
               }
             />
             <Route
               path="/admin/RegisterAdmin"
               exact
               element={
-                isDesktopOrLaptop?
-                <Row style={{ margin: "0px" }}>
-                  <Col style={{ padding: "0px" }}>
-                    <RegisterAdmin />
-                  </Col>
-                </Row>:<h1>Site Can Only be viewed on Laptop or Pc</h1>
+                isDesktopOrLaptop ? (
+                  <Row style={{ margin: "0px" }}>
+                    <Col style={{ padding: "0px" }}>
+                      <RegisterAdmin />
+                    </Col>
+                  </Row>
+                ) : (
+                  <MobileWidth />
+                )
               }
             />
             <Route
               path="/admin/Profile"
               exact
               element={
-                isDesktopOrLaptop?
-                <Row style={{ margin: "0px" }}>
-                  <Col style={{ padding: "0px" }}>
-                    <Profile />
-                  </Col>
-                </Row>:<h1>Site Can Only be viewed on Laptop or Pc</h1>
+                isDesktopOrLaptop ? (
+                  <Row style={{ margin: "0px" }}>
+                    <Col style={{ padding: "0px" }}>
+                      <Profile />
+                    </Col>
+                  </Row>
+                ) : (
+                  <MobileWidth />
+                )
               }
             />
             <Route
               path="/signup"
               exact
               element={
-                isDesktopOrLaptop?
-                <Row style={{ margin: "20px 0 0 0" }}>
-                  <Col style={{ padding: "10px 90px" }}>
-                    <SignUpModified />
-                  </Col>
-                </Row>:<h1>Site Can Only be viewed on Laptop or Pc</h1>
+                isDesktopOrLaptop ? (
+                  <Row style={{ margin: "20px 0 0 0" }}>
+                    <Col style={{ padding: "10px 90px" }}>
+                      <SignUpModified />
+                    </Col>
+                  </Row>
+                ) : (
+                  <MobileWidth />
+                )
               }
             />
             <Route
               path="/result"
               exact
               element={
-                isDesktopOrLaptop?
-                <Row style={{ margin: "20px 0 0 0" }}>
-                  <Col style={{ padding: "10px 90px" }}>
-                    <Result />
-                  </Col>
-                </Row>:<h1>Site Can Only be viewed on Laptop or Pc</h1>
+                isDesktopOrLaptop ? (
+                  <Row style={{ margin: "20px 0 0 0" }}>
+                    <Col style={{ padding: "10px 90px" }}>
+                      <Result />
+                    </Col>
+                  </Row>
+                ) : (
+                  <MobileWidth />
+                )
               }
             />
             <Route
               path="/logout"
               exact
               element={
-                isDesktopOrLaptop?
-                <Row style={{ margin: "20px 0 0 0" }}>
-                  <Col style={{ padding: "10px 90px" }}>
-                    <Logout />
-                  </Col>
-                </Row>:<h1>Site Can Only be viewed on Laptop or Pc</h1>
+                isDesktopOrLaptop ? (
+                  <Row style={{ margin: "20px 0 0 0" }}>
+                    <Col style={{ padding: "10px 90px" }}>
+                      <Logout />
+                    </Col>
+                  </Row>
+                ) : (
+                  <MobileWidth />
+                )
               }
             />
             <Route
               path="/error"
               exact
               element={
-                isDesktopOrLaptop?
-                <Row style={{ margin: "20px 0 0 0" }}>
-                  <Col style={{ padding: "10px 90px" }}>
-                    <Error />
-                  </Col>
-                </Row>:<h1>Site Can Only be viewed on Laptop or Pc</h1>
+                isDesktopOrLaptop ? (
+                  <Row style={{ margin: "20px 0 0 0" }}>
+                    <Col style={{ padding: "10px 90px" }}>
+                      <Error />
+                    </Col>
+                  </Row>
+                ) : (
+                  <MobileWidth />
+                )
               }
             />
             <Route exact path="/admin/home" element={<PrivateRoute />}>
@@ -164,12 +189,15 @@ function App() {
                 path="/admin/home"
                 exact
                 element={
-                  isDesktopOrLaptop?
-                  <Row style={{ margin: "0 0 0 0" }}>
-                    <Col style={{ padding: "0px 0px 0px 0px" }}>
-                      <AdminHome />
-                    </Col>
-                  </Row>:<h1>Site Can Only be viewed on Laptop or Pc</h1>
+                  isDesktopOrLaptop ? (
+                    <Row style={{ margin: "0 0 0 0" }}>
+                      <Col style={{ padding: "0px 0px 0px 0px" }}>
+                        <AdminHome />
+                      </Col>
+                    </Row>
+                  ) : (
+                    <MobileWidth />
+                  )
                 }
               />
             </Route>
@@ -179,12 +207,15 @@ function App() {
                 path="/admin/newTest"
                 exact
                 element={
-                  isDesktopOrLaptop?
-                  <Row style={{ margin: "20px 0 0 0" }}>
-                    <Col style={{ padding: "10px 90px" }}>
-                      <NewTest />
-                    </Col>
-                  </Row>:<h1>Site Can Only be viewed on Laptop or Pc</h1>
+                  isDesktopOrLaptop ? (
+                    <Row style={{ margin: "20px 0 0 0" }}>
+                      <Col style={{ padding: "10px 90px" }}>
+                        <NewTest />
+                      </Col>
+                    </Row>
+                  ) : (
+                    <MobileWidth />
+                  )
                 }
               />
             </Route>
@@ -194,12 +225,15 @@ function App() {
                 path="/admin/setQs"
                 exact
                 element={
-                  isDesktopOrLaptop?
-                  <Row style={{ margin: "20px 0 0 0" }}>
-                    <Col style={{ padding: "10px 90px" }}>
-                      <SetQuestion />
-                    </Col>
-                  </Row>:<h1>Site Can Only be viewed on Laptop or Pc</h1>
+                  isDesktopOrLaptop ? (
+                    <Row style={{ margin: "20px 0 0 0" }}>
+                      <Col style={{ padding: "10px 90px" }}>
+                        <SetQuestion />
+                      </Col>
+                    </Row>
+                  ) : (
+                    <MobileWidth />
+                  )
                 }
               />
             </Route>
@@ -231,48 +265,60 @@ function App() {
               path="/admin/personality"
               exact
               element={
-                isDesktopOrLaptop?
-                <Row style={{ margin: "20px 0 0 0" }}>
-                  <Col style={{ padding: "10px 90px" }}>
-                    <PTestScreen />
-                  </Col>
-                </Row>:<h1>Site Can Only be viewed on Laptop or Pc</h1>
+                isDesktopOrLaptop ? (
+                  <Row style={{ margin: "20px 0 0 0" }}>
+                    <Col style={{ padding: "10px 90px" }}>
+                      <PTestScreen />
+                    </Col>
+                  </Row>
+                ) : (
+                  <MobileWidth />
+                )
               }
             />
             <Route
               path="/admin/computer"
               exact
               element={
-                isDesktopOrLaptop?
-                <Row style={{ margin: "20px 0 0 0" }}>
-                  <Col style={{ padding: "10px 90px" }}>
-                    <CFTestScreen />
-                  </Col>
-                </Row>:<h1>Site Can Only be viewed on Laptop or Pc</h1>
+                isDesktopOrLaptop ? (
+                  <Row style={{ margin: "20px 0 0 0" }}>
+                    <Col style={{ padding: "10px 90px" }}>
+                      <CFTestScreen />
+                    </Col>
+                  </Row>
+                ) : (
+                  <MobileWidth />
+                )
               }
             />
             <Route
               path="/admin/domain"
               exact
               element={
-                isDesktopOrLaptop?
-                <Row style={{ margin: "20px 0 0 0" }}>
-                  <Col style={{ padding: "10px 90px" }}>
-                    <DTestScreen />
-                  </Col>
-                </Row>:<h1>Site Can Only be viewed on Laptop or Pc</h1>
+                isDesktopOrLaptop ? (
+                  <Row style={{ margin: "20px 0 0 0" }}>
+                    <Col style={{ padding: "10px 90px" }}>
+                      <DTestScreen />
+                    </Col>
+                  </Row>
+                ) : (
+                  <MobileWidth />
+                )
               }
             />
             <Route
               path="/admin/analytical"
               exact
               element={
-                isDesktopOrLaptop?
-                <Row style={{ margin: "20px 0 0 0" }}>
-                  <Col style={{ padding: "10px 90px" }}>
-                    <CompScreen />
-                  </Col>
-                </Row>:<h1>Site Can Only be viewed on Laptop or Pc</h1>
+                isDesktopOrLaptop ? (
+                  <Row style={{ margin: "20px 0 0 0" }}>
+                    <Col style={{ padding: "10px 90px" }}>
+                      <CompScreen />
+                    </Col>
+                  </Row>
+                ) : (
+                  <MobileWidth />
+                )
               }
             />
             <Route exact path="/admin/scheduledTest" element={<PrivateRoute />}>
@@ -280,12 +326,15 @@ function App() {
                 path="/admin/scheduledTest"
                 exact
                 element={
-                  isDesktopOrLaptop?
-                  <Row style={{ margin: "20px 0 0 0" }}>
-                    <Col style={{ padding: "10px 90px" }}>
-                      <ScheduledTest />
-                    </Col>
-                  </Row>:<h1>Site Can Only be viewed on Laptop or Pc</h1>
+                  isDesktopOrLaptop ? (
+                    <Row style={{ margin: "20px 0 0 0" }}>
+                      <Col style={{ padding: "10px 90px" }}>
+                        <ScheduledTest />
+                      </Col>
+                    </Row>
+                  ) : (
+                    <MobileWidth />
+                  )
                 }
               />
             </Route>
@@ -294,30 +343,36 @@ function App() {
                 path="/admin/feedback"
                 exact
                 element={
-                  isDesktopOrLaptop?
-                  <Row style={{ margin: "20px 0 0 0" }}>
-                    <Col style={{ padding: "10px 90px" }}>
-                      <Feedback />
-                    </Col>
-                  </Row>:<h1>Site Can Only be viewed on Laptop or Pc</h1>
+                  isDesktopOrLaptop ? (
+                    <Row style={{ margin: "20px 0 0 0" }}>
+                      <Col style={{ padding: "10px 90px" }}>
+                        <Feedback />
+                      </Col>
+                    </Row>
+                  ) : (
+                    <MobileWidth />
+                  )
                 }
               />
             </Route>
             <Route
               exact
               path="/admin/viewScheduledTest"
-              element={isDesktopOrLaptop?<PrivateRoute />:<h1>Site Can Only be viewed on Laptop or Pc</h1>}
+              element={isDesktopOrLaptop ? <PrivateRoute /> : <MobileWidth />}
             >
               <Route
                 path="/admin/viewScheduledTest"
                 exact
                 element={
-                  isDesktopOrLaptop?
-                  <Row style={{ margin: "20px 0 0 0" }}>
-                    <Col style={{ padding: "10px 90px" }}>
-                      <ViewSchdlTest />
-                    </Col>
-                  </Row>:<h1>Site Can Only be viewed on Laptop or Pc</h1>
+                  isDesktopOrLaptop ? (
+                    <Row style={{ margin: "20px 0 0 0" }}>
+                      <Col style={{ padding: "10px 90px" }}>
+                        <ViewSchdlTest />
+                      </Col>
+                    </Row>
+                  ) : (
+                    <MobileWidth />
+                  )
                 }
               />
             </Route>
@@ -325,48 +380,60 @@ function App() {
               path="/admin/compiler"
               exact
               element={
-                isDesktopOrLaptop?
-                <Row style={{ margin: "20px 0 0 0" }}>
-                  <Col style={{ padding: "10px 90px" }}>
-                    <Compiler />
-                  </Col>
-                </Row>:<h1>Site Can Only be viewed on Laptop or Pc</h1>
+                isDesktopOrLaptop ? (
+                  <Row style={{ margin: "20px 0 0 0" }}>
+                    <Col style={{ padding: "10px 90px" }}>
+                      <Compiler />
+                    </Col>
+                  </Row>
+                ) : (
+                  <MobileWidth />
+                )
               }
             />
             <Route
               path="/details"
               exact
               element={
-                isDesktopOrLaptop?
-                <Row style={{ margin: "20px 0 0 0" }}>
-                  <Col style={{ padding: "10px 90px" }}>
-                    <DetailPageModified />
-                  </Col>
-                </Row>:<h1>Site Can Only be viewed on Laptop or Pc</h1>
+                isDesktopOrLaptop ? (
+                  <Row style={{ margin: "20px 0 0 0" }}>
+                    <Col style={{ padding: "10px 90px" }}>
+                      <DetailPageModified />
+                    </Col>
+                  </Row>
+                ) : (
+                  <MobileWidth />
+                )
               }
             />
             <Route exact path="/Permissions" element={<PrivateRoute />}>
               <Route
                 path="/Permissions"
                 element={
-                  isDesktopOrLaptop?
-                  <Row style={{ margin: "20px 0 0 0" }}>
-                    <Col style={{ padding: "10px 90px" }}>
-                      <Permissions />
-                    </Col>
-                  </Row>:<h1>Site Can Only be viewed on Laptop or Pc</h1>
+                  isDesktopOrLaptop ? (
+                    <Row style={{ margin: "20px 0 0 0" }}>
+                      <Col style={{ padding: "10px 90px" }}>
+                        <Permissions />
+                      </Col>
+                    </Row>
+                  ) : (
+                    <MobileWidth />
+                  )
                 }
               />
             </Route>
             <Route
               path="/change-pass"
               element={
-                isDesktopOrLaptop?
-                <Row style={{ margin: "20px 0 0 0" }}>
-                  <Col style={{ padding: "10px 90px" }}>
-                    <ChangePass />
-                  </Col>
-                </Row>:<h1>Site Can Only be viewed on Laptop or Pc</h1>
+                isDesktopOrLaptop ? (
+                  <Row style={{ margin: "20px 0 0 0" }}>
+                    <Col style={{ padding: "10px 90px" }}>
+                      <ChangePass />
+                    </Col>
+                  </Row>
+                ) : (
+                  <MobileWidth />
+                )
               }
             />
             {/* do not change */}
