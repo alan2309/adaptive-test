@@ -407,19 +407,24 @@ function AdminHome() {
               display: "inline-block",
             }}
           >
-            <Card
-              style={{ height: "66px", textAlign: "center", margin: "0 17%" }}
-            >
+            <Card style={{ textAlign: "center", margin: "0 17%" }}>
               <img
                 src={Brain}
                 style={{
-                  width: "30px",
-                  height: "30px",
-                  marginLeft: "25%",
-                  marginTop: "15px",
+                  width: "50px",
+                  height: "50px",
+                  margin: "15px 41% 0px auto",
                 }}
               ></img>
-              <p style={{ marginLeft: "45%", marginTop: "-25px" }}>Aptitude</p>
+              <p
+                style={{
+                  textAlign: "center",
+                  marginTop: "20px",
+                  fontWeight: "bold",
+                }}
+              >
+                Aptitude
+              </p>
             </Card>
           </Col>
           <Col
@@ -432,24 +437,22 @@ function AdminHome() {
               display: "inline-block",
             }}
           >
-            <Card
-              style={{
-                height: "66px",
-                textAlign: "center",
-                margin: "0 17%",
-                paddingTop: "15px",
-                paddingRight: "5%",
-                paddingLeft: "15%",
-              }}
-            >
+            <Card style={{ textAlign: "center", margin: "0 17%" }}>
               <img
                 src={CompFund}
                 style={{
-                  width: "30px",
-                  height: "30px",
+                  width: "50px",
+                  height: "50px",
+                  margin: "15px 41% 0px auto",
                 }}
               ></img>
-              <p style={{ marginLeft: "30%", marginTop: "-25px" }}>
+              <p
+                style={{
+                  textAlign: "center",
+                  marginTop: "20px",
+                  fontWeight: "bold",
+                }}
+              >
                 Fundamentals
               </p>
             </Card>
@@ -464,19 +467,24 @@ function AdminHome() {
               display: "inline-block",
             }}
           >
-            <Card
-              style={{ height: "66px", textAlign: "center", margin: "0 17%" }}
-            >
+            <Card style={{ textAlign: "center", margin: "0 17%" }}>
               <img
                 src={Setting}
                 style={{
-                  width: "30px",
-                  height: "30px",
-                  marginLeft: "70px",
-                  marginTop: "15px",
+                  width: "50px",
+                  height: "50px",
+                  margin: "15px 41% 0px auto",
                 }}
               ></img>
-              <p style={{ marginLeft: "130px", marginTop: "-25px" }}>Domain</p>
+              <p
+                style={{
+                  textAlign: "center",
+                  marginTop: "20px",
+                  fontWeight: "bold",
+                }}
+              >
+                Domain
+              </p>
             </Card>
           </Col>
           <Col
@@ -489,19 +497,22 @@ function AdminHome() {
               display: "inline-block",
             }}
           >
-            <Card
-              style={{ height: "66px", textAlign: "center", margin: "0 17%" }}
-            >
+            <Card style={{ textAlign: "center", margin: "0 17%" }}>
               <img
                 src={Personality}
                 style={{
-                  width: "30px",
-                  height: "30px",
-                  marginLeft: "70px",
-                  marginTop: "15px",
+                  width: "50px",
+                  height: "50px",
+                  margin: "15px 41% 0px auto",
                 }}
               ></img>
-              <p style={{ marginLeft: "130px", marginTop: "-25px" }}>
+              <p
+                style={{
+                  textAlign: "center",
+                  marginTop: "20px",
+                  fontWeight: "bold",
+                }}
+              >
                 Personality
               </p>
             </Card>
@@ -516,19 +527,24 @@ function AdminHome() {
               display: "inline-block",
             }}
           >
-            <Card
-              style={{ height: "66px", textAlign: "center", margin: "0 17%" }}
-            >
+            <Card style={{ textAlign: "center", margin: "0 17%" }}>
               <img
                 src={Coding}
                 style={{
-                  width: "30px",
-                  height: "30px",
-                  marginLeft: "70px",
-                  marginTop: "15px",
+                  width: "50px",
+                  height: "50px",
+                  margin: "15px 41% 0px auto",
                 }}
               ></img>
-              <p style={{ marginLeft: "130px", marginTop: "-25px" }}>Coding</p>
+              <p
+                style={{
+                  textAlign: "center",
+                  marginTop: "20px",
+                  fontWeight: "bold",
+                }}
+              >
+                Coding
+              </p>
             </Card>
           </Col>
           <Col
@@ -541,19 +557,22 @@ function AdminHome() {
               display: "inline-block",
             }}
           >
-            <Card
-              style={{ height: "66px", textAlign: "center", margin: "0 17%" }}
-            >
+            <Card style={{ textAlign: "center", margin: "0 17%" }}>
               <img
                 src={AnalyticalWr}
                 style={{
-                  width: "30px",
-                  height: "30px",
-                  marginLeft: "70px",
-                  marginTop: "15px",
+                  width: "50px",
+                  height: "50px",
+                  margin: "15px 41% 0px auto",
                 }}
               ></img>
-              <p style={{ marginLeft: "130px", marginTop: "-25px" }}>
+              <p
+                style={{
+                  textAlign: "center",
+                  marginTop: "20px",
+                  fontWeight: "bold",
+                }}
+              >
                 Reasoning
               </p>
             </Card>
