@@ -1,14 +1,29 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../../axios";
-import { Form, Button, Row, Col } from "react-bootstrap";
+import {
+  Form,
+  Button,
+  Row,
+  Col,
+  OverlayTrigger,
+  Popover,
+} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { MDBDataTable, MDBInput } from "mdbreact";
 import Alert from "../../components/Admin/Alert";
 import Loader from "../../components/Loader";
 import $ from "jquery";
 import "../../css/Permissions.css";
-
+import { FiInfo } from "react-icons/fi";
 function Permissions() {
+  const popover = (
+    <Popover id="popover-basic">
+      <Popover.Body>
+        Permission must be granted for students to take their tests.From the
+        tables below, choose the students to whom you want to grant permission.
+      </Popover.Body>
+    </Popover>
+  );
   const navigate = useNavigate();
   const [data, setTData] = useState({ columns: [], rows: [] });
   const [allowed, setAllowed] = useState([]);
@@ -150,7 +165,7 @@ function Permissions() {
                   type="button"
                   style={{
                     marginTop: "10px",
-                    marginBottom: "30px",
+                    marginBottom: "10px",
                     border: "none",
                     outline: "none",
                     borderRadius: "5px",
@@ -168,32 +183,37 @@ function Permissions() {
                   style={{
                     fontSize: "20px",
                     fontWeight: "bold",
-                    marginBottom: "0px",
+                    marginBottom: "10px",
                     marginTop: "10px",
                     color: "#293e6f",
                     textAlign: "center",
                   }}
                 >
                   Grant Permissions
-                </p>
-                <p
-                  className="AdWell"
-                  style={{
-                    fontFamily: "Poppins",
-                    color: "#999999",
-                    fontWeight: "100",
-                    marginTop: "30px",
-                    fontSize: "15.4px",
-                    marginLeft: "10px",
-                    marginRight: "10px",
-                    marginBottom: "40px",
-                    textAlign: "center",
-                  }}
-                >
-                  {" "}
-                  Permission must be granted for students to take their tests.
-                  From the tables below, choose the students to whom you want to
-                  grant permission.
+                  <OverlayTrigger
+                    trigger="hover"
+                    placement="bottom"
+                    overlay={popover}
+                  >
+                    <button
+                      style={{
+                        backgroundColor: "white",
+                        outline: "none",
+                        border: "none",
+                        marginLeft: "5px",
+                        padding: "0px",
+                      }}
+                    >
+                      <FiInfo
+                        className="info"
+                        style={{
+                          height: "15px",
+                          width: "15px",
+                          marginTop: "5px",
+                        }}
+                      ></FiInfo>
+                    </button>
+                  </OverlayTrigger>
                 </p>
 
                 <MDBDataTable

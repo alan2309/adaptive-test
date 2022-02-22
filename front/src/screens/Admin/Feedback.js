@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../../axios";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, OverlayTrigger, Popover } from "react-bootstrap";
 import { MDBDataTable, MDBInput } from "mdbreact";
 import Alert from "../../components/Admin/Alert";
 import Loader from "../../components/Loader";
 import $ from "jquery";
 import { useNavigate } from "react-router-dom";
+import { FiInfo } from "react-icons/fi";
 
 function Feedback() {
+  const popover = (
+    <Popover id="popover-basic">
+      <Popover.Body>Allow feedbacks from students.</Popover.Body>
+    </Popover>
+  );
   const [data, setTData] = useState({ columns: [], rows: [] });
   const navigate = useNavigate();
   const [successMsg, setSuccessMsg] = useState("");
@@ -141,32 +147,38 @@ function Feedback() {
             style={{
               fontSize: "20px",
               fontWeight: "bold",
-              marginBottom: "0px",
+              marginBottom: "10px",
               marginTop: "10px",
               color: "#293e6f",
               textAlign: "center",
             }}
           >
             Take Feedbacks
+            <OverlayTrigger
+              trigger="hover"
+              placement="bottom"
+              overlay={popover}
+            >
+              <button
+                style={{
+                  backgroundColor: "white",
+                  outline: "none",
+                  border: "none",
+                  marginLeft: "5px",
+                  padding: "0px",
+                }}
+              >
+                <FiInfo
+                  className="info"
+                  style={{
+                    height: "15px",
+                    width: "15px",
+                    marginTop: "5px",
+                  }}
+                />
+              </button>
+            </OverlayTrigger>
           </p>
-          <p
-            className="AdWell"
-            style={{
-              fontFamily: "Poppins",
-              color: "#999999",
-              fontWeight: "100",
-              marginTop: "30px",
-              fontSize: "15.4px",
-              marginLeft: "10px",
-              marginRight: "10px",
-              marginBottom: "40px",
-              textAlign: "center",
-            }}
-          >
-            {" "}
-            To take feedbacks from students.
-          </p>
-
           <MDBDataTable
             className="feedbackTable"
             striped

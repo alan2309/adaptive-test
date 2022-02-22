@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Col,
-  Row,
-  ListGroup,
-  Card,
-  Navbar,
-  Nav,
-} from "react-bootstrap";
+import { Col, Row, ListGroup, Card, Navbar, Nav } from "react-bootstrap";
 import "../../css/AdminHomeScreen.css";
 import Coding from "../../img/carbon_code.svg";
 import Setting from "../../img/Brain.svg";
@@ -14,6 +7,9 @@ import Brain from "../../img/Computer.svg";
 import Personality from "../../img/Domain.svg";
 import AnalyticalWr from "../../img/Personality.svg";
 import CompFund from "../../img/CompFund.svg";
+import Controller from "../../img/Controller.svg";
+import Test from "../../img/Test.svg";
+import Question from "../../img/Question.svg";
 import { useNavigate } from "react-router";
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import { BsFillCalendar2DateFill } from "react-icons/bs";
@@ -581,14 +577,14 @@ function AdminHome() {
           <Col sm={12} md={6} lg={4}>
             <Card
               style={{
-                height: "230px",
+                height: "280px",
                 textAlign: "center",
                 margin: "0 17%",
                 padding: "0 10px",
               }}
             >
               <img
-                src={Setting}
+                src={Controller}
                 style={{
                   width: "50px",
                   height: "50px",
@@ -621,14 +617,14 @@ function AdminHome() {
           <Col sm={12} md={6} lg={4}>
             <Card
               style={{
-                height: "230px",
+                height: "280px",
                 textAlign: "center",
                 margin: "0 17%",
                 padding: "0 10px",
               }}
             >
               <img
-                src={Setting}
+                src={Test}
                 style={{
                   width: "50px",
                   height: "50px",
@@ -661,14 +657,14 @@ function AdminHome() {
           <Col sm={12} md={6} lg={4}>
             <Card
               style={{
-                height: "230px",
+                height: "280px",
                 textAlign: "center",
                 margin: "0 17%",
-                padding: "0 10px",
+                padding: "0 10px 10px 10px",
               }}
             >
               <img
-                src={Setting}
+                src={Question}
                 style={{
                   width: "50px",
                   height: "50px",
