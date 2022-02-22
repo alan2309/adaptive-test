@@ -576,8 +576,9 @@ function AdminHome() {
         <Row style={{ margin: "0 auto 40px auto", textAlign: "center" }}>
           <Col sm={12} md={6} lg={4}>
             <Card
+              className="features_card"
               style={{
-                height: "280px",
+                height: "220px",
                 textAlign: "center",
                 margin: "0 17%",
                 padding: "0 10px",
@@ -616,8 +617,9 @@ function AdminHome() {
           </Col>
           <Col sm={12} md={6} lg={4}>
             <Card
+              className="features_card"
               style={{
-                height: "280px",
+                height: "220px",
                 textAlign: "center",
                 margin: "0 17%",
                 padding: "0 10px",
@@ -656,8 +658,9 @@ function AdminHome() {
           </Col>
           <Col sm={12} md={6} lg={4}>
             <Card
+              className="features_card"
               style={{
-                height: "280px",
+                height: "220px",
                 textAlign: "center",
                 margin: "0 17%",
                 padding: "0 10px 10px 10px",
