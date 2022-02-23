@@ -15,7 +15,13 @@ import Loader from "../../components/Loader";
 import $ from "jquery";
 import "../../css/Permissions.css";
 import { FiInfo } from "react-icons/fi";
+import MobileWidth from "../../components/MobileWidth";
+import { useMediaQuery } from "react-responsive";
+
 function Permissions() {
+  const isDesktopOrLaptop = useMediaQuery({
+    query: "(min-width: 1024px)",
+  });
   const popover = (
     <Popover id="popover-basic">
       <Popover.Body>
@@ -133,6 +139,7 @@ function Permissions() {
 
   return (
     <>
+    {isDesktopOrLaptop?<>
       <Alert
         msg={successMsg}
         setIsAlertMsgLoaded={setIsAlertMsgLoaded}
@@ -299,7 +306,8 @@ function Permissions() {
           </div>
         </>
       )}
-    </>
+</>:<MobileWidth/>}
+          </>
   );
 }
 export default Permissions;

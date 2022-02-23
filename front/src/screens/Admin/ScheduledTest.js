@@ -15,8 +15,13 @@ import "../../css/SchdlTest.css";
 import Alert from "../../components/Admin/Alert";
 import { FiInfo } from "react-icons/fi";
 import ConfirmDialogBox from "../../components/ConfirmDialogBox";
+import MobileWidth from "../../components/MobileWidth";
+import { useMediaQuery } from "react-responsive";
 
 function ScheduledTest() {
+  const isDesktopOrLaptop = useMediaQuery({
+    query: "(min-width: 1024px)",
+  });
   const popover = (
     <Popover id="popover-basic">
       <Popover.Body>
@@ -282,6 +287,7 @@ function ScheduledTest() {
 
   return (
     <>
+    {isDesktopOrLaptop?<>
       {isLoading ? (
         <Loader />
       ) : (
@@ -826,7 +832,8 @@ function ScheduledTest() {
           </div>
         </>
       )}
-    </>
+ </>:<MobileWidth/>}
+         </>
   );
 }
 

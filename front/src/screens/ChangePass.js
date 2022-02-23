@@ -3,8 +3,13 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../axios";
 import { Container, Form } from "react-bootstrap";
 import $ from "jquery";
+import MobileWidth from "../components/MobileWidth";
+import { useMediaQuery } from "react-responsive";
 
 function ChangePass() {
+  const isDesktopOrLaptop = useMediaQuery({
+    query: "(min-width: 1024px)",
+  });
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const initialFormData = Object.freeze({
@@ -67,7 +72,8 @@ function ChangePass() {
 
   return (
     <div>
-      <Container
+      {isDesktopOrLaptop?<>
+        <Container
         style={{
           width: "635px",
           height: "445px",
@@ -181,7 +187,8 @@ function ChangePass() {
           <br />
         </div>
       </Container>
-    </div>
+</>:<MobileWidth/>}
+          </div>
   );
 }
 

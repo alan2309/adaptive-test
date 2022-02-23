@@ -2,7 +2,12 @@ import React from "react";
 import { Container, Form, OverlayTrigger, Popover } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { FiInfo } from "react-icons/fi";
+import { useMediaQuery } from "react-responsive";
+import MobileWidth from "../../components/MobileWidth";
 function RegisterAdmin() {
+  const isDesktopOrLaptop = useMediaQuery({
+    query: "(min-width: 1024px)",
+  });
   const popover = (
     <Popover id="popover-basic">
       <Popover.Body>
@@ -14,7 +19,8 @@ function RegisterAdmin() {
   const navigate = useNavigate();
   return (
     <div>
-      <button
+      {isDesktopOrLaptop ?<>
+        <button
         style={{
           marginLeft: "1%",
           backgroundColor: "#293E6F",
@@ -158,6 +164,7 @@ function RegisterAdmin() {
           </Form>
         </div>
       </Container>
+      </>:<MobileWidth/>}
     </div>
   );
 }

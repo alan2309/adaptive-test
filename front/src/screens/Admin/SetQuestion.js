@@ -11,8 +11,13 @@ import AnalyticalQsComp from "../../components/Admin/AnalyticalQsComp";
 import Alert from "../../components/Admin/Alert";
 import { Image } from "cloudinary-react";
 import ConfirmDialogBox from "../../components/ConfirmDialogBox";
+import MobileWidth from "../../components/MobileWidth";
+import { useMediaQuery } from "react-responsive";
 
 function SetQuestion() {
+  const isDesktopOrLaptop = useMediaQuery({
+    query: "(min-width: 1024px)",
+  });
   const navigate = useNavigate();
   const location = useLocation();
   const [navArray, setNavArray] = useState([]);
@@ -495,7 +500,8 @@ function SetQuestion() {
   function confirm_no() {}
   return (
     <div>
-      <Alert
+      {isDesktopOrLaptop?<>
+        <Alert
         msg={successMsg}
         setIsAlertMsgLoaded={setIsAlertMsgLoaded}
         isAlertMsgLoaded={isAlertMsgLoaded}
@@ -1761,6 +1767,7 @@ function SetQuestion() {
           )}
         </Row>
       </form>
+      </>:<MobileWidth/>}
     </div>
   );
 }

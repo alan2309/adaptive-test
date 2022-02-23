@@ -7,8 +7,13 @@ import Loader from "../../components/Loader";
 import $ from "jquery";
 import { useNavigate } from "react-router-dom";
 import { FiInfo } from "react-icons/fi";
+import MobileWidth from "../../components/MobileWidth";
+import { useMediaQuery } from "react-responsive";
 
 function Feedback() {
+  const isDesktopOrLaptop = useMediaQuery({
+    query: "(min-width: 1024px)",
+  });
   const popover = (
     <Popover id="popover-basic">
       <Popover.Body>Allow feedbacks from students.</Popover.Body>
@@ -106,7 +111,8 @@ function Feedback() {
 
   return (
     <div>
-      <Alert
+      {isDesktopOrLaptop?<>
+        <Alert
         msg={successMsg}
         setIsAlertMsgLoaded={setIsAlertMsgLoaded}
         isAlertMsgLoaded={isAlertMsgLoaded}
@@ -239,7 +245,8 @@ function Feedback() {
           </Row>
         </div>
       )}
-    </div>
+</>:<MobileWidth/>}
+          </div>
   );
 }
 

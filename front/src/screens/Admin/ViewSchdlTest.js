@@ -8,8 +8,13 @@ import { CSVLink } from "react-csv";
 import Loader from "../../components/Loader";
 import { SiMicrosoftexcel } from "react-icons/si";
 import ConfirmDialogBox from "../../components/ConfirmDialogBox";
+import MobileWidth from "../../components/MobileWidth";
+import { useMediaQuery } from "react-responsive";
 
 function ViewSchdlTest() {
+  const isDesktopOrLaptop = useMediaQuery({
+    query: "(min-width: 1024px)",
+  });
   const [isLoading, setIsloading] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
@@ -120,6 +125,7 @@ function ViewSchdlTest() {
   function confirm_no() {}
   return (
     <>
+    {isDesktopOrLaptop?<>
       {isLoading ? (
         <Loader />
       ) : (
@@ -214,7 +220,8 @@ function ViewSchdlTest() {
           </div>
         </div>
       )}
-    </>
+</>:<MobileWidth/>}
+          </>
   );
 }
 

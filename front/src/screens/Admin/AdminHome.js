@@ -22,8 +22,13 @@ import { BsFillFileEarmarkPersonFill } from "react-icons/bs";
 import { RiLogoutCircleFill } from "react-icons/ri";
 import { RiAdminFill } from "react-icons/ri";
 import { AiFillControl } from "react-icons/ai";
+import MobileWidth from "../../components/MobileWidth";
+import { useMediaQuery } from "react-responsive";
 
 function AdminHome() {
+  const isDesktopOrLaptop = useMediaQuery({
+    query: "(min-width: 1024px)",
+  });
   useEffect(() => {
     if (localStorage.getItem("isNewTestReload") !== undefined) {
       localStorage.removeItem("isNewTestReload");
@@ -32,7 +37,8 @@ function AdminHome() {
   const navigate = useNavigate();
   return (
     <div className="AdminHomeScreen">
-      <Navbar
+      {isDesktopOrLaptop?<>
+        <Navbar
         style={{
           backgroundColor: "#FFF",
           boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
@@ -718,6 +724,7 @@ function AdminHome() {
           </Col>
         </Row>
       </Row>
+      </>:<MobileWidth/>}
     </div>
   );
 }

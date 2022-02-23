@@ -13,7 +13,7 @@ function MobileWidth() {
           borderRadius: "14px",
           textAlign: "center",
           width: "50%",
-          height: "20%",
+          height: "150px",
           padding: "3%",
           display: "inline-block",
           position: "fixed",
