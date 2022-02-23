@@ -20,7 +20,8 @@ from dateutil import tz
 import cloudinary
 import cloudinary.search
 from django.contrib.auth.models import User,auth
-from django.core.mail import send_mail
+from django.core.mail import send_mail,EmailMultiAlternatives
+from django.template.loader import get_template
 from django.conf import settings
 import uuid
 CFG = {'DB': None}
@@ -132,19 +133,26 @@ def checkpassToken(request):
 def forgotpass(request):
     if request.method=="POST":
         data=JSONParser().parse(request)['data']
-        if not User.objects.filter(email=data['email']).exists():
+        user=User.objects.filter(email=data['email'])
+        if not user.exists():
             return JsonResponse({'exists':0},safe=False)
-        user = User.objects.get(email = data['email'])    
-        token = str(uuid.uuid4())
-        subject = "Your Forget PAssword Link"
-        message=f"Hello {user.first_name},\n\nSomeone (hopefully you!) has requested to change your password. Please click the link below to change your password now,\n\nhttp://localhost:3000/change-pass?token={token}&user={user.email}\n\nIf you didn't make this request, please disregard this email.\nPlease note that your password will not change unless you click the link above and create a new one. If you've requested multiple reset emails, please make sure you click the link inside the most recent email.\n\nSincerely,\nThe Placement Portal Team"
-        email_from = settings.EMAIL_HOST_USER
-        recipient_list = [user.email]
-        send_mail(subject,message,email_from,recipient_list)
-        myuser = MyUser.objects.get(user=user)
-        myuser.change_pass_token = token
-        myuser.save()
-        return JsonResponse({'exists':1},safe=False)
+        else:
+            token = str(uuid.uuid4())
+            subject = "Your Forget Password Link"
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [user[0].email]
+            # send_mail(subject,message,email_from,recipient_list)
+            msg=EmailMultiAlternatives(subject=subject,from_email=email_from,to=recipient_list)
+            args={}
+            args['name']='{}'.format(user[0].first_name)
+            args['url']='http://localhost:3000/change-pass?token={0}&user={1}'.format(token,user[0].email)
+            html_template=get_template("api/ChangePassword.html").render(args)
+            msg.attach_alternative(html_template,"text/html")
+            msg.send()
+            myuser = MyUser.objects.get(user=user[0])
+            myuser.change_pass_token = token
+            myuser.save()
+            return JsonResponse({'exists':1},safe=False)
 
 @csrf_exempt
 def getuserslist(request):
@@ -182,7 +190,6 @@ def permission(request):
             presentTest=Test.objects.filter(test_start__lte = d,test_end__gt=d)
             if not presentTest.exists():   
                 return JsonResponse({'exists':0},safe=False)
-
             testx = presentTest[0]
             users = data['users']
             userrs=[]
@@ -192,10 +199,15 @@ def permission(request):
                 userrs.append(x.email)
                 x.save()
             subject = "Invitation Link For Aptitude Test"
-            message = f'You have been granted permission to attempt Aptitude Test: {testx.test_name}\n Go to link- http://localhost:3000/login'
             email_from = settings.EMAIL_HOST_USER
             recipient_list = userrs
-            send_mail(subject,message,email_from,recipient_list)
+            # send_mail(subject,message,email_from,recipient_list)
+            msg=EmailMultiAlternatives(subject=subject,from_email=email_from,to=recipient_list)
+            args={}
+            args['testName']='{}'.format(testx.test_name)
+            html_template=get_template("api/Permission.html").render(args)
+            msg.attach_alternative(html_template,"text/html")
+            msg.send()
             return JsonResponse({'exists':1},safe=False)
     else:
         return HttpResponseBadRequest()
