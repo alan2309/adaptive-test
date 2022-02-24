@@ -14,6 +14,7 @@ import ProtectUrl from "../../components/TestScreeen/ProtectUrl";
 import Alert from "../../components/Admin/Alert";
 import MobileWidth from "../../components/MobileWidth";
 import { useMediaQuery } from "react-responsive";
+import { AiFillWarning } from "react-icons/ai";
 
 export default function Compiler() {
   const isDesktopOrLaptop = useMediaQuery({
@@ -234,80 +235,60 @@ export default function Compiler() {
           let data;
           let xx = localStorage.getItem("testId");
           const getData = async () =>
-            await axiosInstance
-              .get(`api/codingTests/${xx}`)
-              .then((res) => {
-                let a = converttime(res.data.time);
-                var tf = a;
-                // setTimeFF(tf);
+            await axiosInstance.get(`api/codingTests/${xx}`).then((res) => {
+              let a = converttime(res.data.time);
+              var tf = a;
+              // setTimeFF(tf);
 
-                var ob = new Date();
-                var h = (ob.getHours() < 10 ? "0" : "") + ob.getHours();
-                var m = (ob.getMinutes() < 10 ? "0" : "") + ob.getMinutes();
-                var s = (ob.getSeconds() < 10 ? "0" : "") + ob.getSeconds();
+              var ob = new Date();
+              var h = (ob.getHours() < 10 ? "0" : "") + ob.getHours();
+              var m = (ob.getMinutes() < 10 ? "0" : "") + ob.getMinutes();
+              var s = (ob.getSeconds() < 10 ? "0" : "") + ob.getSeconds();
 
-                var timeStart = new Date(
-                  new Date().toLocaleDateString() + " " + test["strtTime"]
-                );
-                var timeEnd = new Date(
-                  new Date().toLocaleDateString() + " " + h + ":" + m + ":" + s
-                );
-                var hourDiff = (timeEnd - timeStart) / 1000;
-                setTimeFF(tf - hourDiff);
+              var timeStart = new Date(
+                new Date().toLocaleDateString() + " " + test["strtTime"]
+              );
+              var timeEnd = new Date(
+                new Date().toLocaleDateString() + " " + h + ":" + m + ":" + s
+              );
+              var hourDiff = (timeEnd - timeStart) / 1000;
+              setTimeFF(tf - hourDiff);
 
-                set_db_data(res.data.cQs);
-                data = res.data.cQs;
-                //from db
+              set_db_data(res.data.cQs);
+              data = res.data.cQs;
+              //from db
 
-                if (Object.keys(data[0]).length !== 0) {
-                  set_question_1(data[0]);
-                  set_question_current(data[0]);
-                  set_q1_testCase_1_input(data[0].test_case_input[0]);
-                  set_q1_testCase_1_expected_output(
-                    data[0].test_case_output[0]
-                  );
-                  set_q1_testCase_2_input(data[0].test_case_input[1]);
-                  set_q1_testCase_2_expected_output(
-                    data[0].test_case_output[1]
-                  );
-                  set_q1_testCase_3_input(data[0].test_case_input[2]);
-                  set_q1_testCase_3_expected_output(
-                    data[0].test_case_output[2]
-                  );
-                }
-                if (Object.keys(data[1]).length !== 0) {
-                  set_question_2(data[1]);
-                  set_q2_testCase_1_input(data[1].test_case_input[0]);
+              if (Object.keys(data[0]).length !== 0) {
+                set_question_1(data[0]);
+                set_question_current(data[0]);
+                set_q1_testCase_1_input(data[0].test_case_input[0]);
+                set_q1_testCase_1_expected_output(data[0].test_case_output[0]);
+                set_q1_testCase_2_input(data[0].test_case_input[1]);
+                set_q1_testCase_2_expected_output(data[0].test_case_output[1]);
+                set_q1_testCase_3_input(data[0].test_case_input[2]);
+                set_q1_testCase_3_expected_output(data[0].test_case_output[2]);
+              }
+              if (Object.keys(data[1]).length !== 0) {
+                set_question_2(data[1]);
+                set_q2_testCase_1_input(data[1].test_case_input[0]);
 
-                  set_q2_testCase_1_expected_output(
-                    data[1].test_case_output[0]
-                  );
-                  set_q2_testCase_2_input(data[1].test_case_input[1]);
-                  set_q2_testCase_2_expected_output(
-                    data[1].test_case_output[1]
-                  );
-                  set_q2_testCase_3_input(data[1].test_case_input[2]);
-                  set_q2_testCase_3_expected_output(
-                    data[1].test_case_output[2]
-                  );
-                }
-                if (Object.keys(data[2]).length !== 0) {
-                  set_question_3(data[2]);
-                  set_q3_testCase_1_input(data[2].test_case_input[0]);
+                set_q2_testCase_1_expected_output(data[1].test_case_output[0]);
+                set_q2_testCase_2_input(data[1].test_case_input[1]);
+                set_q2_testCase_2_expected_output(data[1].test_case_output[1]);
+                set_q2_testCase_3_input(data[1].test_case_input[2]);
+                set_q2_testCase_3_expected_output(data[1].test_case_output[2]);
+              }
+              if (Object.keys(data[2]).length !== 0) {
+                set_question_3(data[2]);
+                set_q3_testCase_1_input(data[2].test_case_input[0]);
 
-                  set_q3_testCase_1_expected_output(
-                    data[2].test_case_output[0]
-                  );
-                  set_q3_testCase_2_input(data[2].test_case_input[1]);
-                  set_q3_testCase_2_expected_output(
-                    data[2].test_case_output[1]
-                  );
-                  set_q3_testCase_3_input(data[2].test_case_input[2]);
-                  set_q3_testCase_3_expected_output(
-                    data[2].test_case_output[2]
-                  );
-                }
-              });
+                set_q3_testCase_1_expected_output(data[2].test_case_output[0]);
+                set_q3_testCase_2_input(data[2].test_case_input[1]);
+                set_q3_testCase_2_expected_output(data[2].test_case_output[1]);
+                set_q3_testCase_3_input(data[2].test_case_input[2]);
+                set_q3_testCase_3_expected_output(data[2].test_case_output[2]);
+              }
+            });
           getData();
           setInput(JSON.parse(localStorage.getItem("test4"))["input_1"]);
           setInput_question_1(
@@ -702,7 +683,7 @@ export default function Compiler() {
         set_q3_testCase_Current_output("Creating Submission ...\n");
       }
       let count = 0;
-      let keyArr =process.env.REACT_APP_COMPILER_API_KEYS.split(","),
+      let keyArr = process.env.REACT_APP_COMPILER_API_KEYS.split(","),
         selectedKey;
       let jsonResponse;
       do {
@@ -1430,769 +1411,826 @@ export default function Compiler() {
 
   return (
     <>
-    {isDesktopOrLaptop?<>
-      <Alert
-        msg={successMsg}
-        setIsAlertMsgLoaded={setIsAlertMsgLoaded}
-        isAlertMsgLoaded={isAlertMsgLoaded}
-        type="success"
-      ></Alert>
-      <Alert
-        msg={dangerMsg}
-        setIsAlertMsgLoaded={setIsAlertMsgLoaded}
-        isAlertMsgLoaded={isAlertMsgLoaded}
-        type="danger"
-      ></Alert>
-      <Modal
-        show={show}
-        onHide={handleClose}
-        backdrop="static"
-        keyboard={false}
-      >
-        <Modal.Header>
-          <Modal.Title>Enter FullScreeen</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {reload ? (
-            <CustomTimer
-              msg={`Please Enter Full Screen or Test will get auto submitted in`}
-              onlyS={true}
-              reset={md}
-              time={10}
-              start={show}
-              setMd={setMd}
-              nextpage={"result"}
-            ></CustomTimer>
-          ) : (
-            "Please enter Full Screen mode"
-          )}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            variant="primary"
-            onClick={(e) => {
-              handleClose(e);
-              GoInFullscreen(document.querySelector("#element"));
-            }}
-          >
-            Enter Full Screeen
-          </Button>
-        </Modal.Footer>
-      </Modal>
-      {countWindowAwayModal && (
+      {isDesktopOrLaptop ? (
         <>
-          <h1 style={{ color: "red" }}>
-            Screen Change Detected !! {countWindowAway === 1 ? "1st" : "LAST"}{" "}
-            WARNING
-          </h1>
-          <h3>
-            Screen changed detected.Test will get auto submitted if you try to
-            change screen again !!
-          </h3>
-          <button
-            className="btn"
-            onClick={(e) => handleCloseSChange(e)}
-            style={{
-              backgroundColor: "#10B65C",
-              margin: "0px 0px 10px 3px",
-              color: "white",
-            }}
+          <Alert
+            msg={successMsg}
+            setIsAlertMsgLoaded={setIsAlertMsgLoaded}
+            isAlertMsgLoaded={isAlertMsgLoaded}
+            type="success"
+          ></Alert>
+          <Alert
+            msg={dangerMsg}
+            setIsAlertMsgLoaded={setIsAlertMsgLoaded}
+            isAlertMsgLoaded={isAlertMsgLoaded}
+            type="danger"
+          ></Alert>
+          <Modal
+            show={show}
+            onHide={handleClose}
+            backdrop="static"
+            keyboard={false}
           >
-            Okay
-          </button>
-        </>
-      )}
-      <Row>
-        <Col md={6}>
-          <Row>
-            <div className="TestHeaderComp" style={{ paddingBottom: "7px" }}>
-              {timeFF !== undefined && (
-                <TestHeaderComp
-                  noTotal={true}
-                  timer={timeFF}
-                  start={!testFinshBool}
-                  reset={testFinshBool}
-                  timeKey="Time"
-                  header="Coding"
-                  nextpage={"admin/domain"}
+            <Modal.Header>
+              <Modal.Title>Enter FullScreeen</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              {reload ? (
+                <CustomTimer
+                  msg={`Please Enter Full Screen or Test will get auto submitted in`}
+                  onlyS={true}
+                  reset={md}
+                  time={10}
+                  start={show}
                   setMd={setMd}
-                ></TestHeaderComp>
+                  nextpage={"result"}
+                ></CustomTimer>
+              ) : (
+                "Please enter Full Screen mode"
               )}
-            </div>
-          </Row>
-          <Row>
-            <div
-              className="basicRec"
-              style={{
-                marginTop: "5px",
-                height: window.screen.height - 220,
-                backgroundColor: "#F7F7F7",
-              }}
-            >
-              <Tabs
-                defaultActiveKey="Q1"
-                inkBarStyle={{ background: "blue" }}
-                id="uncontrolled-tab-example"
-                style={{ marginBottom: "0px !important" }}
-                className="mb-3"
+            </Modal.Body>
+            <Modal.Footer>
+              <Button
+                variant="primary"
                 onClick={(e) => {
-                  let qsNo = e.target.textContent.split("Q")[1];
-                  set_current_qs(parseInt(qsNo));
-                  if (parseInt(qsNo) === 1) {
-                    set_question_current(question_1);
-                    setInput(inputT_question_1);
-                    document.getElementById("editor").value = inputT_question_1;
-                    document.getElementsByClassName("customInput")[0].value =
-                      user_input_question_1;
-                    setUser_input(user_input_question_1);
-                    setLanguage_id(language_id_question_1);
-                    set_render_state(true);
-                    if (
-                      document.getElementsByClassName("codeOutput")[0] !==
-                      undefined
-                    ) {
-                      if (isSubmitCode_qs1) {
-                        document.getElementsByClassName("codeOutput")[0].value =
-                          q1_testCase_1_output;
-                        set_q1_testCase_Current_output(q1_testCase_1_output);
-                      } else {
-                        if (q1_run_output !== undefined) {
-                          document.getElementsByClassName(
-                            "codeOutput"
-                          )[0].value = q1_run_output;
-                          set_q1_testCase_Current_output(q1_run_output);
-                        } else {
-                          document.getElementsByClassName(
-                            "codeOutput"
-                          )[0].value = "";
-                          set_q1_testCase_Current_output();
-                        }
-                      }
-                    }
-                  } else if (parseInt(qsNo) === 2) {
-                    set_question_current(question_2);
-                    setInput(inputT_question_2);
-                    document.getElementById("editor").value = inputT_question_2;
-                    document.getElementsByClassName("customInput")[0].value =
-                      user_input_question_2;
-                    setUser_input(user_input_question_2);
-                    setLanguage_id(language_id_question_2);
-                    set_render_state(true);
-                    if (
-                      document.getElementsByClassName("codeOutput")[0] !==
-                      undefined
-                    ) {
-                      if (isSubmitCode_qs2) {
-                        document.getElementsByClassName("codeOutput")[0].value =
-                          q2_testCase_1_output;
-                        set_q2_testCase_Current_output(q2_testCase_1_output);
-                      } else {
-                        if (q2_run_output !== undefined) {
-                          document.getElementsByClassName(
-                            "codeOutput"
-                          )[0].value = q2_run_output;
-                          set_q2_testCase_Current_output(q2_run_output);
-                        } else {
-                          document.getElementsByClassName(
-                            "codeOutput"
-                          )[0].value = "";
-                          set_q2_testCase_Current_output();
-                        }
-                      }
-                    }
-                  } else if (parseInt(qsNo) === 3) {
-                    set_question_current(question_3);
-                    setInput(inputT_question_3);
-                    document.getElementById("editor").value = inputT_question_3;
-                    document.getElementsByClassName("customInput")[0].value =
-                      user_input_question_3;
-                    setUser_input(user_input_question_3);
-                    setLanguage_id(language_id_question_3);
-                    set_render_state(true);
-
-                    if (
-                      document.getElementsByClassName("codeOutput")[0] !==
-                      undefined
-                    ) {
-                      if (isSubmitCode_qs3) {
-                        document.getElementsByClassName("codeOutput")[0].value =
-                          q3_testCase_1_output;
-                        set_q3_testCase_Current_output(q3_testCase_1_output);
-                      } else {
-                        if (q3_run_output !== undefined) {
-                          document.getElementsByClassName(
-                            "codeOutput"
-                          )[0].value = q3_run_output;
-                          set_q3_testCase_Current_output(q3_run_output);
-                        } else {
-                          document.getElementsByClassName(
-                            "codeOutput"
-                          )[0].value = "";
-                          set_q3_testCase_Current_output();
-                        }
-                      }
-                    }
-                  }
+                  handleClose(e);
+                  GoInFullscreen(document.querySelector("#element"));
                 }}
               >
-                <Tab eventKey="Q1" title="Q1">
-                  <CodingQsComp qs={question_1}></CodingQsComp>
-                </Tab>
-                <Tab eventKey="Q2" title="Q2">
-                  <CodingQsComp qs={question_2}></CodingQsComp>
-                </Tab>
-                <Tab eventKey="Q3" title="Q3">
-                  <CodingQsComp qs={question_3}></CodingQsComp>
-                </Tab>
-              </Tabs>
-            </div>
-          </Row>
-        </Col>
-
-        <Col md={6} style={{ height: window.screen.height - 160 }}>
-          <div style={{ marginLeft: "45px" }}>
-            <Row
-              style={{
-                paddingBottom: "5px",
-                paddingLeft: "40%",
-                height: "40px",
-                marginBottom: "10px",
-              }}
-            >
-              <Col>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    setMd(true);
-                    setTestFinishBool(true);
-                    setShow(false);
-                    navigate("/admin/domain");
-                  }}
-                  style={{ color: "white", width: "fit-content" }}
-                  className="btn scTest"
-                >
-                  Next Section
-                </button>
-              </Col>
-              <Col>
-                <button
-                  type="button"
-                  className="btn btn-success"
-                  onClick={(e) => {
-                    setTestFinishBool(true);
-                    setShow(false);
-                    setMd(true);
-                    navigate("/result");
-                    if (document.exitFullscreen) {
-                      document.exitFullscreen();
-                    } else if (document.webkitExitFullscreen) {
-                      document.webkitExitFullscreen();
-                    } else if (document.mozCancelFullScreen) {
-                      document.mozCancelFullScreen();
-                    } else if (document.msExitFullscreen) {
-                      document.msExitFullscreen();
-                    }
-                  }}
+                Enter Full Screeen
+              </Button>
+            </Modal.Footer>
+          </Modal>
+          {countWindowAwayModal && (
+            <>
+              <div
+                style={{
+                  backgroundColor: "#F8D7DA",
+                  height: "fit-content",
+                  width: "95%",
+                  border: "1px #8A3C5B",
+                  borderRadius: "8px",
+                  margin: "10px 10px 10px 25px",
+                }}
+              >
+                <AiFillWarning
                   style={{
-                    backgroundColor: "#081466",
-                    width: "fit-content",
-                    borderRadius: "10px",
+                    height: "30px",
+                    width: "30px",
+                    margin: "10px 50% 0px",
+                    color: "#842029",
+                  }}
+                />
+                <p style={{ color: "#842029", margin: "10px 0px 0px 47.8%" }}>
+                  <p>
+                    <b>{countWindowAway === 1 ? "1st" : "Last"} Warning</b>
+                  </p>
+                </p>
+                <p
+                  style={{
+                    color: "#842029",
+                    fontWeight: "normal",
+                    fontSize: "14px",
+                    textAlign: "center",
+                  }}
+                >
+                  The screen has been changed.Test will get auto submitted if
+                  you try to change screen again{" "}
+                </p>
+                <Button
+                  onClick={(e) => handleCloseSChange(e)}
+                  style={{
+                    backgroundColor: "#842029",
+                    margin: "0px 0px 20px 47.7%",
                     color: "white",
-                    padding: "7px 10px",
+                    outline: "none",
+                    border: "none",
                   }}
                 >
-                  Finish Test
-                </button>
-              </Col>
-            </Row>
-            <Row style={{ marginTop: "5px" }}>
-              <div
-                className="basicRec"
-                style={{
-                  backgroundColor: "#F7F7F7",
-                  padding: "5px 5px",
-                  height: window.screen.height - 500,
-                }}
-              >
-                {current_qs === 1 && language_id_question_1 !== undefined && (
-                  <ACEEditor
-                    inputT={inputT_question_1}
-                    render_state={render_state}
-                    set_render_state={set_render_state}
-                    language_id={language_id_question_1}
-                    height={window.screen.height - 500}
-                  ></ACEEditor>
-                )}
-
-                {current_qs === 2 && language_id_question_2 !== undefined && (
-                  <ACEEditor
-                    inputT={inputT_question_2}
-                    render_state={render_state}
-                    set_render_state={set_render_state}
-                    language_id={language_id_question_2}
-                    height={window.screen.height - 500}
-                  ></ACEEditor>
-                )}
-
-                {current_qs === 3 && language_id_question_3 !== undefined && (
-                  <ACEEditor
-                    inputT={inputT_question_3}
-                    render_state={render_state}
-                    set_render_state={set_render_state}
-                    language_id={language_id_question_3}
-                    height={window.screen.height - 500}
-                  ></ACEEditor>
-                )}
+                  Continue
+                </Button>
               </div>
-            </Row>
-
-            <Row
-              style={{ paddingTop: "5px", paddingBottom: "0", height: "42px" }}
-            >
-              <Col lg={3}>
-                <select
-                  style={{ width: "90px" }}
-                  value={language_id}
-                  onChange={language}
-                  id="tags"
-                  className="form-control form-inline mb-2 language"
-                >
-                  <option value="54">C++</option>
-                  <option value="50">C</option>
-                  <option value="62">Java</option>
-                  <option value="71">Python</option>
-                </select>
-              </Col>
-              <Col lg={3}>
+            </>
+          )}
+          <Row>
+            <Col md={6}>
+              <Row>
                 <div
-                  className="custom-control custom-checkbox"
-                  style={{ paddingTop: "8px" }}
+                  className="TestHeaderComp"
+                  style={{ paddingBottom: "7px" }}
                 >
-                  <input
-                    type="checkbox"
-                    className="custom-control-input"
-                    style={{ marginRight: "4px" }}
-                    onClick={(e) => {
-                      console.log(e);
-                      setCustomInputCheck(e.target.checked);
-                    }}
-                    id="defaultUnchecked"
-                  />
-                  <label
-                    className="custom-control-label"
-                    for="defaultUnchecked"
-                  >
-                    Custom Input
-                  </label>
+                  {timeFF !== undefined && (
+                    <TestHeaderComp
+                      noTotal={true}
+                      timer={timeFF}
+                      start={!testFinshBool}
+                      reset={testFinshBool}
+                      timeKey="Time"
+                      header="Coding"
+                      nextpage={"admin/domain"}
+                      setMd={setMd}
+                    ></TestHeaderComp>
+                  )}
                 </div>
-              </Col>
-              <Col lg={3}>
-                <button
-                  type="submit"
-                  className="btn scTest ml-2 mr-2 "
-                  style={{ color: "white", width: "fit-content" }}
-                  onClick={(e) => {
-                    current_qs === 1
-                      ? setIsSubmitCode_qs1()
-                      : current_qs === 2
-                      ? setIsSubmitCode_qs2()
-                      : setIsSubmitCode_qs3();
-                    submit(e);
+              </Row>
+              <Row>
+                <div
+                  className="basicRec"
+                  style={{
+                    marginTop: "5px",
+                    height: window.screen.height - 220,
+                    backgroundColor: "#F7F7F7",
                   }}
                 >
-                  <i className="fas fa-cog fa-fw"></i> Run
-                </button>
-              </Col>
-              <Col lg={3}>
-                <button
-                  type="submit"
-                  className="btn scTest ml-2 mr-2 "
-                  style={{ color: "white", width: "fit-content" }}
-                  onClick={(e) => {
-                    if (current_qs === 1) {
-                      set_submitCode_qs1(true);
-                    } else if (current_qs === 2) {
-                      set_submitCode_qs2(true);
-                    } else if (current_qs === 3) {
-                      set_submitCode_qs3(true);
-                    }
-                    submitCode(e);
-                  }}
-                >
-                  <i className="fas fa-cog fa-fw"></i> Submit
-                </button>
-              </Col>
-            </Row>
-            <Row>
-              <div
-                className="basicRec"
-                style={{
-                  marginTop: "5px",
-                  height: "240px",
-                  backgroundColor: "#F7F7F7",
-                }}
-              >
-                <Tabs
-                  defaultActiveKey="customInput"
-                  id="uncontrolled-tab-example"
-                  className="mb-3"
-                >
-                  <Tab eventKey="customInput" title="custom input">
-                    <textarea
-                      id="style-4"
-                      className="scrollbar customInput"
-                      spellCheck={false}
-                      defaultValue={user_input}
-                      style={{ height: 170 }}
-                      onChange={userInput}
-                    ></textarea>
-                  </Tab>
-                  <Tab eventKey="Result" title="result">
-                    <Row>
-                      {(current_qs === 1
-                        ? submitCode_qs1
-                        : current_qs === 2
-                        ? submitCode_qs2
-                        : submitCode_qs3) && (
-                        <Col md={3}>
-                          <div>
-                            <Row className="" style={{ height: "20%" }}>
-                              {(
-                                current_qs === 1
-                                  ? q1_testCase_1_output_error !== undefined
-                                  : current_qs === 2
-                                  ? q2_testCase_1_output_error !== undefined
-                                  : q3_testCase_1_output_error !== undefined
-                              ) ? (
-                                <Col style={{ paddingLeft: "0%" }}>
-                                  <button
-                                    className={
-                                      current_qs === 1
-                                        ? !q1_testCase_1_output_error
-                                          ? "btn scTest"
-                                          : "btn btn-danger"
-                                        : current_qs === 2
-                                        ? !q2_testCase_1_output_error
-                                          ? "btn scTest"
-                                          : "btn btn-danger"
-                                        : !q3_testCase_1_output_error
-                                        ? "btn scTest"
-                                        : "btn btn-danger"
-                                    }
-                                    onClick={(e) => {
-                                      if (current_qs === 1) {
-                                        document.getElementsByClassName(
-                                          "codeOutput"
-                                        )[0].value = q1_testCase_1_output;
-                                        set_q1_testCase_Current_output(
-                                          q1_testCase_1_output
-                                        );
-                                      } else if (current_qs === 2) {
-                                        document.getElementsByClassName(
-                                          "codeOutput"
-                                        )[0].value = q2_testCase_1_output;
-                                        set_q2_testCase_Current_output(
-                                          q2_testCase_1_output
-                                        );
-                                      } else if (current_qs === 3) {
-                                        document.getElementsByClassName(
-                                          "codeOutput"
-                                        )[0].value = q3_testCase_1_output;
-                                        set_q3_testCase_Current_output(
-                                          q3_testCase_1_output
-                                        );
-                                      }
-                                    }}
-                                    style={{
-                                      marginBottom: "1px",
-                                      color: "white",
-                                      borderRadius: "0",
-                                      width: "100%",
-                                    }}
-                                  >
-                                    Test Case 1
-                                  </button>
-                                </Col>
-                              ) : (
-                                <Col style={{ paddingLeft: "0%" }}>
-                                  <button
-                                    className="btn btn-secondary"
-                                    onClick={(e) => {
-                                      if (current_qs === 1) {
-                                        document.getElementsByClassName(
-                                          "codeOutput"
-                                        )[0].value = q1_testCase_1_output;
-                                        set_q1_testCase_Current_output(
-                                          q1_testCase_1_output
-                                        );
-                                      } else if (current_qs === 2) {
-                                        document.getElementsByClassName(
-                                          "codeOutput"
-                                        )[0].value = q2_testCase_1_output;
-                                        set_q2_testCase_Current_output(
-                                          q2_testCase_1_output
-                                        );
-                                      } else if (current_qs === 3) {
-                                        document.getElementsByClassName(
-                                          "codeOutput"
-                                        )[0].value = q3_testCase_1_output;
-                                        set_q3_testCase_Current_output(
-                                          q3_testCase_1_output
-                                        );
-                                      }
-                                    }}
-                                    style={{
-                                      marginBottom: "1px",
-                                      color: "white",
-                                      borderRadius: "0",
-                                      width: "100%",
-                                    }}
-                                  >
-                                    Test Case 1
-                                  </button>
-                                </Col>
-                              )}
-                            </Row>
-                            <Row className="">
-                              {(
-                                current_qs === 1
-                                  ? q1_testCase_2_output_error !== undefined
-                                  : current_qs === 2
-                                  ? q2_testCase_2_output_error !== undefined
-                                  : q3_testCase_2_output_error !== undefined
-                              ) ? (
-                                <Col style={{ paddingLeft: "0%" }}>
-                                  <button
-                                    className={
-                                      current_qs === 1
-                                        ? !q1_testCase_2_output_error
-                                          ? "btn scTest"
-                                          : "btn btn-danger"
-                                        : current_qs === 2
-                                        ? !q2_testCase_2_output_error
-                                          ? "btn scTest"
-                                          : "btn btn-danger"
-                                        : !q3_testCase_2_output_error
-                                        ? "btn scTest"
-                                        : "btn btn-danger"
-                                    }
-                                    onClick={(e) => {
-                                      if (current_qs === 1) {
-                                        document.getElementsByClassName(
-                                          "codeOutput"
-                                        )[0].value = q1_testCase_2_output;
-                                        set_q1_testCase_Current_output(
-                                          q1_testCase_2_output
-                                        );
-                                      } else if (current_qs === 2) {
-                                        document.getElementsByClassName(
-                                          "codeOutput"
-                                        )[0].value = q2_testCase_2_output;
-                                        set_q2_testCase_Current_output(
-                                          q2_testCase_2_output
-                                        );
-                                      } else if (current_qs === 3) {
-                                        document.getElementsByClassName(
-                                          "codeOutput"
-                                        )[0].value = q3_testCase_2_output;
-                                        set_q3_testCase_Current_output(
-                                          q3_testCase_2_output
-                                        );
-                                      }
-                                    }}
-                                    style={{
-                                      marginBottom: "1px",
-                                      color: "white",
-                                      borderRadius: "0",
-                                      width: "100%",
-                                    }}
-                                  >
-                                    Test Case 2
-                                  </button>
-                                </Col>
-                              ) : (
-                                <Col style={{ paddingLeft: "0%" }}>
-                                  <button
-                                    className="btn btn-secondary"
-                                    onClick={(e) => {
-                                      if (current_qs === 1) {
-                                        document.getElementsByClassName(
-                                          "codeOutput"
-                                        )[0].value = q1_testCase_2_output;
-                                        set_q1_testCase_Current_output(
-                                          q1_testCase_2_output
-                                        );
-                                      } else if (current_qs === 2) {
-                                        document.getElementsByClassName(
-                                          "codeOutput"
-                                        )[0].value = q2_testCase_2_output;
-                                        set_q2_testCase_Current_output(
-                                          q2_testCase_2_output
-                                        );
-                                      } else if (current_qs === 3) {
-                                        document.getElementsByClassName(
-                                          "codeOutput"
-                                        )[0].value = q3_testCase_2_output;
-                                        set_q3_testCase_Current_output(
-                                          q3_testCase_2_output
-                                        );
-                                      }
-                                    }}
-                                    style={{
-                                      marginBottom: "1px",
-                                      color: "white",
-                                      borderRadius: "0",
-                                      width: "100%",
-                                    }}
-                                  >
-                                    Test Case 2
-                                  </button>
-                                </Col>
-                              )}
-                            </Row>
-                            <Row className="">
-                              {(
-                                current_qs === 1
-                                  ? q1_testCase_3_output_error !== undefined
-                                  : current_qs === 2
-                                  ? q2_testCase_3_output_error !== undefined
-                                  : q3_testCase_3_output_error !== undefined
-                              ) ? (
-                                <Col style={{ paddingLeft: "0%" }}>
-                                  <button
-                                    className={
-                                      current_qs === 1
-                                        ? !q1_testCase_3_output_error
-                                          ? "btn scTest"
-                                          : "btn btn-danger"
-                                        : current_qs === 2
-                                        ? !q2_testCase_3_output_error
-                                          ? "btn scTest"
-                                          : "btn btn-danger"
-                                        : !q3_testCase_3_output_error
-                                        ? "btn scTest"
-                                        : "btn btn-danger"
-                                    }
-                                    onClick={(e) => {
-                                      if (current_qs === 1) {
-                                        document.getElementsByClassName(
-                                          "codeOutput"
-                                        )[0].value = q1_testCase_3_output;
-                                        set_q1_testCase_Current_output(
-                                          q1_testCase_3_output
-                                        );
-                                      } else if (current_qs === 2) {
-                                        document.getElementsByClassName(
-                                          "codeOutput"
-                                        )[0].value = q2_testCase_3_output;
-                                        set_q2_testCase_Current_output(
-                                          q2_testCase_3_output
-                                        );
-                                      } else if (current_qs === 3) {
-                                        document.getElementsByClassName(
-                                          "codeOutput"
-                                        )[0].value = q3_testCase_3_output;
-                                        set_q3_testCase_Current_output(
-                                          q3_testCase_3_output
-                                        );
-                                      }
-                                    }}
-                                    style={{
-                                      marginBottom: "1px",
-                                      color: "white",
-                                      borderRadius: "0",
-                                      width: "100%",
-                                    }}
-                                  >
-                                    Test Case 3
-                                  </button>
-                                </Col>
-                              ) : (
-                                <Col style={{ paddingLeft: "0%" }}>
-                                  <button
-                                    className={"btn btn-secondary"}
-                                    onClick={(e) => {
-                                      if (current_qs === 1) {
-                                        document.getElementsByClassName(
-                                          "codeOutput"
-                                        )[0].value = q1_testCase_3_output;
-                                        set_q1_testCase_Current_output(
-                                          q1_testCase_3_output
-                                        );
-                                      } else if (current_qs === 2) {
-                                        document.getElementsByClassName(
-                                          "codeOutput"
-                                        )[0].value = q2_testCase_3_output;
-                                        set_q2_testCase_Current_output(
-                                          q2_testCase_3_output
-                                        );
-                                      } else if (current_qs === 3) {
-                                        document.getElementsByClassName(
-                                          "codeOutput"
-                                        )[0].value = q3_testCase_3_output;
-                                        set_q3_testCase_Current_output(
-                                          q3_testCase_3_output
-                                        );
-                                      }
-                                    }}
-                                    style={{
-                                      marginBottom: "1px",
-                                      color: "white",
-                                      borderRadius: "0",
-                                      width: "100%",
-                                    }}
-                                  >
-                                    Test Case 3
-                                  </button>
-                                </Col>
-                              )}
-                            </Row>
-                          </div>
-                        </Col>
-                      )}
-                      <Col
-                        md={
-                          (
-                            current_qs === 1
-                              ? submitCode_qs1
-                              : current_qs === 2
-                              ? submitCode_qs2
-                              : submitCode_qs3
-                          )
-                            ? 9
-                            : 12
-                        }
-                      >
-                        <textarea
-                          disabled
-                          value={
-                            current_qs === 1
-                              ? isSubmitCode_qs1
-                                ? q1_testCase_Current_output
-                                : q1_run_output
-                              : current_qs === 2
-                              ? isSubmitCode_qs2
-                                ? q2_testCase_Current_output
-                                : q2_run_output
-                              : isSubmitCode_qs3
-                              ? q3_testCase_Current_output
-                              : q3_run_output
+                  <Tabs
+                    defaultActiveKey="Q1"
+                    inkBarStyle={{ background: "blue" }}
+                    id="uncontrolled-tab-example"
+                    style={{ marginBottom: "0px !important" }}
+                    className="mb-3"
+                    onClick={(e) => {
+                      let qsNo = e.target.textContent.split("Q")[1];
+                      set_current_qs(parseInt(qsNo));
+                      if (parseInt(qsNo) === 1) {
+                        set_question_current(question_1);
+                        setInput(inputT_question_1);
+                        document.getElementById("editor").value =
+                          inputT_question_1;
+                        document.getElementsByClassName(
+                          "customInput"
+                        )[0].value = user_input_question_1;
+                        setUser_input(user_input_question_1);
+                        setLanguage_id(language_id_question_1);
+                        set_render_state(true);
+                        if (
+                          document.getElementsByClassName("codeOutput")[0] !==
+                          undefined
+                        ) {
+                          if (isSubmitCode_qs1) {
+                            document.getElementsByClassName(
+                              "codeOutput"
+                            )[0].value = q1_testCase_1_output;
+                            set_q1_testCase_Current_output(
+                              q1_testCase_1_output
+                            );
+                          } else {
+                            if (q1_run_output !== undefined) {
+                              document.getElementsByClassName(
+                                "codeOutput"
+                              )[0].value = q1_run_output;
+                              set_q1_testCase_Current_output(q1_run_output);
+                            } else {
+                              document.getElementsByClassName(
+                                "codeOutput"
+                              )[0].value = "";
+                              set_q1_testCase_Current_output();
+                            }
                           }
-                          readOnly
-                          className="scrollbar codeOutput"
-                          style={{ height: 140 }}
+                        }
+                      } else if (parseInt(qsNo) === 2) {
+                        set_question_current(question_2);
+                        setInput(inputT_question_2);
+                        document.getElementById("editor").value =
+                          inputT_question_2;
+                        document.getElementsByClassName(
+                          "customInput"
+                        )[0].value = user_input_question_2;
+                        setUser_input(user_input_question_2);
+                        setLanguage_id(language_id_question_2);
+                        set_render_state(true);
+                        if (
+                          document.getElementsByClassName("codeOutput")[0] !==
+                          undefined
+                        ) {
+                          if (isSubmitCode_qs2) {
+                            document.getElementsByClassName(
+                              "codeOutput"
+                            )[0].value = q2_testCase_1_output;
+                            set_q2_testCase_Current_output(
+                              q2_testCase_1_output
+                            );
+                          } else {
+                            if (q2_run_output !== undefined) {
+                              document.getElementsByClassName(
+                                "codeOutput"
+                              )[0].value = q2_run_output;
+                              set_q2_testCase_Current_output(q2_run_output);
+                            } else {
+                              document.getElementsByClassName(
+                                "codeOutput"
+                              )[0].value = "";
+                              set_q2_testCase_Current_output();
+                            }
+                          }
+                        }
+                      } else if (parseInt(qsNo) === 3) {
+                        set_question_current(question_3);
+                        setInput(inputT_question_3);
+                        document.getElementById("editor").value =
+                          inputT_question_3;
+                        document.getElementsByClassName(
+                          "customInput"
+                        )[0].value = user_input_question_3;
+                        setUser_input(user_input_question_3);
+                        setLanguage_id(language_id_question_3);
+                        set_render_state(true);
+
+                        if (
+                          document.getElementsByClassName("codeOutput")[0] !==
+                          undefined
+                        ) {
+                          if (isSubmitCode_qs3) {
+                            document.getElementsByClassName(
+                              "codeOutput"
+                            )[0].value = q3_testCase_1_output;
+                            set_q3_testCase_Current_output(
+                              q3_testCase_1_output
+                            );
+                          } else {
+                            if (q3_run_output !== undefined) {
+                              document.getElementsByClassName(
+                                "codeOutput"
+                              )[0].value = q3_run_output;
+                              set_q3_testCase_Current_output(q3_run_output);
+                            } else {
+                              document.getElementsByClassName(
+                                "codeOutput"
+                              )[0].value = "";
+                              set_q3_testCase_Current_output();
+                            }
+                          }
+                        }
+                      }
+                    }}
+                  >
+                    <Tab eventKey="Q1" title="Q1">
+                      <CodingQsComp qs={question_1}></CodingQsComp>
+                    </Tab>
+                    <Tab eventKey="Q2" title="Q2">
+                      <CodingQsComp qs={question_2}></CodingQsComp>
+                    </Tab>
+                    <Tab eventKey="Q3" title="Q3">
+                      <CodingQsComp qs={question_3}></CodingQsComp>
+                    </Tab>
+                  </Tabs>
+                </div>
+              </Row>
+            </Col>
+
+            <Col md={6} style={{ height: window.screen.height - 160 }}>
+              <div style={{ marginLeft: "45px" }}>
+                <Row
+                  style={{
+                    paddingBottom: "5px",
+                    paddingLeft: "40%",
+                    height: "40px",
+                    marginBottom: "10px",
+                  }}
+                >
+                  <Col>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        setMd(true);
+                        setTestFinishBool(true);
+                        setShow(false);
+                        navigate("/admin/domain");
+                      }}
+                      style={{ color: "white", width: "fit-content" }}
+                      className="btn scTest"
+                    >
+                      Next Section
+                    </button>
+                  </Col>
+                  <Col>
+                    <button
+                      type="button"
+                      className="btn btn-success"
+                      onClick={(e) => {
+                        setTestFinishBool(true);
+                        setShow(false);
+                        setMd(true);
+                        navigate("/result");
+                        if (document.exitFullscreen) {
+                          document.exitFullscreen();
+                        } else if (document.webkitExitFullscreen) {
+                          document.webkitExitFullscreen();
+                        } else if (document.mozCancelFullScreen) {
+                          document.mozCancelFullScreen();
+                        } else if (document.msExitFullscreen) {
+                          document.msExitFullscreen();
+                        }
+                      }}
+                      style={{
+                        backgroundColor: "#081466",
+                        width: "fit-content",
+                        borderRadius: "10px",
+                        color: "white",
+                        padding: "7px 10px",
+                      }}
+                    >
+                      Finish Test
+                    </button>
+                  </Col>
+                </Row>
+                <Row style={{ marginTop: "5px" }}>
+                  <div
+                    className="basicRec"
+                    style={{
+                      backgroundColor: "#F7F7F7",
+                      padding: "5px 5px",
+                      height: window.screen.height - 500,
+                    }}
+                  >
+                    {current_qs === 1 &&
+                      language_id_question_1 !== undefined && (
+                        <ACEEditor
+                          inputT={inputT_question_1}
+                          render_state={render_state}
+                          set_render_state={set_render_state}
+                          language_id={language_id_question_1}
+                          height={window.screen.height - 500}
+                        ></ACEEditor>
+                      )}
+
+                    {current_qs === 2 &&
+                      language_id_question_2 !== undefined && (
+                        <ACEEditor
+                          inputT={inputT_question_2}
+                          render_state={render_state}
+                          set_render_state={set_render_state}
+                          language_id={language_id_question_2}
+                          height={window.screen.height - 500}
+                        ></ACEEditor>
+                      )}
+
+                    {current_qs === 3 &&
+                      language_id_question_3 !== undefined && (
+                        <ACEEditor
+                          inputT={inputT_question_3}
+                          render_state={render_state}
+                          set_render_state={set_render_state}
+                          language_id={language_id_question_3}
+                          height={window.screen.height - 500}
+                        ></ACEEditor>
+                      )}
+                  </div>
+                </Row>
+
+                <Row
+                  style={{
+                    paddingTop: "5px",
+                    paddingBottom: "0",
+                    height: "42px",
+                  }}
+                >
+                  <Col lg={3}>
+                    <select
+                      style={{ width: "90px" }}
+                      value={language_id}
+                      onChange={language}
+                      id="tags"
+                      className="form-control form-inline mb-2 language"
+                    >
+                      <option value="54">C++</option>
+                      <option value="50">C</option>
+                      <option value="62">Java</option>
+                      <option value="71">Python</option>
+                    </select>
+                  </Col>
+                  <Col lg={3}>
+                    <div
+                      className="custom-control custom-checkbox"
+                      style={{ paddingTop: "8px" }}
+                    >
+                      <input
+                        type="checkbox"
+                        className="custom-control-input"
+                        style={{ marginRight: "4px" }}
+                        onClick={(e) => {
+                          console.log(e);
+                          setCustomInputCheck(e.target.checked);
+                        }}
+                        id="defaultUnchecked"
+                      />
+                      <label
+                        className="custom-control-label"
+                        for="defaultUnchecked"
+                      >
+                        Custom Input
+                      </label>
+                    </div>
+                  </Col>
+                  <Col lg={3}>
+                    <button
+                      type="submit"
+                      className="btn scTest ml-2 mr-2 "
+                      style={{ color: "white", width: "fit-content" }}
+                      onClick={(e) => {
+                        current_qs === 1
+                          ? setIsSubmitCode_qs1()
+                          : current_qs === 2
+                          ? setIsSubmitCode_qs2()
+                          : setIsSubmitCode_qs3();
+                        submit(e);
+                      }}
+                    >
+                      <i className="fas fa-cog fa-fw"></i> Run
+                    </button>
+                  </Col>
+                  <Col lg={3}>
+                    <button
+                      type="submit"
+                      className="btn scTest ml-2 mr-2 "
+                      style={{ color: "white", width: "fit-content" }}
+                      onClick={(e) => {
+                        if (current_qs === 1) {
+                          set_submitCode_qs1(true);
+                        } else if (current_qs === 2) {
+                          set_submitCode_qs2(true);
+                        } else if (current_qs === 3) {
+                          set_submitCode_qs3(true);
+                        }
+                        submitCode(e);
+                      }}
+                    >
+                      <i className="fas fa-cog fa-fw"></i> Submit
+                    </button>
+                  </Col>
+                </Row>
+                <Row>
+                  <div
+                    className="basicRec"
+                    style={{
+                      marginTop: "5px",
+                      height: "240px",
+                      backgroundColor: "#F7F7F7",
+                    }}
+                  >
+                    <Tabs
+                      defaultActiveKey="customInput"
+                      id="uncontrolled-tab-example"
+                      className="mb-3"
+                    >
+                      <Tab eventKey="customInput" title="custom input">
+                        <textarea
                           id="style-4"
+                          className="scrollbar customInput"
+                          spellCheck={false}
+                          defaultValue={user_input}
+                          style={{ height: 170 }}
+                          onChange={userInput}
                         ></textarea>
-                      </Col>
-                    </Row>
-                  </Tab>
-                </Tabs>
+                      </Tab>
+                      <Tab eventKey="Result" title="result">
+                        <Row>
+                          {(current_qs === 1
+                            ? submitCode_qs1
+                            : current_qs === 2
+                            ? submitCode_qs2
+                            : submitCode_qs3) && (
+                            <Col md={3}>
+                              <div>
+                                <Row className="" style={{ height: "20%" }}>
+                                  {(
+                                    current_qs === 1
+                                      ? q1_testCase_1_output_error !== undefined
+                                      : current_qs === 2
+                                      ? q2_testCase_1_output_error !== undefined
+                                      : q3_testCase_1_output_error !== undefined
+                                  ) ? (
+                                    <Col style={{ paddingLeft: "0%" }}>
+                                      <button
+                                        className={
+                                          current_qs === 1
+                                            ? !q1_testCase_1_output_error
+                                              ? "btn scTest"
+                                              : "btn btn-danger"
+                                            : current_qs === 2
+                                            ? !q2_testCase_1_output_error
+                                              ? "btn scTest"
+                                              : "btn btn-danger"
+                                            : !q3_testCase_1_output_error
+                                            ? "btn scTest"
+                                            : "btn btn-danger"
+                                        }
+                                        onClick={(e) => {
+                                          if (current_qs === 1) {
+                                            document.getElementsByClassName(
+                                              "codeOutput"
+                                            )[0].value = q1_testCase_1_output;
+                                            set_q1_testCase_Current_output(
+                                              q1_testCase_1_output
+                                            );
+                                          } else if (current_qs === 2) {
+                                            document.getElementsByClassName(
+                                              "codeOutput"
+                                            )[0].value = q2_testCase_1_output;
+                                            set_q2_testCase_Current_output(
+                                              q2_testCase_1_output
+                                            );
+                                          } else if (current_qs === 3) {
+                                            document.getElementsByClassName(
+                                              "codeOutput"
+                                            )[0].value = q3_testCase_1_output;
+                                            set_q3_testCase_Current_output(
+                                              q3_testCase_1_output
+                                            );
+                                          }
+                                        }}
+                                        style={{
+                                          marginBottom: "1px",
+                                          color: "white",
+                                          borderRadius: "0",
+                                          width: "100%",
+                                        }}
+                                      >
+                                        Test Case 1
+                                      </button>
+                                    </Col>
+                                  ) : (
+                                    <Col style={{ paddingLeft: "0%" }}>
+                                      <button
+                                        className="btn btn-secondary"
+                                        onClick={(e) => {
+                                          if (current_qs === 1) {
+                                            document.getElementsByClassName(
+                                              "codeOutput"
+                                            )[0].value = q1_testCase_1_output;
+                                            set_q1_testCase_Current_output(
+                                              q1_testCase_1_output
+                                            );
+                                          } else if (current_qs === 2) {
+                                            document.getElementsByClassName(
+                                              "codeOutput"
+                                            )[0].value = q2_testCase_1_output;
+                                            set_q2_testCase_Current_output(
+                                              q2_testCase_1_output
+                                            );
+                                          } else if (current_qs === 3) {
+                                            document.getElementsByClassName(
+                                              "codeOutput"
+                                            )[0].value = q3_testCase_1_output;
+                                            set_q3_testCase_Current_output(
+                                              q3_testCase_1_output
+                                            );
+                                          }
+                                        }}
+                                        style={{
+                                          marginBottom: "1px",
+                                          color: "white",
+                                          borderRadius: "0",
+                                          width: "100%",
+                                        }}
+                                      >
+                                        Test Case 1
+                                      </button>
+                                    </Col>
+                                  )}
+                                </Row>
+                                <Row className="">
+                                  {(
+                                    current_qs === 1
+                                      ? q1_testCase_2_output_error !== undefined
+                                      : current_qs === 2
+                                      ? q2_testCase_2_output_error !== undefined
+                                      : q3_testCase_2_output_error !== undefined
+                                  ) ? (
+                                    <Col style={{ paddingLeft: "0%" }}>
+                                      <button
+                                        className={
+                                          current_qs === 1
+                                            ? !q1_testCase_2_output_error
+                                              ? "btn scTest"
+                                              : "btn btn-danger"
+                                            : current_qs === 2
+                                            ? !q2_testCase_2_output_error
+                                              ? "btn scTest"
+                                              : "btn btn-danger"
+                                            : !q3_testCase_2_output_error
+                                            ? "btn scTest"
+                                            : "btn btn-danger"
+                                        }
+                                        onClick={(e) => {
+                                          if (current_qs === 1) {
+                                            document.getElementsByClassName(
+                                              "codeOutput"
+                                            )[0].value = q1_testCase_2_output;
+                                            set_q1_testCase_Current_output(
+                                              q1_testCase_2_output
+                                            );
+                                          } else if (current_qs === 2) {
+                                            document.getElementsByClassName(
+                                              "codeOutput"
+                                            )[0].value = q2_testCase_2_output;
+                                            set_q2_testCase_Current_output(
+                                              q2_testCase_2_output
+                                            );
+                                          } else if (current_qs === 3) {
+                                            document.getElementsByClassName(
+                                              "codeOutput"
+                                            )[0].value = q3_testCase_2_output;
+                                            set_q3_testCase_Current_output(
+                                              q3_testCase_2_output
+                                            );
+                                          }
+                                        }}
+                                        style={{
+                                          marginBottom: "1px",
+                                          color: "white",
+                                          borderRadius: "0",
+                                          width: "100%",
+                                        }}
+                                      >
+                                        Test Case 2
+                                      </button>
+                                    </Col>
+                                  ) : (
+                                    <Col style={{ paddingLeft: "0%" }}>
+                                      <button
+                                        className="btn btn-secondary"
+                                        onClick={(e) => {
+                                          if (current_qs === 1) {
+                                            document.getElementsByClassName(
+                                              "codeOutput"
+                                            )[0].value = q1_testCase_2_output;
+                                            set_q1_testCase_Current_output(
+                                              q1_testCase_2_output
+                                            );
+                                          } else if (current_qs === 2) {
+                                            document.getElementsByClassName(
+                                              "codeOutput"
+                                            )[0].value = q2_testCase_2_output;
+                                            set_q2_testCase_Current_output(
+                                              q2_testCase_2_output
+                                            );
+                                          } else if (current_qs === 3) {
+                                            document.getElementsByClassName(
+                                              "codeOutput"
+                                            )[0].value = q3_testCase_2_output;
+                                            set_q3_testCase_Current_output(
+                                              q3_testCase_2_output
+                                            );
+                                          }
+                                        }}
+                                        style={{
+                                          marginBottom: "1px",
+                                          color: "white",
+                                          borderRadius: "0",
+                                          width: "100%",
+                                        }}
+                                      >
+                                        Test Case 2
+                                      </button>
+                                    </Col>
+                                  )}
+                                </Row>
+                                <Row className="">
+                                  {(
+                                    current_qs === 1
+                                      ? q1_testCase_3_output_error !== undefined
+                                      : current_qs === 2
+                                      ? q2_testCase_3_output_error !== undefined
+                                      : q3_testCase_3_output_error !== undefined
+                                  ) ? (
+                                    <Col style={{ paddingLeft: "0%" }}>
+                                      <button
+                                        className={
+                                          current_qs === 1
+                                            ? !q1_testCase_3_output_error
+                                              ? "btn scTest"
+                                              : "btn btn-danger"
+                                            : current_qs === 2
+                                            ? !q2_testCase_3_output_error
+                                              ? "btn scTest"
+                                              : "btn btn-danger"
+                                            : !q3_testCase_3_output_error
+                                            ? "btn scTest"
+                                            : "btn btn-danger"
+                                        }
+                                        onClick={(e) => {
+                                          if (current_qs === 1) {
+                                            document.getElementsByClassName(
+                                              "codeOutput"
+                                            )[0].value = q1_testCase_3_output;
+                                            set_q1_testCase_Current_output(
+                                              q1_testCase_3_output
+                                            );
+                                          } else if (current_qs === 2) {
+                                            document.getElementsByClassName(
+                                              "codeOutput"
+                                            )[0].value = q2_testCase_3_output;
+                                            set_q2_testCase_Current_output(
+                                              q2_testCase_3_output
+                                            );
+                                          } else if (current_qs === 3) {
+                                            document.getElementsByClassName(
+                                              "codeOutput"
+                                            )[0].value = q3_testCase_3_output;
+                                            set_q3_testCase_Current_output(
+                                              q3_testCase_3_output
+                                            );
+                                          }
+                                        }}
+                                        style={{
+                                          marginBottom: "1px",
+                                          color: "white",
+                                          borderRadius: "0",
+                                          width: "100%",
+                                        }}
+                                      >
+                                        Test Case 3
+                                      </button>
+                                    </Col>
+                                  ) : (
+                                    <Col style={{ paddingLeft: "0%" }}>
+                                      <button
+                                        className={"btn btn-secondary"}
+                                        onClick={(e) => {
+                                          if (current_qs === 1) {
+                                            document.getElementsByClassName(
+                                              "codeOutput"
+                                            )[0].value = q1_testCase_3_output;
+                                            set_q1_testCase_Current_output(
+                                              q1_testCase_3_output
+                                            );
+                                          } else if (current_qs === 2) {
+                                            document.getElementsByClassName(
+                                              "codeOutput"
+                                            )[0].value = q2_testCase_3_output;
+                                            set_q2_testCase_Current_output(
+                                              q2_testCase_3_output
+                                            );
+                                          } else if (current_qs === 3) {
+                                            document.getElementsByClassName(
+                                              "codeOutput"
+                                            )[0].value = q3_testCase_3_output;
+                                            set_q3_testCase_Current_output(
+                                              q3_testCase_3_output
+                                            );
+                                          }
+                                        }}
+                                        style={{
+                                          marginBottom: "1px",
+                                          color: "white",
+                                          borderRadius: "0",
+                                          width: "100%",
+                                        }}
+                                      >
+                                        Test Case 3
+                                      </button>
+                                    </Col>
+                                  )}
+                                </Row>
+                              </div>
+                            </Col>
+                          )}
+                          <Col
+                            md={
+                              (
+                                current_qs === 1
+                                  ? submitCode_qs1
+                                  : current_qs === 2
+                                  ? submitCode_qs2
+                                  : submitCode_qs3
+                              )
+                                ? 9
+                                : 12
+                            }
+                          >
+                            <textarea
+                              disabled
+                              value={
+                                current_qs === 1
+                                  ? isSubmitCode_qs1
+                                    ? q1_testCase_Current_output
+                                    : q1_run_output
+                                  : current_qs === 2
+                                  ? isSubmitCode_qs2
+                                    ? q2_testCase_Current_output
+                                    : q2_run_output
+                                  : isSubmitCode_qs3
+                                  ? q3_testCase_Current_output
+                                  : q3_run_output
+                              }
+                              readOnly
+                              className="scrollbar codeOutput"
+                              style={{ height: 140 }}
+                              id="style-4"
+                            ></textarea>
+                          </Col>
+                        </Row>
+                      </Tab>
+                    </Tabs>
+                  </div>
+                </Row>
               </div>
-            </Row>
-          </div>
-        </Col>
-      </Row>
-</>:<MobileWidth/>}
-          </>
+            </Col>
+          </Row>
+        </>
+      ) : (
+        <MobileWidth />
+      )}
+    </>
   );
 }

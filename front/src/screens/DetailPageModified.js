@@ -7,11 +7,17 @@ import "../css/LoginScreen.css";
 import Loader from "../components/Loader";
 import MobileWidth from "../components/MobileWidth";
 import { useMediaQuery } from "react-responsive";
+import { TiTick } from "react-icons/ti";
 
 function DetailPageModified() {
   const isDesktopOrLaptop = useMediaQuery({
     query: "(min-width: 1024px)",
   });
+  var isNode = require("detect-node");
+  const { detect } = require("detect-browser");
+  const browser = detect();
+  const ScreenSizeDetector = require("screen-size-detector");
+  const screen = new ScreenSizeDetector();
   const [agree, setAgree] = useState(false);
   const [isLoading, setIsloading] = useState(true);
   const navigate = useNavigate();
@@ -70,7 +76,104 @@ function DetailPageModified() {
             <Loader />
           ) : (
             <Row>
-              <Col style={{ padding: "0", margin: "0" }}>
+              <Col md={4} style={{ padding: "0", margin: "0" }}>
+                <div
+                  className="rectangleInstuc"
+                  style={{
+                    height: "630px",
+                    padding: "15px 35px 30px 35px",
+                    margin: "0 40px",
+                  }}
+                >
+                  <Row>
+                    <Row style={{ textAlign: "center", margin: "20px 0px" }}>
+                      <Col>
+                        <div
+                          style={{
+                            textAlign: "center",
+                            fontSize: "18px",
+                            color: "#293e6f",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          System Check
+                        </div>
+                      </Col>
+                    </Row>
+                    <Row style={{ fontSize: "14px" }}>
+                      <p>
+                        <b style={{ color: "#293e6f" }}>Browser: </b>
+                        {browser.name}
+                      </p>
+                      <p style={{ color: "#10B65C", textAlign: "center" }}>
+                        <TiTick style={{ color: "#10B65C" }}></TiTick>
+                        Requirement satisfied
+                      </p>
+                      <p style={{ paddingTop: "10px" }}>
+                        <b style={{ color: "#293e6f" }}>Version: </b>
+                        {browser.version}
+                      </p>
+                      <p style={{ color: "#10B65C", textAlign: "center" }}>
+                        <TiTick style={{ color: "#10B65C" }}></TiTick>
+                        Requirement satisfied
+                      </p>
+                      <p style={{ paddingTop: "10px" }}>
+                        <b style={{ color: "#293e6f" }}>Operating Sytem: </b>
+                        {browser.os}
+                      </p>
+                      <p style={{ color: "#10B65C", textAlign: "center" }}>
+                        <TiTick style={{ color: "#10B65C" }}></TiTick>
+                        Requirement satisfied
+                      </p>
+                      <p style={{ paddingTop: "10px" }}>
+                        <b style={{ color: "#293e6f" }}>Screensize: </b>
+                        {screen.width}px by {screen.height}px{" "}
+                      </p>
+                      <p style={{ color: "#10B65C", textAlign: "center" }}>
+                        <TiTick style={{ color: "#10B65C" }}></TiTick>
+                        Requirement satisfied
+                      </p>
+                      <p style={{ paddingTop: "10px" }}>
+                        <b style={{ color: "#293e6f" }}>Javascript: </b>
+                        {isNode ? "Node.js" : "Enabled"}
+                        {!isNode ? "" : "Disabled"}
+                      </p>
+                      <p
+                        style={{
+                          color: "#10B65C",
+                          textAlign: "center",
+                          marginBottom: "20px",
+                        }}
+                      >
+                        <TiTick style={{ color: "#10B65C" }}></TiTick>
+                        Requirement satisfied
+                      </p>
+                    </Row>
+                    <div
+                      style={{
+                        backgroundColor: "#D1E7DD",
+                        height: "90px",
+                        width: "95%",
+                        borderRadius: "8px",
+                      }}
+                    >
+                      <p
+                        style={{
+                          color: "#10B65C",
+                          textAlign: "justified",
+                          fontSize: "12px",
+                          marginTop: "16px",
+                        }}
+                      >
+                        {" "}
+                        You are all set to give the assessment. Read and Agree
+                        to the instruction given to begin the assessment.{" "}
+                      </p>
+                    </div>
+                  </Row>
+                </div>
+              </Col>
+              <Col md={8} style={{ padding: "0", margin: "0" }}>
                 <div
                   className="rectangleInstuc"
                   style={{
@@ -81,7 +184,16 @@ function DetailPageModified() {
                 >
                   <Row style={{ textAlign: "center", margin: "30px 0px" }}>
                     <Col>
-                      <div id="instruc">Instructions</div>
+                      <div
+                        style={{
+                          textAlign: "center",
+                          fontSize: "18px",
+                          color: "#293e6f",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Instructions
+                      </div>
                     </Col>
                   </Row>
                   <Row>
@@ -90,7 +202,8 @@ function DetailPageModified() {
                         style={{
                           marginRight: "30px",
                           marginLeft: "30px",
-                          lineHeight: "35px",
+                          fontSize: "14px",
+                          lineHeight: "1.5",
                         }}
                       >
                         <ol>
@@ -155,7 +268,11 @@ function DetailPageModified() {
                             onChange={checkboxHandler}
                           />
                           <label
-                            style={{ marginLeft: "25px", marginBottom: "25px" }}
+                            style={{
+                              marginLeft: "25px",
+                              marginBottom: "15px",
+                              fontSize: "14px",
+                            }}
                             htmlFor="agree"
                           >
                             {" "}
@@ -171,10 +288,11 @@ function DetailPageModified() {
                         }}
                         style={{
                           backgroundColor: "#10B65C",
-                          width: "150px",
+                          width: "120px",
                           border: "none",
                           marginTop: "20px",
-                          marginLeft: "550px",
+                          marginLeft: "310px",
+                          fontSize: "14px",
                         }}
                         type="button"
                         className="btn btn-primary"
