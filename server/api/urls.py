@@ -17,7 +17,6 @@ urlpatterns = [
    path('api/para/<int:tid>',views.comprehension),
    path('api/personality/res',views.personalityR),
    path('api/personality/res',views.personalityR),
-   path('api/createUser',views.createUser),
    path('api/newuser',views.newuser),
    path("api/forgotpass",views.forgotpass),
    path("api/changepass",views.changepass),
