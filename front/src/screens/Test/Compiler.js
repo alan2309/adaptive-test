@@ -27,7 +27,8 @@ export default function Compiler() {
   const [current_qs, set_current_qs] = useState(1);
   const [successMsg, setSuccessMsg] = useState("");
   const [dangerMsg, setDangerMsg] = useState("");
-  const [isAlertMsgLoaded, setIsAlertMsgLoaded] = useState(false);
+  const [isAlertDangerMsgLoaded, setIsAlertDangerMsgLoaded] = useState(false);
+  const [isAlertSuccessMsgLoaded, setIsAlertSuccessMsgLoaded] = useState(false);
   const [language_id, setLanguage_id] = useState();
   const [language_id_question_1, setLanguage_id_question_1] = useState();
   const [language_id_question_2, setLanguage_id_question_2] = useState();
@@ -669,7 +670,7 @@ export default function Compiler() {
             }
           }
         } else {
-          setIsAlertMsgLoaded(true);
+          setIsAlertDangerMsgLoaded(true);
           setDangerMsg("Something went wrong. Please contact administartor");
         }
       }
@@ -913,7 +914,7 @@ export default function Compiler() {
             flag = true;
           }
         } else {
-          setIsAlertMsgLoaded(true);
+          setIsAlertDangerMsgLoaded(true);
           setDangerMsg("Error Occured. Token doesn't exist");
           break;
         }
@@ -1233,7 +1234,7 @@ export default function Compiler() {
           localStorage.setItem("test4", JSON.stringify(test));
         }
       } else {
-        setIsAlertMsgLoaded(true);
+        setIsAlertDangerMsgLoaded(true);
         setDangerMsg("Please contact the admin");
       }
     }
@@ -1428,14 +1429,14 @@ export default function Compiler() {
         <>
           <Alert
             msg={successMsg}
-            setIsAlertMsgLoaded={setIsAlertMsgLoaded}
-            isAlertMsgLoaded={isAlertMsgLoaded}
+            setIsAlertMsgLoaded={setIsAlertSuccessMsgLoaded}
+            isAlertMsgLoaded={isAlertSuccessMsgLoaded}
             type="success"
           ></Alert>
           <Alert
             msg={dangerMsg}
-            setIsAlertMsgLoaded={setIsAlertMsgLoaded}
-            isAlertMsgLoaded={isAlertMsgLoaded}
+            setIsAlertMsgLoaded={setIsAlertDangerMsgLoaded}
+            isAlertMsgLoaded={isAlertDangerMsgLoaded}
             type="danger"
           ></Alert>
           <Modal

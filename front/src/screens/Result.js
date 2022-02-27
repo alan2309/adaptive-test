@@ -41,7 +41,8 @@ function Result() {
   const [successMsg, setSuccessMsg] = useState("");
   const [dangerMsg, setDangerMsg] = useState("");
   const [feedback_comment, set_feedback_comment] = useState("");
-  const [isAlertMsgLoaded, setIsAlertMsgLoaded] = useState(false);
+  const [isAlertDangerMsgLoaded, setIsAlertDangerMsgLoaded] = useState(false);
+  const [isAlertSuccessMsgLoaded, setIsAlertSuccessMsgLoaded] = useState(false);
   const [prediction, setPrediction] = useState(false);
 
   const handlePrint = useReactToPrint({
@@ -317,14 +318,14 @@ function Result() {
             <div>
               <Alert
                 msg={successMsg}
-                setIsAlertMsgLoaded={setIsAlertMsgLoaded}
-                isAlertMsgLoaded={isAlertMsgLoaded}
+                setIsAlertMsgLoaded={setIsAlertSuccessMsgLoaded}
+                isAlertMsgLoaded={isAlertSuccessMsgLoaded}
                 type="success"
               ></Alert>
               <Alert
                 msg={dangerMsg}
-                setIsAlertMsgLoaded={setIsAlertMsgLoaded}
-                isAlertMsgLoaded={isAlertMsgLoaded}
+                setIsAlertMsgLoaded={setIsAlertDangerMsgLoaded}
+                isAlertMsgLoaded={isAlertDangerMsgLoaded}
                 type="danger"
               ></Alert>
               <Modal
@@ -351,7 +352,7 @@ function Result() {
                         })
                         .then((res) => {
                           if (res.data.success) {
-                            setIsAlertMsgLoaded(true);
+                            setIsAlertSuccessMsgLoaded(true);
                             setSuccessMsg("Thank you for your feedback");
                             setShowFeedback(false);
                             navigate("/logout");

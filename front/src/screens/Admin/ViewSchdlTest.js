@@ -13,6 +13,7 @@ import MobileWidth from "../../components/MobileWidth";
 import { useMediaQuery } from "react-responsive";
 import $ from "jquery";
 import { AiFillMail } from "react-icons/ai";
+import Alert from "../../components/Admin/Alert";
 
 function ViewSchdlTest() {
   const initialFormData = Object.freeze({
@@ -32,6 +33,10 @@ function ViewSchdlTest() {
   const [argConfirmModal, setArgConfirmModal] = useState();
   const [sendMail, setSendMail] = useState(false);
   const [areAllChecked, setAreAllChecked] = useState(false);
+  const [dangerMsg, setDangerMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+  const [isAlertDangerMsgLoaded, setIsAlertDangerMsgLoaded] = useState(false);
+  const [isAlertSuccessMsgLoaded, setIsAlertSuccessMsgLoaded] = useState(false);
   // let addBtn;
   const columns = [
     {
@@ -188,6 +193,18 @@ function ViewSchdlTest() {
     <>
       {isDesktopOrLaptop ? (
         <>
+          <Alert
+            msg={successMsg}
+            setIsAlertMsgLoaded={setIsAlertSuccessMsgLoaded}
+            isAlertMsgLoaded={isAlertSuccessMsgLoaded}
+            type="success"
+          ></Alert>
+          <Alert
+            msg={dangerMsg}
+            setIsAlertMsgLoaded={setIsAlertDangerMsgLoaded}
+            isAlertMsgLoaded={isAlertDangerMsgLoaded}
+            type="danger"
+          ></Alert>
           {isLoading ? (
             <Loader />
           ) : (
@@ -227,10 +244,12 @@ function ViewSchdlTest() {
                       })
                       .then((res) => {
                         setSendMail(false);
-                        alert("Email Sent Successfull");
+                        setIsAlertSuccessMsgLoaded(true);
+                        setSuccessMsg("Mail Sent Successfully");
                       })
                       .catch((e) => {
-                        alert("Email Not Sent");
+                        setIsAlertDangerMsgLoaded(true);
+                        setDangerMsg("Error in sending mail");
                         console.log(e);
                       });
                   }}
@@ -398,7 +417,10 @@ function ViewSchdlTest() {
                     if (x.length !== 0) {
                       setSendMail(true);
                     } else {
-                      alert("First Select to send mail");
+                      setIsAlertDangerMsgLoaded(true);
+                      setDangerMsg(
+                        "Please select atleast one student to send a mail"
+                      );
                     }
                   }}
                 >

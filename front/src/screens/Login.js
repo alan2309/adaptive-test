@@ -30,7 +30,8 @@ function Login() {
   const [show, setShow] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
   const [dangerMsg, setDangerMsg] = useState("");
-  const [isAlertMsgLoaded, setIsAlertMsgLoaded] = useState(false);
+  const [isAlertDangerMsgLoaded, setIsAlertDangerMsgLoaded] = useState(false);
+  const [isAlertSuccessMsgLoaded, setIsAlertSuccessMsgLoaded] = useState(false);
   const [myid, setMyId] = useState(-1);
   const columnsP = [
     {
@@ -205,7 +206,7 @@ function Login() {
                             navigate("/result");
                           } else {
                             setMd(true);
-                            setIsAlertMsgLoaded(true);
+                            setIsAlertDangerMsgLoaded(true);
                             setDangerMsg(
                               "Test is ongoing on a different device"
                             );
@@ -226,18 +227,18 @@ function Login() {
                   }
                 } else {
                   setIsloading(false);
-                  setIsAlertMsgLoaded(true);
+                  setIsAlertDangerMsgLoaded(true);
                   setDangerMsg("You are not allowed to Login yet.Please wait!");
                 }
               });
           } else {
             setIsloading(false);
-            setIsAlertMsgLoaded(true);
+            setIsAlertDangerMsgLoaded(true);
             setDangerMsg("You Are not allowed To attempt this Test");
           }
         } else {
           setIsloading(false);
-          setIsAlertMsgLoaded(true);
+          setIsAlertDangerMsgLoaded(true);
           setDangerMsg("Invalid username or password");
         }
       });
@@ -248,7 +249,7 @@ function Login() {
   };
   const error = (res) => {
     if (res.error === "idpiframe_initialization_failed") return;
-    setIsAlertMsgLoaded(true);
+    setIsAlertDangerMsgLoaded(true);
     setDangerMsg("Attempt to log in failed");
   };
 
@@ -258,14 +259,14 @@ function Login() {
         <>
           <Alert
             msg={successMsg}
-            setIsAlertMsgLoaded={setIsAlertMsgLoaded}
-            isAlertMsgLoaded={isAlertMsgLoaded}
+            setIsAlertMsgLoaded={setIsAlertSuccessMsgLoaded}
+            isAlertMsgLoaded={isAlertSuccessMsgLoaded}
             type="success"
           ></Alert>
           <Alert
             msg={dangerMsg}
-            setIsAlertMsgLoaded={setIsAlertMsgLoaded}
-            isAlertMsgLoaded={isAlertMsgLoaded}
+            setIsAlertMsgLoaded={setIsAlertDangerMsgLoaded}
+            isAlertMsgLoaded={isAlertDangerMsgLoaded}
             type="danger"
           ></Alert>
           {isLoading ? (
@@ -337,7 +338,7 @@ function Login() {
                           if (res.data.exists) {
                             setShow(false);
                           } else {
-                            setIsAlertMsgLoaded(true);
+                            setIsAlertDangerMsgLoaded(true);
                             setDangerMsg("An Error occured");
                           }
                         })
