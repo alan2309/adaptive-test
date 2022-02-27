@@ -189,6 +189,35 @@ def getuserslist(request):
         return JsonResponse({'exists':1,'allowed':bb,'notallowed':aa},safe=False)
 
 @csrf_exempt
+def send_custom_mail(request):
+    if request.headers.get('Authorization') and checkAuthorization(request.headers["Authorization"]):
+        if request.method == "POST":
+            data=JSONParser().parse(request)['data']
+            
+            userrs=[]
+            if int(data['isAllSelected'])==1:
+                qs=User.objects.filter(is_staff=False)
+                for x in qs:
+                    userrs.append(x.email)
+            else:
+                if len(data['userId'])!=0 and int(data['isAllSelected'])==0:
+                    users = data['userId']
+                    print(users)
+                    for user in users:
+                        x = User.objects.get(id=int(user))
+                        userrs.append(x.email)
+            subject = data["subject"]
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = userrs
+            msg=EmailMultiAlternatives(subject=subject,from_email=email_from,to=recipient_list)
+            args={}
+            args["body"]=data["body"]
+            html_template=get_template("api/CustomMail.html").render(args)
+            msg.attach_alternative(html_template,"text/html")
+            msg.send()
+            return JsonResponse({'success':True},safe=False)
+
+@csrf_exempt
 def permission(request):
     if request.headers.get('Authorization') and checkAuthorization(request.headers["Authorization"]):
         if request.method == "POST":
@@ -560,8 +589,10 @@ def resultTest(request,id):
         cc=[]
         for x in a.data:
             c={}
+            user=User.objects.get(id=x['student'])
             c['id']=x['id']
-            c['name']=User.objects.get(id=x['student']).username
+            c['uid']=user.id
+            c['name']=user.username
             c['sdate']="{0} {1}".format(x['startTime'].split('T')[0],x['startTime'].split('T')[1].split('.')[0])
             c['sdate'] = converttoist(c['sdate'])
 
