@@ -26,6 +26,12 @@ from django.template.loader import get_template
 from django.conf import settings
 import uuid
 CFG = {'DB': None}
+import pandas as pd
+
+def predict():
+    regressor = pd.read_pickle(r'server\model.pickle') 
+    result = regressor.predict([[0,0,0,0,0]])
+    return int(result[0])
 
 def constdata(request):
     if request.method == "GET":
