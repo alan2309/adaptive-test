@@ -54,6 +54,10 @@ function TestScreen() {
         windowAway();
       }
     }
+    function contextm(event) {
+      event.preventDefault();
+    }
+    window.addEventListener("contextmenu", contextm);
     window.addEventListener("fullscreenchange", fullscreenc);
     window.addEventListener("visibilitychange", visibilityc);
     if (!localStorage.getItem("test")) {
@@ -213,6 +217,7 @@ function TestScreen() {
     return () => {
       window.removeEventListener("fullscreenchange", fullscreenc);
       window.removeEventListener("visibilitychange", visibilityc);
+      window.removeEventListener("contextmenu", contextm);
     };
   }, []);
   function GoInFullscreen(element) {

@@ -57,8 +57,12 @@ function PTestScreen() {
         windowAway();
       }
     }
-    document.addEventListener("fullscreenchange", fullscreenc);
-    document.addEventListener("visibilitychange", visibilityc);
+    function contextm(event) {
+      event.preventDefault();
+    }
+    window.addEventListener("contextmenu", contextm);
+    window.addEventListener("fullscreenchange", fullscreenc);
+    window.addEventListener("visibilitychange", visibilityc);
     let flag = true;
     if (!(localStorage.getItem("test5") && !localStorage.getItem("test6"))) {
       if (!localStorage.getItem("test6")) {
@@ -232,6 +236,7 @@ function PTestScreen() {
       }
     }
     return () => {
+      window.removeEventListener("contextmenu", contextm);
       window.removeEventListener("fullscreenchange", fullscreenc);
       window.removeEventListener("visibilitychange", visibilityc);
     };

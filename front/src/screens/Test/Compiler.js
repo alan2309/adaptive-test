@@ -167,8 +167,12 @@ export default function Compiler() {
         windowAway();
       }
     }
-    document.addEventListener("fullscreenchange", fullscreenc);
-    document.addEventListener("visibilitychange", visibilityc);
+    function contextm(event) {
+      event.preventDefault();
+    }
+    window.addEventListener("contextmenu", contextm);
+    window.addEventListener("fullscreenchange", fullscreenc);
+    window.addEventListener("visibilitychange", visibilityc);
     let flag = true;
     if (!(localStorage.getItem("test2") && !localStorage.getItem("test4"))) {
       if (!localStorage.getItem("test4")) {
@@ -355,6 +359,7 @@ export default function Compiler() {
       }
     }
     return () => {
+      window.removeEventListener("contextmenu", contextm);
       window.removeEventListener("fullscreenchange", fullscreenc);
       window.removeEventListener("visibilitychange", visibilityc);
     };
