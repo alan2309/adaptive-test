@@ -1,3 +1,4 @@
+from posixpath import split
 from django.contrib.auth.hashers import make_password
 import json
 from django.http import HttpResponseBadRequest, HttpResponseForbidden
@@ -205,7 +206,7 @@ def permission(request):
             msg=EmailMultiAlternatives(subject=subject,from_email=email_from,to=recipient_list)
             args={}
             args['Start']='{}'.format(converttoist(testx.test_start)[0] )
-            args['End']='{}'.format(converttoist(testx.test_end)[0] )
+            args['End']='{}'.format(converttoist(testx.test_end)[0])
             args['testName']='{}'.format(testx.test_name)
             html_template=get_template("api/Permission.html").render(args)
             msg.attach_alternative(html_template,"text/html")
@@ -455,7 +456,8 @@ def results(request,name):
 def converttoist(datex):
     from_zone = tz.tzutc()
     to_zone = tz.tzlocal()
-    utc = datetime.datetime.strptime(str(datex).split('.')[0], '%Y-%m-%d %H:%M:%S')
+    datex = str(datex).split('+')[0]
+    utc = datetime.datetime.strptime(datex.split(".")[0], '%Y-%m-%d %H:%M:%S')
     
     # Tell the datetime object that it's in UTC time zone since 
     # datetime objects are 'naive' by default

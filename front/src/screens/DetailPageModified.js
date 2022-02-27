@@ -49,6 +49,7 @@ function DetailPageModified() {
     var h = (ob.getHours() < 10 ? "0" : "") + ob.getHours();
     var m = (ob.getMinutes() < 10 ? "0" : "") + ob.getMinutes();
     var s = (ob.getMinutes() < 10 ? "0" : "") + ob.getSeconds();
+    localStorage.setItem("screenchange", 0);
     localStorage.setItem(
       "test",
       JSON.stringify({

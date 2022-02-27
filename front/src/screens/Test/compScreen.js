@@ -38,6 +38,22 @@ function CompScreen() {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
+    function fullscreenc() {
+      var full_screen_element = document.fullscreenElement;
+
+      if (full_screen_element === null) {
+        setShow(true);
+        setMd(false);
+        isReload(true);
+      }
+    }
+    function visibilityc() {
+      if (document.hidden) {
+        windowAway();
+      }
+    }
+    document.addEventListener("fullscreenchange", fullscreenc);
+    document.addEventListener("visibilitychange", visibilityc);
     let flag = true;
     if (!(localStorage.getItem("test6") && !localStorage.getItem("test3"))) {
       if (!localStorage.getItem("test3")) {
@@ -184,6 +200,10 @@ function CompScreen() {
         }
       }
     }
+    return () => {
+      window.removeEventListener("fullscreenchange", fullscreenc);
+      window.removeEventListener("visibilitychange", visibilityc);
+    };
   }, []);
 
   function converttime(timex) {
@@ -204,28 +224,16 @@ function CompScreen() {
       element.classList.add(`style-4`);
     }
   }
-  document.addEventListener("fullscreenchange", function () {
-    var full_screen_element = document.fullscreenElement;
 
-    if (full_screen_element === null) {
-      setShow(true);
-      setMd(false);
-      isReload(true);
-    }
-  });
-  document.addEventListener("visibilitychange", function () {
-    if (document.hidden) {
-      windowAway();
-    }
-  });
   function handleCloseSChange(e) {
     setCountWindowAwayModal(false);
     GoInFullscreen(document.querySelector("#element"));
   }
   function windowAway() {
-    var ccount = countWindowAway + 1;
-    setCountWindowAway(countWindowAway + 1);
-    if (ccount < 3) {
+    var ccount = parseInt(localStorage.getItem("screenchange"));
+    setCountWindowAway(ccount + 1);
+    if (ccount + 1 < 3) {
+      localStorage.setItem("screenchange", ccount + 1);
       setCountWindowAwayModal(true);
     } else {
       navigate("/result");
