@@ -222,21 +222,14 @@ function ViewSchdlTest() {
                     e.preventDefault();
                     let x = $(".checkbox_send_mail:checkbox:checked");
                     let userId = [];
-                    let isAllSelected = 0;
-                    if (!areAllChecked && x.length !== 0) {
+                    if (x.length !== 0) {
                       x.map((xx) =>
                         userId.push(parseInt(x[xx].id.split("checkbox")[1]))
                       );
-                    } else {
-                      isAllSelected = 1;
                     }
-                    console.log(userId);
-                    console.log(x);
-                    console.log(formData);
                     axiosInstance
                       .post("api/send_custom_mail", {
                         data: {
-                          isAllSelected: isAllSelected,
                           userId: userId,
                           subject: formData.subject,
                           body: formData.body,
