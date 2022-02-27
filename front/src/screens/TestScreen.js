@@ -461,6 +461,7 @@ function TestScreen() {
                                     width: "95%",
                                     border: "1px #8A3C5B",
                                     borderRadius: "8px",
+                                    textAlign: "center",
                                     margin: "10px 10px 10px 25px",
                                   }}
                                 >
@@ -468,28 +469,28 @@ function TestScreen() {
                                     style={{
                                       height: "30px",
                                       width: "30px",
-                                      margin: "10px 500px 0px",
+                                      textAlign: "center",
+                                      margin: "20px 0",
                                       color: "#842029",
                                     }}
                                   />
                                   <p
                                     style={{
                                       color: "#842029",
-                                      margin: "10px 0px 0px 470px",
+                                      textAlign: "center",
                                     }}
                                   >
-                                    <p>
-                                      <b>
-                                        {countWindowAway === 1 ? "1st" : "Last"}{" "}
-                                        Warning
-                                      </b>
-                                    </p>
+                                    <b>
+                                      {countWindowAway === 1 ? "1st" : "Last"}{" "}
+                                      Warning
+                                    </b>
                                   </p>
                                   <p
                                     style={{
                                       color: "#842029",
                                       fontWeight: "normal",
                                       fontSize: "14px",
+                                      margin: "0 10px 10px 10px",
                                       textAlign: "center",
                                     }}
                                   >
@@ -501,10 +502,10 @@ function TestScreen() {
                                     onClick={(e) => handleCloseSChange(e)}
                                     style={{
                                       backgroundColor: "#842029",
-                                      margin: "0px 0px 20px 470px",
                                       color: "white",
                                       outline: "none",
                                       border: "none",
+                                      margin: "10px 0",
                                     }}
                                   >
                                     Continue
