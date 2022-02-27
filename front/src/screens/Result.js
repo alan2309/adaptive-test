@@ -31,6 +31,7 @@ function Result() {
   const [optRadar, setOptRadar] = useState({});
   const [show, setShow] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
+  const [feedBackOnLogout, setFeedBackOnLogout] = useState(false);
   const [idx, setIdx] = useState();
   const [userDetails, setUserDetails] = useState({});
   const [startTime, setStartTime] = useState("");
@@ -328,7 +329,7 @@ function Result() {
               ></Alert>
               <Modal
                 id="feedback"
-                show={showFeedback}
+                show={feedBackOnLogout}
                 onHide={() => setShowFeedback(false)}
                 backdrop="static"
                 keyboard={false}
@@ -353,6 +354,7 @@ function Result() {
                             setIsAlertMsgLoaded(true);
                             setSuccessMsg("Thank you for your feedback");
                             setShowFeedback(false);
+                            navigate("/logout");
                           } else {
                             setDangerMsg("Error Occured");
                           }
@@ -811,7 +813,13 @@ function Result() {
                 <button
                   type="button"
                   className="btn"
-                  onClick={(e) => navigate("/logout")}
+                  onClick={(e) => {
+                    if (showFeedback) {
+                      setFeedBackOnLogout(true);
+                    } else {
+                      navigate("/logout");
+                    }
+                  }}
                   style={{
                     marginTop: "20px",
                     backgroundColor: "red",
