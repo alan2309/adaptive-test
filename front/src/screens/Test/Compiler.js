@@ -1697,17 +1697,15 @@ export default function Compiler() {
               </Row>
             </Col>
 
-            <Col md={6} style={{ height: window.screen.height - 160 }}>
-              <div style={{ marginLeft: "45px" }}>
+            <Col md={6} style={{ height: window.screen.height - 160,paddingLeft: "45px" }}>
                 <Row
                   style={{
-                    paddingBottom: "5px",
-                    paddingLeft: "40%",
-                    height: "40px",
+                    height: "40px",   
+                    marginTop:'5px',
                     marginBottom: "10px",
+                    width:'100%'
                   }}
                 >
-                  <Col>
                     <button
                       type="button"
                       onClick={(e) => {
@@ -1716,13 +1714,13 @@ export default function Compiler() {
                         setShow(false);
                         navigate("/admin/domain");
                       }}
-                      style={{ color: "white", width: "fit-content" }}
+                      style={{ color: "white",borderRadius: "10px",width:'125px',padding: "7px 10px",marginLeft:'auto',
+                      }}
                       className="btn scTest"
                     >
                       Next Section
                     </button>
-                  </Col>
-                  <Col>
+                
                     <button
                       type="button"
                       className="btn btn-success"
@@ -1743,15 +1741,15 @@ export default function Compiler() {
                       }}
                       style={{
                         backgroundColor: "#081466",
-                        width: "fit-content",
+                        width:'125px',
                         borderRadius: "10px",
                         color: "white",
                         padding: "7px 10px",
+                        height:'40px'
                       }}
                     >
                       Finish Test
                     </button>
-                  </Col>
                 </Row>
                 <Row style={{ marginTop: "5px" }}>
                   <div
@@ -1801,12 +1799,12 @@ export default function Compiler() {
                   style={{
                     paddingTop: "5px",
                     paddingBottom: "0",
-                    height: "42px",
+                    height: "fit-content",
                   }}
                 >
                   <Col lg={3}>
                     <select
-                      style={{ width: "90px" }}
+                      style={{ width: "100%" }}
                       value={language_id}
                       onChange={language}
                       id="tags"
@@ -1862,7 +1860,7 @@ export default function Compiler() {
                     <button
                       type="submit"
                       className="btn scTest ml-2 mr-2 "
-                      style={{ color: "white", width: "fit-content" }}
+                      style={{ color: "white", width: "100%",margin:'0' }}
                       onClick={(e) => {
                         if (current_qs === 1) {
                           set_submitCode_qs1(true);
@@ -1874,7 +1872,7 @@ export default function Compiler() {
                         submitCode(e);
                       }}
                     >
-                      <i className="fas fa-cog fa-fw"></i> Submit
+                      Submit
                     </button>
                   </Col>
                 </Row>
@@ -2244,7 +2242,6 @@ export default function Compiler() {
                     </Tabs>
                   </div>
                 </Row>
-              </div>
             </Col>
           </Row>
         </>

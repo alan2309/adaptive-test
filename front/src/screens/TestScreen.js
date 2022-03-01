@@ -6,7 +6,7 @@ import { Col, Modal, Button, Row } from "react-bootstrap";
 import QuestionNavigatorComp from "../components/TestScreeen/QuestionNavigatorComp";
 import "../css/TestScreen.css";
 import { useNavigate } from "react-router";
-import { isExpired, decodeToken } from "react-jwt";
+import { isExpired } from "react-jwt";
 import $ from "jquery";
 import CustomTimer from "./Admin/CustomTimer";
 import crypt from "../components/TestScreeen/crypt";
