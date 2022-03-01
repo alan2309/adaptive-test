@@ -15,7 +15,7 @@ import "../css/LoginScreen.css";
 function DetailPageModified() {
   const imageAddr =
     "https://media.geeksforgeeks.org/wp-content/cdn-uploads/20200714180638/CIP_Launch-banner.png";
-  const downloadSize = 50000; //bytes
+  const downloadSize = 81200; //bytes
   const isDesktopOrLaptop = useMediaQuery({
     query: "(min-width: 1024px)",
   });
@@ -127,7 +127,7 @@ function DetailPageModified() {
             <Loader />
           ) : (
             <Row>
-              <Col md={3} style={{ padding: "0", margin: "0" }}>
+              <Col md={3} style={{ padding: "0", margin: "0", height: "100%" }}>
                 <div
                   className="rectangleInstuc"
                   style={{
@@ -176,7 +176,7 @@ function DetailPageModified() {
                         Requirement satisfied
                       </p>
                       <p style={{ paddingTop: "10px" }}>
-                        <b style={{ color: "#293e6f" }}>Screensize: </b>
+                        <b style={{ color: "#293e6f" }}>Screen Size: </b>
                         {screen_width !== undefined && screen_width}px by{" "}
                         {screen_height !== undefined && screen_height}px{" "}
                       </p>
@@ -185,12 +185,23 @@ function DetailPageModified() {
                         Requirement satisfied
                       </p>
                       <p style={{ paddingTop: "10px" }}>
-                        <b style={{ color: "#293e6f" }}>FullScreen Mode: </b>
+                        <b style={{ color: "#293e6f" }}>Full Screen Mode: </b>
                         {isFullScreenEnabled ? "Enabled" : "Disabled"}
                       </p>
                       <p style={{ color: "#10B65C", textAlign: "center" }}>
-                        <TiTick style={{ color: "#10B65C" }}></TiTick>
-                        Requirement satisfied
+                        {isFullScreenEnabled ? (
+                          <>
+                            <TiTick style={{ color: "#10B65C" }} />
+                            Requirement satisfied
+                          </>
+                        ) : (
+                          <>
+                            <CgDanger
+                              style={{ color: "red", marginRight: "2px" }}
+                            ></CgDanger>
+                            Requirement not satisfied
+                          </>
+                        )}
                       </p>
                       <p style={{ paddingTop: "10px" }}>
                         <b style={{ color: "#293e6f" }}>Devtools: </b>
@@ -205,7 +216,9 @@ function DetailPageModified() {
                       >
                         {isDevToolsOpen ? (
                           <>
-                            <CgDanger style={{ color: "red" }}></CgDanger>
+                            <CgDanger
+                              style={{ color: "red", marginRight: "2px" }}
+                            ></CgDanger>
                             Requirement not satisfied
                           </>
                         ) : (
@@ -219,22 +232,24 @@ function DetailPageModified() {
                     <div
                       style={{
                         backgroundColor: "#D1E7DD",
-                        height: "90px",
                         width: "95%",
                         borderRadius: "8px",
                       }}
                     >
                       <p
                         style={{
-                          color: "#10B65C",
-                          textAlign: "justified",
-                          fontSize: "12px",
-                          marginTop: "16px",
+                          color: !(!isDevToolsOpen && isFullScreenEnabled)
+                            ? "red"
+                            : "#10B65C",
+                          textAlign: "center",
+                          fontSize: "14px",
+                          paddingTop: "15px",
                         }}
                       >
                         {" "}
-                        You are all set to give the assessment. Read and Agree
-                        to the instruction given to begin the assessment.{" "}
+                        {!(!isDevToolsOpen && isFullScreenEnabled)
+                          ? "Please satisfy the given requirements"
+                          : "You are all set to give the assessment."}
                       </p>
                     </div>
                   </Row>
@@ -245,16 +260,16 @@ function DetailPageModified() {
                   className="rectangleInstuc"
                   style={{
                     minHeight: "100%",
-                    padding: "5px 35px 30px 35px",
+                    padding: "5px 35px 20px 35px",
                     margin: "0 30px",
                   }}
                 >
-                  <Row style={{ textAlign: "center", margin: "30px 0px" }}>
+                  <Row style={{ textAlign: "center", margin: "30px 0" }}>
                     <Col>
                       <div
                         style={{
                           textAlign: "center",
-                          fontSize: "18px",
+                          fontSize: "19px",
                           color: "#293e6f",
                           fontWeight: "bold",
                         }}
@@ -269,8 +284,8 @@ function DetailPageModified() {
                         style={{
                           marginRight: "30px",
                           marginLeft: "30px",
-                          fontSize: "14px",
-                          lineHeight: "1.5",
+                          fontSize: "15px",
+                          lineHeight: "2",
                         }}
                       >
                         <ol>
@@ -326,7 +341,7 @@ function DetailPageModified() {
                           </li>
                         </ol>
                       </Row>
-                      <Row style={{ marginTop: "25px" }}>
+                      <Row>
                         <Col>
                           <input
                             style={{ marginLeft: "30px" }}
@@ -336,7 +351,7 @@ function DetailPageModified() {
                           />
                           <label
                             style={{
-                              marginLeft: "25px",
+                              marginLeft: "15px",
                               marginBottom: "15px",
                               fontSize: "14px",
                             }}
@@ -348,26 +363,29 @@ function DetailPageModified() {
                           </label>
                         </Col>
                       </Row>
-                      <button
-                        disabled={
-                          !(agree && !isDevToolsOpen && isFullScreenEnabled)
-                        }
-                        onClick={(e) => {
-                          handleSubmit(e);
-                        }}
-                        style={{
-                          backgroundColor: "#10B65C",
-                          width: "120px",
-                          border: "none",
-                          marginTop: "20px",
-                          marginLeft: "310px",
-                          fontSize: "14px",
-                        }}
-                        type="button"
-                        className="btn btn-primary"
-                      >
-                        Start Test
-                      </button>
+                      <Row>
+                        <button
+                          disabled={
+                            !(agree && !isDevToolsOpen && isFullScreenEnabled)
+                          }
+                          onClick={(e) => {
+                            handleSubmit(e);
+                          }}
+                          style={{
+                            backgroundColor: "#10B65C",
+                            width: "120px",
+                            border: "none",
+                            marginTop: "20px",
+                            marginLeft: "auto",
+                            marginRight: "auto",
+                            fontSize: "14px",
+                          }}
+                          type="button"
+                          className="btn btn-primary"
+                        >
+                          Start Test
+                        </button>
+                      </Row>
                     </Col>
                   </Row>
                 </div>

@@ -234,7 +234,7 @@ function Login() {
           } else {
             setIsloading(false);
             setIsAlertDangerMsgLoaded(true);
-            setDangerMsg("You Are not allowed To attempt this Test");
+            setDangerMsg("You are not allowed To attempt this test");
           }
         } else {
           setIsloading(false);
@@ -337,6 +337,8 @@ function Login() {
                         .then((res) => {
                           if (res.data.exists) {
                             setShow(false);
+                            setIsAlertSuccessMsgLoaded(true);
+                            setSuccessMsg("Mail sent successfully");
                           } else {
                             setIsAlertDangerMsgLoaded(true);
                             setDangerMsg("An Error occured");
