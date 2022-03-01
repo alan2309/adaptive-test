@@ -9,7 +9,7 @@ function protect() {
   if (t3 !== null) {
     return "/admin/analytical";
   } else if (t !== null) {
-    return "/testScreen";
+    return "/aptitude";
   } else if (t2 !== null) {
     return "/admin/computer";
   } else if (t4 !== null) {

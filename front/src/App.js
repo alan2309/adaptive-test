@@ -1,5 +1,5 @@
 import React from "react";
-import TestScreen from "./screens/TestScreen";
+import Aptitude from "./screens/Test/Aptitude";
 import Home from "./screens/Home";
 import logo from "./img/logo.png";
 import { Col, Navbar, Row } from "react-bootstrap";
@@ -59,12 +59,12 @@ function App() {
         <Router>
           <Routes>
             <Route
-              path="/testScreen"
+              path="/aptitude"
               exact
               element={
                 <Row style={{ margin: "20px 0 0 0" }}>
                   <Col style={{ padding: "10px 90px" }}>
-                    <TestScreen />
+                    <Aptitude />
                   </Col>
                 </Row>
               }

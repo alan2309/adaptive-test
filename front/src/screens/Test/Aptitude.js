@@ -1,22 +1,22 @@
 import React, { useState, useEffect, useRef } from "react";
-import axiosInstance from "../axios";
-import TestHeaderComp from "../components/TestScreeen/TestHeaderComp";
-import QuestionComp from "../components/TestScreeen/QuestionComp";
+import axiosInstance from "../../axios";
+import TestHeaderComp from "../../components/TestScreeen/TestHeaderComp";
+import QuestionComp from "../../components/TestScreeen/QuestionComp";
 import { Col, Modal, Button, Row } from "react-bootstrap";
-import QuestionNavigatorComp from "../components/TestScreeen/QuestionNavigatorComp";
-import "../css/TestScreen.css";
+import QuestionNavigatorComp from "../../components/TestScreeen/QuestionNavigatorComp";
+import "../../css/TestScreen.css";
 import { useNavigate } from "react-router";
 import { isExpired } from "react-jwt";
 import $ from "jquery";
-import CustomTimer from "./Admin/CustomTimer";
-import crypt from "../components/TestScreeen/crypt";
-import ProtectUrl from "../components/TestScreeen/ProtectUrl";
-import Loader from "../components/Loader";
-import MobileWidth from "../components/MobileWidth";
+import CustomTimer from "../Admin/CustomTimer";
+import crypt from "../../components/TestScreeen/crypt";
+import ProtectUrl from "../../components/TestScreeen/ProtectUrl";
+import Loader from "../../components/Loader";
+import MobileWidth from "../../components/MobileWidth";
 import { useMediaQuery } from "react-responsive";
 import { AiFillWarning } from "react-icons/ai";
 
-function TestScreen() {
+function Aptitude() {
   const isDesktopOrLaptop = useMediaQuery({
     query: "(min-width: 1024px)",
   });
@@ -543,4 +543,4 @@ function TestScreen() {
   );
 }
 
-export default TestScreen;
+export default Aptitude;

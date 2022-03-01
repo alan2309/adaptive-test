@@ -268,7 +268,7 @@ function ScheduledTest() {
           sessionStorage.setItem("gender", "Male");
           sessionStorage.setItem("age", 30);
           setIsloading(false);
-          navigate("/testScreen");
+          navigate("/aptitude");
         })
         .catch((e) => {
           setIsloading(false);

@@ -107,7 +107,7 @@ function DetailPageModified() {
       })
     );
     setIsloading(false);
-    navigate("/testScreen");
+    navigate("/aptitude");
   };
 
   const checkboxHandler = () => {
