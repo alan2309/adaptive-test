@@ -261,7 +261,7 @@ function CFTestScreen() {
                   }
                 } else {
                   sessionStorage.removeItem("test2");
-                  navigate("/admin/compiler");
+                  navigate("/coding");
                 }
               })
               .catch((e) => {
@@ -368,7 +368,7 @@ function CFTestScreen() {
     }
     test["marks"] = ans;
     if (ans.length - 1 === qsno) {
-      navigate("/admin/compiler");
+      navigate("/coding");
       sessionStorage.setItem("test2", JSON.stringify(test));
     } else {
       setQsno(qsno + 1);

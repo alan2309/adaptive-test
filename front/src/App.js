@@ -212,7 +212,7 @@ function App() {
             />
 
             <Route
-              path="/admin/personality"
+              path="/personality"
               exact
               element={
                 <Row style={{ margin: "20px 0 0 0" }}>
@@ -223,7 +223,7 @@ function App() {
               }
             />
             <Route
-              path="/admin/computer"
+              path="/computer"
               exact
               element={
                 <Row style={{ margin: "20px 0 0 0" }}>
@@ -234,7 +234,7 @@ function App() {
               }
             />
             <Route
-              path="/admin/domain"
+              path="/domain"
               exact
               element={
                 <Row style={{ margin: "20px 0 0 0" }}>
@@ -245,7 +245,7 @@ function App() {
               }
             />
             <Route
-              path="/admin/analytical"
+              path="/analytical"
               exact
               element={
                 <Row style={{ margin: "20px 0 0 0" }}>
@@ -299,7 +299,7 @@ function App() {
               />
             </Route>
             <Route
-              path="/admin/compiler"
+              path="/coding"
               exact
               element={
                 <Row style={{ margin: "20px 0 0 0" }}>

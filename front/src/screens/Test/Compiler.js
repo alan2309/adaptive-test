@@ -1750,7 +1750,7 @@ export default function Compiler() {
                               setMd(true);
                               setTestFinishBool(true);
                               setShow(false);
-                              navigate("/admin/domain");
+                              navigate("/domain");
                             }}
                             style={{
                               color: "white",

@@ -203,7 +203,7 @@ function Aptitude() {
                   }
                 } else {
                   sessionStorage.removeItem("test");
-                  navigate("/admin/computer");
+                  navigate("/computer");
                 }
               })
               .catch((e) => {
@@ -311,7 +311,7 @@ function Aptitude() {
     }
     test["marks"] = ans;
     if (ans.length - 1 === qsno) {
-      navigate("/admin/computer");
+      navigate("/computer");
       sessionStorage.setItem("test", JSON.stringify(test));
     } else {
       setQsno(qsno + 1);

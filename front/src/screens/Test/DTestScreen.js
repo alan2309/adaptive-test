@@ -259,7 +259,7 @@ function DTestScreen() {
                     setTimeFF(tf - hourDiff);
                   }
                 } else {
-                  navigate("/admin/personality");
+                  navigate("/personality");
                 }
               })
               .catch((e) => {
@@ -366,7 +366,7 @@ function DTestScreen() {
     }
     test["marks"] = ans;
     if (ans.length - 1 === qsno) {
-      navigate("/admin/personality");
+      navigate("/personality");
       sessionStorage.setItem("test5", JSON.stringify(test));
     } else {
       setQsno(qsno + 1);

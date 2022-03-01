@@ -7,17 +7,17 @@ function protect() {
   var t6 = sessionStorage.getItem("test6");
 
   if (t3 !== null) {
-    return "/admin/analytical";
+    return "/analytical";
   } else if (t !== null) {
     return "/aptitude";
   } else if (t2 !== null) {
-    return "/admin/computer";
+    return "/computer";
   } else if (t4 !== null) {
-    return "/admin/compiler";
+    return "/coding";
   } else if (t5 !== null) {
-    return "/admin/domain";
+    return "/domain";
   } else if (t6 !== null) {
-    return "/admin/personality";
+    return "/personality";
   } else if (sessionStorage.getItem("result") === `true`) {
     return "/result";
   }

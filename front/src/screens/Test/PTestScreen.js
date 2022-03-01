@@ -227,7 +227,7 @@ function PTestScreen() {
                     setTimeFF(tf - hourDiff);
                   }
                 } else {
-                  navigate("/admin/analytical");
+                  navigate("/analytical");
                 }
               })
               .catch((e) => {
@@ -308,7 +308,7 @@ function PTestScreen() {
     }
     test["marks"] = ans;
     if (ans.length - 1 === qsno) {
-      navigate("/admin/analytical");
+      navigate("/analytical");
       sessionStorage.setItem("test6", JSON.stringify(test));
     } else {
       setQsno(qsno + 1);
