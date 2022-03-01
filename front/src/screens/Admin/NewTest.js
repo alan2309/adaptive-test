@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router";
 import "../../css/AdminHomeScreen.css";
 import $ from "jquery";
-import sidFunc from "./sidFunc";
+import sidFunc from "../../components/Admin/sidFunc";
 import DateTimePicker from "react-datetime-picker";
 import axiosInstance from "../../axios";
 import Loader from "../../components/Loader";
