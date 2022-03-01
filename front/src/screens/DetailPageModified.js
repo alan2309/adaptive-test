@@ -9,7 +9,7 @@ import { useMediaQuery } from "react-responsive";
 import { TiTick } from "react-icons/ti";
 import { CgDanger } from "react-icons/cg";
 import ScreenSizeDetector from "screen-size-detector";
-import { addListener, removeListener, launch } from "devtools-detector";
+import { addListener, removeListener, launch, stop } from "devtools-detector";
 import "../css/LoginScreen.css";
 
 function DetailPageModified() {
@@ -85,6 +85,7 @@ function DetailPageModified() {
     }
     setIsloading(false);
     return () => {
+      stop();
       removeListener(isOpen);
       set_screen_width();
       set_screen_height();
