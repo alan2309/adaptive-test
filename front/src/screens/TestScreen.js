@@ -60,7 +60,7 @@ function TestScreen() {
     window.addEventListener("contextmenu", contextm);
     window.addEventListener("fullscreenchange", fullscreenc);
     window.addEventListener("visibilitychange", visibilityc);
-    if (!localStorage.getItem("test")) {
+    if (!sessionStorage.getItem("test")) {
       let az = ProtectUrl.protect();
       if (az !== "") {
         navigate(az);
@@ -68,11 +68,11 @@ function TestScreen() {
         navigate(-1);
       }
     } else {
-      var test = JSON.parse(localStorage.getItem("test"));
-      const token = localStorage.getItem("access_token");
+      var test = JSON.parse(sessionStorage.getItem("test"));
+      const token = sessionStorage.getItem("access_token");
       const isMyTokenExpired = isExpired(token);
       const channel = new BroadcastChannel("tab");
-      const items = { ...localStorage };
+      const items = { ...sessionStorage };
 
       channel.postMessage("another-tab");
       // note that listener is added after posting the message
@@ -98,10 +98,10 @@ function TestScreen() {
         navigate("/login");
         return;
       } else {
-        if (localStorage.getItem("result")) {
+        if (sessionStorage.getItem("result")) {
           navigate("/result");
         } else {
-          let xx = localStorage.getItem("testId");
+          let xx = sessionStorage.getItem("testId");
           const getData = async () =>
             await axiosInstance
               .get(`api/subs/1/${xx}`)
@@ -125,7 +125,7 @@ function TestScreen() {
                     setAns(ar);
                     test["marks"] = ar;
                     test["maxMarks"] = [2];
-                    localStorage.setItem("test", JSON.stringify(test));
+                    sessionStorage.setItem("test", JSON.stringify(test));
                   } else {
                     var qss = test["question"];
                     var x = res.data.easy;
@@ -202,7 +202,7 @@ function TestScreen() {
                     setTimeFF(tf - hourDiff);
                   }
                 } else {
-                  localStorage.removeItem("test");
+                  sessionStorage.removeItem("test");
                   navigate("/admin/computer");
                 }
               })
@@ -232,10 +232,10 @@ function TestScreen() {
     }
   }
   function windowAway() {
-    var ccount = parseInt(localStorage.getItem("screenchange"));
+    var ccount = parseInt(sessionStorage.getItem("screenchange"));
     setCountWindowAway(ccount + 1);
     if (ccount + 1 < 3) {
-      localStorage.setItem("screenchange", ccount + 1);
+      sessionStorage.setItem("screenchange", ccount + 1);
       setCountWindowAwayModal(true);
     } else {
       navigate("/result");
@@ -265,7 +265,7 @@ function TestScreen() {
     var x;
     ans[qsno] = parseInt(myans);
     setAns(ans);
-    var test = JSON.parse(localStorage.getItem("test"));
+    var test = JSON.parse(sessionStorage.getItem("test"));
 
     if (myans > 0) {
       if (current < 3) {
@@ -312,11 +312,11 @@ function TestScreen() {
     test["marks"] = ans;
     if (ans.length - 1 === qsno) {
       navigate("/admin/computer");
-      localStorage.setItem("test", JSON.stringify(test));
+      sessionStorage.setItem("test", JSON.stringify(test));
     } else {
       setQsno(qsno + 1);
       test["currentQsNo"] = test["currentQsNo"] + 1;
-      localStorage.setItem("test", JSON.stringify(test));
+      sessionStorage.setItem("test", JSON.stringify(test));
       e.target.reset();
       checkBoxToggle(e);
     }

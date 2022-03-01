@@ -176,8 +176,10 @@ export default function Compiler() {
     window.addEventListener("fullscreenchange", fullscreenc);
     window.addEventListener("visibilitychange", visibilityc);
     let flag = true;
-    if (!(localStorage.getItem("test2") && !localStorage.getItem("test4"))) {
-      if (!localStorage.getItem("test4")) {
+    if (
+      !(sessionStorage.getItem("test2") && !sessionStorage.getItem("test4"))
+    ) {
+      if (!sessionStorage.getItem("test4")) {
         let az = ProtectUrl.protect();
         if (az !== "") {
           navigate(az);
@@ -196,9 +198,9 @@ export default function Compiler() {
         setMd(false);
         isReload(true);
       }
-      if (!localStorage.getItem("test4")) {
-        let ax = JSON.parse(localStorage.getItem("test2"));
-        if (localStorage.getItem("test2")) {
+      if (!sessionStorage.getItem("test4")) {
+        let ax = JSON.parse(sessionStorage.getItem("test2"));
+        if (sessionStorage.getItem("test2")) {
           var user = ax["username"];
           let ar = ax["marks"];
           let maxMarks = ax["maxMarks"];
@@ -213,13 +215,13 @@ export default function Compiler() {
                 username: user,
                 marks: total,
                 maxMarks: maxMarks,
-                testId: localStorage.getItem("testId"),
+                testId: sessionStorage.getItem("testId"),
                 gotMarks: gotMarks,
                 check_result: 0,
               },
             })
             .then((res) => {
-              localStorage.removeItem("test2");
+              sessionStorage.removeItem("test2");
             })
             .catch((e) => console.log(e));
         }
@@ -227,7 +229,7 @@ export default function Compiler() {
         let hh = txx.hh;
         let mm = txx.mm;
         let ss = txx.ss;
-        localStorage.setItem(
+        sessionStorage.setItem(
           "test4",
           JSON.stringify({
             username: user,
@@ -241,8 +243,8 @@ export default function Compiler() {
           })
         );
       }
-      var test = JSON.parse(localStorage.getItem("test4"));
-      const token = localStorage.getItem("access_token");
+      var test = JSON.parse(sessionStorage.getItem("test4"));
+      const token = sessionStorage.getItem("access_token");
       const isMyTokenExpired = isExpired(token);
       //  const isMyTokenExpired = false;
 
@@ -250,12 +252,12 @@ export default function Compiler() {
         navigate("/login");
         return;
       } else {
-        if (localStorage.getItem("result")) {
+        if (sessionStorage.getItem("result")) {
           navigate("/result");
         } else {
           // navigate(ProtectUrl.protect())
           let data;
-          let xx = localStorage.getItem("testId");
+          let xx = sessionStorage.getItem("testId");
           const getData = async () =>
             await axiosInstance.get(`api/codingTests/${xx}`).then((res) => {
               let a = converttime(res.data.time);
@@ -312,48 +314,48 @@ export default function Compiler() {
               }
             });
           getData();
-          setInput(JSON.parse(localStorage.getItem("test4"))["input_1"]);
+          setInput(JSON.parse(sessionStorage.getItem("test4"))["input_1"]);
           setInput_question_1(
-            JSON.parse(localStorage.getItem("test4"))["input_1"]
+            JSON.parse(sessionStorage.getItem("test4"))["input_1"]
           );
           setInput_question_2(
-            JSON.parse(localStorage.getItem("test4"))["input_2"]
+            JSON.parse(sessionStorage.getItem("test4"))["input_2"]
           );
           setInput_question_3(
-            JSON.parse(localStorage.getItem("test4"))["input_3"]
+            JSON.parse(sessionStorage.getItem("test4"))["input_3"]
           );
 
-          setUser_input(localStorage.getItem("test4")["user_input_1"] || ``);
+          setUser_input(sessionStorage.getItem("test4")["user_input_1"] || ``);
           setUser_input(
-            JSON.parse(localStorage.getItem("test4"))["user_input_1"] || ``
+            JSON.parse(sessionStorage.getItem("test4"))["user_input_1"] || ``
           );
           setUser_input_question_1(
-            JSON.parse(localStorage.getItem("test4"))["user_input_1"] || ``
+            JSON.parse(sessionStorage.getItem("test4"))["user_input_1"] || ``
           );
           setUser_input_question_2(
-            JSON.parse(localStorage.getItem("test4"))["user_input_2"] || ``
+            JSON.parse(sessionStorage.getItem("test4"))["user_input_2"] || ``
           );
           setUser_input_question_3(
-            JSON.parse(localStorage.getItem("test4"))["user_input_3"] || ``
+            JSON.parse(sessionStorage.getItem("test4"))["user_input_3"] || ``
           );
 
           setLanguage_id(
-            JSON.parse(localStorage.getItem("test4"))[
+            JSON.parse(sessionStorage.getItem("test4"))[
               "language_Id_question_1"
             ] || 54
           );
           setLanguage_id_question_1(
-            JSON.parse(localStorage.getItem("test4"))[
+            JSON.parse(sessionStorage.getItem("test4"))[
               "language_Id_question_1"
             ] || 54
           );
           setLanguage_id_question_2(
-            JSON.parse(localStorage.getItem("test4"))[
+            JSON.parse(sessionStorage.getItem("test4"))[
               "language_Id_question_2"
             ] || 54
           );
           setLanguage_id_question_3(
-            JSON.parse(localStorage.getItem("test4"))[
+            JSON.parse(sessionStorage.getItem("test4"))[
               "language_Id_question_3"
             ] || 54
           );
@@ -384,9 +386,9 @@ export default function Compiler() {
       }
     }
     setInput(code);
-    let test = JSON.parse(localStorage.getItem("test4"));
+    let test = JSON.parse(sessionStorage.getItem("test4"));
     test[`input_${current_qs}`] = code;
-    localStorage.setItem("test4", JSON.stringify(test));
+    sessionStorage.setItem("test4", JSON.stringify(test));
     current_qs === 1
       ? setInput_question_1(code)
       : current_qs === 2
@@ -405,9 +407,9 @@ export default function Compiler() {
       ? setUser_input_question_2(event.target.value)
       : setUser_input_question_3(event.target.value);
 
-    let test = JSON.parse(localStorage.getItem("test4"));
+    let test = JSON.parse(sessionStorage.getItem("test4"));
     test[`user_input_${current_qs}`] = event.target.value;
-    localStorage.setItem("test4", JSON.stringify(test));
+    sessionStorage.setItem("test4", JSON.stringify(test));
   }
 
   function language(event) {
@@ -420,14 +422,14 @@ export default function Compiler() {
       ? setLanguage_id_question_2(event.target.value)
       : setLanguage_id_question_3(event.target.value);
 
-    let test = JSON.parse(localStorage.getItem("test4"));
+    let test = JSON.parse(sessionStorage.getItem("test4"));
     test[`language_Id_question_${current_qs}`] = event.target.value;
 
-    localStorage.setItem("test4", JSON.stringify(test));
+    sessionStorage.setItem("test4", JSON.stringify(test));
   }
 
   async function submit(e) {
-    //below function to set to localStorage
+    //below function to set to sessionStorage
     let code = inputCodeToLocal();
 
     if (current_qs === 1) {
@@ -556,14 +558,14 @@ export default function Compiler() {
               set_q1_run_output(
                 `${output}\n\nExxecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
               );
-              let test = JSON.parse(localStorage.getItem("test4"));
+              let test = JSON.parse(sessionStorage.getItem("test4"));
               test[`question_1`] = JSON.stringify({
                 run_output: `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
                 q1_testCase_1_output: q1_testCase_1_output,
                 q1_testCase_2_output: q1_testCase_2_output,
                 q1_testCase_3_output: q1_testCase_3_output,
               });
-              localStorage.setItem("test4", JSON.stringify(test));
+              sessionStorage.setItem("test4", JSON.stringify(test));
             } else if (current_qs === 2) {
               set_q2_testCase_Current_output(
                 `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
@@ -571,14 +573,14 @@ export default function Compiler() {
               set_q2_run_output(
                 `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
               );
-              let test = JSON.parse(localStorage.getItem("test4"));
+              let test = JSON.parse(sessionStorage.getItem("test4"));
               test[`question_2`] = JSON.stringify({
                 run_output: `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
                 q2_testCase_1_output: q2_testCase_1_output,
                 q2_testCase_2_output: q2_testCase_2_output,
                 q2_testCase_3_output: q2_testCase_3_output,
               });
-              localStorage.setItem("test4", JSON.stringify(test));
+              sessionStorage.setItem("test4", JSON.stringify(test));
             } else if (current_qs === 3) {
               set_q3_testCase_Current_output(
                 `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
@@ -586,14 +588,14 @@ export default function Compiler() {
               set_q3_run_output(
                 `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
               );
-              let test = JSON.parse(localStorage.getItem("test4"));
+              let test = JSON.parse(sessionStorage.getItem("test4"));
               test[`question_3`] = JSON.stringify({
                 run_output: `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
                 q3_testCase_1_output: q3_testCase_1_output,
                 q3_testCase_2_output: q3_testCase_2_output,
                 q3_testCase_3_output: q3_testCase_3_output,
               });
-              localStorage.setItem("test4", JSON.stringify(test));
+              sessionStorage.setItem("test4", JSON.stringify(test));
             }
           } else if (jsonGetSolution.stderr) {
             var b = new Buffer(jsonGetSolution.stderr, "base64");
@@ -601,36 +603,36 @@ export default function Compiler() {
             if (current_qs === 1) {
               set_q1_testCase_Current_output(`Error :${error}`);
               set_q1_run_output(`Error :${error}`);
-              let test = JSON.parse(localStorage.getItem("test4"));
+              let test = JSON.parse(sessionStorage.getItem("test4"));
               test[`question_1`] = JSON.stringify({
                 run_output: `Error :${error}`,
                 q1_testCase_1_output: q1_testCase_1_output,
                 q1_testCase_2_output: q1_testCase_2_output,
                 q1_testCase_3_output: q1_testCase_3_output,
               });
-              localStorage.setItem("test4", JSON.stringify(test));
+              sessionStorage.setItem("test4", JSON.stringify(test));
             } else if (current_qs === 2) {
               set_q2_testCase_Current_output(`\n Error :${error}`);
               set_q2_run_output(`\n Error :${error}`);
-              let test = JSON.parse(localStorage.getItem("test4"));
+              let test = JSON.parse(sessionStorage.getItem("test4"));
               test[`question_2`] = JSON.stringify({
                 run_output: `\n Error :${error}`,
                 q2_testCase_1_output: q2_testCase_1_output,
                 q2_testCase_2_output: q2_testCase_2_output,
                 q2_testCase_3_output: q2_testCase_3_output,
               });
-              localStorage.setItem("test4", JSON.stringify(test));
+              sessionStorage.setItem("test4", JSON.stringify(test));
             } else if (current_qs === 3) {
               set_q3_testCase_Current_output(`\n Error :${error}`);
               set_q3_run_output(`\n Error :${error}`);
-              let test = JSON.parse(localStorage.getItem("test4"));
+              let test = JSON.parse(sessionStorage.getItem("test4"));
               test[`question_3`] = JSON.stringify({
                 run_output: `\n Error :${error}`,
                 q3_testCase_1_output: q3_testCase_1_output,
                 q3_testCase_2_output: q3_testCase_2_output,
                 q3_testCase_3_output: q3_testCase_3_output,
               });
-              localStorage.setItem("test4", JSON.stringify(test));
+              sessionStorage.setItem("test4", JSON.stringify(test));
             }
           } else {
             var b = new Buffer(jsonGetSolution.compile_output, "base64");
@@ -638,36 +640,36 @@ export default function Compiler() {
             if (current_qs === 1) {
               set_q1_testCase_Current_output(`\n Error :${compilation_error}`);
               set_q1_run_output(`\n Error :${compilation_error}`);
-              let test = JSON.parse(localStorage.getItem("test4"));
+              let test = JSON.parse(sessionStorage.getItem("test4"));
               test[`question_1`] = JSON.stringify({
                 run_output: `\n Error :${compilation_error}`,
                 q1_testCase_1_output: q1_testCase_1_output,
                 q1_testCase_2_output: q1_testCase_2_output,
                 q1_testCase_3_output: q1_testCase_3_output,
               });
-              localStorage.setItem("test4", JSON.stringify(test));
+              sessionStorage.setItem("test4", JSON.stringify(test));
             } else if (current_qs === 2) {
               set_q2_testCase_Current_output(`\n Error :${compilation_error}`);
               set_q2_run_output(`\n Error :${compilation_error}`);
-              let test = JSON.parse(localStorage.getItem("test4"));
+              let test = JSON.parse(sessionStorage.getItem("test4"));
               test[`question_2`] = JSON.stringify({
                 run_output: `\n Error :${compilation_error}`,
                 q2_testCase_1_output: q2_testCase_1_output,
                 q2_testCase_2_output: q2_testCase_2_output,
                 q2_testCase_3_output: q2_testCase_3_output,
               });
-              localStorage.setItem("test4", JSON.stringify(test));
+              sessionStorage.setItem("test4", JSON.stringify(test));
             } else if (current_qs === 3) {
               set_q3_testCase_Current_output(`\n Error :${compilation_error}`);
               set_q3_run_output(`\n Error :${compilation_error}`);
-              let test = JSON.parse(localStorage.getItem("test4"));
+              let test = JSON.parse(sessionStorage.getItem("test4"));
               JSON.stringify({
                 run_output: `\n Error :${compilation_error}`,
                 q3_testCase_1_output: q3_testCase_1_output,
                 q3_testCase_2_output: q3_testCase_2_output,
                 q3_testCase_3_output: q3_testCase_3_output,
               });
-              localStorage.setItem("test4", JSON.stringify(test));
+              sessionStorage.setItem("test4", JSON.stringify(test));
             }
           }
         } else {
@@ -679,7 +681,7 @@ export default function Compiler() {
   }
 
   async function submitCode(e) {
-    //below function to set to localStorage
+    //below function to set to sessionStorage
     let code = inputCodeToLocal();
     if (current_qs === 1) {
       set_submitCode_qs1(true);
@@ -1204,7 +1206,7 @@ export default function Compiler() {
           }
         }
         if (current_qs === 1) {
-          let test = JSON.parse(localStorage.getItem("test4"));
+          let test = JSON.parse(sessionStorage.getItem("test4"));
           test[`question_1`] = JSON.stringify({
             run_output: q1_run_output,
             q1_testCase_1_output: t1Output,
@@ -1212,9 +1214,9 @@ export default function Compiler() {
             q1_testCase_3_output: t3Output,
           });
 
-          localStorage.setItem("test4", JSON.stringify(test));
+          sessionStorage.setItem("test4", JSON.stringify(test));
         } else if (current_qs === 2) {
-          let test = JSON.parse(localStorage.getItem("test4"));
+          let test = JSON.parse(sessionStorage.getItem("test4"));
           test[`question_2`] = JSON.stringify({
             run_output: q2_run_output,
             q2_testCase_1_output: t1Output,
@@ -1222,9 +1224,9 @@ export default function Compiler() {
             q2_testCase_3_output: t3Output,
           });
 
-          localStorage.setItem("test4", JSON.stringify(test));
+          sessionStorage.setItem("test4", JSON.stringify(test));
         } else if (current_qs === 3) {
-          let test = JSON.parse(localStorage.getItem("test4"));
+          let test = JSON.parse(sessionStorage.getItem("test4"));
           test[`question_3`] = JSON.stringify({
             run_output: q3_run_output,
             q3_testCase_1_output: t1Output,
@@ -1232,7 +1234,7 @@ export default function Compiler() {
             q3_testCase_3_output: t3Output,
           });
 
-          localStorage.setItem("test4", JSON.stringify(test));
+          sessionStorage.setItem("test4", JSON.stringify(test));
         }
       } else {
         setIsAlertDangerMsgLoaded(true);
@@ -1386,14 +1388,14 @@ export default function Compiler() {
       sum3 = sum3 + 15;
       sum = sum + 15;
     }
-    let ax = JSON.parse(localStorage.getItem("test4"));
+    let ax = JSON.parse(sessionStorage.getItem("test4"));
     if (ax !== undefined && isValidPath) {
       ax["total_q_marks"] = sum;
       ax["q1_marks"] = sum1;
       ax["q2_marks"] = sum2;
       ax["q3_marks"] = sum3;
       ax["marks"] = [sum1, sum2, sum3];
-      localStorage.setItem("test4", JSON.stringify(ax));
+      sessionStorage.setItem("test4", JSON.stringify(ax));
     }
   });
 
@@ -1414,10 +1416,10 @@ export default function Compiler() {
     GoInFullscreen(document.querySelector("#element"));
   }
   function windowAway() {
-    var ccount = parseInt(localStorage.getItem("screenchange"));
+    var ccount = parseInt(sessionStorage.getItem("screenchange"));
     setCountWindowAway(ccount + 1);
     if (ccount + 1 < 3) {
-      localStorage.setItem("screenchange", ccount + 1);
+      sessionStorage.setItem("screenchange", ccount + 1);
       setCountWindowAwayModal(true);
     } else {
       navigate("/result");
@@ -1869,7 +1871,7 @@ export default function Compiler() {
               >
                 <Col lg={1}>
                   <select
-                    style={{ width: "100%" }}
+                    style={{ width: "80px" }}
                     value={language_id}
                     onChange={language}
                     id="tags"

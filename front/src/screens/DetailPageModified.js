@@ -39,23 +39,17 @@ function DetailPageModified() {
     isDevOpen ? setIsDevToolsOpen(true) : setIsDevToolsOpen(false);
 
   useEffect(() => {
-    // var privateLocalStorage = window.localStorage;
-    // delete window.localStorage;
-    // console.log(privateLocalStorage);
-    //  console.log(window.localStorage);
-
     addListener(isOpen);
     launch();
-
     set_screen_height(screen.height);
     set_screen_width(screen.width);
     setIsFullScreenEnabled(document.fullscreenEnabled);
-    let userType = localStorage.getItem("admin");
+    let userType = sessionStorage.getItem("admin");
     let path = ProtectUrl.protect();
-    const token = localStorage.getItem("access_token");
+    const token = sessionStorage.getItem("access_token");
     const isMyTokenExpired = isExpired(token);
     if (!isMyTokenExpired) {
-      if (localStorage.getItem("result")) {
+      if (sessionStorage.getItem("result")) {
         navigate("/result");
       } else {
         if (userType === "user" && path !== "") {
@@ -99,11 +93,11 @@ function DetailPageModified() {
     let h = (ob.getHours() < 10 ? "0" : "") + ob.getHours();
     let m = (ob.getMinutes() < 10 ? "0" : "") + ob.getMinutes();
     let s = (ob.getMinutes() < 10 ? "0" : "") + ob.getSeconds();
-    localStorage.setItem("screenchange", 0);
-    localStorage.setItem(
+    sessionStorage.setItem("screenchange", 0);
+    sessionStorage.setItem(
       "test",
       JSON.stringify({
-        username: localStorage.getItem("username"),
+        username: sessionStorage.getItem("username"),
         STime: Date(),
         strtTime: +h + ":" + m + ":" + s,
         FSTimer: "10",

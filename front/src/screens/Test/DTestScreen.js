@@ -66,8 +66,10 @@ function DTestScreen() {
     window.addEventListener("fullscreenchange", fullscreenc);
     window.addEventListener("visibilitychange", visibilityc);
     let flag = true;
-    if (!(localStorage.getItem("test4") && !localStorage.getItem("test5"))) {
-      if (!localStorage.getItem("test5")) {
+    if (
+      !(sessionStorage.getItem("test4") && !sessionStorage.getItem("test5"))
+    ) {
+      if (!sessionStorage.getItem("test5")) {
         let az = ProtectUrl.protect();
         if (az !== "") navigate(az);
         navigate(-1);
@@ -82,10 +84,10 @@ function DTestScreen() {
         setMd(false);
         isReload(true);
       }
-      if (!localStorage.getItem("test5")) {
-        let user = localStorage.getItem("username");
-        if (localStorage.getItem("test4")) {
-          let ax = JSON.parse(localStorage.getItem("test4"));
+      if (!sessionStorage.getItem("test5")) {
+        let user = sessionStorage.getItem("username");
+        if (sessionStorage.getItem("test4")) {
+          let ax = JSON.parse(sessionStorage.getItem("test4"));
           let ar = ax["marks"];
           let maxMarks = ax["maxMarks"];
           let gotMarks = ax["marks"];
@@ -96,13 +98,13 @@ function DTestScreen() {
                 username: user,
                 marks: total,
                 maxMarks: maxMarks,
-                testId: localStorage.getItem("testId"),
+                testId: sessionStorage.getItem("testId"),
                 gotMarks: gotMarks,
                 check_result: 0,
               },
             })
             .then((res) => {
-              localStorage.removeItem("test4");
+              sessionStorage.removeItem("test4");
             })
             .catch((e) => console.log(e));
         }
@@ -110,7 +112,7 @@ function DTestScreen() {
         let hh = txx.hh;
         let mm = txx.mm;
         let ss = txx.ss;
-        localStorage.setItem(
+        sessionStorage.setItem(
           "test5",
           JSON.stringify({
             username: user,
@@ -123,11 +125,11 @@ function DTestScreen() {
           })
         );
       }
-      var test = JSON.parse(localStorage.getItem("test5"));
-      const token = localStorage.getItem("access_token");
+      var test = JSON.parse(sessionStorage.getItem("test5"));
+      const token = sessionStorage.getItem("access_token");
       const isMyTokenExpired = isExpired(token);
       const channel = new BroadcastChannel("tab");
-      const items = { ...localStorage };
+      const items = { ...sessionStorage };
       channel.postMessage("another-tab");
       // note that listener is added after posting the message
 
@@ -153,10 +155,10 @@ function DTestScreen() {
         navigate("/login");
         return;
       } else {
-        if (localStorage.getItem("result")) {
+        if (sessionStorage.getItem("result")) {
           navigate("/result");
         } else {
-          let xx = localStorage.getItem("testId");
+          let xx = sessionStorage.getItem("testId");
           const getData = async () =>
             await axiosInstance
               .get(`api/subs/3/${xx}`)
@@ -180,7 +182,7 @@ function DTestScreen() {
                     setAns(ar);
                     test["marks"] = ar;
                     test["maxMarks"] = [2];
-                    localStorage.setItem("test5", JSON.stringify(test));
+                    sessionStorage.setItem("test5", JSON.stringify(test));
                   } else {
                     var qss = test["question"];
                     var x = res.data.easy;
@@ -286,10 +288,10 @@ function DTestScreen() {
   }
 
   function windowAway() {
-    var ccount = parseInt(localStorage.getItem("screenchange"));
+    var ccount = parseInt(sessionStorage.getItem("screenchange"));
     setCountWindowAway(ccount + 1);
     if (ccount + 1 < 3) {
-      localStorage.setItem("screenchange", ccount + 1);
+      sessionStorage.setItem("screenchange", ccount + 1);
       setCountWindowAwayModal(true);
     } else {
       navigate("/result");
@@ -319,7 +321,7 @@ function DTestScreen() {
     var x;
     ans[qsno] = parseInt(myans);
     setAns(ans);
-    var test = JSON.parse(localStorage.getItem("test5"));
+    var test = JSON.parse(sessionStorage.getItem("test5"));
     if (myans > 0) {
       if (current < 3) {
         setCurrent(current + 1);
@@ -365,11 +367,11 @@ function DTestScreen() {
     test["marks"] = ans;
     if (ans.length - 1 === qsno) {
       navigate("/admin/personality");
-      localStorage.setItem("test5", JSON.stringify(test));
+      sessionStorage.setItem("test5", JSON.stringify(test));
     } else {
       setQsno(qsno + 1);
       test["currentQsNo"] = test["currentQsNo"] + 1;
-      localStorage.setItem("test5", JSON.stringify(test));
+      sessionStorage.setItem("test5", JSON.stringify(test));
       e.target.reset();
       checkBoxToggle(e);
     }

@@ -55,11 +55,11 @@ function NewTest() {
         .get(`api/subs`)
         .then((res) => {
           var ssid;
-          if (localStorage.getItem("isNewTestReload") !== null) {
+          if (sessionStorage.getItem("isNewTestReload") !== null) {
             ssid = 0;
             setSid(ssid + 1);
           } else {
-            localStorage.setItem("isNewTestReload", false);
+            sessionStorage.setItem("isNewTestReload", false);
             ssid = location.state.sid;
             setSid(ssid + 1);
           }
