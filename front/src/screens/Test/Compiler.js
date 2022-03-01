@@ -49,6 +49,7 @@ export default function Compiler() {
   const [submitCode_qs2, set_submitCode_qs2] = useState(false); // (t/f)
   const [submitCode_qs3, set_submitCode_qs3] = useState(false); // (t/f)
 
+  const [nextSecConfirmation, setNextSecConfirmation] = useState(false); // (t/f)
   const [q1_run_output, set_q1_run_output] = useState();
   const [q1_testCase_1_output, set_q1_testCase_1_output] = useState();
   const [q1_testCase_2_output, set_q1_testCase_2_output] = useState();
@@ -1706,6 +1707,21 @@ export default function Compiler() {
                     width:'100%'
                   }}
                 >
+                  <Col md={nextSecConfirmation?7:6}>
+                  {nextSecConfirmation&& 'Are you sure you want to go to next section.You cannot come to this section again.'}
+                  </Col>
+                 <Col md={nextSecConfirmation?2:3}>
+                 {!nextSecConfirmation?<button
+                      type="button"
+                      onClick={(e) => {
+                        setNextSecConfirmation(true)
+                      }}
+                      style={{ color: "white",borderRadius: "10px",width:'125px',padding: "7px 10px"
+                      }}
+                      className="btn scTest"
+                    >
+                      Next Section
+                    </button>:<>
                     <button
                       type="button"
                       onClick={(e) => {
@@ -1714,14 +1730,25 @@ export default function Compiler() {
                         setShow(false);
                         navigate("/admin/domain");
                       }}
-                      style={{ color: "white",borderRadius: "10px",width:'125px',padding: "7px 10px",marginLeft:'auto',
+                      style={{ color: "white",backgroundColor:'#10b65c',borderRadius: "10px",width:'50px',padding: "7px 10px",marginRight:'5px'
                       }}
-                      className="btn scTest"
+                      className="btn"
                     >
-                      Next Section
+                      Yes
                     </button>
-                
                     <button
+                      type="button"
+                      onClick={(e) => {
+                        setNextSecConfirmation(false)
+                      }}
+                      style={{ color: "white",backgroundColor:'red',borderRadius: "10px",padding: "7px 10px"
+                      }}
+                      className="btn"
+                    >
+                      No
+                    </button>
+                    </>}</Col>
+                  <Col md={3}><button
                       type="button"
                       className="btn btn-success"
                       onClick={(e) => {
@@ -1749,7 +1776,7 @@ export default function Compiler() {
                       }}
                     >
                       Finish Test
-                    </button>
+                    </button></Col>
                 </Row>
                 <Row style={{ marginTop: "5px" }}>
                   <div

@@ -455,7 +455,7 @@ function CompScreen() {
                 </Col>
               </Row>
 
-              <Row style={{ height: "600px" }}>
+              <Row style={{ height: "700px" }}>
                 <Col className="passage" style={{ overflow: "none" }}>
                   <div
                     style={{
