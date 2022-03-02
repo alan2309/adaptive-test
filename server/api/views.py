@@ -588,12 +588,25 @@ def resultTest(request,id):
             c['uid']=user.id
             c['name']=user.username
             c['sdate']="{0} {1}".format(x['startTime'].split('T')[0],x['startTime'].split('T')[1].split('.')[0])
-            c['sdate'] = converttoist(c['sdate'])
+            startDateTime=converttoist(c['sdate'])
+            c['sdate'] = startDateTime
             if(x['endTime']):
                 c['edate']="{0} {1}".format(x['endTime'].split('T')[0],x['endTime'].split('T')[1].split('.')[0])
                 c['edate'] = converttoist(c['edate'])
             else:
-                c['edate']='ongoing'
+                timeDelta=testInfo.totalTestTime.split(':')
+                time_change = datetime.timedelta(hours=int(timeDelta[0]),minutes=int(timeDelta[1]),seconds=int(timeDelta[2]))
+                stTime=datetime.datetime.strptime(startDateTime[0].split(".")[0], '%Y-%m-%d %H:%M:%S')
+                expTimeToEndExam=stTime+time_change
+                nowTime=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                nowTime=datetime.datetime.strptime(nowTime, '%Y-%m-%d %H:%M:%S')
+                if nowTime>expTimeToEndExam:
+                    resultStudent=Results.objects.get(test=testInfo,student=user)
+                    resultStudent.endTime=expTimeToEndExam
+                    resultStudent.save()
+                    c['edate']=expTimeToEndExam
+                else:
+                    c['edate']='ongoing'
             c['apt'] = x['marks']['ap']
             c['fund'] = x['marks']['cf']
             c['code'] = x['marks']['c']
