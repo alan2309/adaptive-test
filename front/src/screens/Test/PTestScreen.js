@@ -377,7 +377,7 @@ function PTestScreen() {
                           totalKey="Total"
                           totalValue={ans.length}
                           header="Personality"
-                          nextpage={"admin/analytical"}
+                          nextpage={"analytical"}
                           setMd={setMd}
                         ></TestHeaderComp>
                       )}

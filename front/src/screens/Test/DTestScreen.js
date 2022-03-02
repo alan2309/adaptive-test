@@ -443,7 +443,7 @@ function DTestScreen() {
                           totalKey="Total"
                           totalValue={ans.length}
                           header="Domain"
-                          nextpage={"admin/personality"}
+                          nextpage={"personality"}
                           setMd={setMd}
                         ></TestHeaderComp>
                       )}

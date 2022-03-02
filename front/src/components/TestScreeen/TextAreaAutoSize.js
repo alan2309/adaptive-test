@@ -30,7 +30,7 @@ function TextAreaAutoSize({
             resize: "none",
             overflow: "hidden",
             cursor: isQs ? "default" : "pointer",
-            padding: "10px",
+            padding: "0 10px",
             color: "#293e6f",
             border: isCoding ? "1px ridge" : `0px`,
           }}

@@ -445,7 +445,7 @@ function CFTestScreen() {
                           totalKey="Total"
                           totalValue={ans.length}
                           header="Computer Fundamentals"
-                          nextpage={"admin/compiler"}
+                          nextpage={"coding"}
                           setMd={setMd}
                         ></TestHeaderComp>
                       )}

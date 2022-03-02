@@ -391,7 +391,7 @@ function Aptitude() {
                               totalKey="Total"
                               totalValue={ans.length}
                               header="Aptitude"
-                              nextpage={"admin/computer"}
+                              nextpage={"computer"}
                             ></TestHeaderComp>
                           )}
                         </div>

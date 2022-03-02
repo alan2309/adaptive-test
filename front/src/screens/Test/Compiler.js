@@ -1526,7 +1526,7 @@ export default function Compiler() {
                         reset={testFinshBool}
                         timeKey="Time"
                         header="Coding"
-                        nextpage={"admin/domain"}
+                        nextpage={"domain"}
                         setMd={setMd}
                       ></TestHeaderComp>
                     )}
