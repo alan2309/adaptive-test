@@ -133,7 +133,6 @@ function DTestScreen() {
       const isMyTokenExpired = isExpired(token);
       if (test) {
         if (test["question"].length !== 0) {
-          console.info("This page is reloaded");
           isReload(true);
           setShow(true);
         }
