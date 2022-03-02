@@ -61,6 +61,7 @@ function ViewSchdlTest() {
         "aria-controls": "DataTable",
         "aria-label": "Student",
       },
+      sort: "disabled",
     },
     {
       label: "Start Time",
@@ -378,13 +379,17 @@ function ViewSchdlTest() {
                   </Col>
                 </Row>
                 <MDBDataTableV5
+                  className="viewScdlTestTable"
+                  responsive
+                  fixed
                   striped
                   bordered
                   noBottomColumns
                   hover
                   exportToCSV={true}
+                  entriesOptions={[5, 15, 30, 50]}
                   data={data}
-                  style={{ marginTop: "5px" }}
+                  style={{ marginTop: "5px", marginBottom: "0" }}
                   fullPagination
                   materialSearch
                 />

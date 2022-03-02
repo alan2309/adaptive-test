@@ -72,11 +72,11 @@ input:focus::placeholder {
   background-image: url("/src/img/Group 10.png");
 }
 
-.sorting,
-.sorting_desc,
-.sorting_asc {
+.all_content .sorting,
+.main_permission_div .sorting,
+.feedbackTable .sorting {
   font-size: 13px !important;
-  text-align: center !important;
+  text-align: center;
   font-weight: bold !important;
 }
 
