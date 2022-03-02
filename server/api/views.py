@@ -504,8 +504,12 @@ def setresult(request,name):
 def converttoist(datex):
     from_zone = tz.tzutc()
     to_zone = tz.tzlocal()
-    datex = str(datex).rsplit(':',1)[0]+':'+str(datex).rsplit(':',1)[1][:2]
-    utc = datetime.datetime.strptime(datex.split(".")[0], '%Y-%m-%d %H:%M:%S')
+    datex = str(datex).split('+')[0]
+    datex1 = str(datex).rsplit(':',1)[0]+':'
+    datex2 = str(datex).rsplit(':',1)[1][:2]
+    datex = datex1+datex2
+    datex = datex.split(".")[0]
+    utc = datetime.datetime.strptime(datex, '%Y-%m-%d %H:%M:%S')
     
     # Tell the datetime object that it's in UTC time zone since 
     # datetime objects are 'naive' by default
