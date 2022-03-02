@@ -132,22 +132,6 @@ function PTestScreen() {
       var test = JSON.parse(sessionStorage.getItem("test6"));
       const token = sessionStorage.getItem("access_token");
       const isMyTokenExpired = isExpired(token);
-      const channel = new BroadcastChannel("tab");
-      const items = { ...sessionStorage };
-      channel.postMessage("another-tab");
-      // note that listener is added after posting the message
-
-      function messagec(msg) {
-        {
-          if (msg.data === "another-tab") {
-            // message received from 2nd tab
-            // alert('Cannot open multiple instances');
-            // navigate('/error')
-          }
-        }
-      }
-      channel.addEventListener("message", messagec);
-
       if (test) {
         if (test["question"].length !== 0) {
           console.info("This page is reloaded");
