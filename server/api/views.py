@@ -432,30 +432,14 @@ def results(request,name):
         if request.method == 'POST':
             data=JSONParser().parse(request)['data']
             test = Test.objects.get(id=data['testId'])
-            subs = Subject.objects.all() #change this when we change the model for subjects
-            avg_ap,avg_cf,avg_c,avg_d,avg_p,avg_a=0,0,0,0,0,0
-            for sub in subs:
-                if sub.sub_name == 'Aptitude':
-                    avg_ap=test.apt['avg']
-                elif sub.sub_name == 'Computer Fundamentals':
-                    avg_cf =test.cf['avg']
-                elif sub.sub_name == 'Coding':
-                    avg_c =test.c['avg']   
-                elif sub.sub_name == 'Domain':
-                    avg_d =test.dom['avg']    
-                elif sub.sub_name == 'Personality':
-                    avg_p =test.p['avg']    
-                elif sub.sub_name == 'Analytical Writing':
-                    avg_a =test.aw['avg']  
             if user:
-                d = datetime.datetime.utcnow()
                 myUser=user.myuser
                 name=myUser.name
                 gender=myUser.gender
                 age=myUser.age
                 try:
                     if name != 'a' and user.is_staff!=True:
-                        rr=Results.objects.get(student = user,test=Test.objects.get(id=data['testId']))
+                        rr=Results.objects.get(student = user,test=test)
                         if rr:
                             if rr.endTime!=None:
                                 return JsonResponse({'end':True,'resultExists':True,'name':name,'gender':gender,'age':age},safe=False)
@@ -476,11 +460,7 @@ def results(request,name):
                         Results.objects.get(student = user,test=Test.objects.get(id=data['testId'])).delete()
                 except Results.DoesNotExist:
                     print('No previous entry')
-                result = Results.objects.create(student = user,startTime = d,test=Test.objects.get(id=data['testId']),
-                marks={"ap":0,'cf':0,'c':0,'d':0,'p':0,'a':0,"avg_ap":avg_ap,'avg_cf':avg_cf,'avg_c':avg_c,'avg_d':avg_d,'avg_p':avg_p,'avg_a':avg_a,'apMax':[],'cfMax':[],'cMax':[],'dMax':[],'pMax':[],'aMax':[],'apGot':[],'cfGot':[],'cGot':[],'dGot':[],'pGot':[evaluate(request,{'Nick':name,'Sex':'Male','Age':21,'Q':[0]*(121),'Country':'India'})],'aGot':[]}
-                )
-                result.save()
-                return JsonResponse({'end':False,'resultExists':False,'name':name,'gender':gender,'age':age},safe=False)
+                return JsonResponse({'end':False,'resultExists':False,'name':name,'gender':gender,'age':age},safe=False)    
             else:
                 return JsonResponse("User Doesn't exist",safe=False)
         elif request.method=='GET':
@@ -492,10 +472,39 @@ def results(request,name):
     else:
         return HttpResponseBadRequest()
         
+@csrf_exempt
+def setresult(request,name):
+    if request.method == "POST":
+        if request.headers.get('Authorization') and checkAuthorization(request.headers["Authorization"]):
+            user = User.objects.get(username = name)
+            data=JSONParser().parse(request)['data']
+            if user:
+                test = Test.objects.get(id=data['testId'])
+                avg_ap=test.apt['avg']
+                avg_cf =test.cf['avg']
+                avg_c =test.c['avg']
+                avg_d =test.dom['avg']
+                avg_p =test.p['avg']  
+                avg_a =test.aw['avg']  
+                d = datetime.datetime.utcnow()
+                myUser=user.myuser
+                name=myUser.name
+                gender=myUser.gender
+                age=myUser.age
+                result = Results.objects.create(student = user,startTime = d,test=Test.objects.get(id=data['testId']),
+                marks={"ap":0,'cf':0,'c':0,'d':0,'p':0,'a':0,"avg_ap":avg_ap,'avg_cf':avg_cf,'avg_c':avg_c,'avg_d':avg_d,'avg_p':avg_p,'avg_a':avg_a,'apMax':[],'cfMax':[],'cMax':[],'dMax':[],'pMax':[],'aMax':[],'apGot':[],'cfGot':[],'cGot':[],'dGot':[],'pGot':[evaluate(request,{'Nick':name,'Sex':'Male','Age':21,'Q':[0]*(121),'Country':'India'})],'aGot':[]}
+                )
+                result.save()
+                return JsonResponse({'end':False,'resultExists':False,'name':name,'gender':gender,'age':age},safe=False)
+            else:
+                return JsonResponse("User Doesn't exist",safe=False)    
+        else:
+            return HttpResponseBadRequest()      
+
 def converttoist(datex):
     from_zone = tz.tzutc()
     to_zone = tz.tzlocal()
-    datex = str(datex).split('+')[0]
+    datex = str(datex).rsplit(':',1)[0]+':'+str(datex).rsplit(':',1)[1][:2]
     utc = datetime.datetime.strptime(datex.split(".")[0], '%Y-%m-%d %H:%M:%S')
     
     # Tell the datetime object that it's in UTC time zone since 

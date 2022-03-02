@@ -11,6 +11,7 @@ import { CgDanger } from "react-icons/cg";
 import ScreenSizeDetector from "screen-size-detector";
 import { addListener, removeListener, launch, stop } from "devtools-detector";
 import "../css/LoginScreen.css";
+import axiosInstance from "../axios";
 
 function DetailPageModified() {
   const imageAddr =
@@ -94,20 +95,29 @@ function DetailPageModified() {
     let m = (ob.getMinutes() < 10 ? "0" : "") + ob.getMinutes();
     let s = (ob.getMinutes() < 10 ? "0" : "") + ob.getSeconds();
     sessionStorage.setItem("screenchange", 0);
-    sessionStorage.setItem(
-      "test",
-      JSON.stringify({
-        username: sessionStorage.getItem("username"),
-        STime: Date(),
-        strtTime: +h + ":" + m + ":" + s,
-        FSTimer: "10",
-        question: [],
-        marks: [],
-        currentQsNo: 1,
-      })
-    );
-    setIsloading(false);
+    let username = sessionStorage.getItem('username')
+    let acc_token = "JWT " + sessionStorage.getItem("access_token");
+    axiosInstance.defaults.headers["Authorization"] = acc_token;
+    axiosInstance
+    .post(`api/setresult/${username}`, {
+      data: { testId: sessionStorage.getItem("testId") },
+    })
+    .then(res=>{
+      sessionStorage.setItem(
+        "test",
+        JSON.stringify({
+          username: sessionStorage.getItem("username"),
+          STime: Date(),
+          strtTime: +h + ":" + m + ":" + s,
+          FSTimer: "10",
+          question: [],
+          marks: [],
+          currentQsNo: 1,
+        })
+      );
+      setIsloading(false);
     navigate("/aptitude");
+    })
   };
 
   const checkboxHandler = () => {
