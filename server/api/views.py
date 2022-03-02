@@ -459,8 +459,19 @@ def results(request,name):
                         if rr:
                             if rr.endTime!=None:
                                 return JsonResponse({'end':True,'resultExists':True,'name':name,'gender':gender,'age':age},safe=False)
-                            else:    
-                                return JsonResponse({'end':False,'resultExists':True,'name':name,'gender':gender,'age':age},safe=False)
+                            else:
+                                timeDelta=test.totalTestTime.split(':')
+                                time_change = datetime.timedelta(hours=int(timeDelta[0]),minutes=int(timeDelta[1]),seconds=int(timeDelta[2]))
+                                stTime=datetime.datetime.strptime(str(rr.startTime).split(".")[0], '%Y-%m-%d %H:%M:%S')
+                                expTimeToEndExam=stTime+time_change
+                                nowTime=datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
+                                nowTime=datetime.datetime.strptime(nowTime, '%Y-%m-%d %H:%M:%S')   
+                                if nowTime>expTimeToEndExam:
+                                    rr.endTime=expTimeToEndExam
+                                    rr.save()
+                                    return JsonResponse({'end':True,'resultExists':True,'name':name,'gender':gender,'age':age},safe=False)
+                                else:
+                                    return JsonResponse({'end':False,'resultExists':True,'name':name,'gender':gender,'age':age},safe=False)
                     else:
                         Results.objects.get(student = user,test=Test.objects.get(id=data['testId'])).delete()
                 except Results.DoesNotExist:
