@@ -575,9 +575,10 @@ def takeFeedback(request):
 @csrf_exempt
 def resultTest(request,id):
     if request.headers.get('Authorization') and checkAuthorization(request.headers["Authorization"]):
-        testData=Results.objects.filter(test=Test.objects.get(id=id))
+        testInfo=Test.objects.get(id=id)
+        resultData=Results.objects.filter(test=testInfo)
         a={}
-        a=ResultSerializer(testData,many=True)
+        a=ResultSerializer(resultData,many=True)
         
         cc=[]
         for x in a.data:
@@ -843,6 +844,7 @@ def saveTest(request):
         if request.method == 'POST':
             data=JSONParser().parse(request)['data']
             tst=Test(test_name=data['createTest']['testName'],test_start=data['createTest']['sTime'],test_end=data['createTest']['eTime'],token=str(uuid.uuid4()))
+            totalTestTime=datetime.timedelta(hours=0,minutes=0,seconds=0)
             for x in range(0,len(data['saveTest'])):
                 avgMrk=0
                 if str(data['saveTest'][x]['sub'])=='Coding' or str(data['saveTest'][x]['sub'])=='Analytical Writing':
@@ -850,6 +852,8 @@ def saveTest(request):
                 else:
                     avgMrk=math.ceil(int(data['saveTest'][x]['totalQs'])*2*0.7) # 70% average
                 b=Subject.objects.get(sub_name=data['saveTest'][x]['sub'])
+                splitTime=data['saveTest'][x]['time'].split(':')
+                totalTestTime=totalTestTime+datetime.timedelta(hours=int(splitTime[0]),minutes=int(splitTime[1]),seconds=int(splitTime[2]))
                 if(b.sub_name=="Aptitude"):
                     tst.apt = {
                         "qs":data['saveTest'][x]['totalQs'],
@@ -898,6 +902,8 @@ def saveTest(request):
                 b.avg_score=avgMrk
                 b.save()
                 tst.save()
+            tst.totalTestTime=totalTestTime
+            tst.save()
             return JsonResponse('success',safe=False)
     else:
         return HttpResponseBadRequest()
@@ -907,10 +913,7 @@ def tests(request,idd=0):
         if request.method == 'POST':
             data=JSONParser().parse(request)['data']
             if not data['delete']:
-                if not data['update']:
-                    test = Test.objects.create(test_name =data['name'],test_start=data['start'],test_end=data['end'])
-                    test.save()
-                else:
+                if data['update']:
                     test=Test.objects.get(id=data['id'])
                     test.test_name=data['name']
                     test.apt=data['apt']
@@ -921,6 +924,33 @@ def tests(request,idd=0):
                     test.aw=data['aw']
                     test.test_start=data['start']
                     test.test_end=data['end']
+                    aptTimeArr=data['apt']['time'].split(':')
+                    cfTimeArr=data['cf']['time'].split(':')
+                    cTimeArr=data['c']['time'].split(':')
+                    pTimeArr=data['p']['time'].split(':')
+                    awTimeArr=data['aw']['time'].split(':')
+                    domainTimeArr=data['domain']['time'].split(':')
+                    totalTimeTaken=(
+                        datetime.timedelta(
+                        hours=int(aptTimeArr[0]),minutes=int(aptTimeArr[1]),seconds=int(aptTimeArr[2])
+                    )+
+                        datetime.timedelta(
+                        hours=int(cfTimeArr[0]),minutes=int(cfTimeArr[1]),seconds=int(cfTimeArr[2])
+                    )+
+                        datetime.timedelta(
+                        hours=int(cTimeArr[0]),minutes=int(cTimeArr[1]),seconds=int(cTimeArr[2])
+                    )+
+                        datetime.timedelta(
+                        hours=int(domainTimeArr[0]),minutes=int(domainTimeArr[1]),seconds=int(domainTimeArr[2])
+                    )+
+                        datetime.timedelta(
+                        hours=int(pTimeArr[0]),minutes=int(pTimeArr[1]),seconds=int(pTimeArr[2])
+                    )+
+                        datetime.timedelta(
+                        hours=int(awTimeArr[0]),minutes=int(awTimeArr[1]),seconds=int(awTimeArr[2])
+                    )
+                    )
+                    test.totalTestTime=totalTimeTaken
                     test.save()
                 return JsonResponse('done',safe=False) 
         elif request.method == 'DELETE':
