@@ -15,6 +15,7 @@ import Loader from "../../components/Loader";
 import MobileWidth from "../../components/MobileWidth";
 import { useMediaQuery } from "react-responsive";
 import { AiFillWarning } from "react-icons/ai";
+import createActivityDetector from "activity-detector";
 
 function Aptitude() {
   const isDesktopOrLaptop = useMediaQuery({
@@ -39,8 +40,16 @@ function Aptitude() {
   const [newScreen, setNewScreen] = useState(false);
   const [timeFF, setTimeFF] = useState();
   const [isLoading, setIsloading] = useState(true);
+  const activityDetector = createActivityDetector({
+    timeToIdle: 6000000000000000_0000,
+    autoInit: false,
+  });
+  activityDetector.on("idle", () => {
+    windowAway();
+  });
 
   useEffect(() => {
+    activityDetector.init();
     function fullscreenc() {
       var full_screen_element = document.fullscreenElement;
 
@@ -49,17 +58,11 @@ function Aptitude() {
         isReload(true);
       }
     }
-    function visibilityc() {
-      if (document.hidden) {
-        windowAway();
-      }
-    }
     function contextm(event) {
       event.preventDefault();
     }
     window.addEventListener("contextmenu", contextm);
     window.addEventListener("fullscreenchange", fullscreenc);
-    window.addEventListener("visibilitychange", visibilityc);
     if (!sessionStorage.getItem("test")) {
       let az = ProtectUrl.protect();
       if (az !== "") {
@@ -216,7 +219,7 @@ function Aptitude() {
     setIsloading(false);
     return () => {
       window.removeEventListener("fullscreenchange", fullscreenc);
-      window.removeEventListener("visibilitychange", visibilityc);
+      activityDetector.stop();
       window.removeEventListener("contextmenu", contextm);
     };
   }, []);
