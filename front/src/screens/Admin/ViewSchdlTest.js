@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Row, Col, Modal, Form, Button } from "react-bootstrap";
 import DateTimePicker from "react-datetime-picker";
 import axiosInstance from "../../axios";
-import { MDBDataTable } from "mdbreact";
+import { MDBDataTable, MDBDataTableV5 } from "mdbreact";
 import { MDBInput } from "mdbreact";
 import { CSVLink } from "react-csv";
 import Loader from "../../components/Loader";
@@ -52,46 +52,61 @@ function ViewSchdlTest() {
         />
       ),
       field: "checkBtn",
+      sort: "disabled",
     },
     {
       label: "Student",
       field: "name",
+      attributes: {
+        "aria-controls": "DataTable",
+        "aria-label": "Student",
+      },
     },
     {
       label: "Start Time",
       field: "sdate",
+      sort: "disabled",
     },
     {
       label: "End Time",
       field: "edate",
+      sort: "disabled",
     },
     {
       label: "Aptitude",
       field: "apt",
+      sort: "asc",
     },
     {
       label: "Fundamentals",
       field: "fund",
+      sort: "asc",
     },
     {
       label: "Coding",
       field: "code",
+      sort: "asc",
     },
     {
       label: "Domain",
       field: "dom",
+      sort: "asc",
     },
+
     {
       label: "Analytical",
       field: "analy",
+      sort: "asc",
     },
     {
       label: "Marks",
       field: "marks",
+      sort: "asc",
     },
     {
       label: "",
       field: "addBtn",
+      sort: "disabled",
     },
   ];
   const headers = [
@@ -362,7 +377,7 @@ function ViewSchdlTest() {
                     <DateTimePicker disabled value={location.state.end} />
                   </Col>
                 </Row>
-                <MDBDataTable
+                <MDBDataTableV5
                   striped
                   bordered
                   noBottomColumns
@@ -370,6 +385,8 @@ function ViewSchdlTest() {
                   exportToCSV={true}
                   data={data}
                   style={{ marginTop: "5px" }}
+                  fullPagination
+                  materialSearch
                 />
                 <button
                   style={{
