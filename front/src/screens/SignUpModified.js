@@ -35,6 +35,8 @@ function SignUpModified() {
     avgCGPA: "",
     backlogs: "",
     internships: "",
+    admin: false,
+    superuser: false,
   });
   const [formData, updateFormData] = useState(initialFormData);
   const [successMsg, setSuccessMsg] = useState("");
