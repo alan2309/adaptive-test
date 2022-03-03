@@ -183,10 +183,6 @@ function Login() {
                 if (xx !== -1 || adminn) {
                   sessionStorage.setItem("testId", xx); //imp
                   sessionStorage.setItem("admin", "user");
-                  var ob = new Date();
-                  var h = (ob.getHours() < 10 ? "0" : "") + ob.getHours();
-                  var m = (ob.getMinutes() < 10 ? "0" : "") + ob.getMinutes();
-                  var s = (ob.getMinutes() < 10 ? "0" : "") + ob.getSeconds();
                   sessionStorage.setItem("access_token", res.data.access);
                   sessionStorage.setItem("username", formData.username);
                   sessionStorage.setItem("refresh_token", res.data.refresh);
@@ -210,7 +206,7 @@ function Login() {
                             setDangerMsg(
                               "Test is ongoing on a different device"
                             );
-                            navigate("/logout");
+                            sessionStorage.clear();
                           }
                         } else {
                           setMd(true);
@@ -228,13 +224,13 @@ function Login() {
                 } else {
                   setIsloading(false);
                   setIsAlertDangerMsgLoaded(true);
-                  setDangerMsg("You are not allowed to Login yet.Please wait!");
+                  setDangerMsg("Test has not started yet, Please wait!");
                 }
               });
           } else {
             setIsloading(false);
             setIsAlertDangerMsgLoaded(true);
-            setDangerMsg("You are not allowed To attempt this test");
+            setDangerMsg("You need permission from admin to attempt this test");
           }
         } else {
           setIsloading(false);
