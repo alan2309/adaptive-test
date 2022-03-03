@@ -201,6 +201,14 @@ def getuserslist(request):
         return JsonResponse({'exists':1,'allowed':bb,'notallowed':aa},safe=False)
 
 @csrf_exempt
+def getUserData(request,username):
+    if request.headers.get('Authorization') and checkAuthorization(request.headers["Authorization"]):
+        if request.method == "GET":
+            user=MyUser.objects.filter(user__username=username)
+            user=MyUserSerializer(user,many=True).data
+        return JsonResponse({'user':user[0]},safe=False)
+
+@csrf_exempt
 def send_custom_mail(request):
     if request.headers.get('Authorization') and checkAuthorization(request.headers["Authorization"]):
         if request.method == "POST":
