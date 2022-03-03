@@ -171,6 +171,7 @@ function Login() {
         if (res.data.exist) {
           if (res.data.allowed) {
             let adminn = res.data.admin;
+            let superr = res.data.super;
             axiosInstance
               .post("token/", {
                 username: formData.username,
@@ -214,6 +215,11 @@ function Login() {
                         }
                       });
                   if (adminn) {
+                    if (superr) {
+                      sessionStorage.setItem("super", true);
+                    } else {
+                      sessionStorage.setItem("super", false);
+                    }
                     sessionStorage.setItem("admin", "admin");
                     sessionStorage.removeItem("testId");
                     setMd(true);

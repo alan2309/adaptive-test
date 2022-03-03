@@ -100,8 +100,11 @@ def login(request):
         user = auth.authenticate(username = username,password = password)
         if user is not None:
             auth.login(request,user)
-            if User.objects.get(username=username).is_staff ==True:
-                return JsonResponse({"exist":1,"allowed":1,"admin":1},safe=False)
+            userr = User.objects.get(username=username)
+            if userr.is_staff ==True:
+                if userr.is_superuser:
+                    return JsonResponse({"exist":1,"allowed":1,"admin":1,"super":1},safe=False)
+                return JsonResponse({"exist":1,"allowed":1,"admin":1,"super":0},safe=False)
             else :
                 if int(data['mytid'])==-1:
                     return JsonResponse({"exist":1,"allowed":1,"admin":0},safe=False)
