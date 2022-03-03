@@ -125,6 +125,7 @@ function ViewSchdlTest() {
 
   useEffect(() => {
     setIsloading(true);
+    if(location.state!==null){
     axiosInstance
       .get(`/api/admin/resultTest/${location.state.id}`)
       .then((res) => {
@@ -160,6 +161,10 @@ function ViewSchdlTest() {
           })),
         });
       });
+    }else{
+      setIsloading(false);
+      navigate(-1)
+    }
     setIsloading(false);
   }, []);
   function deleteRow(id) {
