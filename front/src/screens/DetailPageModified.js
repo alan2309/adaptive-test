@@ -201,7 +201,7 @@ function DetailPageModified() {
                         ) : (
                           <>
                             <CgDanger
-                              style={{ color: "red", marginRight: "2px" }}
+                              style={{ color: "#842029", marginRight: "2px" }}
                             ></CgDanger>
                             Requirement not satisfied
                           </>
@@ -213,7 +213,7 @@ function DetailPageModified() {
                       </p>
                       <p
                         style={{
-                          color: isDevToolsOpen ? "red" : "#10B65C",
+                          color: isDevToolsOpen ? "#842029" : "#10B65C",
                           textAlign: "center",
                           marginBottom: "20px",
                         }}
@@ -221,7 +221,7 @@ function DetailPageModified() {
                         {isDevToolsOpen ? (
                           <>
                             <CgDanger
-                              style={{ color: "red", marginRight: "2px" }}
+                              style={{ color: "#842029", marginRight: "2px" }}
                             ></CgDanger>
                             Requirement not satisfied
                           </>
@@ -235,7 +235,9 @@ function DetailPageModified() {
                     </Row>
                     <div
                       style={{
-                        backgroundColor: "#D1E7DD",
+                        backgroundColor: !(!isDevToolsOpen && isFullScreenEnabled)
+                            ? "#f8d7da"
+                            : "#D1E7DD",
                         width: "95%",
                         borderRadius: "8px",
                       }}
@@ -243,7 +245,7 @@ function DetailPageModified() {
                       <p
                         style={{
                           color: !(!isDevToolsOpen && isFullScreenEnabled)
-                            ? "red"
+                            ? "#842029"
                             : "#10B65C",
                           textAlign: "center",
                           fontSize: "14px",

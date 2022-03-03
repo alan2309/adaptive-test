@@ -616,8 +616,8 @@ function DetailedReportComp({
                 textAlign: "center",
                 fontWeight: "400",
                 paddingTop: "35px",
-                fontSize: "36px",
-                color: "Black",
+                fontSize: "28px",
+                color: prediction === 1 ? "#10B65C" : "red",
                 fontWeight: "600",
               }}
             >
@@ -644,6 +644,7 @@ function DetailedReportComp({
                 fontSize: "13.6px",
                 paddingRight: "40px",
                 paddingLeft: "40px",
+                textAlign: "justify",
               }}
             >
               The employment index is a measure of your ability to work based on
