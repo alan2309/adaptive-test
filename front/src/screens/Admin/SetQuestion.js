@@ -14,7 +14,7 @@ import ConfirmDialogBox from "../../components/ConfirmDialogBox";
 import MobileWidth from "../../components/MobileWidth";
 import { useMediaQuery } from "react-responsive";
 
-function SetQuestion() {
+function SetQuestion({ type, navArr, sid, sectionName, setIsInside }) {
   const isDesktopOrLaptop = useMediaQuery({
     query: "(min-width: 1024px)",
   });
@@ -65,72 +65,64 @@ function SetQuestion() {
   const [confirm_dialog_title, set_confirm_dialog_title] = useState("");
 
   useEffect(() => {
-    if (
-      location.state !== null &&
-      location.state.type !== undefined &&
-      location.state.navArr !== undefined &&
-      location.state.sid !== undefined
-    ) {
-      document.getElementById(location.state.type).selected = "selected";
-      var divHeight = document.querySelector("#SETQS").clientHeight;
-      setWindowHeight(divHeight);
-      sessionStorage.removeItem("isNewTestReload");
-      var temp = location.state.navArr;
-      setNavArray(temp);
-      if (parseInt(location.state.sid) === 5) {
+    // Alankrit
+    document.getElementById(type).selected = "selected";
+    var divHeight = document.querySelector("#SETQS").clientHeight;
+    setWindowHeight(divHeight);
+    sessionStorage.removeItem("isNewTestReload");
+    var temp = navArr;
+    setNavArray(temp);
+    if (parseInt(sid) === 5) {
+      setIsCoding(true);
+    } else if (parseInt(sid) === 6) {
+      setIsAnalytical(true);
+    } else if (parseInt(sid) === 4) {
+      set_isPersonality(true);
+    }
+    if (temp[0] !== undefined) {
+      if (sid !== 5 && sid !== 6) {
+        setCurrentQsID(temp[0].id);
+        setCurrentQs(temp[0].ques);
+        setOpt(temp[0].options);
+        setImgDb(temp[0].imgId);
+      } else if (sid === 5) {
+        setCurrentQsID(temp[0].id);
+        setCurrentQs(temp[0].question || "");
+        setOpt([]);
         setIsCoding(true);
-      } else if (parseInt(location.state.sid) === 6) {
-        setIsAnalytical(true);
-      } else if (parseInt(location.state.sid) === 4) {
-        set_isPersonality(true);
-      }
-      if (temp[0] !== undefined) {
-        if (location.state.sid !== 5 && location.state.sid !== 6) {
-          setCurrentQsID(temp[0].id);
-          setCurrentQs(temp[0].ques);
-          setOpt(temp[0].options);
-          setImgDb(temp[0].imgId);
-        } else if (location.state.sid === 5) {
-          setCurrentQsID(temp[0].id);
-          setCurrentQs(temp[0].question || "");
-          setOpt([]);
-          setIsCoding(true);
 
-          setInputF(temp[0].input_format || "");
-          setOutputF(temp[0].output_format || "");
-          setConstraints(temp[0].constraints || "");
-          setSampleInput(temp[0].sample_input || "");
-          setSampleOutput(temp[0].sample_output || "");
-          setExplanation(temp[0].explanation || "");
-          if (temp[0].test_case_input[0] && temp[0].test_case_output[0]) {
-            setTestCaseInput1(temp[0].test_case_input[0] || "");
-            setTestCaseOutput1(temp[0].test_case_output[0] || "");
-          }
-          if (temp[0].test_case_input[1] && temp[0].test_case_output[1]) {
-            setTestCaseInput2(temp[0].test_case_input[1] || "");
-            setTestCaseOutput2(temp[0].test_case_output[1] || "");
-          }
-          if (temp[0].test_case_input[2] && temp[0].test_case_output[2]) {
-            setTestCaseInput3(temp[0].test_case_input[2] || "");
-            setTestCaseOutput3(temp[0].test_case_output[2] || "");
-          }
-        } else if (location.state.sid === 6) {
-          setCurrentQsID(temp[0].paraId);
-          set_para_title(temp[0].title);
-          set_para(temp[0].para);
-          set_para_qs(temp[0].questions);
+        setInputF(temp[0].input_format || "");
+        setOutputF(temp[0].output_format || "");
+        setConstraints(temp[0].constraints || "");
+        setSampleInput(temp[0].sample_input || "");
+        setSampleOutput(temp[0].sample_output || "");
+        setExplanation(temp[0].explanation || "");
+        if (temp[0].test_case_input[0] && temp[0].test_case_output[0]) {
+          setTestCaseInput1(temp[0].test_case_input[0] || "");
+          setTestCaseOutput1(temp[0].test_case_output[0] || "");
         }
-      } else {
-        setIsUpdate(true);
+        if (temp[0].test_case_input[1] && temp[0].test_case_output[1]) {
+          setTestCaseInput2(temp[0].test_case_input[1] || "");
+          setTestCaseOutput2(temp[0].test_case_output[1] || "");
+        }
+        if (temp[0].test_case_input[2] && temp[0].test_case_output[2]) {
+          setTestCaseInput3(temp[0].test_case_input[2] || "");
+          setTestCaseOutput3(temp[0].test_case_output[2] || "");
+        }
+      } else if (sid === 6) {
+        setCurrentQsID(temp[0].paraId);
+        set_para_title(temp[0].title);
+        set_para(temp[0].para);
+        set_para_qs(temp[0].questions);
       }
     } else {
-      navigate(-1);
+      setIsUpdate(true);
     }
   }, []);
   function handleSubmit(e) {
     e.preventDefault();
     var dictionary = {};
-    if (parseInt(location.state.sid) === 6) {
+    if (parseInt(sid) === 6) {
       dictionary["paraId"] = currentQsID;
       let txtAreaEle = $("textarea");
       dictionary["rightOptArrAnalytical"] = {};
@@ -160,7 +152,7 @@ function SetQuestion() {
       dictionary[document.getElementById("qsSetQs").name] =
         document.getElementById("qsSetQs").value;
 
-      if (parseInt(location.state.sid) === 5) {
+      if (parseInt(sid) === 5) {
         dictionary[document.getElementById("qsSetInputFormat").name] =
           document.getElementById("qsSetInputFormat").value;
         dictionary[document.getElementById("qsSetOutputFormat").name] =
@@ -218,7 +210,7 @@ function SetQuestion() {
         }
       }
     }
-    if (parseInt(location.state.sid) === 4) {
+    if (parseInt(sid) === 4) {
       dictionary["type"] = 2;
     }
     dictionary["image"] = null;
@@ -248,7 +240,7 @@ function SetQuestion() {
         .post("api/admin/addQs", { data: dictionary })
         .then((res) => {
           navigate("/admin/newTest", {
-            state: { sid: location.state.sid - 1 },
+            state: { sid: sid - 1 },
           });
         })
         .catch((e) => {
@@ -372,11 +364,11 @@ function SetQuestion() {
     console.log(a);
     axiosInstance
       .post("api/admin/delQs", {
-        data: { delQs: a, sid: location.state.sid },
+        data: { delQs: a, sid: sid },
       })
       .then((res) => {
         navigate("/admin/newTest", {
-          state: { sid: location.state.sid - 1 },
+          state: { sid: sid - 1 },
         });
       });
   }
@@ -407,13 +399,13 @@ function SetQuestion() {
   function fillData(e) {
     document.getElementById("sbForm").reset();
     if (e.target.id.toString() !== "questionNew") {
-      if (location.state.sid !== 5 && location.state.sid !== 6) {
+      if (sid !== 5 && sid !== 6) {
         setCurrentQs(navArray[e.target.id].ques);
         setCurrentQsID(navArray[e.target.id].id);
         setOpt(navArray[e.target.id].options);
         setImgDb(navArray[e.target.id].imgId);
         setCurrentQsNo(`${parseInt(e.target.id) + 1}`);
-      } else if (location.state.sid === 5) {
+      } else if (sid === 5) {
         setCurrentQsID(navArray[e.target.id].id);
         setCurrentQs(navArray[e.target.id].question);
         setOpt([]);
@@ -458,14 +450,14 @@ function SetQuestion() {
           setTestCaseInput3("");
           setTestCaseOutput3("");
         }
-      } else if (location.state.sid === 6) {
+      } else if (sid === 6) {
         setCurrentQsID(navArray[e.target.id].paraId);
         set_para_title(navArray[e.target.id].title);
         set_para(navArray[e.target.id].para);
         set_para_qs(navArray[e.target.id].questions);
       }
     }
-    document.getElementById(location.state.type).selected = "selected";
+    document.getElementById(type).selected = "selected";
   }
   function reportWindowSize(e) {
     setWindowHeight(window.screen.height);
@@ -1763,11 +1755,7 @@ function SetQuestion() {
               <button
                 style={{ color: "white" }}
                 type="button"
-                onClick={(e) =>
-                  navigate("/admin/newTest", {
-                    state: { sid: location.state.sid - 1 },
-                  })
-                }
+                onClick={(e) => setIsInside(false)}
                 className="btn scTest"
               >
                 Back
