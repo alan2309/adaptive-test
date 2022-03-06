@@ -5,8 +5,38 @@ export const quesData = {
         {
           ques: "A bus running at the speed of 60 km/hr crosses a pole in 9 seconds. What is the length of the train?",
           id: 10,
-          imgId:
-            "http://res.cloudinary.com/chaitanya1911/image/upload/v1644996723/adaptive_test/Aptitude/czqbkowqrlpoo7nciyin.png",
+          imgId: "",
+          options: [
+            {
+              id: 829,
+              title: "150",
+              marks: 0,
+              question: 10,
+            },
+            {
+              id: 830,
+              title: "399",
+              marks: 0,
+              question: 10,
+            },
+            {
+              id: 831,
+              title: "180",
+              marks: 0,
+              question: 10,
+            },
+            {
+              id: 832,
+              title: "150 (C)",
+              marks: 1,
+              question: 10,
+            },
+          ],
+        },
+        {
+          ques: "A Car running at the speed of 60 km/hr crosses a pole in 9 seconds. What is the length of the train?",
+          id: 11,
+          imgId: "",
           options: [
             {
               id: 829,

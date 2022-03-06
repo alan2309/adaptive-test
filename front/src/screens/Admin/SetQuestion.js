@@ -14,10 +14,20 @@ import ConfirmDialogBox from "../../components/ConfirmDialogBox";
 import MobileWidth from "../../components/MobileWidth";
 import { useMediaQuery } from "react-responsive";
 
-function SetQuestion({ type, navArr, sid, sectionName, setIsInside }) {
+function SetQuestion({
+  type,
+  sid,
+  sectionName,
+  setIsInside,
+  delete_jsondata,
+  axData,
+  refresh,
+  setRefresh,
+}) {
   const isDesktopOrLaptop = useMediaQuery({
     query: "(min-width: 1024px)",
   });
+  let ltype = type.toLowerCase();
   const navigate = useNavigate();
   const location = useLocation();
   const [navArray, setNavArray] = useState([]);
@@ -65,12 +75,12 @@ function SetQuestion({ type, navArr, sid, sectionName, setIsInside }) {
   const [confirm_dialog_title, set_confirm_dialog_title] = useState("");
 
   useEffect(() => {
-    // Alankrit
+    setRefresh(false);
     document.getElementById(type).selected = "selected";
     var divHeight = document.querySelector("#SETQS").clientHeight;
     setWindowHeight(divHeight);
     sessionStorage.removeItem("isNewTestReload");
-    var temp = navArr;
+    var temp = axData[sectionName][ltype];
     setNavArray(temp);
     if (parseInt(sid) === 5) {
       setIsCoding(true);
@@ -118,7 +128,7 @@ function SetQuestion({ type, navArr, sid, sectionName, setIsInside }) {
     } else {
       setIsUpdate(true);
     }
-  }, []);
+  }, [refresh]);
   function handleSubmit(e) {
     e.preventDefault();
     var dictionary = {};
@@ -236,18 +246,18 @@ function SetQuestion({ type, navArr, sid, sectionName, setIsInside }) {
       if (base64EncodedImagee !== null) {
         dictionary["image"] = base64EncodedImagee;
       }
-      axiosInstance
-        .post("api/admin/addQs", { data: dictionary })
-        .then((res) => {
-          navigate("/admin/newTest", {
-            state: { sid: sid - 1 },
-          });
-        })
-        .catch((e) => {
-          console.log(e);
-          setIsAlertDangerMsgLoaded(true);
-          setDangerMsg("something went wrong!,Try Again");
-        });
+      // axiosInstance
+      //   .post("api/admin/addQs", { data: dictionary })
+      //   .then((res) => {
+      //     navigate("/admin/newTest", {
+      //       state: { sid: sid - 1 },
+      //     });
+      //   })
+      //   .catch((e) => {
+      //     console.log(e);
+      //     setIsAlertDangerMsgLoaded(true);
+      //     setDangerMsg("something went wrong!,Try Again");
+      //   });
     } catch (e) {}
   };
   function delOptInSubQs(e, pId, qsId, questionIndex) {
@@ -354,23 +364,21 @@ function SetQuestion({ type, navArr, sid, sectionName, setIsInside }) {
   function confirm_del_yes() {
     var $boxes = $("input[name=styleCheckBox]:checked");
 
-    var a = [];
+    let a = [];
     $boxes.each(function (item) {
       // Do stuff here with this
       var val = $boxes[item].value;
       val = val.split("CheckBox")[1];
       a.push(parseInt(val));
     });
-    console.log(a);
-    axiosInstance
-      .post("api/admin/delQs", {
-        data: { delQs: a, sid: sid },
-      })
-      .then((res) => {
-        navigate("/admin/newTest", {
-          state: { sid: sid - 1 },
-        });
-      });
+    let ab = [];
+    for (let i = 0; i < a.length; i++) {
+      ab.push(navArray[a[i]]);
+    }
+    let tempar = navArray.filter(function (el) {
+      return ab.indexOf(el) < 0;
+    });
+    delete_jsondata(tempar, sectionName, type);
   }
   function delQuestion(e) {
     var elCheckBox = document.getElementsByClassName("styled-checkbox");
@@ -396,6 +404,7 @@ function SetQuestion({ type, navArr, sid, sectionName, setIsInside }) {
       }
     }
   }
+
   function fillData(e) {
     document.getElementById("sbForm").reset();
     if (e.target.id.toString() !== "questionNew") {
@@ -865,7 +874,7 @@ function SetQuestion({ type, navArr, sid, sectionName, setIsInside }) {
                         {opt !== undefined &&
                           opt.map((x, index) => {
                             return (
-                              <>
+                              <div key={index}>
                                 <p
                                   style={{
                                     padding: "5px 0",
@@ -910,7 +919,7 @@ function SetQuestion({ type, navArr, sid, sectionName, setIsInside }) {
                                     </label>
                                   </div>
                                 </p>
-                              </>
+                              </div>
                             );
                           })}
                       </div>
@@ -1589,7 +1598,7 @@ function SetQuestion({ type, navArr, sid, sectionName, setIsInside }) {
                         {navArray !== undefined &&
                           navArray.map((ittr, index) => {
                             return (
-                              <>
+                              <div key={index}>
                                 <div
                                   style={{
                                     boxShadow: `rgba(0, 0, 0, 0.02) 0 1px 3px 0`,
@@ -1633,7 +1642,7 @@ function SetQuestion({ type, navArr, sid, sectionName, setIsInside }) {
                                     </Col>
                                   </Row>
                                 </div>
-                              </>
+                              </div>
                             );
                           })}
                         {navArray !== undefined && navArray.length === 0
@@ -1690,7 +1699,7 @@ function SetQuestion({ type, navArr, sid, sectionName, setIsInside }) {
                         {navArray !== undefined &&
                           navArray.map((ittr, index) => {
                             return (
-                              <>
+                              <div key={index}>
                                 <div
                                   style={{
                                     boxShadow: `rgba(0, 0, 0, 0.02) 0 1px 3px 0`,
@@ -1712,11 +1721,7 @@ function SetQuestion({ type, navArr, sid, sectionName, setIsInside }) {
                                         id={`styled-checkbox-${index}`}
                                         type="checkbox"
                                         onClick={(e) => {}}
-                                        value={
-                                          isAnalytical
-                                            ? `valueCheckBox${ittr.paraId}`
-                                            : `valueCheckBox${ittr.id}`
-                                        }
+                                        value={`valueCheckBox${index}`}
                                       />
                                     </Col>
                                     <Col md={11}>
@@ -1734,12 +1739,12 @@ function SetQuestion({ type, navArr, sid, sectionName, setIsInside }) {
                                           ? ittr.title
                                           : isCoding
                                           ? ittr.question || "New Qs"
-                                          : ittr.ques || "New Qs"}
+                                          : index + " " + ittr.ques || "New Qs"}
                                       </div>
                                     </Col>
                                   </Row>
                                 </div>
-                              </>
+                              </div>
                             );
                           })}
                         {navArray !== undefined && navArray.length === 0 && (

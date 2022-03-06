@@ -29,18 +29,19 @@ function NewTest() {
   const [dangerMsg, setDangerMsg] = useState("");
   const [isAlertDangerMsgLoaded, setIsAlertDangerMsgLoaded] = useState(false);
   const [isAlertSuccessMsgLoaded, setIsAlertSuccessMsgLoaded] = useState(false);
-  const [aptDic, setAptDic] = useState({ time: "00:00:20", totalQs: 1 });
-  const [CFDic, setCFDic] = useState({ time: "00:00:20", totalQs: 1 });
-  const [DDic, setDDic] = useState({ time: "00:00:20", totalQs: 1 });
-  const [PDic, setPDic] = useState({ time: "00:00:20", totalQs: 35 }); //$
-  const [CDic, setCDic] = useState({ time: "00:00:20", totalQs: 3 });
-  const [AWDic, setAWDic] = useState({ time: "00:00:20", totalQs: 3 });
+  const [aptDic, setAptDic] = useState({ time: "00:00:20", totalQs: 0 });
+  const [CFDic, setCFDic] = useState({ time: "00:00:20", totalQs: 0 });
+  const [DDic, setDDic] = useState({ time: "00:00:20", totalQs: 0 });
+  const [PDic, setPDic] = useState({ time: "00:00:20", totalQs: 0 }); //$
+  const [CDic, setCDic] = useState({ time: "00:00:20", totalQs: 0 });
+  const [AWDic, setAWDic] = useState({ time: "00:00:20", totalQs: 0 });
   const [typeQs, setTypeQs] = useState();
   const [isInside, setIsInside] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
   const [CurrentDic, setCurrentDic] = useState({
     time: "00:00:20",
-    totalQs: 1,
+    totalQs: 0,
   });
 
   const [sectionName, setSectionName] = useState([]);
@@ -68,8 +69,8 @@ function NewTest() {
             ssid = location.state.sid;
             setSid(ssid + 1);
           }
-          // var d = quesData.data;  //customData
-          var d = res.data.data;
+          var d = quesData.data; //customData
+          // var d = res.data.data;
           setAxData(d);
           //For Aptitude
           var Wssid = sidFunc(ssid);
@@ -103,6 +104,56 @@ function NewTest() {
     setIsloading(false);
   }, []);
 
+  function delete_jsondata(tempar, sectionName, type) {
+    type = type.toLowerCase();
+    setAxData((prev) => ({
+      ...prev,
+      [sectionName]: {
+        ...prev[sectionName],
+        [type]: tempar,
+        qs: 0,
+      },
+    }));
+    setRefresh(true);
+    setCurrentDic((prev) => ({
+      ...prev,
+      totalQs: 0,
+    }));
+    if (sid - 1 === 1) {
+      setCFDic({
+        time: CurrentDic.time,
+        totalQs: 0,
+      });
+    } else if (sid - 1 === 2) {
+      setDDic({
+        time: CurrentDic.time,
+        totalQs: 0,
+      });
+    } else if (sid - 1 === 3) {
+      setPDic({
+        time: CurrentDic.time,
+        totalQs: 0, //$,
+      });
+    } else if (sid - 1 == 4) {
+      setCDic({
+        time: CurrentDic.time,
+        totalQs: 0,
+      });
+    } else if (sid - 1 == 5) {
+      setAWDic({
+        time: CurrentDic.time,
+        totalQs: 0,
+      });
+    } else if (sid - 1 === 0) {
+      setAptDic({
+        time: CurrentDic.time,
+        totalQs: 0,
+      });
+    }
+    if (type === "easy") setEasy(tempar);
+    else if (type === "medium") setMed(tempar);
+    else setHard(tempar);
+  }
   function saveTest(e) {
     setIsloading(true);
     e.preventDefault();
@@ -165,14 +216,14 @@ function NewTest() {
             maxQs: 3,
           },
         ];
-        axiosInstance
-          .post("api/admin/saveTest", {
-            data: { saveTest: a, createTest: creaTest },
-          })
-          .then((res) => {
-            setIsloading(false);
-            navigate("/admin/home");
-          });
+        // axiosInstance
+        //   .post("api/admin/saveTest", {
+        //     data: { saveTest: a, createTest: creaTest },
+        //   })
+        //   .then((res) => {
+        //     setIsloading(false);
+        //     navigate("/admin/home");
+        //   });
       } else {
         setIsloading(false);
         setIsAlertDangerMsgLoaded(true);
@@ -308,17 +359,17 @@ function NewTest() {
       } else if (sid - 1 === 3) {
         setPDic({
           time: CurrentDic.time,
-          totalQs: 35, //$,
+          totalQs: curr_value, //$,
         });
       } else if (sid - 1 == 4) {
         setCDic({
           time: CurrentDic.time,
-          totalQs: 3,
+          totalQs: curr_value,
         });
       } else if (sid - 1 == 5) {
         setAWDic({
           time: CurrentDic.time,
-          totalQs: 3,
+          totalQs: curr_value,
         });
       } else if (sid - 1 === 0) {
         setAptDic({
@@ -696,17 +747,17 @@ function NewTest() {
                                               } else if (sid - 1 === 3) {
                                                 setPDic({
                                                   time: e.target.value,
-                                                  totalQs: 35, //$,
+                                                  totalQs: CurrentDic.totalQs, //$,
                                                 });
                                               } else if (sid - 1 == 4) {
                                                 setCDic({
                                                   time: e.target.value,
-                                                  totalQs: 3,
+                                                  totalQs: CurrentDic.totalQs,
                                                 });
                                               } else if (sid - 1 == 5) {
                                                 setAWDic({
                                                   time: e.target.value,
-                                                  totalQs: 3,
+                                                  totalQs: CurrentDic.totalQs,
                                                 });
                                               } else if (sid - 1 === 0) {
                                                 setAptDic({
@@ -757,18 +808,7 @@ function NewTest() {
                                           onChange={(e) => {
                                             checkMaxQs(e);
                                           }}
-                                          value={
-                                            sid === 6 || sid === 5 || sid === 4
-                                              ? sid === 6 || sid === 5
-                                                ? 3
-                                                : 35 //$
-                                              : CurrentDic.totalQs
-                                          }
-                                          disabled={
-                                            sid === 6 || sid === 5 || sid === 4
-                                              ? true
-                                              : false
-                                          }
+                                          value={CurrentDic.totalQs}
                                         />
                                       </div>
                                     </Col>
@@ -816,17 +856,17 @@ function NewTest() {
                                         } else if (sid - 1 === 3) {
                                           setPDic({
                                             time: e.target.value,
-                                            totalQs: 35, //$,
+                                            totalQs: CurrentDic.totalQs, //$,
                                           });
                                         } else if (sid - 1 == 4) {
                                           setCDic({
                                             time: e.target.value,
-                                            totalQs: 3,
+                                            totalQs: CurrentDic.totalQs,
                                           });
                                         } else if (sid - 1 == 5) {
                                           setAWDic({
                                             time: e.target.value,
-                                            totalQs: 3,
+                                            totalQs: CurrentDic.totalQs,
                                           });
                                         } else if (sid - 1 === 0) {
                                           setAptDic({
@@ -874,18 +914,7 @@ function NewTest() {
                                     onChange={(e) => {
                                       checkMaxQs(e);
                                     }}
-                                    value={
-                                      sid === 6 || sid === 5 || sid === 4
-                                        ? sid === 6 || sid === 5
-                                          ? 3
-                                          : 35 //$
-                                        : CurrentDic.totalQs
-                                    }
-                                    disabled={
-                                      sid === 6 || sid === 5 || sid === 4
-                                        ? true
-                                        : false
-                                    }
+                                    value={CurrentDic.totalQs}
                                   />
                                 </div>
                               </Col>
@@ -918,7 +947,11 @@ function NewTest() {
                 <>
                   <SetQuestion
                     setIsInside={setIsInside}
+                    setRefresh={setRefresh}
+                    refresh={refresh}
                     type={typeQs}
+                    axData={axData}
+                    delete_jsondata={delete_jsondata}
                     navArr={
                       typeQs === "Hard"
                         ? hard
