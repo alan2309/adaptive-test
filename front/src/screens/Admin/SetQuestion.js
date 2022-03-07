@@ -23,6 +23,8 @@ function SetQuestion({
   axData,
   refresh,
   setRefresh,
+  add_jsondata,
+  update_jsondata,
 }) {
   const isDesktopOrLaptop = useMediaQuery({
     query: "(min-width: 1024px)",
@@ -91,12 +93,12 @@ function SetQuestion({
     }
     if (temp[0] !== undefined) {
       if (sid !== 5 && sid !== 6) {
-        setCurrentQsID(temp[0].id);
+        setCurrentQsID(0);
         setCurrentQs(temp[0].ques);
         setOpt(temp[0].options);
         setImgDb(temp[0].imgId);
       } else if (sid === 5) {
-        setCurrentQsID(temp[0].id);
+        setCurrentQsID(0);
         setCurrentQs(temp[0].question || "");
         setOpt([]);
         setIsCoding(true);
@@ -120,7 +122,7 @@ function SetQuestion({
           setTestCaseOutput3(temp[0].test_case_output[2] || "");
         }
       } else if (sid === 6) {
-        setCurrentQsID(temp[0].paraId);
+        setCurrentQsID(0);
         set_para_title(temp[0].title);
         set_para(temp[0].para);
         set_para_qs(temp[0].questions);
@@ -246,18 +248,63 @@ function SetQuestion({
       if (base64EncodedImagee !== null) {
         dictionary["image"] = base64EncodedImagee;
       }
-      // axiosInstance
-      //   .post("api/admin/addQs", { data: dictionary })
-      //   .then((res) => {
-      //     navigate("/admin/newTest", {
-      //       state: { sid: sid - 1 },
-      //     });
-      //   })
-      //   .catch((e) => {
-      //     console.log(e);
-      //     setIsAlertDangerMsgLoaded(true);
-      //     setDangerMsg("something went wrong!,Try Again");
-      //   });
+      console.log(dictionary);
+      let optss = [];
+      let qs = "";
+      for (var key in dictionary) {
+        if (key.includes("question")) {
+          qs = dictionary[key];
+        }
+        if (key.includes("Option")) {
+          optss.push({
+            title: dictionary[key].split("Option")[0],
+            marks:
+              dictionary["rightOpt"] === key
+                ? dictionary.type === 1
+                  ? 1
+                  : dictionary.type === 2
+                  ? 2
+                  : 5
+                : 0,
+          });
+        }
+      }
+      let data = {
+        ques: qs,
+        id: 10,
+        imgId: dictionary.image,
+        options: optss,
+      };
+      console.log(data);
+      if (dictionary.action === "Save") {
+        add_jsondata(data, sectionName, type);
+        setIsInside(false);
+      } else {
+        update_jsondata(data, sectionName, type, currentQsID); //hardcoded
+        setIsInside(false);
+      }
+      // "": "value2"
+      // Option1: "150"
+      // Option2: "399"
+      // Option3: "180"
+      // action: "Update"
+      // correctOpt: "Option3"
+      // image: null
+      // question10: "A bus running at the speed of 60 km/hr crosses a pole in 9 seconds. What is the length of the train?"
+      // rightOpt: "Option2"
+      // sectionName: ""
+      // type: 1
+
+      // "": "value2"
+      // Option1: "h"
+      // action: "Save"
+      // correctOpt: "Option1"
+      // image: null
+      // questionNew: "h"
+      // rightOpt: "Option1"
+      // sectionName: ""
+      // type: 1
+      // [[Prototype]]: Object
     } catch (e) {}
   };
   function delOptInSubQs(e, pId, qsId, questionIndex) {
@@ -405,17 +452,17 @@ function SetQuestion({
     }
   }
 
-  function fillData(e) {
+  function fillData(e, index) {
     document.getElementById("sbForm").reset();
     if (e.target.id.toString() !== "questionNew") {
       if (sid !== 5 && sid !== 6) {
         setCurrentQs(navArray[e.target.id].ques);
-        setCurrentQsID(navArray[e.target.id].id);
+        setCurrentQsID(index);
         setOpt(navArray[e.target.id].options);
         setImgDb(navArray[e.target.id].imgId);
         setCurrentQsNo(`${parseInt(e.target.id) + 1}`);
       } else if (sid === 5) {
-        setCurrentQsID(navArray[e.target.id].id);
+        setCurrentQsID(index);
         setCurrentQs(navArray[e.target.id].question);
         setOpt([]);
         setCurrentQsNo(`${parseInt(e.target.id) + 1}`);
@@ -460,7 +507,7 @@ function SetQuestion({
           setTestCaseOutput3("");
         }
       } else if (sid === 6) {
-        setCurrentQsID(navArray[e.target.id].paraId);
+        setCurrentQsID(index);
         set_para_title(navArray[e.target.id].title);
         set_para(navArray[e.target.id].para);
         set_para_qs(navArray[e.target.id].questions);
@@ -1728,7 +1775,7 @@ function SetQuestion({
                                       <div
                                         id={index}
                                         className="qsNavBut"
-                                        onClick={fillData}
+                                        onClick={(e) => fillData(e, index)}
                                         style={{
                                           textOverflow: "ellipsis",
                                           whiteSpace: "nowrap",

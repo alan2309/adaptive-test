@@ -104,17 +104,7 @@ function NewTest() {
     setIsloading(false);
   }, []);
 
-  function delete_jsondata(tempar, sectionName, type) {
-    type = type.toLowerCase();
-    setAxData((prev) => ({
-      ...prev,
-      [sectionName]: {
-        ...prev[sectionName],
-        [type]: tempar,
-        qs: 0,
-      },
-    }));
-    setRefresh(true);
+  function jsonop_success() {
     setCurrentDic((prev) => ({
       ...prev,
       totalQs: 0,
@@ -150,6 +140,57 @@ function NewTest() {
         totalQs: 0,
       });
     }
+  }
+
+  function update_jsondata(data, sectionName, type, index) {
+    type = type.toLowerCase();
+    let updatedarr = axData[sectionName][type];
+    updatedarr[index] = data;
+    setAxData((prev) => ({
+      ...prev,
+      [sectionName]: {
+        ...prev[sectionName],
+        [type]: updatedarr,
+        qs: 0,
+      },
+    }));
+    setRefresh(true);
+    jsonop_success();
+    if (type === "easy") setEasy(updatedarr);
+    else if (type === "medium") setMed(updatedarr);
+    else setHard(updatedarr);
+  }
+
+  function add_jsondata(data, sectionName, type) {
+    type = type.toLowerCase();
+    setAxData((prev) => ({
+      ...prev,
+      [sectionName]: {
+        ...prev[sectionName],
+        [type]: [...prev[sectionName][type], data],
+        qs: 0,
+      },
+    }));
+
+    jsonop_success();
+    if (type === "easy") setEasy([...easy, data]);
+    else if (type === "medium") setMed([...med, data]);
+    else setHard([...hard, data]);
+    setRefresh(true);
+  }
+
+  function delete_jsondata(tempar, sectionName, type) {
+    type = type.toLowerCase();
+    setAxData((prev) => ({
+      ...prev,
+      [sectionName]: {
+        ...prev[sectionName],
+        [type]: tempar,
+        qs: 0,
+      },
+    }));
+    setRefresh(true);
+    jsonop_success();
     if (type === "easy") setEasy(tempar);
     else if (type === "medium") setMed(tempar);
     else setHard(tempar);
@@ -946,6 +987,8 @@ function NewTest() {
               {isInside && (
                 <>
                   <SetQuestion
+                    add_jsondata={add_jsondata}
+                    update_jsondata={update_jsondata}
                     setIsInside={setIsInside}
                     setRefresh={setRefresh}
                     refresh={refresh}

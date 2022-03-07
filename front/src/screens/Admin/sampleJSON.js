@@ -5,7 +5,7 @@ export const quesData = {
         {
           ques: "A bus running at the speed of 60 km/hr crosses a pole in 9 seconds. What is the length of the train?",
           id: 10,
-          imgId: "",
+          imgId: null,
           options: [
             {
               id: 829,
@@ -36,7 +36,7 @@ export const quesData = {
         {
           ques: "A Car running at the speed of 60 km/hr crosses a pole in 9 seconds. What is the length of the train?",
           id: 11,
-          imgId: "",
+          imgId: null,
           options: [
             {
               id: 829,
