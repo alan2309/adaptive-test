@@ -270,7 +270,7 @@ function DetailPageModified() {
                     <h2 style={{ fontSize: "14px", color: "#293E6F", fontFamily: "Poppins", fontWeight: "500", padding: "0 0 6px", marginTop: "20px", marginLeft: "10px" }}>Timelines & Questions:</h2>
                     <ul>
                       <li style={{ fontFamily: "Poppins", fontSize: "13.6px", fontWeight: "medium", lineHeight: "22px", marginBottom: "6px" }}>
-                        <b style={{ fontFamily: "Poppins", color: "#293E6F" }}>Assessment Window:</b>  {sessionStorage.getItem("start")} to {sessionStorage.getItem("EndDate")}
+                        <b style={{ fontFamily: "Poppins", color: "#293E6F" }}>Assessment Window:</b>  {sessionStorage.getItem("start")} to {sessionStorage.getItem("endDate")}
                       </li>
                       <li style={{ fontFamily: "Poppins", fontSize: "13.6px", fontWeight: "500", lineHeight: "22px", marginBottom: "6px" }}>
                         <b style={{ fontFamily: "Poppins", color: "#293E6F" }}>Assessment Duration:</b> {sessionStorage.getItem("totalTestTime")} (hr:mm:ss)
