@@ -142,39 +142,58 @@ function NewTest() {
     }
   }
 
-  function update_jsondata(data, sectionName, type, index) {
+  function update_jsondata(data, sectionName, type, index, newtype) {
     type = type.toLowerCase();
+    newtype = newtype.toLowerCase();
     let updatedarr = axData[sectionName][type];
-    updatedarr[index] = data;
-    setAxData((prev) => ({
-      ...prev,
-      [sectionName]: {
-        ...prev[sectionName],
-        [type]: updatedarr,
-        qs: 0,
-      },
-    }));
-    setRefresh(true);
-    jsonop_success();
+    if (type === newtype) {
+      updatedarr[index] = data;
+      setAxData((prev) => ({
+        ...prev,
+        [sectionName]: {
+          ...prev[sectionName],
+          [type]: updatedarr,
+          qs: 0,
+        },
+      }));
+    } else {
+      let newarrr = [...axData[sectionName][newtype], data];
+      updatedarr.splice(index, 1);
+      setAxData((prev) => ({
+        ...prev,
+        [sectionName]: {
+          ...prev[sectionName],
+          [type]: updatedarr,
+          [newtype]: newarrr,
+          qs: 0,
+        },
+      }));
+      if (newtype === "easy") setEasy(newarrr);
+      else if (newtype === "medium") setMed(newarrr);
+      else setHard(newarrr);
+    }
     if (type === "easy") setEasy(updatedarr);
     else if (type === "medium") setMed(updatedarr);
     else setHard(updatedarr);
+    jsonop_success();
+    setRefresh(true);
   }
 
   function add_jsondata(data, sectionName, type) {
-    type = type.toLowerCase();
+    console.log(sectionName + "==" + type);
+    let ltype = type.toLowerCase();
     setAxData((prev) => ({
       ...prev,
       [sectionName]: {
         ...prev[sectionName],
-        [type]: [...prev[sectionName][type], data],
+        [ltype]: [...prev[sectionName][ltype], data],
         qs: 0,
       },
     }));
 
     jsonop_success();
-    if (type === "easy") setEasy([...easy, data]);
-    else if (type === "medium") setMed([...med, data]);
+    if (ltype === "easy") setEasy([...easy, data]);
+    else if (ltype === "medium") setMed([...med, data]);
     else setHard([...hard, data]);
     setRefresh(true);
   }

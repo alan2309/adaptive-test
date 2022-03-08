@@ -78,7 +78,9 @@ function SetQuestion({
 
   useEffect(() => {
     setRefresh(false);
-    document.getElementById(type).selected = "selected";
+    if (sectionName !== "Personality") {
+      document.getElementById(type).selected = "selected";
+    }
     var divHeight = document.querySelector("#SETQS").clientHeight;
     setWindowHeight(divHeight);
     sessionStorage.removeItem("isNewTestReload");
@@ -248,39 +250,128 @@ function SetQuestion({
       if (base64EncodedImagee !== null) {
         dictionary["image"] = base64EncodedImagee;
       }
-      console.log(dictionary);
-      let optss = [];
-      let qs = "";
-      for (var key in dictionary) {
-        if (key.includes("question")) {
-          qs = dictionary[key];
+      let data;
+      if (sectionName !== "Coding" && sectionName !== "Analytical Writing") {
+        let optss = [];
+        let qs = "";
+        for (var key in dictionary) {
+          if (key.includes("question")) {
+            qs = dictionary[key];
+          }
+          if (key.includes("Option")) {
+            optss.push({
+              title: dictionary[key].split("Option")[0],
+              marks:
+                dictionary["rightOpt"] === key
+                  ? dictionary.type === 1
+                    ? 1
+                    : dictionary.type === 2
+                    ? 2
+                    : 5
+                  : 0,
+            });
+          }
         }
-        if (key.includes("Option")) {
-          optss.push({
-            title: dictionary[key].split("Option")[0],
-            marks:
-              dictionary["rightOpt"] === key
-                ? dictionary.type === 1
-                  ? 1
-                  : dictionary.type === 2
-                  ? 2
-                  : 5
-                : 0,
-          });
+        data = {
+          ques: qs,
+          id: 10,
+          imgId: dictionary.image,
+          options: optss,
+        };
+      } else if (sectionName === "Coding") {
+        let qs_id;
+        let qs_data;
+        for (var key in dictionary) {
+          if (key.includes("question")) {
+            qs_data = dictionary[key];
+            qs_id = key.split("question")[1];
+          }
         }
+        data = {
+          id: qs_id,
+          question: qs_data,
+          marks: dictionary.type === 1 ? 10 : dictionary.type === 2 ? 20 : 30,
+          type: dictionary.type,
+          input_format: dictionary.inputFormat,
+          output_format: dictionary.outputFormat,
+          constraints: dictionary.constraints,
+          sample_input: [dictionary.sampleInput],
+          sample_output: [dictionary.sampleOutput],
+          explanation: dictionary.explanation,
+          test_case_input: [
+            dictionary.testCase1Input,
+            dictionary.testCase2Input,
+            dictionary.testCase3Input,
+          ],
+          test_case_output: [
+            dictionary.testCase1Output,
+            dictionary.testCase2Output,
+            dictionary.testCase3Output,
+          ],
+        };
+      } else {
+        let questions = [];
+        for (var key in dictionary) {
+          if (
+            key.includes(`para${dictionary.paraId}Qs`) &&
+            Number.isInteger(key.split(`para${dictionary.paraId}Qs`)[1] - "0")
+          ) {
+            questions = [
+              ...questions,
+              {
+                question: dictionary[key],
+                paraQsId: key.split(`para${dictionary.paraId}Qs`)[1],
+                options: [],
+                copt: dictionary.rightOptArrAnalytical[key],
+              },
+            ];
+          }
+        }
+        for (let i = 0; i < questions.length; i++) {
+          let optxx = [];
+          let qslen = questions.length;
+          for (key in dictionary) {
+            if (
+              key.includes(
+                `para${dictionary.paraId}Qs${questions[i].paraQsId}Option`
+              )
+            ) {
+              optxx = [
+                ...optxx,
+                {
+                  id: key.split(
+                    `para${dictionary.paraId}Qs${questions[i].paraQsId}Option`
+                  )[1],
+                  title: dictionary[key],
+                  marks:
+                    key === questions[i].copt
+                      ? qslen % 2 == 0
+                        ? 20 / qslen
+                        : Math.floor(20 / qslen)
+                      : 0,
+                  paraqs: dictionary.paraId,
+                },
+              ];
+            }
+          }
+          questions[i].options = optxx;
+        }
+        data = {
+          title: dictionary.paragraphTitle,
+          paraId: dictionary.paraId,
+          para: dictionary.paragraph,
+          questions: questions,
+        };
       }
-      let data = {
-        ques: qs,
-        id: 10,
-        imgId: dictionary.image,
-        options: optss,
-      };
-      console.log(data);
+      let typex;
+      if (dictionary.type === 1) typex = "easy";
+      else if (dictionary.type === 2) typex = "medium";
+      else typex = "hard";
       if (dictionary.action === "Save") {
-        add_jsondata(data, sectionName, type);
+        add_jsondata(data, sectionName, typex);
         setIsInside(false);
       } else {
-        update_jsondata(data, sectionName, type, currentQsID); //hardcoded
+        update_jsondata(data, sectionName, type, currentQsID, typex); //hardcoded
         setIsInside(false);
       }
       // "": "value2"
@@ -513,7 +604,9 @@ function SetQuestion({
         set_para_qs(navArray[e.target.id].questions);
       }
     }
-    document.getElementById(type).selected = "selected";
+    if (sectionName !== "Personality") {
+      document.getElementById(type).selected = "selected";
+    }
   }
   function reportWindowSize(e) {
     setWindowHeight(window.screen.height);
@@ -1700,13 +1793,13 @@ function SetQuestion({
                                   ...prev,
                                   {
                                     title: "New Question",
-                                    paraId: "New",
+                                    paraId: prev.length + 1,
                                     quetions: [],
                                   },
                                 ])
                               : setNavArray((prev) => [...prev, -1]),
                             setCurrentQsNo(navArray.length + 1),
-                            setCurrentQsID("New"),
+                            setCurrentQsID(navArray.length + 1),
                             setOpt([]))
                           : null}
                       </div>
@@ -1786,7 +1879,7 @@ function SetQuestion({
                                           ? ittr.title
                                           : isCoding
                                           ? ittr.question || "New Qs"
-                                          : index + " " + ittr.ques || "New Qs"}
+                                          : ittr.ques || "New Qs"}
                                       </div>
                                     </Col>
                                   </Row>
@@ -1842,13 +1935,13 @@ function SetQuestion({
                           ...prev,
                           {
                             title: "New Question",
-                            paraId: "New",
+                            paraId: prev.length + 1,
                             quetions: [],
                           },
                         ])
                       : setNavArray((prev) => [...prev, -1]);
                     setCurrentQsNo(navArray.length + 1);
-                    setCurrentQsID("New");
+                    setCurrentQsID(navArray.length + 1);
                     set_para_qs([]);
                     setOpt([]);
                     setPreviewSource("");
