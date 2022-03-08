@@ -1036,6 +1036,10 @@ def getTests(request):
             b['start']=b['start'][0]
             dicTime=durationBtwnDates(presentTest[0].test_start,presentTest[0].test_end)
             b['duration']=dicTime['duration']
+            b['totalTestTime']=presentTest[0].totalTestTime
+            b['endDate']="{0} {1}".format(presentTest[0].test_end.date(),str(presentTest[0].test_end.time()).split('.')[0])
+            b['endDate'] = converttoist(b['endDate'])
+            b['endDate']=b['endDate'][0]
             b['ends_in']=durationBtwnDates(datetime.datetime(d.year,d.month,d.day,d.hour,d.minute,d.second),datetime.datetime(presentTest[0].test_end.year,presentTest[0].test_end.month,presentTest[0].test_end.day,presentTest[0].test_end.hour,presentTest[0].test_end.minute,presentTest[0].test_end.second))['total_seconds']
             bb.append(b)
         cc=[]

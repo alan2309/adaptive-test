@@ -44,6 +44,17 @@ input {
   outline: none;
 }
 
+.proct {
+  margin-top: 10px;
+  border-left: 2px solid #293e6f;
+  height: 20px;
+}
+.proct1 {
+  margin-top: 10px;
+  border-left: 2px solid #293e6f;
+  height: 20px;
+}
+
 input:focus {
   border: 0px !important;
   outline: none;
@@ -72,6 +83,10 @@ input:focus::placeholder {
   background-image: url("/src/img/Group 10.png");
 }
 
+.accordion-button:not(.collapsed) {
+  color: black !important;
+  background-color: white !important;
+}
 .all_content .sorting,
 .main_permission_div .sorting,
 .feedbackTable .sorting {
@@ -104,5 +119,14 @@ td {
   }
   .Background {
     height: 650px !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .proct {
+    margin-top: 30px;
+  }
+  .proct1 {
+    margin-top: 30px;
   }
 }

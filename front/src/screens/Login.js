@@ -28,6 +28,9 @@ function Login() {
   const [dataPresent, setTDataPresent] = useState({});
   const [isLoading, setIsloading] = useState(true);
   const [show, setShow] = useState(false);
+  const [myTotalTestTime, setMyTotalTestTime] = useState();
+  const [testStart, setTestStart] = useState();
+  const [testEnd, setTestEnd] = useState();
   const [successMsg, setSuccessMsg] = useState("");
   const [dangerMsg, setDangerMsg] = useState("");
   const [isAlertDangerMsgLoaded, setIsAlertDangerMsgLoaded] = useState(false);
@@ -99,6 +102,9 @@ function Login() {
           let ong = res.data.ongoing_test;
           if (ong.length > 0) {
             setMyId(ong[0].id);
+            setMyTotalTestTime(ong[0]. totalTestTime);
+            setTestStart(ong[0].start);
+            setTestEnd(ong[0].endDate);
             ong[0]["ends_in"] = (
               <CustomTimer
                 isLogin={true}
@@ -211,6 +217,9 @@ function Login() {
                           }
                         } else {
                           setMd(true);
+                          sessionStorage.setItem("totalTestTime", myTotalTestTime);
+                          sessionStorage.setItem("start",testStart);
+                          sessionStorage.setItem("endDate", testEnd);
                           navigate("/details");
                         }
                       });
