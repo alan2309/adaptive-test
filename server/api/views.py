@@ -4,7 +4,7 @@ import json
 from django.http import HttpResponseBadRequest, HttpResponseForbidden
 from django.http.response import JsonResponse
 from rest_framework.views import APIView
-from api.models import Questions,Options,Results,Subject,Test,CodingTest,Para,Paraopt,Paraqs,MyUser,Feedback,ConstData
+from api.models import Questions,Options,Results,Subject,Test,CodingTest,Para,Paraopt,Paraqs,MyUser,Feedback,ConstData,QuestionJson
 from rest_framework_simplejwt.tokens import RefreshToken,AccessToken
 from rest_framework import status
 from rest_framework.permissions import AllowAny
@@ -27,6 +27,32 @@ from django.conf import settings
 import uuid
 CFG = {'DB': None}
 import pandas as pd
+
+
+@csrf_exempt
+def createTest(request):
+    if request.method =="POST":
+        data=JSONParser().parse(request)['data']
+        print(data['saveTest']['Domain']["avg"])
+        data_apt = data['saveTest']['Aptitude']
+        data_cf =data['saveTest']['Computer Fundamentals']
+        data_d = data['saveTest']['Domain']
+        data_c = data['saveTest']['Coding']
+        data_aw = data['saveTest']['Analytical Writing']
+        data_p = data['saveTest']['Personality']
+
+        test_apt = {"qs": data_apt["qs"], "time": data_apt["time"], "avg":data_apt["avg"] , "maxQs": data_apt["maxQs"]}
+        test_cf = {"qs": data_cf["qs"], "time": data_cf["time"], "avg": data_cf["avg"], "maxQs": data_cf["maxQs"]}
+        test_d = {"qs": data_d["qs"], "time": data_d["time"], "avg": data_d["avg"], "maxQs": data_d["maxQs"]}
+        test_c = {"qs": data_c["qs"], "time": data_c["time"], "avg": data_c["avg"], "maxQs": data_c["maxQs"]}
+        test_aw = {"qs": data_aw["qs"], "time": data_aw["time"], "avg": data_aw["avg"], "maxQs": data_aw["maxQs"]}
+        test_p = {"qs": data_p["qs"], "time": data_p["time"], "avg": data_p["avg"], "maxQs": data_p["maxQs"]}
+        tst=Test(test_name=data['createTest']['testName'],test_start=data['createTest']['sTime'],test_end=data['createTest']['eTime'],token=str(uuid.uuid4()),apt=test_apt,dom=test_d,c = test_c,cf=test_cf,aw=test_aw,p = test_p)
+        tst.save()
+
+        qs = QuestionJson(apt=data_apt,cf=data_cf,dom=data_d,code=data_c,aw=data_aw,personality=data_p,test=tst)
+        qs.save()
+        return JsonResponse("",safe=False)
 
 def predict():
     regressor = pd.read_pickle(r'server\model.pickle') 

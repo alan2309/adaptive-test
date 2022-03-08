@@ -55,6 +55,19 @@ class Feedback(models.Model):
     def __str__(self):
             return self.user.email
 
+class QuestionJson(models.Model):
+    apt= models.JSONField()
+    cf=models.JSONField()
+    dom = models.JSONField()
+    code = models.JSONField()
+    aw = models.JSONField()
+    personality= models.JSONField()
+    test = models.ForeignKey(Test,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.test.test_name
+
+
 class Questions(models.Model):
     subject = models.ForeignKey(Subject,on_delete=models.CASCADE)
     title = models.TextField(blank=True,null=True)

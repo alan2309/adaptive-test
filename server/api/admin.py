@@ -1,6 +1,6 @@
 from tabnanny import verbose
 from django.contrib import admin
-from .models import (CodingTest, Feedback, MyUser, Questions,Options,Results,Subject,Test,Paraqs,Paraopt,Para,MyUser,ConstData)
+from .models import (QuestionJson,CodingTest, Feedback, MyUser, Questions,Options,Results,Subject,Test,Paraqs,Paraopt,Para,MyUser,ConstData)
 from rest_framework_simplejwt import token_blacklist
 from rest_framework_simplejwt.token_blacklist.admin import OutstandingTokenAdmin,OutstandingToken
 from django.contrib.auth.models import User
@@ -8,6 +8,7 @@ from django.contrib.auth.admin import UserAdmin
 
 # Register your models here.
 admin.site.register(Questions)
+admin.site.register(QuestionJson)
 admin.site.register(ConstData)
 admin.site.register(Options)
 admin.site.register(Results)

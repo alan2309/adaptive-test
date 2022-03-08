@@ -223,67 +223,14 @@ function NewTest() {
       let objClash = clash(sx.getTime(), ex.getTime());
       if (!objClash.bool) {
         let creaTest = { testName: tName, sTime: sDate, eTime: eDate };
-        let a = [
-          {
-            sub: "Aptitude",
-            time: aptDic.time,
-            totalQs: aptDic.totalQs,
-            maxQs: check_MaxQS_Db({
-              isPersonality: false,
-              easy: axData["Aptitude"].easy.length,
-              medium: axData["Aptitude"].medium.length,
-              hard: axData["Aptitude"].hard.length,
-            }),
-          },
-          {
-            sub: "Computer Fundamentals",
-            time: CFDic.time,
-            totalQs: CFDic.totalQs,
-            maxQs: check_MaxQS_Db({
-              isPersonality: false,
-              easy: axData["Computer Fundamentals"].easy.length,
-              medium: axData["Computer Fundamentals"].medium.length,
-              hard: axData["Computer Fundamentals"].hard.length,
-            }),
-          },
-          {
-            sub: "Domain",
-            time: DDic.time,
-            totalQs: DDic.totalQs,
-            maxQs: check_MaxQS_Db({
-              isPersonality: false,
-              easy: axData["Domain"].easy.length,
-              medium: axData["Domain"].medium.length,
-              hard: axData["Domain"].hard.length,
-            }),
-          },
-          {
-            sub: "Personality",
-            time: PDic.time,
-            totalQs: PDic.totalQs,
-            maxQs: check_MaxQS_Db({
-              isPersonality: true,
-              easy: axData["Personality"].easy.length,
-              medium: axData["Personality"].medium.length,
-              hard: axData["Personality"].hard.length,
-            }),
-          },
-          { sub: "Coding", time: CDic.time, totalQs: CDic.totalQs, maxQs: 3 },
-          {
-            sub: "Analytical Writing",
-            time: AWDic.time,
-            totalQs: AWDic.totalQs,
-            maxQs: 3,
-          },
-        ];
-        // axiosInstance
-        //   .post("api/admin/saveTest", {
-        //     data: { saveTest: a, createTest: creaTest },
-        //   })
-        //   .then((res) => {
-        //     setIsloading(false);
-        //     navigate("/admin/home");
-        //   });
+        axiosInstance
+          .post("api/createTest", {
+            data: { saveTest: axData, createTest: creaTest },
+          })
+          .then((res) => {
+            setIsloading(false);
+            navigate("/admin/home");
+          });
       } else {
         setIsloading(false);
         setIsAlertDangerMsgLoaded(true);
@@ -411,31 +358,116 @@ function NewTest() {
           time: CurrentDic.time,
           totalQs: curr_value,
         });
+        setAxData((prev) => ({
+          ...prev,
+          ["Computer Fundamentals"]: {
+            ...prev["Computer Fundamentals"],
+            qs: curr_value,
+            avg: Math.ceil(curr_value * 2 * 0.7),
+            time: CurrentDic.time,
+            maxQs: check_MaxQS_Db({
+              isPersonality: false,
+              easy: axData["Computer Fundamentals"].easy.length,
+              medium: axData["Computer Fundamentals"].medium.length,
+              hard: axData["Computer Fundamentals"].hard.length,
+            }),
+          },
+        }));
       } else if (sid - 1 === 2) {
         setDDic({
           time: CurrentDic.time,
           totalQs: curr_value,
         });
+        setAxData((prev) => ({
+          ...prev,
+          ["Domain"]: {
+            ...prev["Domain"],
+            qs: curr_value,
+            time: CurrentDic.time,
+            avg: Math.ceil(curr_value * 2 * 0.7),
+            maxQs: check_MaxQS_Db({
+              isPersonality: false,
+              easy: axData["Domain"].easy.length,
+              medium: axData["Domain"].medium.length,
+              hard: axData["Domain"].hard.length,
+            }),
+          },
+        }));
       } else if (sid - 1 === 3) {
         setPDic({
           time: CurrentDic.time,
           totalQs: curr_value, //$,
         });
+        setAxData((prev) => ({
+          ...prev,
+          ["Personality"]: {
+            ...prev["Personality"],
+            qs: curr_value,
+            time: CurrentDic.time,
+            avg: 30,
+            maxQs: check_MaxQS_Db({
+              isPersonality: false,
+              easy: axData["Personality"].easy.length,
+              medium: axData["Personality"].medium.length,
+              hard: axData["Personality"].hard.length,
+            }),
+          },
+        }));
       } else if (sid - 1 == 4) {
         setCDic({
           time: CurrentDic.time,
           totalQs: curr_value,
         });
+        setAxData((prev) => ({
+          ...prev,
+          ["Coding"]: {
+            ...prev["Coding"],
+            qs: curr_value,
+            time: CurrentDic.time,
+            avg: 30,
+            maxQs: check_MaxQS_Db({
+              isPersonality: false,
+              easy: axData["Coding"].easy.length,
+              medium: axData["Coding"].medium.length,
+              hard: axData["Coding"].hard.length,
+            }),
+          },
+        }));
       } else if (sid - 1 == 5) {
         setAWDic({
           time: CurrentDic.time,
           totalQs: curr_value,
         });
+        setAxData((prev) => ({
+          ...prev,
+          ["Analytical Writing"]: {
+            ...prev["Analytical Writing"],
+            qs: curr_value,
+            time: CurrentDic.time,
+            maxQs: 3,
+            avg: 30,
+          },
+        }));
       } else if (sid - 1 === 0) {
         setAptDic({
           time: CurrentDic.time,
           totalQs: curr_value,
         });
+        setAxData((prev) => ({
+          ...prev,
+          ["Aptitude"]: {
+            ...prev["Aptitude"],
+            qs: curr_value,
+            time: CurrentDic.time,
+            avg: Math.ceil(curr_value * 2 * 0.7),
+            maxQs: check_MaxQS_Db({
+              isPersonality: false,
+              easy: axData["Aptitude"].easy.length,
+              medium: axData["Aptitude"].medium.length,
+              hard: axData["Aptitude"].hard.length,
+            }),
+          },
+        }));
       }
       setCurrentDic({
         time: CurrentDic.time,
@@ -799,31 +831,77 @@ function NewTest() {
                                                   time: e.target.value,
                                                   totalQs: CurrentDic.totalQs,
                                                 });
+                                                setAxData((prev) => ({
+                                                  ...prev,
+                                                  ["Computer Fundamentals"]: {
+                                                    ...prev[
+                                                      "Computer Fundamentals"
+                                                    ],
+                                                    time: e.target.value,
+                                                  },
+                                                }));
                                               } else if (sid - 1 === 2) {
                                                 setDDic({
                                                   time: e.target.value,
                                                   totalQs: CurrentDic.totalQs,
                                                 });
+                                                setAxData((prev) => ({
+                                                  ...prev,
+                                                  ["Domain"]: {
+                                                    ...prev["Domain"],
+                                                    time: e.target.value,
+                                                  },
+                                                }));
                                               } else if (sid - 1 === 3) {
                                                 setPDic({
                                                   time: e.target.value,
                                                   totalQs: CurrentDic.totalQs, //$,
                                                 });
+                                                setAxData((prev) => ({
+                                                  ...prev,
+                                                  ["Personality"]: {
+                                                    ...prev["Personality"],
+                                                    time: e.target.value,
+                                                  },
+                                                }));
                                               } else if (sid - 1 == 4) {
                                                 setCDic({
                                                   time: e.target.value,
                                                   totalQs: CurrentDic.totalQs,
                                                 });
+                                                setAxData((prev) => ({
+                                                  ...prev,
+                                                  ["Coding"]: {
+                                                    ...prev["Coding"],
+                                                    time: e.target.value,
+                                                  },
+                                                }));
                                               } else if (sid - 1 == 5) {
                                                 setAWDic({
                                                   time: e.target.value,
                                                   totalQs: CurrentDic.totalQs,
                                                 });
+                                                setAxData((prev) => ({
+                                                  ...prev,
+                                                  ["Analytical Writing"]: {
+                                                    ...prev[
+                                                      "Analytical Writing"
+                                                    ],
+                                                    time: e.target.value,
+                                                  },
+                                                }));
                                               } else if (sid - 1 === 0) {
                                                 setAptDic({
                                                   time: e.target.value,
                                                   totalQs: CurrentDic.totalQs,
                                                 });
+                                                setAxData((prev) => ({
+                                                  ...prev,
+                                                  ["Aptitude"]: {
+                                                    ...prev["Aptitude"],
+                                                    time: e.target.value,
+                                                  },
+                                                }));
                                               }
                                               setCurrentDic({
                                                 time: e.target.value,
@@ -908,31 +986,73 @@ function NewTest() {
                                             time: e.target.value,
                                             totalQs: CurrentDic.totalQs,
                                           });
+                                          setAxData((prev) => ({
+                                            ...prev,
+                                            ["Computer Fundamentals"]: {
+                                              ...prev["Computer Fundamentals"],
+                                              time: e.target.value,
+                                            },
+                                          }));
                                         } else if (sid - 1 === 2) {
                                           setDDic({
                                             time: e.target.value,
                                             totalQs: CurrentDic.totalQs,
                                           });
+                                          setAxData((prev) => ({
+                                            ...prev,
+                                            ["Domain"]: {
+                                              ...prev["Domain"],
+                                              time: e.target.value,
+                                            },
+                                          }));
                                         } else if (sid - 1 === 3) {
                                           setPDic({
                                             time: e.target.value,
                                             totalQs: CurrentDic.totalQs, //$,
                                           });
+                                          setAxData((prev) => ({
+                                            ...prev,
+                                            ["Personality"]: {
+                                              ...prev["Personality"],
+                                              time: e.target.value,
+                                            },
+                                          }));
                                         } else if (sid - 1 == 4) {
                                           setCDic({
                                             time: e.target.value,
                                             totalQs: CurrentDic.totalQs,
                                           });
+                                          setAxData((prev) => ({
+                                            ...prev,
+                                            ["Coding"]: {
+                                              ...prev["Coding"],
+                                              time: e.target.value,
+                                            },
+                                          }));
                                         } else if (sid - 1 == 5) {
                                           setAWDic({
                                             time: e.target.value,
                                             totalQs: CurrentDic.totalQs,
                                           });
+                                          setAxData((prev) => ({
+                                            ...prev,
+                                            ["Analytical Writing"]: {
+                                              ...prev["Analytical Writing"],
+                                              time: e.target.value,
+                                            },
+                                          }));
                                         } else if (sid - 1 === 0) {
                                           setAptDic({
                                             time: e.target.value,
                                             totalQs: CurrentDic.totalQs,
                                           });
+                                          setAxData((prev) => ({
+                                            ...prev,
+                                            ["Aptitude"]: {
+                                              ...prev["Aptitude"],
+                                              time: e.target.value,
+                                            },
+                                          }));
                                         }
                                         setCurrentDic({
                                           time: e.target.value,
