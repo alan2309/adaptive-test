@@ -54,7 +54,6 @@ function NewTest() {
   const [isLoading, setIsloading] = useState(true);
 
   useEffect(() => {
-    console.log(quesData);
     setIsloading(true);
     const data = async () =>
       await axiosInstance

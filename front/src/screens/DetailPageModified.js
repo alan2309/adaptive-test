@@ -95,14 +95,14 @@ function DetailPageModified() {
     let m = (ob.getMinutes() < 10 ? "0" : "") + ob.getMinutes();
     let s = (ob.getMinutes() < 10 ? "0" : "") + ob.getSeconds();
     sessionStorage.setItem("screenchange", 0);
-    let username = sessionStorage.getItem('username')
+    let username = sessionStorage.getItem("username");
     let acc_token = "JWT " + sessionStorage.getItem("access_token");
     axiosInstance.defaults.headers["Authorization"] = acc_token;
     axiosInstance
       .post(`api/setresult/${username}`, {
         data: { testId: sessionStorage.getItem("testId") },
       })
-      .then(res => {
+      .then((res) => {
         sessionStorage.setItem(
           "test",
           JSON.stringify({
@@ -117,7 +117,7 @@ function DetailPageModified() {
         );
         setIsloading(false);
         navigate("/aptitude");
-      })
+      });
   };
 
   const checkboxHandler = () => {
@@ -131,7 +131,7 @@ function DetailPageModified() {
             <Loader />
           ) : (
             <Row style={{ height: "100%", margin: "0px" }}>
-               <Col md={4} >
+              <Col md={4}>
                 <div
                   style={{
                     padding: "15px 35px 30px 35px",
@@ -234,7 +234,9 @@ function DetailPageModified() {
                     </Row>
                     <div
                       style={{
-                        backgroundColor: !(!isDevToolsOpen && isFullScreenEnabled)
+                        backgroundColor: !(
+                          !isDevToolsOpen && isFullScreenEnabled
+                        )
                           ? "#f8d7da"
                           : "#D1E7DD",
                         width: "95%",
@@ -260,69 +262,316 @@ function DetailPageModified() {
                   </Row>
                 </div>
               </Col>
-              <Col md={8} style={{ backgroundColor: "white", borderLeft: "3px solid #F1F1F1", height: "1180px" }}>
+              <Col
+                md={8}
+                style={{
+                  backgroundColor: "white",
+                  borderLeft: "3px solid #F1F1F1",
+                  height: "1180px",
+                }}
+              >
                 <div>
-                  <div style={{ borderLeft: "3px solid #293E6F", height: "50px", marginTop: "20px", marginLeft: "10px" }}>
-                    <h2 style={{ fontSize: "16px", color: "#293E6F", fontFamily: "Poppins", fontWeight: "medium", padding: "0 0 6px", marginTop: "20px", marginLeft: "10px" }}>Assessment Guidelines</h2>
-                    <p style={{ fontSize: "14px", fontFamily: "Poppins", fontWeight: "400", padding: "0 0 6px", marginTop: "-10px", marginLeft: "10px" }}>Kindly read through the following key instructions and important guidelines for this assessment:</p>
+                  <div
+                    style={{
+                      borderLeft: "3px solid #293E6F",
+                      height: "50px",
+                      marginTop: "20px",
+                      marginLeft: "10px",
+                    }}
+                  >
+                    <h2
+                      style={{
+                        fontSize: "16px",
+                        color: "#293E6F",
+                        fontFamily: "Poppins",
+                        fontWeight: "medium",
+                        padding: "0 0 6px",
+                        marginTop: "20px",
+                        marginLeft: "10px",
+                      }}
+                    >
+                      Assessment Guidelines
+                    </h2>
+                    <p
+                      style={{
+                        fontSize: "14px",
+                        fontFamily: "Poppins",
+                        fontWeight: "400",
+                        padding: "0 0 6px",
+                        marginTop: "-10px",
+                        marginLeft: "10px",
+                      }}
+                    >
+                      Kindly read through the following key instructions and
+                      important guidelines for this assessment:
+                    </p>
                   </div>
-                  <div style={{ borderLeft: "2px solid #293E6F", height: "20px", marginTop: "30px", marginLeft: "10px" }}>
-                    <h2 style={{ fontSize: "14px", color: "#293E6F", fontFamily: "Poppins", fontWeight: "500", padding: "0 0 6px", marginTop: "20px", marginLeft: "10px" }}>Timelines & Questions:</h2>
+                  <div
+                    style={{
+                      borderLeft: "2px solid #293E6F",
+                      height: "20px",
+                      marginTop: "30px",
+                      marginLeft: "10px",
+                    }}
+                  >
+                    <h2
+                      style={{
+                        fontSize: "14px",
+                        color: "#293E6F",
+                        fontFamily: "Poppins",
+                        fontWeight: "500",
+                        padding: "0 0 6px",
+                        marginTop: "20px",
+                        marginLeft: "10px",
+                      }}
+                    >
+                      Timelines & Questions:
+                    </h2>
                     <ul>
-                      <li style={{ fontFamily: "Poppins", fontSize: "13.6px", fontWeight: "medium", lineHeight: "22px", marginBottom: "6px" }}>
-                        <b style={{ fontFamily: "Poppins", color: "#293E6F" }}>Assessment Window:</b>  {sessionStorage.getItem("start")} to {sessionStorage.getItem("endDate")}
+                      <li
+                        style={{
+                          fontFamily: "Poppins",
+                          fontSize: "13.6px",
+                          fontWeight: "medium",
+                          lineHeight: "22px",
+                          marginBottom: "6px",
+                        }}
+                      >
+                        <b style={{ fontFamily: "Poppins", color: "#293E6F" }}>
+                          Assessment Window:
+                        </b>{" "}
+                        {sessionStorage.getItem("start")} to{" "}
+                        {sessionStorage.getItem("endDate")}
                       </li>
-                      <li style={{ fontFamily: "Poppins", fontSize: "13.6px", fontWeight: "500", lineHeight: "22px", marginBottom: "6px" }}>
-                        <b style={{ fontFamily: "Poppins", color: "#293E6F" }}>Assessment Duration:</b> {sessionStorage.getItem("totalTestTime")} (hr:mm:ss)
+                      <li
+                        style={{
+                          fontFamily: "Poppins",
+                          fontSize: "13.6px",
+                          fontWeight: "500",
+                          lineHeight: "22px",
+                          marginBottom: "6px",
+                        }}
+                      >
+                        <b style={{ fontFamily: "Poppins", color: "#293E6F" }}>
+                          Assessment Duration:
+                        </b>{" "}
+                        {sessionStorage.getItem("totalTestTime")} (hr:mm:ss)
                       </li>
-                      <li style={{ fontFamily: "Poppins", fontSize: "13.6px", fontWeight: "500", lineHeight: "22px", marginBottom: "6px" }}>
-                        You can attempt the assessment anytime between the provided assessment window.
+                      <li
+                        style={{
+                          fontFamily: "Poppins",
+                          fontSize: "13.6px",
+                          fontWeight: "500",
+                          lineHeight: "22px",
+                          marginBottom: "6px",
+                        }}
+                      >
+                        You can attempt the assessment anytime between the
+                        provided assessment window.
                       </li>
-                      <li style={{ fontFamily: "Poppins", fontSize: "13.6px", fontWeight: "500", lineHeight: "22px", marginBottom: "6px" }}>
-                        Please ensure that you attempt the assessment in one sitting as once you start the assessment, the timer won’t stop.
+                      <li
+                        style={{
+                          fontFamily: "Poppins",
+                          fontSize: "13.6px",
+                          fontWeight: "500",
+                          lineHeight: "22px",
+                          marginBottom: "6px",
+                        }}
+                      >
+                        Please ensure that you attempt the assessment in one
+                        sitting as once you start the assessment, the timer
+                        won’t stop.
                       </li>
-                      <li style={{ fontFamily: "Poppins", fontSize: "13.6px", fontWeight: "500", lineHeight: "22px", marginBottom: "6px" }}>
-                        You will have to finish the assessment before {sessionStorage.getItem("EndDate")}. To get the complete assessment duration, you need to start the assessment latest by {sessionStorage.getItem("start")}. Otherwise, you’ll get less time to complete the assessment.
+                      <li
+                        style={{
+                          fontFamily: "Poppins",
+                          fontSize: "13.6px",
+                          fontWeight: "500",
+                          lineHeight: "22px",
+                          marginBottom: "6px",
+                        }}
+                      >
+                        You will have to finish the assessment before{" "}
+                        {sessionStorage.getItem("EndDate")}. To get the complete
+                        assessment duration, you need to start the assessment
+                        latest by {sessionStorage.getItem("start")}. Otherwise,
+                        you’ll get less time to complete the assessment.
                       </li>
                     </ul>
                     <div className="proct">
-                      <h2 style={{ fontSize: "14px", color: "#293E6F", fontFamily: "Poppins", fontWeight: "500", padding: "0 0 6px", marginTop: "10px", marginLeft: "10px" }}>Proctoring Related:</h2>
+                      <h2
+                        style={{
+                          fontSize: "14px",
+                          color: "#293E6F",
+                          fontFamily: "Poppins",
+                          fontWeight: "500",
+                          padding: "0 0 6px",
+                          marginTop: "10px",
+                          marginLeft: "10px",
+                        }}
+                      >
+                        Proctoring Related:
+                      </h2>
                       <ul>
-                        <li style={{ fontFamily: "Poppins", fontSize: "13.6px", fontWeight: "500", lineHeight: "22px", marginBottom: "6px" }}>
-                          You can take the assessment only on a desktop/laptop and in full-screen mode. </li>
-
-                        <li style={{ fontFamily: "Poppins", fontSize: "13.6px", fontWeight: "500", lineHeight: "22px", marginBottom: "6px" }}>
-                          You must not refresh the screen. However, if the screen refreshes by accident, the progress will not be lost, the progress and the timer will be restored to where it was before.
+                        <li
+                          style={{
+                            fontFamily: "Poppins",
+                            fontSize: "13.6px",
+                            fontWeight: "500",
+                            lineHeight: "22px",
+                            marginBottom: "6px",
+                          }}
+                        >
+                          You can take the assessment only on a desktop/laptop
+                          and in full-screen mode.{" "}
                         </li>
-                        <li style={{ fontFamily: "Poppins", fontSize: "13.6px", fontWeight: "500", lineHeight: "22px", marginBottom: "6px" }}>
-                          You should not switch tabs, desktops, or browsers during the test, a warning will appear twice, indicating that the screen has been changed. The test will be auto-submitted after two warnings.
+
+                        <li
+                          style={{
+                            fontFamily: "Poppins",
+                            fontSize: "13.6px",
+                            fontWeight: "500",
+                            lineHeight: "22px",
+                            marginBottom: "6px",
+                          }}
+                        >
+                          You must not refresh the screen. However, if the
+                          screen refreshes by accident, the progress will not be
+                          lost, the progress and the timer will be restored to
+                          where it was before.
+                        </li>
+                        <li
+                          style={{
+                            fontFamily: "Poppins",
+                            fontSize: "13.6px",
+                            fontWeight: "500",
+                            lineHeight: "22px",
+                            marginBottom: "6px",
+                          }}
+                        >
+                          You should not switch tabs, desktops, or browsers
+                          during the test, a warning will appear twice,
+                          indicating that the screen has been changed. The test
+                          will be auto-submitted after two warnings.
                         </li>
                       </ul>
                       <div className="proct1">
-                        <h2 style={{ fontSize: "14px", color: "#293E6F", fontFamily: "Poppins", fontWeight: "500", padding: "0 0 6px", marginTop: "10px", marginLeft: "10px" }}>Key Instructions:</h2>
+                        <h2
+                          style={{
+                            fontSize: "14px",
+                            color: "#293E6F",
+                            fontFamily: "Poppins",
+                            fontWeight: "500",
+                            padding: "0 0 6px",
+                            marginTop: "10px",
+                            marginLeft: "10px",
+                          }}
+                        >
+                          Key Instructions:
+                        </h2>
                         <ul>
-                          <li style={{ fontFamily: "Poppins", fontSize: "13.6px", fontWeight: "500", lineHeight: "22px", marginBottom: "6px" }}>
-                            You can access the assessment once you have registered and have been accepted by the admin.</li>
+                          <li
+                            style={{
+                              fontFamily: "Poppins",
+                              fontSize: "13.6px",
+                              fontWeight: "500",
+                              lineHeight: "22px",
+                              marginBottom: "6px",
+                            }}
+                          >
+                            You can access the assessment once you have
+                            registered and have been accepted by the admin.
+                          </li>
 
-                          <li style={{ fontFamily: "Poppins", fontSize: "13.6px", fontWeight: "500", lineHeight: "22px", marginBottom: "6px" }}>
-                            You won’t be able to browse through the questions. If you either skip your question or submit your answer, it is marked and stored, and cannot be altered.
+                          <li
+                            style={{
+                              fontFamily: "Poppins",
+                              fontSize: "13.6px",
+                              fontWeight: "500",
+                              lineHeight: "22px",
+                              marginBottom: "6px",
+                            }}
+                          >
+                            You won’t be able to browse through the questions.
+                            If you either skip your question or submit your
+                            answer, it is marked and stored, and cannot be
+                            altered.
                           </li>
-                          <li style={{ fontFamily: "Poppins", fontSize: "13.6px", fontWeight: "500", lineHeight: "22px", marginBottom: "6px" }}>
-                            You must attempt every module. This exam contains six modules. In case you miss any module, it will not be considered as completed and will not be evaluated for the final result.                      </li>
-                          <li style={{ fontFamily: "Poppins", fontSize: "13.6px", fontWeight: "500", lineHeight: "22px", marginBottom: "6px" }}>
-                            You must have an uninterrupted Internet Connection while giving the exam (1 MBPS preferred).
+                          <li
+                            style={{
+                              fontFamily: "Poppins",
+                              fontSize: "13.6px",
+                              fontWeight: "500",
+                              lineHeight: "22px",
+                              marginBottom: "6px",
+                            }}
+                          >
+                            You must attempt every module. This exam contains
+                            six modules. In case you miss any module, it will
+                            not be considered as completed and will not be
+                            evaluated for the final result.{" "}
                           </li>
-                          <li style={{ fontFamily: "Poppins", fontSize: "13.6px", fontWeight: "500", lineHeight: "22px", marginBottom: "6px" }}>
-                            Once the time is over for a section, you'll be taken to the next section automatically.
+                          <li
+                            style={{
+                              fontFamily: "Poppins",
+                              fontSize: "13.6px",
+                              fontWeight: "500",
+                              lineHeight: "22px",
+                              marginBottom: "6px",
+                            }}
+                          >
+                            You must have an uninterrupted Internet Connection
+                            while giving the exam (1 MBPS preferred).
                           </li>
-                          <li style={{ fontFamily: "Poppins", fontSize: "13.6px", fontWeight: "500", lineHeight: "22px", marginBottom: "6px" }}>
-                            You'll have to submit answers/code/solutions to all the questions individually.
+                          <li
+                            style={{
+                              fontFamily: "Poppins",
+                              fontSize: "13.6px",
+                              fontWeight: "500",
+                              lineHeight: "22px",
+                              marginBottom: "6px",
+                            }}
+                          >
+                            Once the time is over for a section, you'll be taken
+                            to the next section automatically.
                           </li>
-                          <li style={{ fontFamily: "Poppins", fontSize: "13.6px", fontWeight: "500", lineHeight: "22px", marginBottom: "6px" }}>
-                            Any participant resorting to unfair practices will be directly disqualified from the challenge.
+                          <li
+                            style={{
+                              fontFamily: "Poppins",
+                              fontSize: "13.6px",
+                              fontWeight: "500",
+                              lineHeight: "22px",
+                              marginBottom: "6px",
+                            }}
+                          >
+                            You'll have to submit answers/code/solutions to all
+                            the questions individually.
                           </li>
-                          <li style={{ fontFamily: "Poppins", fontSize: "13.6px", fontWeight: "500", lineHeight: "22px", marginBottom: "6px" }}>
-                            All decisions in the matter of eligibility, authenticity & final judgment will be with the admin.</li>
+                          <li
+                            style={{
+                              fontFamily: "Poppins",
+                              fontSize: "13.6px",
+                              fontWeight: "500",
+                              lineHeight: "22px",
+                              marginBottom: "6px",
+                            }}
+                          >
+                            Any participant resorting to unfair practices will
+                            be directly disqualified from the challenge.
+                          </li>
+                          <li
+                            style={{
+                              fontFamily: "Poppins",
+                              fontSize: "13.6px",
+                              fontWeight: "500",
+                              lineHeight: "22px",
+                              marginBottom: "6px",
+                            }}
+                          >
+                            All decisions in the matter of eligibility,
+                            authenticity & final judgment will be with the
+                            admin.
+                          </li>
                         </ul>
                         <div
                           style={{
@@ -359,12 +608,59 @@ function DetailPageModified() {
                         <div>
                           <div style={{ marginTop: "10px" }}>
                             <Col>
-                              <p style={{ fontSize: "14px" }}>I understand that,</p>
+                              <p style={{ fontSize: "14px" }}>
+                                I understand that,
+                              </p>
                               <ol>
-                                <li style={{ fontFamily: "Poppins", fontSize: "13.6px", fontWeight: "500", lineHeight: "22px", marginBottom: "6px" }}>This assessment will work only in full-screen mode.</li>
-                                <li style={{ fontFamily: "Poppins", fontSize: "13.6px", fontWeight: "500", lineHeight: "22px", marginBottom: "6px" }}>Switching tabs will result in full screen violation.</li>
-                                <li style={{ fontFamily: "Poppins", fontSize: "13.6px", fontWeight: "500", lineHeight: "22px", marginBottom: "6px" }}>Escape button press or click will result in full screen violation.</li>
-                                <li style={{ fontFamily: "Poppins", fontSize: "13.6px", fontWeight: "500", lineHeight: "22px", marginBottom: "6px" }}>Any other activity that disturbs the full screen mode may result in termination of the assessment.</li>
+                                <li
+                                  style={{
+                                    fontFamily: "Poppins",
+                                    fontSize: "13.6px",
+                                    fontWeight: "500",
+                                    lineHeight: "22px",
+                                    marginBottom: "6px",
+                                  }}
+                                >
+                                  This assessment will work only in full-screen
+                                  mode.
+                                </li>
+                                <li
+                                  style={{
+                                    fontFamily: "Poppins",
+                                    fontSize: "13.6px",
+                                    fontWeight: "500",
+                                    lineHeight: "22px",
+                                    marginBottom: "6px",
+                                  }}
+                                >
+                                  Switching tabs will result in full screen
+                                  violation.
+                                </li>
+                                <li
+                                  style={{
+                                    fontFamily: "Poppins",
+                                    fontSize: "13.6px",
+                                    fontWeight: "500",
+                                    lineHeight: "22px",
+                                    marginBottom: "6px",
+                                  }}
+                                >
+                                  Escape button press or click will result in
+                                  full screen violation.
+                                </li>
+                                <li
+                                  style={{
+                                    fontFamily: "Poppins",
+                                    fontSize: "13.6px",
+                                    fontWeight: "500",
+                                    lineHeight: "22px",
+                                    marginBottom: "6px",
+                                  }}
+                                >
+                                  Any other activity that disturbs the full
+                                  screen mode may result in termination of the
+                                  assessment.
+                                </li>
                               </ol>
                             </Col>
                             <Col>
@@ -382,7 +678,8 @@ function DetailPageModified() {
                                 htmlFor="agree"
                               >
                                 {" "}
-                                I have read all the above statements and thereby will adhere them.
+                                I have read all the above statements and thereby
+                                will adhere them.
                               </label>
                             </Col>
                           </div>

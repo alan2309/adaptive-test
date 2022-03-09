@@ -155,7 +155,7 @@ function CompScreen() {
             let xx = sessionStorage.getItem("testId");
             const data = async () => {
               await axiosInstance
-                .get(`api/para/${xx}`)
+                .get(`api/subs/6/${xx}`)
                 .then((res) => {
                   let aa = converttime(res.data.time);
                   var tf = aa;

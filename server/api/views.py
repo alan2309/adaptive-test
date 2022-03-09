@@ -28,31 +28,105 @@ import uuid
 CFG = {'DB': None}
 import pandas as pd
 
+##########Create Test Functions###############
+def createCloud(img,section):
+    imgId=None
+    if img!=None:
+        if img!='':
+            try:
+                imgU=cloudinary.uploader.upload(img,folder='adaptive_test/{0}'.format(section),invalidate_caches=True,overwrite=True,resource_type='image')
+                imgId=imgU['url']
+            except:
+                imgId=None
+        else:
+            imgId=None
+    return imgId
+
+def loopdata(data,section):
+    for index, x in enumerate(data["easy"]):
+        data["easy"][index]["imgId"]=createCloud(x['imgId'],section)
+
+    for index, x in enumerate(data["medium"]):
+        data["medium"][index]["imgId"]=createCloud(x['imgId'],section)
+
+    for index, x in enumerate(data["hard"]):
+        data["hard"][index]["imgId"]=createCloud(x['imgId'],section)        
+    return data    
+
+def converttosec(time):
+    timearr = time.split(":")
+    return int(timearr[0])*3600+int(timearr[1])*60+int(timearr[2])
+########Create Test Functions###############    
 
 @csrf_exempt
 def createTest(request):
     if request.method =="POST":
         data=JSONParser().parse(request)['data']
-        print(data['saveTest']['Domain']["avg"])
         data_apt = data['saveTest']['Aptitude']
         data_cf =data['saveTest']['Computer Fundamentals']
         data_d = data['saveTest']['Domain']
         data_c = data['saveTest']['Coding']
         data_aw = data['saveTest']['Analytical Writing']
         data_p = data['saveTest']['Personality']
+        totaltime = converttosec(data_apt["time"])+converttosec(data_cf["time"])+converttosec(data_d["time"])+converttosec(data_c["time"])+converttosec(data_aw["time"])+converttosec(data_p["time"])
+        hh = int(totaltime/3600)
+        if(hh<10):
+            hh = f"0{hh}"
+        totaltime %=3600
+        mm = int(totaltime/60)
+        if(mm<10):
+            mm = f"0{mm}"   
+        totaltime %=60
+        ss = int(totaltime)
+        if(ss<10):
+            ss = f"0{ss}"
 
+        total_time = f"{hh}:{mm}:{ss}"
         test_apt = {"qs": data_apt["qs"], "time": data_apt["time"], "avg":data_apt["avg"] , "maxQs": data_apt["maxQs"]}
         test_cf = {"qs": data_cf["qs"], "time": data_cf["time"], "avg": data_cf["avg"], "maxQs": data_cf["maxQs"]}
         test_d = {"qs": data_d["qs"], "time": data_d["time"], "avg": data_d["avg"], "maxQs": data_d["maxQs"]}
         test_c = {"qs": data_c["qs"], "time": data_c["time"], "avg": data_c["avg"], "maxQs": data_c["maxQs"]}
         test_aw = {"qs": data_aw["qs"], "time": data_aw["time"], "avg": data_aw["avg"], "maxQs": data_aw["maxQs"]}
         test_p = {"qs": data_p["qs"], "time": data_p["time"], "avg": data_p["avg"], "maxQs": data_p["maxQs"]}
-        tst=Test(test_name=data['createTest']['testName'],test_start=data['createTest']['sTime'],test_end=data['createTest']['eTime'],token=str(uuid.uuid4()),apt=test_apt,dom=test_d,c = test_c,cf=test_cf,aw=test_aw,p = test_p)
+        tst=Test(totalTestTime=total_time,test_name=data['createTest']['testName'],test_start=data['createTest']['sTime'],test_end=data['createTest']['eTime'],token=str(uuid.uuid4()),apt=test_apt,dom=test_d,c = test_c,cf=test_cf,aw=test_aw,p = test_p)
         tst.save()
+
+        data_apt=loopdata(data_apt,"Aptitude")
+        data_cf=loopdata(data_cf,"Computer Fundamentals")
+        data_d=loopdata(data_d,"Domain")
 
         qs = QuestionJson(apt=data_apt,cf=data_cf,dom=data_d,code=data_c,aw=data_aw,personality=data_p,test=tst)
         qs.save()
         return JsonResponse("",safe=False)
+
+@csrf_exempt
+def subqs(request,subject=0,tid=0):
+    subject = int(subject)
+    if request.method == "GET":
+        test = Test.objects.get(id=tid)
+        ques_json = QuestionJson.objects.get(test=test)
+        if subject==1:
+            return JsonResponse(ques_json.apt,safe=False)
+        elif subject==2:
+            return JsonResponse(ques_json.cf,safe=False)
+        elif subject==3:
+            return JsonResponse(ques_json.dom,safe=False) 
+        elif subject==4:
+            return JsonResponse(ques_json.personality,safe=False)            
+        elif subject==5:
+            easy = random.randint(0,len(ques_json.code["easy"])-1)
+            print(easy)
+            print(len(ques_json.code["easy"]))
+            med = random.randint(0,len(ques_json.code["medium"])-1)
+            hard = random.randint(0,len(ques_json.code["hard"])-1)
+            itemsType1 = ques_json.code["easy"][easy]
+            itemsType2=ques_json.code["medium"][med]
+            itemsType3=ques_json.code["hard"][hard]
+            return JsonResponse({'time':ques_json.code["time"],'cQs':[itemsType1,itemsType2,itemsType3]},safe=False)
+        else:
+            return JsonResponse(ques_json.aw,safe=False)                  
+
+
 
 def predict():
     regressor = pd.read_pickle(r'server\model.pickle') 
@@ -290,75 +364,75 @@ def permission(request):
     else:
         return HttpResponseBadRequest()
 
-@csrf_exempt
-def subqs(request,subject=0,tid=0):
-    if request.headers.get('Authorization') and checkAuthorization(request.headers["Authorization"]):
-        if request.method == 'GET':
-            a=[]
-            b=[]
-            c=[]
-            test = Test.objects.get(id=tid)
-            sub =Subject.objects.get(id=subject)
-            qs = Questions.objects.filter(subject=sub)
-            # if() to get time and avg score
-            avg,time,qsno=0,"00:00:00",0
-            if sub.sub_name == 'Aptitude':
-                avg=test.apt['avg']
-                time=test.apt['time']
-                qsno=test.apt['qs']
-            elif sub.sub_name == 'Computer Fundamentals':
-                avg =test.cf['avg']
-                time=test.cf['time']
-                qsno=test.cf['qs']
-            elif sub.sub_name == 'Coding':
-                avg =test.c['avg']
-                time=test.c['time'] 
-                qsno=test.c['qs']  
-            elif sub.sub_name == 'Domain':
-                avg =test.dom['avg']
-                time=test.dom['time'] 
-                qsno=test.dom['qs']   
-            elif sub.sub_name == 'Personality':
-                avg =test.p['avg'] 
-                time=test.p['time'] 
-                qsno=test.p['qs']  
-            elif sub.sub_name == 'Analytical Writing':
-                avg =test.aw['avg']
-                time=test.aw['time']
-                qsno=test.aw['qs']
+# @csrf_exempt
+# def subqs(request,subject=0,tid=0):
+#     if request.headers.get('Authorization') and checkAuthorization(request.headers["Authorization"]):
+#         if request.method == 'GET':
+#             a=[]
+#             b=[]
+#             c=[]
+#             test = Test.objects.get(id=tid)
+#             sub =Subject.objects.get(id=subject)
+#             qs = Questions.objects.filter(subject=sub)
+#             # if() to get time and avg score
+#             avg,time,qsno=0,"00:00:00",0
+#             if sub.sub_name == 'Aptitude':
+#                 avg=test.apt['avg']
+#                 time=test.apt['time']
+#                 qsno=test.apt['qs']
+#             elif sub.sub_name == 'Computer Fundamentals':
+#                 avg =test.cf['avg']
+#                 time=test.cf['time']
+#                 qsno=test.cf['qs']
+#             elif sub.sub_name == 'Coding':
+#                 avg =test.c['avg']
+#                 time=test.c['time'] 
+#                 qsno=test.c['qs']  
+#             elif sub.sub_name == 'Domain':
+#                 avg =test.dom['avg']
+#                 time=test.dom['time'] 
+#                 qsno=test.dom['qs']   
+#             elif sub.sub_name == 'Personality':
+#                 avg =test.p['avg'] 
+#                 time=test.p['time'] 
+#                 qsno=test.p['qs']  
+#             elif sub.sub_name == 'Analytical Writing':
+#                 avg =test.aw['avg']
+#                 time=test.aw['time']
+#                 qsno=test.aw['qs']
 
-            if int(subject)!=4:
-                for x in qs:
-                        aa={}
-                        # aaOption=[]
-                        aa['ques']=x.title
-                        aa['id']=x.id
-                        aa['img'] = x.imgId
-                        ans = Options.objects.filter(question=x)
-                        aa['options'] = OptSerializer(ans,many=True).data
-                        # for asss in ans:
-                        #     aaaOpt={}
-                        #     aaaOpt['opt']=asss.title
-                        #     aaaOpt['id']=asss.id
-                        #     aaaOpt['mrks']=asss.marks
-                        #     aaOption.append(aaaOpt)
-                        if x.type==1:
-                            a.append(aa)
-                        elif x.type==2:
-                            b.append(aa)
-                        elif x.type==3:
-                            c.append(aa)
+#             if int(subject)!=4:
+#                 for x in qs:
+#                         aa={}
+#                         # aaOption=[]
+#                         aa['ques']=x.title
+#                         aa['id']=x.id
+#                         aa['img'] = x.imgId
+#                         ans = Options.objects.filter(question=x)
+#                         aa['options'] = OptSerializer(ans,many=True).data
+#                         # for asss in ans:
+#                         #     aaaOpt={}
+#                         #     aaaOpt['opt']=asss.title
+#                         #     aaaOpt['id']=asss.id
+#                         #     aaaOpt['mrks']=asss.marks
+#                         #     aaOption.append(aaaOpt)
+#                         if x.type==1:
+#                             a.append(aa)
+#                         elif x.type==2:
+#                             b.append(aa)
+#                         elif x.type==3:
+#                             c.append(aa)
                 
-                return JsonResponse({'avg':avg,'qs':qsno,'time':time,'easy':a,'medium':b,'hard':c},safe=False)
-            elif int(subject)==4:
-                for x in qs:
-                    aa={}
-                    aa['ques']=x.title
-                    aa['id']=x.id
-                    a.append(aa)
-                return JsonResponse({'qs':qsno,'avg':avg,'time':time,'allQs':a},safe=False )
-    else:
-        return HttpResponseBadRequest()
+#                 return JsonResponse({'avg':avg,'qs':qsno,'time':time,'easy':a,'medium':b,'hard':c},safe=False)
+#             elif int(subject)==4:
+#                 for x in qs:
+#                     aa={}
+#                     aa['ques']=x.title
+#                     aa['id']=x.id
+#                     a.append(aa)
+#                 return JsonResponse({'qs':qsno,'avg':avg,'time':time,'allQs':a},safe=False )
+#     else:
+#         return HttpResponseBadRequest()
 
 @csrf_exempt
 def subs(request):
