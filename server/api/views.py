@@ -124,7 +124,13 @@ def subqs(request,subject=0,tid=0):
             itemsType3=ques_json.code["hard"][hard]
             return JsonResponse({'time':ques_json.code["time"],'cQs':[itemsType1,itemsType2,itemsType3]},safe=False)
         else:
-            return JsonResponse({'data':ques_json.aw["medium"],'time':ques_json.aw['time']},safe=False)              
+            a = ques_json.aw["medium"]
+            b=[]
+            for i in range(3):
+                med = random.randint(0,len(ques_json.aw["medium"])-1)
+                b.append(a[med])
+                del a[med:med+1]
+            return JsonResponse({'data':b,'time':ques_json.aw['time']},safe=False)              
 
 
 
