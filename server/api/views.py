@@ -112,7 +112,7 @@ def subqs(request,subject=0,tid=0):
         elif subject==3:
             return JsonResponse(ques_json.dom,safe=False) 
         elif subject==4:
-            return JsonResponse(ques_json.personality,safe=False)            
+            return JsonResponse({'qs':ques_json.personality["qs"],'avg':ques_json.personality["avg"],'time':ques_json.personality["time"],'allQs':ques_json.personality["medium"]},safe=False )     
         elif subject==5:
             easy = random.randint(0,len(ques_json.code["easy"])-1)
             print(easy)
@@ -124,7 +124,7 @@ def subqs(request,subject=0,tid=0):
             itemsType3=ques_json.code["hard"][hard]
             return JsonResponse({'time':ques_json.code["time"],'cQs':[itemsType1,itemsType2,itemsType3]},safe=False)
         else:
-            return JsonResponse(ques_json.aw,safe=False)                  
+            return JsonResponse({'data':ques_json.aw["medium"],'time':ques_json.aw['time']},safe=False)              
 
 
 
