@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Row } from "react-bootstrap";
+import { Button, Col, Row, Form } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router";
 import "../../css/AdminHomeScreen.css";
@@ -12,7 +12,9 @@ import Alert from "../../components/Admin/Alert";
 import MobileWidth from "../../components/MobileWidth";
 import { useMediaQuery } from "react-responsive";
 import { quesData } from "./sampleJSON";
+import { quesSampleData } from "./SampleDBJSON";
 import SetQuestion from "./SetQuestion";
+import CSVUploadCsv from "../../components/Admin/CSVUploadCsv";
 
 function NewTest() {
   const isDesktopOrLaptop = useMediaQuery({
@@ -52,6 +54,9 @@ function NewTest() {
   const location = useLocation();
   const navigate = useNavigate();
   const [isLoading, setIsloading] = useState(true);
+  const [csvJsonData, setCsvJsonData] = useState({});
+  const [isSampleCsvData, setIsSampleCsvData] = useState(false);
+  const [isChoose, setIsChoose] = useState(true);
 
   useEffect(() => {
     setIsloading(true);
@@ -258,6 +263,7 @@ function NewTest() {
   }
 
   function secOnCLick(e, index) {
+    setIsChoose(true);
     var d = axData;
     var Wssid = sidFunc(index);
     setSid(index + 1);
@@ -474,7 +480,62 @@ function NewTest() {
       });
     }
   }
-
+  function uploadCsvToAxData(e, subjectId) {
+    e.preventDefault();
+    if (Object.keys(csvJsonData).length !== 0) {
+      let subjectName = sidFunc(subjectId - 1);
+      setAxData((prev) => ({
+        ...prev,
+        [subjectName]: {
+          ...prev[subjectName],
+          easy: csvJsonData[subjectName]["easy"],
+          medium: csvJsonData[subjectName]["medium"],
+          hard: csvJsonData[subjectName]["hard"],
+          qs: 0,
+        },
+      }));
+      jsonop_success();
+      setEasy(csvJsonData[subjectName]["easy"]);
+      setMed(csvJsonData[subjectName]["medium"]);
+      setHard(csvJsonData[subjectName]["hard"]);
+      setCsvJsonData({});
+      document.getElementById("csv_upload").value = "";
+      setRefresh(true);
+    }
+  }
+  function uploadSampleToAxData(e, subjectId) {
+    e.preventDefault();
+    console.log(quesSampleData.data);
+    if (Object.keys(quesSampleData.data).length !== 0) {
+      let subjectName = sidFunc(subjectId - 1);
+      setAxData((prev) => ({
+        ...prev,
+        [subjectName]: {
+          ...prev[subjectName],
+          easy: quesSampleData.data[subjectName]["easy"],
+          medium: quesSampleData.data[subjectName]["medium"],
+          hard: quesSampleData.data[subjectName]["hard"],
+          qs: 0,
+        },
+      }));
+      jsonop_success();
+      setEasy(quesSampleData.data[subjectName]["easy"]);
+      setMed(quesSampleData.data[subjectName]["medium"]);
+      setHard(quesSampleData.data[subjectName]["hard"]);
+      setRefresh(true);
+    }
+  }
+  function selectOnChange(e) {
+    if (parseInt(e.target.value) === 1) {
+      setIsChoose(false);
+      setIsSampleCsvData(true);
+    } else if (parseInt(e.target.value) === 2) {
+      setIsChoose(false);
+      setIsSampleCsvData(false);
+    } else {
+      setIsChoose(true);
+    }
+  }
   return (
     <>
       {isDesktopOrLaptop ? (
@@ -621,7 +682,7 @@ function NewTest() {
                       <div
                         className="mainRec"
                         style={{
-                          height: sid === 6 || sid === 4 ? 310 : 460,
+                          height: sid === 6 || sid === 4 ? 370 : 520,
                           marginTop: sid === 6 || sid === 4 ? "50px" : "0",
                         }}
                       >
@@ -632,6 +693,149 @@ function NewTest() {
                           }}
                         >
                           <div className="basicRec secNm">{sectionName}</div>
+
+                          {sid !== 6 && sid !== 5 && (
+                            <>
+                              {sid === 1 && (
+                                <>
+                                  <Form.Select
+                                    onChange={(e) => {
+                                      selectOnChange(e);
+                                    }}
+                                    aria-label="Default select example"
+                                    style={{ margin: "10px 0" }}
+                                  >
+                                    <option value="">
+                                      Choose Data to Upload
+                                    </option>
+                                    <option value="1">
+                                      Upload Sample Data
+                                    </option>
+                                    <option value="2">Upload CSV</option>
+                                  </Form.Select>
+                                  {!isChoose && !isSampleCsvData && (
+                                    <CSVUploadCsv
+                                      setCsvJsonData={setCsvJsonData}
+                                      setIsAlertDangerMsgLoaded={
+                                        setIsAlertDangerMsgLoaded
+                                      }
+                                      setDangerMsg={setDangerMsg}
+                                      csvJsonData={csvJsonData}
+                                      subjectName={sidFunc(sid - 1)}
+                                    />
+                                  )}
+                                </>
+                              )}
+                              {sid === 2 && (
+                                <>
+                                  <Form.Select
+                                    onChange={(e) => {
+                                      selectOnChange(e);
+                                    }}
+                                    aria-label="Default select example"
+                                    style={{ margin: "10px 0" }}
+                                  >
+                                    <option value="">
+                                      Choose Data to Upload
+                                    </option>
+                                    <option value="1">
+                                      Upload Sample Data
+                                    </option>
+                                    <option value="2">Upload CSV</option>
+                                  </Form.Select>
+                                  {!isChoose && !isSampleCsvData && (
+                                    <CSVUploadCsv
+                                      setCsvJsonData={setCsvJsonData}
+                                      setIsAlertDangerMsgLoaded={
+                                        setIsAlertDangerMsgLoaded
+                                      }
+                                      setDangerMsg={setDangerMsg}
+                                      csvJsonData={csvJsonData}
+                                      subjectName={sidFunc(sid - 1)}
+                                    />
+                                  )}
+                                </>
+                              )}
+                              {sid === 3 && (
+                                <>
+                                  <Form.Select
+                                    onChange={(e) => {
+                                      selectOnChange(e);
+                                    }}
+                                    aria-label="Default select example"
+                                    style={{ margin: "10px 0" }}
+                                  >
+                                    <option value="">
+                                      Choose Data to Upload
+                                    </option>
+                                    <option value="1">
+                                      Upload Sample Data
+                                    </option>
+                                    <option value="2">Upload CSV</option>
+                                  </Form.Select>
+                                  {!isChoose && !isSampleCsvData && (
+                                    <CSVUploadCsv
+                                      setCsvJsonData={setCsvJsonData}
+                                      setIsAlertDangerMsgLoaded={
+                                        setIsAlertDangerMsgLoaded
+                                      }
+                                      setDangerMsg={setDangerMsg}
+                                      csvJsonData={csvJsonData}
+                                      subjectName={sidFunc(sid - 1)}
+                                    />
+                                  )}
+                                </>
+                              )}
+                              {sid === 4 && (
+                                <>
+                                  <Form.Select
+                                    onChange={(e) => {
+                                      selectOnChange(e);
+                                    }}
+                                    aria-label="Default select example"
+                                    style={{ margin: "10px 0" }}
+                                  >
+                                    <option value="">
+                                      Choose Data to Upload
+                                    </option>
+                                    <option value="1">
+                                      Upload Sample Data
+                                    </option>
+                                    <option value="2">Upload CSV</option>
+                                  </Form.Select>
+                                  {!isChoose && !isSampleCsvData && (
+                                    <CSVUploadCsv
+                                      setCsvJsonData={setCsvJsonData}
+                                      setIsAlertDangerMsgLoaded={
+                                        setIsAlertDangerMsgLoaded
+                                      }
+                                      setDangerMsg={setDangerMsg}
+                                      csvJsonData={csvJsonData}
+                                      subjectName={sidFunc(sid - 1)}
+                                    />
+                                  )}
+                                </>
+                              )}
+                              {!isChoose && (
+                                <button
+                                  type="button"
+                                  id="csv_upload_button"
+                                  style={{ display: "inline-block" }}
+                                  onClick={(e) => {
+                                    {
+                                      isSampleCsvData
+                                        ? uploadSampleToAxData(e, sid)
+                                        : uploadCsvToAxData(e, sid);
+                                    }
+                                  }}
+                                >
+                                  {isSampleCsvData
+                                    ? "Upload Sample Data"
+                                    : "Upload Csv Data"}
+                                </button>
+                              )}
+                            </>
+                          )}
                           <Row style={{ margin: "24px 0", padding: "0px 0px" }}>
                             <Col
                               md={6}
@@ -719,6 +923,7 @@ function NewTest() {
                                 )}
                               </div>
                             </Col>
+
                             <Col md={6} style={{ padding: "0px" }}>
                               {sid - 1 !== 5 && sid !== 4 && (
                                 <>
