@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Row, Form } from "react-bootstrap";
+import { Button, Col, Row, Form, Modal } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router";
 import "../../css/AdminHomeScreen.css";
 import $ from "jquery";
 import sidFunc from "../../components/Admin/sidFunc";
+import SampleCSVFormat from "../../components/Admin/SampleCSVFormat";
 import DateTimePicker from "react-datetime-picker";
 import axiosInstance from "../../axios";
 import Loader from "../../components/Loader";
@@ -15,6 +16,7 @@ import { quesData } from "./sampleJSON";
 import { quesSampleData } from "./SampleDBJSON";
 import SetQuestion from "./SetQuestion";
 import CSVUploadCsv from "../../components/Admin/CSVUploadCsv";
+import { CSVLink } from "react-csv";
 
 function NewTest() {
   const isDesktopOrLaptop = useMediaQuery({
@@ -40,6 +42,7 @@ function NewTest() {
   const [typeQs, setTypeQs] = useState();
   const [isInside, setIsInside] = useState(false);
   const [refresh, setRefresh] = useState(false);
+  const [show, setShow] = useState(false);
 
   const [CurrentDic, setCurrentDic] = useState({
     time: "00:00:20",
@@ -556,6 +559,58 @@ function NewTest() {
             <Loader />
           ) : (
             <>
+              <Modal show={show} onHide={() => setShow(false)} centered>
+                <Modal.Header style={{ paddingBottom: "0px" }} closeButton>
+                  <h4>Instuctions :-</h4>
+                </Modal.Header>
+                <Modal.Body>
+                  <p>
+                    {" "}
+                    <h6>* 1st Column must be Question only</h6>
+                  </p>
+                  <p>
+                    <h6>* 2nd Column must be Type only</h6>
+                  </p>
+                  <p>
+                    <h6>* 3rd Column must be CorrectOption only</h6>
+                  </p>
+                  <p>
+                    <h6>* 4th Column must be Option1 only</h6>
+                  </p>
+                  <p>
+                    <h6>* 5th Column must be Option2 only</h6>
+                  </p>
+                  <p>
+                    <h6>* nth Column must be Option(n-3) only</h6>
+                  </p>
+                  <p>
+                    <h6>
+                      * For Aptitude , Computer Fundamentals , Domain Question
+                      and Type is required
+                    </h6>
+                  </p>
+                  <p>
+                    <h6>
+                      * For Peronality only 1st Column ie. Question is required
+                    </h6>
+                  </p>
+                  <p>
+                    <h6>* All Column are case SENSITIVE</h6>
+                  </p>
+                </Modal.Body>
+                <Modal.Footer>
+                  <CSVLink
+                    data={SampleCSVFormat()["data"]}
+                    headers={SampleCSVFormat()["header"]}
+                    filename={"sample-csv-format-data.csv"}
+                    style={{
+                      display: isSampleCsvData ? "none" : "inline-block",
+                    }}
+                  >
+                    Download Sample Csv Format
+                  </CSVLink>
+                </Modal.Footer>
+              </Modal>
               {!isInside && (
                 <form onSubmit={saveTest}>
                   <div
@@ -682,7 +737,7 @@ function NewTest() {
                       <div
                         className="mainRec"
                         style={{
-                          height: sid === 6 || sid === 4 ? 370 : 520,
+                          height: sid === 6 || sid === 4 ? 370 : 550,
                           marginTop: sid === 6 || sid === 4 ? "50px" : "0",
                         }}
                       >
@@ -816,24 +871,45 @@ function NewTest() {
                                   )}
                                 </>
                               )}
-                              {!isChoose && (
-                                <button
-                                  type="button"
-                                  id="csv_upload_button"
-                                  style={{ display: "inline-block" }}
-                                  onClick={(e) => {
-                                    {
-                                      isSampleCsvData
-                                        ? uploadSampleToAxData(e, sid)
-                                        : uploadCsvToAxData(e, sid);
-                                    }
-                                  }}
-                                >
-                                  {isSampleCsvData
-                                    ? "Upload Sample Data"
-                                    : "Upload Csv Data"}
-                                </button>
-                              )}
+                              <Row style={{ marginTop: "5px" }}>
+                                {!isChoose && (
+                                  <>
+                                    <Col md={isSampleCsvData ? 0 : 6}>
+                                      <button
+                                        type="button"
+                                        style={{
+                                          display: isSampleCsvData
+                                            ? "none"
+                                            : "inline-block",
+                                        }}
+                                        onClick={(e) => {
+                                          setShow(true);
+                                        }}
+                                      >
+                                        View Sample Csv Format
+                                      </button>
+                                    </Col>
+                                    <Col md={isSampleCsvData ? 12 : 6}>
+                                      <button
+                                        type="button"
+                                        id="csv_upload_button"
+                                        style={{ display: "inline-block" }}
+                                        onClick={(e) => {
+                                          {
+                                            isSampleCsvData
+                                              ? uploadSampleToAxData(e, sid)
+                                              : uploadCsvToAxData(e, sid);
+                                          }
+                                        }}
+                                      >
+                                        {isSampleCsvData
+                                          ? "Upload Sample Data"
+                                          : "Upload Csv Data"}
+                                      </button>
+                                    </Col>
+                                  </>
+                                )}
+                              </Row>
                             </>
                           )}
                           <Row style={{ margin: "24px 0", padding: "0px 0px" }}>
