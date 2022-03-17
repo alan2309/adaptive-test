@@ -114,22 +114,35 @@ def subqs(request,subject=0,tid=0):
         elif subject==4:
             return JsonResponse({'qs':ques_json.personality["qs"],'avg':ques_json.personality["avg"],'time':ques_json.personality["time"],'allQs':ques_json.personality["medium"]},safe=False )     
         elif subject==5:
-            easy = random.randint(0,len(ques_json.code["easy"])-1)
-            print(easy)
-            print(len(ques_json.code["easy"]))
-            med = random.randint(0,len(ques_json.code["medium"])-1)
-            hard = random.randint(0,len(ques_json.code["hard"])-1)
-            itemsType1 = ques_json.code["easy"][easy]
-            itemsType2=ques_json.code["medium"][med]
-            itemsType3=ques_json.code["hard"][hard]
+            if len(ques_json.code["easy"])>0:
+                easy = random.randint(0,len(ques_json.code["easy"])-1)
+                itemsType1 = ques_json.code["easy"][easy]
+            else:
+                easy=0
+                itemsType1={}
+            if len(ques_json.code["medium"])>0:
+                med = random.randint(0,len(ques_json.code["medium"])-1)
+                itemsType2=ques_json.code["medium"][med]
+            else:
+                med=0
+                itemsType2={}
+            if len(ques_json.code["hard"])>0:
+                hard = random.randint(0,len(ques_json.code["hard"])-1)
+                itemsType3=ques_json.code["hard"][hard]
+            else:
+                hard=0
+                itemsType3={}
             return JsonResponse({'time':ques_json.code["time"],'cQs':[itemsType1,itemsType2,itemsType3]},safe=False)
         else:
             a = ques_json.aw["medium"]
             b=[]
             for i in range(3):
-                med = random.randint(0,len(ques_json.aw["medium"])-1)
-                b.append(a[med])
-                del a[med:med+1]
+                if(i < len(a)):
+                    med = random.randint(0,len(ques_json.aw["medium"])-1)
+                    b.append(a[med])
+                    del a[med:med+1]
+                else:
+                    break
             return JsonResponse({'data':b,'time':ques_json.aw['time']},safe=False)              
 
 

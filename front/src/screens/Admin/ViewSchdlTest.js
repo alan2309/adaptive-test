@@ -133,7 +133,7 @@ function ViewSchdlTest() {
           console.log(res.data);
           setTData({
             columns: columns,
-            rows: res.data.studentNameArr.map((v) => ({
+            rows: res.data.studentNameArr.map((v, index) => ({
               ...v,
               checkBtn: (
                 <MDBInput
@@ -143,7 +143,7 @@ function ViewSchdlTest() {
                   type="checkbox"
                   name="checkbox_send_mail"
                   className="checkbox_send_mail"
-                  id={"checkbox" + v.uid}
+                  id={"checkbox" + index}
                   onChange={(e) =>
                     checkAllSelected(res.data.studentNameArr.length)
                   }
@@ -435,7 +435,19 @@ function ViewSchdlTest() {
                   onClick={(e) => {
                     let x = $(".checkbox_send_mail:checkbox:checked");
                     if (x.length !== 0) {
-                      setSendMail(true);
+                      // setSendMail(true);
+                      let userId = "";
+                      if (x.length !== 0) {
+                        x.map(
+                          (xx) =>
+                            (userId =
+                              userId +
+                              rows[parseInt(x[xx].id.split("checkbox")[1])]
+                                .name)
+                        );
+                      }
+                      console.log(userId);
+                      // window.location.href = "mailto:mail@example.org";
                     } else {
                       setIsAlertDangerMsgLoaded(true);
                       setDangerMsg(

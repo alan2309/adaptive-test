@@ -246,7 +246,7 @@ function ScheduledTest() {
     sessionStorage.setItem("screenchange", 0);
     const data = async () =>
       axiosInstance
-        .post(`api/results/${usern}`, {
+        .post(`api/setresult/${usern}`, {
           data: { testId: tid },
         })
         .then((res) => {

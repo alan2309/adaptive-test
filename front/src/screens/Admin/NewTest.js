@@ -187,7 +187,6 @@ function NewTest() {
   }
 
   function add_jsondata(data, sectionName, type) {
-    console.log(sectionName + "==" + type);
     let ltype = type.toLowerCase();
     setAxData((prev) => ({
       ...prev,
@@ -508,7 +507,6 @@ function NewTest() {
   }
   function uploadSampleToAxData(e, subjectId) {
     e.preventDefault();
-    console.log(quesSampleData.data);
     if (Object.keys(quesSampleData.data).length !== 0) {
       let subjectName = sidFunc(subjectId - 1);
       setAxData((prev) => ({

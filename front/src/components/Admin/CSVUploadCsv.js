@@ -29,7 +29,6 @@ function CSVUploadCsv({
             Papa.parse(files[0], {
               header: true,
               transformHeader: function (header, index) {
-                console.log(header);
                 header = header.toLowerCase();
                 if (index === 0 && header === "question") {
                   return "Question";

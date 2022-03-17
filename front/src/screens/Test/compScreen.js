@@ -562,10 +562,10 @@ function CompScreen() {
                         }}
                       >
                         {" "}
-                        {passage[parano].questions[qsno].question}
+                        {passage[parano].questions[qsno]?.question || ""}
                       </h5>
 
-                      {passage[parano].questions[qsno].options.map((opt) => {
+                      {passage[parano].questions[qsno]?.options.map((opt) => {
                         return (
                           <div
                             className="form-check"
