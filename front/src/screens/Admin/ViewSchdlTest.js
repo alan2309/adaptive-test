@@ -438,16 +438,14 @@ function ViewSchdlTest() {
                       // setSendMail(true);
                       let userId = "";
                       if (x.length !== 0) {
-                        x.map(
-                          (xx) =>
-                            (userId =
-                              userId +
-                              rows[parseInt(x[xx].id.split("checkbox")[1])]
-                                .name)
-                        );
+                        x.map((xx) => {
+                          userId =
+                            userId +
+                            (xx !== 0 ? "," : "") +
+                            rows[parseInt(x[xx].id.split("checkbox")[1])].name;
+                        });
                       }
-                      console.log(userId);
-                      // window.location.href = "mailto:mail@example.org";
+                      window.location.href = `mailto:${userId}`;
                     } else {
                       setIsAlertDangerMsgLoaded(true);
                       setDangerMsg(
