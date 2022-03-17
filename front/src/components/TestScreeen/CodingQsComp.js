@@ -12,7 +12,7 @@ function CodingQsComp({ qs }) {
         padding: "5px 10px",
       }}
     >
-      {qs !== undefined && (
+      {qs !== undefined && Object.keys(qs).length !== 0 && (
         <>
           <TextAreaAutoSize
             text={qs.question}
