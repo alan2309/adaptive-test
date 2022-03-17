@@ -808,7 +808,12 @@ function ScheduledTest() {
                               <Col>
                                 <button
                                   type="button"
-                                  onClick={(e) => upcomingTest(e, t)}
+                                  onClick={(e) => {
+                                    upcomingTest(e, t);
+                                    // navigate("/admin/updateTest", {
+                                    //   state: { isUpdate: true, data: t },
+                                    // });
+                                  }}
                                   style={{
                                     width: "100%",
                                     backgroundColor: "white",

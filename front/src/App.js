@@ -173,6 +173,19 @@ function App() {
                 }
               />
             </Route>
+            <Route exact path="/admin/updateTest" element={<PrivateRoute />}>
+              <Route
+                path="/admin/updateTest"
+                exact
+                element={
+                  <Row style={{ margin: "20px 0 0 0" }}>
+                    <Col style={{ padding: "10px 90px" }}>
+                      <NewTest />
+                    </Col>
+                  </Row>
+                }
+              />
+            </Route>
 
             <Route exact path="/admin/setQs" element={<PrivateRoute />}>
               <Route

@@ -76,6 +76,7 @@ function NewTest() {
             ssid = location.state.sid;
             setSid(ssid + 1);
           }
+          // var d =location.state!==undefined && location.state.isUpdate?location.state.data: quesData.data; //customData
           var d = quesData.data; //customData
           // var d = res.data.data;
           setAxData(d);
@@ -628,6 +629,7 @@ function NewTest() {
                           onChange={(e) => {
                             setTName(e.target.value);
                           }}
+                          value={tName}
                           style={{ width: "80%" }}
                           placeholder="Enter Test Name"
                           required
