@@ -88,6 +88,8 @@ def createTest(request):
         test_c = {"qs": data_c["qs"], "time": data_c["time"], "avg": data_c["avg"], "maxQs": data_c["maxQs"]}
         test_aw = {"qs": data_aw["qs"], "time": data_aw["time"], "avg": data_aw["avg"], "maxQs": data_aw["maxQs"]}
         test_p = {"qs": data_p["qs"], "time": data_p["time"], "avg": data_p["avg"], "maxQs": data_p["maxQs"]}
+        if data['tid']:
+            Test.objects.get(id=data['tid']).delete()
         tst=Test(totalTestTime=total_time,test_name=data['createTest']['testName'],test_start=data['createTest']['sTime'],test_end=data['createTest']['eTime'],token=str(uuid.uuid4()),apt=test_apt,dom=test_d,c = test_c,cf=test_cf,aw=test_aw,p = test_p)
         tst.save()
 
@@ -1181,10 +1183,30 @@ def getTestsWithQsJson(request):
         utests = Test.objects.filter(test_start__gt=d) 
         stestS = TestSerializer(stests,many=True)
         utestS = TestSerializer(utests,many=True)
+        cc=[]
         for x in utests:
+            c={}
             qsJson=QuestionJson.objects.get(test=x)
-            print(qsJson)
-        return JsonResponse({"stests":stestS.data,"utests":utestS.data},safe=False)
+            c['id']=x.id
+            c['test_name']=x.test_name
+            c['test_start']=x.test_start
+            c['test_end']=x.test_end
+            c['aptDic']={'time':x.apt['time'],'totalQs':x.apt['qs']}
+            c['awDic']={'time':x.aw['time'],'totalQs':x.aw['qs']}
+            c['pDic']={'time':x.p['time'],'totalQs':x.p['qs']}
+            c['domDic']={'time':x.dom['time'],'totalQs':x.dom['qs']}
+            c['cfDic']={'time':x.cf['time'],'totalQs':x.cf['qs']}
+            c['cDic']={'time':x.c['time'],'totalQs':x.c['qs']}
+            data={}
+            data['Aptitude']=qsJson.apt
+            data['Computer Fundamentals']=qsJson.cf
+            data['Domain']=qsJson.dom
+            data['Coding']=qsJson.code
+            data['Personality']=qsJson.personality
+            data['Analytical Writing']=qsJson.aw
+            c['data']=data
+            cc.append(c)
+        return JsonResponse({"stests":stestS.data,"utests":cc},safe=False)
 
 def durationBtwnDates(start_date_time,end_date_time):
     diff=end_date_time-start_date_time

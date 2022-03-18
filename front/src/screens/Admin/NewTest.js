@@ -60,41 +60,50 @@ function NewTest() {
   const [csvJsonData, setCsvJsonData] = useState({});
   const [isSampleCsvData, setIsSampleCsvData] = useState(false);
   const [isChoose, setIsChoose] = useState(true);
+  const [testId, setTestId] = useState(true);
 
   useEffect(() => {
     setIsloading(true);
-    const data = async () =>
-      await axiosInstance
-        .get(`api/subs`)
-        .then((res) => {
-          var ssid;
-          if (sessionStorage.getItem("isNewTestReload") !== null) {
-            ssid = 0;
-            setSid(ssid + 1);
-          } else {
-            sessionStorage.setItem("isNewTestReload", false);
-            ssid = location.state.sid;
-            setSid(ssid + 1);
-          }
-          var d = quesData.data; //customData
-          // var d = res.data.data;
-          setAxData(d);
-          //For Aptitude
-          var Wssid = sidFunc(ssid);
-          setSectionName(Wssid);
-          setEasy(d[Wssid].easy);
-          setHard(d[Wssid].hard);
-          setMed(d[Wssid].medium);
-          setQs(d[Wssid].qs);
-          if (d[Wssid].medium.length !== 0) {
-            setCurrentDic(aptDic);
-          } else {
-            setCurrentDic({ time: "00:00:20", totalQs: 0 });
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+    var ssid;
+    if (sessionStorage.getItem("isNewTestReload") !== null) {
+      ssid = 0;
+      setSid(ssid + 1);
+    } else {
+      sessionStorage.setItem("isNewTestReload", false);
+      ssid = location.state.sid;
+      setSid(ssid + 1);
+    }
+    let d;
+    if (location.state?.isUpdate) {
+      d = location.state.data.data;
+      setTName(location.state.data.test_name);
+      setSDate(location.state.data.test_start);
+      setEDate(location.state.data.test_end);
+      setAWDic(location.state.data.awDic);
+      setAptDic(location.state.data.aptDic);
+      setPDic(location.state.data.pDic);
+      setCDic(location.state.data.cDic);
+      setDDic(location.state.data.domDic);
+      setCFDic(location.state.data.cfDic);
+      setCurrentDic(location.state.data.aptDic);
+      setTestId(location.state.data.id);
+    } else {
+      d = quesData.data; //customData
+      if (d[Wssid].medium.length !== 0) {
+        setCurrentDic(aptDic);
+      } else {
+        setCurrentDic({ time: "00:00:20", totalQs: 0 });
+      }
+    }
+    // var d = res.data.data;
+    setAxData(d);
+    //For Aptitude
+    var Wssid = sidFunc(ssid);
+    setSectionName(Wssid);
+    setEasy(d[Wssid].easy);
+    setHard(d[Wssid].hard);
+    setMed(d[Wssid].medium);
+    setQs(d[Wssid].qs);
     const getTest = async () => {
       await axiosInstance
         .get("api/admin/tests")
@@ -107,7 +116,6 @@ function NewTest() {
         .catch((e) => console.log(e));
     };
     getTest();
-    data();
     setIsloading(false);
   }, []);
 
@@ -226,12 +234,17 @@ function NewTest() {
     let sx = new Date(sDate);
     let ex = new Date(eDate);
     if (ex.getTime() > sx.getTime()) {
-      let objClash = clash(sx.getTime(), ex.getTime());
+      let objClash = clash(sx.getTime(), ex.getTime(), testId);
       if (!objClash.bool) {
         let creaTest = { testName: tName, sTime: sDate, eTime: eDate };
         axiosInstance
           .post("api/createTest", {
-            data: { saveTest: axData, createTest: creaTest },
+            data: {
+              saveTest: axData,
+              createTest: creaTest,
+              isUpdate: location.state?.isUpdate || false,
+              tid: location.state?.data.id,
+            },
           })
           .then((res) => {
             setIsloading(false);
@@ -248,8 +261,9 @@ function NewTest() {
       setDangerMsg("End time must be greater than start time");
     }
   }
-  function clash(stx, etx) {
+  function clash(stx, etx, tId) {
     for (let i = 0; i < tests.length; i++) {
+      if (tId === tests[i].id) continue;
       let ss = new Date(tests[i].test_start).getTime();
       let ee = new Date(tests[i].test_end).getTime();
       if (tests[i].test_name === tName) {
@@ -1425,7 +1439,7 @@ function NewTest() {
                             type="submit"
                             className="btn scTest1"
                           >
-                            Save
+                            {location.state?.isUpdate ? "Update" : "Save"}
                           </button>
                         </Row>
                       </div>

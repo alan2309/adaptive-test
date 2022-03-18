@@ -809,11 +809,14 @@ function ScheduledTest() {
                                 <button
                                   type="button"
                                   onClick={(e) => {
-                                    upcomingTest(e, t);
-                                    console.log(t);
-                                    // navigate("/admin/updateTest", {
-                                    //   state: { isUpdate: true, data: t },
-                                    // });
+                                    // upcomingTest(e, t);
+                                    navigate("/admin/updateTest", {
+                                      state: {
+                                        isUpdate: true,
+                                        data: t,
+                                        sid: 0,
+                                      },
+                                    });
                                   }}
                                   style={{
                                     width: "100%",
