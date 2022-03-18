@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@hirohe/react-watermark": "^0.2.0",
     "@patternfly/react-charts": "^6.45.15",
     "@quantfive/network-speed": "^2.0.1",
     "@testing-library/jest-dom": "^5.15.0",

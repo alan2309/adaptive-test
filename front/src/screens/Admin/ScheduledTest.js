@@ -68,7 +68,7 @@ function ScheduledTest() {
     const data = async () => {
       setIsloading(true);
       await axiosInstance
-        .get("api/admin/tests")
+        .get("api/admin/testsData")
         .then((res) => {
           let ar = [];
           setSTests(res.data.stests);
@@ -810,6 +810,7 @@ function ScheduledTest() {
                                   type="button"
                                   onClick={(e) => {
                                     upcomingTest(e, t);
+                                    console.log(t);
                                     // navigate("/admin/updateTest", {
                                     //   state: { isUpdate: true, data: t },
                                     // });

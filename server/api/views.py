@@ -1172,7 +1172,19 @@ def getTests(request):
             c['duration']=dicTime['duration']
             c['starts_in']=durationBtwnDates(datetime.datetime(d.year,d.month,d.day,d.hour,d.minute,d.second),datetime.datetime(x.test_start.year,x.test_start.month,x.test_start.day,x.test_start.hour,x.test_start.minute,x.test_start.second))['total_seconds']
             cc.append(c)
-        return JsonResponse({"stests":stestS.data,"utests":utestS.data,'upcoming_test':cc,'ongoing_test':bb},safe=False)
+        return JsonResponse({'upcoming_test':cc,'ongoing_test':bb},safe=False)
+@csrf_exempt    
+def getTestsWithQsJson(request):
+    if request.method == 'GET':
+        d = datetime.datetime.utcnow()
+        stests = Test.objects.filter(Q(test_end__lte=d) | Q(test_start__lt=d))
+        utests = Test.objects.filter(test_start__gt=d) 
+        stestS = TestSerializer(stests,many=True)
+        utestS = TestSerializer(utests,many=True)
+        for x in utests:
+            qsJson=QuestionJson.objects.get(test=x)
+            print(qsJson)
+        return JsonResponse({"stests":stestS.data,"utests":utestS.data},safe=False)
 
 def durationBtwnDates(start_date_time,end_date_time):
     diff=end_date_time-start_date_time

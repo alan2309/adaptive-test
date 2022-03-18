@@ -34,6 +34,7 @@ urlpatterns = [
    path('api/admin/delQs',views.delQs),
    path('api/admin/saveTest',views.saveTest),
    path('api/admin/tests',views.getTests),
+   path('api/admin/testsData',views.getTestsWithQsJson),
    path('api/delres/<int:id>',views.deleteres),
    path('api/getuserslist',views.getuserslist),
    path('api/permission',views.permission),

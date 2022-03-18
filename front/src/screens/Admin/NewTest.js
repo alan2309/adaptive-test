@@ -76,7 +76,6 @@ function NewTest() {
             ssid = location.state.sid;
             setSid(ssid + 1);
           }
-          // var d =location.state!==undefined && location.state.isUpdate?location.state.data: quesData.data; //customData
           var d = quesData.data; //customData
           // var d = res.data.data;
           setAxData(d);
@@ -559,43 +558,56 @@ function NewTest() {
           ) : (
             <>
               <Modal show={show} onHide={() => setShow(false)} centered>
-                <Modal.Header style={{ paddingBottom: "0px" }} closeButton>
-                  <h4>Instuctions :-</h4>
-                </Modal.Header>
+                <Modal.Header
+                  style={{ paddingBottom: "20px" }}
+                  closeButton
+                ></Modal.Header>
                 <Modal.Body>
-                  <p>
-                    {" "}
-                    <h6>* 1st Column must be Question only</h6>
-                  </p>
-                  <p>
-                    <h6>* 2nd Column must be Type only</h6>
-                  </p>
-                  <p>
-                    <h6>* 3rd Column must be CorrectOption only</h6>
-                  </p>
-                  <p>
-                    <h6>* 4th Column must be Option1 only</h6>
-                  </p>
-                  <p>
-                    <h6>* 5th Column must be Option2 only</h6>
-                  </p>
-                  <p>
-                    <h6>* nth Column must be Option(n-3) only</h6>
-                  </p>
-                  <p>
-                    <h6>
-                      * For Aptitude , Computer Fundamentals , Domain Question
+                  <div
+                    style={{
+                      borderLeft: "3px solid #293E6F",
+                      height: "35px",
+                      marginTop: "20px",
+                      marginLeft: "10px",
+                    }}
+                  >
+                    <h2
+                      style={{
+                        fontSize: "16px",
+                        color: "#293E6F",
+                        fontFamily: "Poppins",
+                        fontWeight: "medium",
+                        padding: "6px 0 6px",
+                        marginTop: "20px",
+                        marginLeft: "10px",
+                      }}
+                    >
+                      Instructions
+                    </h2>
+                  </div>
+                  <ul
+                    style={{
+                      marginLeft: "2px",
+                      marginTop: "12px",
+                      fontSize: "13.6px",
+                    }}
+                  >
+                    <li>1st Column must be Question only</li>
+                    <li>2nd Column must be Type only</li>
+                    <li>3rd Column must be CorrectOption only</li>
+                    <li>4th Column must be Option1 only</li>
+                    <li>5th Column must be Option2 only</li>
+                    <li>nth Column must be Option(n-3) only</li>
+                    <li>
+                      For Aptitude, Computer Fundamentals, Domain test, Question
                       and Type is required
-                    </h6>
-                  </p>
-                  <p>
-                    <h6>
-                      * For Peronality only 1st Column ie. Question is required
-                    </h6>
-                  </p>
-                  <p>
-                    <h6>* All Column are case SENSITIVE</h6>
-                  </p>
+                    </li>
+                    <li>
+                      For Personality test only 1st Column ie. Question is
+                      required
+                    </li>
+                    <li>All Column are case sensitive</li>
+                  </ul>
                 </Modal.Body>
                 <Modal.Footer>
                   <CSVLink
@@ -604,9 +616,17 @@ function NewTest() {
                     filename={"sample-csv-format-data.csv"}
                     style={{
                       display: isSampleCsvData ? "none" : "inline-block",
+                      textDecoration: "none",
+                      color: "white",
+                      backgroundColor: "#10b65c",
+                      width: " 234px",
+                      height: " 45px",
+                      borderRadius: "14px",
+                      marginBottom: "20px",
+                      padding: "10px 10px 30px 40px",
                     }}
                   >
-                    Download Sample Csv Format
+                    sample csv format
                   </CSVLink>
                 </Modal.Footer>
               </Modal>
@@ -737,7 +757,7 @@ function NewTest() {
                       <div
                         className="mainRec"
                         style={{
-                          height: sid === 6 || sid === 4 ? 370 : 550,
+                          height: sid === 6 || sid === 4 ? 370 : 760,
                           marginTop: sid === 6 || sid === 4 ? "50px" : "0",
                         }}
                       >
@@ -757,16 +777,21 @@ function NewTest() {
                                     onChange={(e) => {
                                       selectOnChange(e);
                                     }}
+                                    className="basicRec secNm"
                                     aria-label="Default select example"
-                                    style={{ margin: "10px 0" }}
+                                    style={{
+                                      margin: "20px 0",
+                                      color: "#293e6f",
+                                      fontWeight: "550",
+                                    }}
                                   >
                                     <option value="">
-                                      Choose Data to Upload
+                                      Choose data to upload
                                     </option>
                                     <option value="1">
-                                      Upload Sample Data
+                                      Upload sample data
                                     </option>
-                                    <option value="2">Upload CSV</option>
+                                    <option value="2">Upload csv</option>
                                   </Form.Select>
                                   {!isChoose && !isSampleCsvData && (
                                     <CSVUploadCsv
@@ -787,16 +812,17 @@ function NewTest() {
                                     onChange={(e) => {
                                       selectOnChange(e);
                                     }}
+                                    className="basicRec secNm"
                                     aria-label="Default select example"
                                     style={{ margin: "10px 0" }}
                                   >
                                     <option value="">
-                                      Choose Data to Upload
+                                      Choose data to upload
                                     </option>
                                     <option value="1">
-                                      Upload Sample Data
+                                      Upload sample data
                                     </option>
-                                    <option value="2">Upload CSV</option>
+                                    <option value="2">Upload csv</option>
                                   </Form.Select>
                                   {!isChoose && !isSampleCsvData && (
                                     <CSVUploadCsv
@@ -817,16 +843,17 @@ function NewTest() {
                                     onChange={(e) => {
                                       selectOnChange(e);
                                     }}
+                                    className="basicRec secNm"
                                     aria-label="Default select example"
                                     style={{ margin: "10px 0" }}
                                   >
                                     <option value="">
-                                      Choose Data to Upload
+                                      Choose data to upload
                                     </option>
                                     <option value="1">
-                                      Upload Sample Data
+                                      Upload sample data
                                     </option>
-                                    <option value="2">Upload CSV</option>
+                                    <option value="2">Upload csv</option>
                                   </Form.Select>
                                   {!isChoose && !isSampleCsvData && (
                                     <CSVUploadCsv
@@ -847,16 +874,17 @@ function NewTest() {
                                     onChange={(e) => {
                                       selectOnChange(e);
                                     }}
+                                    className="basicRec secNm"
                                     aria-label="Default select example"
                                     style={{ margin: "10px 0" }}
                                   >
                                     <option value="">
-                                      Choose Data to Upload
+                                      Choose data to upload
                                     </option>
                                     <option value="1">
-                                      Upload Sample Data
+                                      Upload sample data
                                     </option>
-                                    <option value="2">Upload CSV</option>
+                                    <option value="2">Upload csvF</option>
                                   </Form.Select>
                                   {!isChoose && !isSampleCsvData && (
                                     <CSVUploadCsv
@@ -877,6 +905,7 @@ function NewTest() {
                                     <Col md={isSampleCsvData ? 0 : 6}>
                                       <button
                                         type="button"
+                                        className="btn scTest1"
                                         style={{
                                           display: isSampleCsvData
                                             ? "none"
@@ -893,6 +922,7 @@ function NewTest() {
                                       <button
                                         type="button"
                                         id="csv_upload_button"
+                                        className="btn scTest1"
                                         style={{ display: "inline-block" }}
                                         onClick={(e) => {
                                           {
@@ -942,7 +972,7 @@ function NewTest() {
                                 {sid - 1 !== 5 && sid !== 4 && (
                                   <>
                                     <Row
-                                      style={{ padding: "20px 10px 0px 40px" }}
+                                      style={{ padding: "20px 10px 10px 40px" }}
                                     >
                                       <Col>
                                         <Row className="remQs">
@@ -989,7 +1019,7 @@ function NewTest() {
                                       <Col>
                                         <Row
                                           className="remQs"
-                                          style={{ paddingLeft: "22%" }}
+                                          style={{ paddingLeft: "38%" }}
                                         >
                                           {med.length}
                                         </Row>
@@ -1385,7 +1415,7 @@ function NewTest() {
                         <Row style={{ float: "right" }}>
                           <button
                             style={{ color: "white" }}
-                            className="btn scTest"
+                            className="btn scTest1"
                             onClick={(e) => navigate("/admin/home")}
                           >
                             Back to Home page
@@ -1393,7 +1423,7 @@ function NewTest() {
                           <button
                             style={{ color: "white" }}
                             type="submit"
-                            className="btn scTest"
+                            className="btn scTest1"
                           >
                             Save
                           </button>
