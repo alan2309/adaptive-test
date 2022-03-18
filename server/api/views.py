@@ -106,13 +106,13 @@ def subqs(request,subject=0,tid=0):
         test = Test.objects.get(id=tid)
         ques_json = QuestionJson.objects.get(test=test)
         if subject==1:
-            return JsonResponse(ques_json.apt,safe=False)
+            return JsonResponse({'easy':ques_json.apt['easy'],'medium':ques_json.apt['medium'],'hard':ques_json.apt['hard'],'qs':test.apt['qs'],'time':test.apt['time']},safe=False)
         elif subject==2:
-            return JsonResponse(ques_json.cf,safe=False)
+            return JsonResponse({'easy':ques_json.cf['easy'],'medium':ques_json.cf['medium'],'hard':ques_json.cf['hard'],'qs':test.cf['qs'],'time':test.cf['time']},safe=False)
         elif subject==3:
-            return JsonResponse(ques_json.dom,safe=False) 
+            return JsonResponse({'easy':ques_json.dom['easy'],'medium':ques_json.dom['medium'],'hard':ques_json.dom['hard'],'qs':test.dom['qs'],'time':test.dom['time']},safe=False)
         elif subject==4:
-            return JsonResponse({'qs':ques_json.personality["qs"],'avg':ques_json.personality["avg"],'time':ques_json.personality["time"],'allQs':ques_json.personality["medium"]},safe=False )     
+            return JsonResponse({'qs':ques_json.personality["qs"],'avg':ques_json.personality["avg"],'time':test.p["time"],'allQs':ques_json.personality["medium"]},safe=False )     
         elif subject==5:
             if len(ques_json.code["easy"])>0:
                 easy = random.randint(0,len(ques_json.code["easy"])-1)
@@ -132,7 +132,7 @@ def subqs(request,subject=0,tid=0):
             else:
                 hard=0
                 itemsType3={}
-            return JsonResponse({'time':ques_json.code["time"],'cQs':[itemsType1,itemsType2,itemsType3]},safe=False)
+            return JsonResponse({'time':test.c["time"],'cQs':[itemsType1,itemsType2,itemsType3]},safe=False)
         else:
             a = ques_json.aw["medium"]
             b=[]
@@ -143,7 +143,7 @@ def subqs(request,subject=0,tid=0):
                     del a[med:med+1]
                 else:
                     break
-            return JsonResponse({'data':b,'time':ques_json.aw['time']},safe=False)              
+            return JsonResponse({'data':b,'time':test.aw['time']},safe=False)              
 
 
 
@@ -1172,7 +1172,7 @@ def getTests(request):
             c['duration']=dicTime['duration']
             c['starts_in']=durationBtwnDates(datetime.datetime(d.year,d.month,d.day,d.hour,d.minute,d.second),datetime.datetime(x.test_start.year,x.test_start.month,x.test_start.day,x.test_start.hour,x.test_start.minute,x.test_start.second))['total_seconds']
             cc.append(c)
-        return JsonResponse({'upcoming_test':cc,'ongoing_test':bb},safe=False)
+        return JsonResponse({"stests":stestS.data,"utests":utestS.data,'upcoming_test':cc,'ongoing_test':bb},safe=False)
 @csrf_exempt    
 def getTestsWithQsJson(request):
     if request.method == 'GET':
