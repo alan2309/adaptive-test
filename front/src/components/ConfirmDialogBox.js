@@ -46,7 +46,7 @@ function ConfirmDialogBox({
               boxSizing: "border-box",
               borderRadius: "4px",
               width: "400px",
-              height: "70px",
+              height: "90px",
               borderLeft: "4px solid #EF7D52",
               paddingRight: "50px",
               marginLeft: "30px",
@@ -58,13 +58,13 @@ function ConfirmDialogBox({
                 height: "35px",
                 width: "15px",
                 color: "#F25929",
-                marginLeft: "15px",
-                marginTop: "15px",
+                marginLeft: "40px",
+                marginTop: "5px",
               }}
             />
             <p
               style={{
-                marginTop: "-35px",
+                marginTop: "-1px",
                 marginLeft: "45px",
                 color: "#82221A",
                 fontSize: "14px",
