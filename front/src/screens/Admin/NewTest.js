@@ -255,7 +255,9 @@ function NewTest() {
           })
           .then((res) => {
             setIsloading(false);
-            navigate("/admin/home");
+            location.state?.isUpdate
+              ? navigate("/admin/scheduledTest")
+              : navigate("/admin/home");
           });
       } else {
         setIsloading(false);
