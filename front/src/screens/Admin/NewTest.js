@@ -654,7 +654,7 @@ function NewTest() {
                 </Modal.Footer>
               </Modal>
               {!isInside && (
-                <form onSubmit={saveTest}>
+                <form onSubmit={saveTest} id="newTestForm">
                   <div
                     className="basicRec"
                     style={{
@@ -780,7 +780,7 @@ function NewTest() {
                       <div
                         className="mainRec"
                         style={{
-                          height: sid === 6 || sid === 4 ? 370 : 760,
+                          height: sid === 6 || sid === 4 ? "auto" : "auto",
                           marginTop: sid === 6 || sid === 4 ? "50px" : "0",
                         }}
                       >
@@ -994,60 +994,55 @@ function NewTest() {
                                   : "Paragraph"}
                                 {sid - 1 !== 5 && sid !== 4 && (
                                   <>
-                                    <Row
-                                      style={{ padding: "20px 10px 10px 40px" }}
-                                    >
-                                      <Col>
-                                        <Row className="remQs">
-                                          {easy.length}
-                                        </Row>
-                                      </Col>
-                                      <Col>
-                                        <Row className="remQs">
-                                          {med.length}
-                                        </Row>
-                                      </Col>
-                                      <Col>
-                                        <Row className="remQs">
-                                          {hard.length}
-                                        </Row>
-                                      </Col>
-                                    </Row>
-                                    <Row
-                                      style={{ padding: "0px 15px 0px 30px" }}
-                                    >
-                                      <Col
-                                        style={{ padding: "0px 0px 0px 15px" }}
-                                      >
-                                        Easy
-                                      </Col>
-                                      <Col>Medium</Col>
-                                      <Col>
-                                        <Row
+                                    <div class="grid-container">
+                                      <div class="grid-item">
+                                        {easy.length}{" "}
+                                        <p
                                           style={{
-                                            padding: "0px 0px 0px 15px",
+                                            fontSize: "20px",
+                                            marginTop: "25px",
+                                            fontWeight: "400px",
+                                          }}
+                                        >
+                                          Easy
+                                        </p>
+                                      </div>
+                                      <div class="grid-item">
+                                        {med.length}{" "}
+                                        <p
+                                          style={{
+                                            fontSize: "20px",
+                                            marginTop: "25px",
+                                            fontWeight: "400px",
+                                          }}
+                                        >
+                                          Medium
+                                        </p>
+                                      </div>
+                                      <div class="grid-item">
+                                        {hard.length}{" "}
+                                        <p
+                                          style={{
+                                            fontSize: "20px",
+                                            marginTop: "25px",
+                                            fontWeight: "400px",
                                           }}
                                         >
                                           Hard
-                                        </Row>
-                                      </Col>
-                                    </Row>
+                                        </p>
+                                      </div>
+                                    </div>
                                   </>
                                 )}
                                 {(sid - 1 === 5 || sid === 4) && (
-                                  <div style={{ marginLeft: "20%" }}>
-                                    <Row
-                                      style={{ padding: "20px 10px 0px 40px" }}
-                                    >
-                                      <Col>
-                                        <Row
-                                          className="remQs"
-                                          style={{ paddingLeft: "38%" }}
-                                        >
-                                          {med.length}
-                                        </Row>
-                                      </Col>
-                                    </Row>
+                                  <div
+                                    class="grid-container"
+                                    style={{
+                                      gridTemplateColumns: "auto",
+                                      textAlign: "center",
+                                    }}
+                                  >
+                                    <div class="grid-item">{med.length} </div>
                                   </div>
                                 )}
                               </div>
@@ -1136,18 +1131,18 @@ function NewTest() {
                                   <Row style={{ margin: "10px 0" }}>
                                     <Col style={{ padding: "0px" }}>
                                       <div
-                                        className="basicRec secNm"
+                                        className="basicRec secNm timerComp"
                                         style={{
-                                          margin: "0 3px 0px 3px",
                                           width: "100%",
                                           padding: "11px 10px",
+                                          height: "100%",
                                         }}
                                       >
                                         <input
                                           type="time"
                                           title={"Minimum should be 20 seconds"}
                                           showSeconds
-                                          className="timeFieldInput"
+                                          className="timeFieldInput "
                                           id="timeFieldInput1"
                                           minTime="00:00:20"
                                           step={1}
@@ -1253,6 +1248,7 @@ function NewTest() {
                                             width: "100%",
                                             color: "#293e6f",
                                             border: "none",
+                                            height: "auto",
                                           }}
                                           value={CurrentDic.time}
                                         />
@@ -1293,11 +1289,10 @@ function NewTest() {
                               {" "}
                               <Col md={6} style={{ padding: "0" }}>
                                 <div
-                                  className="basicRec easyMedHard"
+                                  className="basicRec easyMedHard timerComp"
                                   style={{
-                                    marginBottom: "28px",
                                     width: "90%",
-                                    padding: "11px 10px",
+                                    alignItems: "center",
                                   }}
                                 >
                                   <input
@@ -1413,7 +1408,6 @@ function NewTest() {
                                 <div
                                   className="basicRec secNm"
                                   style={{
-                                    marginBottom: "28px",
                                     padding: "11px 10px",
                                   }}
                                 >
@@ -1446,28 +1440,33 @@ function NewTest() {
                             />
                           </Col>
                         </Row>
-
-                        <Row style={{ float: "right" }}>
-                          <button
-                            style={{ color: "white" }}
-                            className="btn scTest1"
-                            type="button"
-                            onClick={(e) => navigate(-1)}
-                          >
-                            Back
-                          </button>{" "}
-                          <button
-                            style={{ color: "white" }}
-                            type="submit"
-                            className="btn scTest1"
-                          >
-                            {goLive
-                              ? "Go Live"
-                              : location.state?.isUpdate
-                              ? "Update Draft"
-                              : "Save Draft"}
-                          </button>
-                        </Row>
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          marginTop: "30px",
+                          justifyContent: "right",
+                        }}
+                      >
+                        <button
+                          style={{ color: "white" }}
+                          className="btn scTest1"
+                          type="button"
+                          onClick={(e) => navigate(-1)}
+                        >
+                          Back
+                        </button>{" "}
+                        <button
+                          style={{ color: "white", marginRight: "0" }}
+                          type="submit"
+                          className="btn scTest1"
+                        >
+                          {goLive
+                            ? "Go Live"
+                            : location.state?.isUpdate
+                            ? "Update Draft"
+                            : "Save Draft"}
+                        </button>
                       </div>
                     </Col>
                   </Row>
