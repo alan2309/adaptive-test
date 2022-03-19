@@ -47,6 +47,9 @@
   margin-right: 40px;
   color: #ffffff;
 }
+.scTest1:hover {
+  color: #ffffff;
+}
 
 input[type="file"]::file-selector-button {
   width: 134px;
