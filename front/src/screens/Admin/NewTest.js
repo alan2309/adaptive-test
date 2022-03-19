@@ -243,7 +243,7 @@ function NewTest() {
               saveTest: axData,
               createTest: creaTest,
               isUpdate: location.state?.isUpdate || false,
-              tid: location.state?.data.id,
+              tid: location.state?.data?.id || null,
             },
           })
           .then((res) => {
