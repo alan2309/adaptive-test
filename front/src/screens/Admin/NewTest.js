@@ -61,6 +61,7 @@ function NewTest() {
   const [isSampleCsvData, setIsSampleCsvData] = useState(false);
   const [isChoose, setIsChoose] = useState(true);
   const [testId, setTestId] = useState(true);
+  const [goLive, setGoLive] = useState(false);
 
   useEffect(() => {
     setIsloading(true);
@@ -88,6 +89,7 @@ function NewTest() {
       setCFDic(location.state.data.cfDic);
       setCurrentDic(location.state.data.aptDic);
       setTestId(location.state.data.id);
+      setGoLive(location.state.data.live);
     } else {
       d = quesData.data; //customData
       if (d[Wssid].medium.length !== 0) {
@@ -236,7 +238,12 @@ function NewTest() {
     if (ex.getTime() > sx.getTime()) {
       let objClash = clash(sx.getTime(), ex.getTime(), testId);
       if (!objClash.bool) {
-        let creaTest = { testName: tName, sTime: sDate, eTime: eDate };
+        let creaTest = {
+          testName: tName,
+          sTime: sDate,
+          eTime: eDate,
+          goLive: goLive,
+        };
         axiosInstance
           .post("api/createTest", {
             data: {
@@ -1425,6 +1432,18 @@ function NewTest() {
                             </Row>
                           )}
                         </div>
+                        <Row>
+                          <Col>
+                            <Form.Check
+                              type={"checkbox"}
+                              label="Go live now"
+                              checked={goLive}
+                              onChange={(e) => {
+                                setGoLive(!goLive);
+                              }}
+                            />
+                          </Col>
+                        </Row>
 
                         <Row style={{ float: "right" }}>
                           <button
@@ -1439,7 +1458,11 @@ function NewTest() {
                             type="submit"
                             className="btn scTest1"
                           >
-                            {location.state?.isUpdate ? "Update" : "Save"}
+                            {goLive
+                              ? "Go Live"
+                              : location.state?.isUpdate
+                              ? "Update Draft"
+                              : "Save Draft"}
                           </button>
                         </Row>
                       </div>

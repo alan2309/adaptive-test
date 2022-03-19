@@ -90,7 +90,7 @@ def createTest(request):
         test_p = {"qs": data_p["qs"], "time": data_p["time"], "avg": data_p["avg"], "maxQs": data_p["maxQs"]}
         if data['tid']:
             Test.objects.get(id=data['tid']).delete()
-        tst=Test(totalTestTime=total_time,test_name=data['createTest']['testName'],test_start=data['createTest']['sTime'],test_end=data['createTest']['eTime'],token=str(uuid.uuid4()),apt=test_apt,dom=test_d,c = test_c,cf=test_cf,aw=test_aw,p = test_p)
+        tst=Test(totalTestTime=total_time,test_name=data['createTest']['testName'],test_start=data['createTest']['sTime'],test_end=data['createTest']['eTime'],token=str(uuid.uuid4()),apt=test_apt,dom=test_d,c = test_c,cf=test_cf,aw=test_aw,p = test_p,live=data['createTest']['goLive'])
         tst.save()
 
         data_apt=loopdata(data_apt,"Aptitude")
@@ -1142,11 +1142,11 @@ def tests(request,idd=0):
 def getTests(request):
     if request.method == 'GET':
         d = datetime.datetime.utcnow()
-        stests = Test.objects.filter(Q(test_end__lte=d) | Q(test_start__lt=d))
-        utests = Test.objects.filter(test_start__gt=d) 
+        stests = Test.objects.filter(Q(test_end__lte=d) | Q(test_start__lt=d),live=True)
+        utests = Test.objects.filter(test_start__gt=d,live=True) 
         stestS = TestSerializer(stests,many=True)
         utestS = TestSerializer(utests,many=True)
-        presentTest=Test.objects.filter(test_start__lte = d,test_end__gt=d)
+        presentTest=Test.objects.filter(test_start__lte = d,test_end__gt=d,live=True)
         bb=[]
         if(presentTest.exists()):
             b={}
@@ -1188,6 +1188,7 @@ def getTestsWithQsJson(request):
             c={}
             qsJson=QuestionJson.objects.get(test=x)
             c['id']=x.id
+            c['live']=x.live
             c['test_name']=x.test_name
             c['test_start']=x.test_start
             c['test_end']=x.test_end

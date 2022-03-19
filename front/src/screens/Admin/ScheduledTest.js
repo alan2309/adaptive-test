@@ -832,7 +832,7 @@ function ScheduledTest() {
                                   }}
                                   key={index}
                                 >
-                                  {t.test_name}
+                                  {t.test_name} {t.live ? "🟢" : "🔴"}
                                 </button>
                               </Col>
                               <Col md={1}>
