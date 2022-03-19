@@ -832,7 +832,7 @@ function ScheduledTest() {
                                   }}
                                   key={index}
                                 >
-                                  {t.test_name} {t.live ? "🟢" : "🔴"}
+                                  {t.test_name}
                                 </button>
                               </Col>
                               <Col md={1}>
@@ -840,10 +840,17 @@ function ScheduledTest() {
                                   onClick={() => {
                                     startTest(t.id);
                                   }}
-                                  className="fa fa-eye"
+                                  className={
+                                    t.live ? "fa fa-eye" : "fa fa-eye-slash"
+                                  }
+                                  title={
+                                    t.live
+                                      ? "Preview test"
+                                      : "Cannot preview draft"
+                                  }
                                   style={{
                                     backgroundColor: "white",
-                                    color: "green",
+                                    color: t.live ? "green" : "red",
                                     float: "right",
                                     marginRight: "15px",
                                     marginTop: "10px",

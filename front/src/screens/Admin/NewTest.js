@@ -1449,7 +1449,8 @@ function NewTest() {
                           <button
                             style={{ color: "white" }}
                             className="btn scTest1"
-                            onClick={(e) => navigate("/admin/home")}
+                            type="button"
+                            onClick={(e) => navigate(-1)}
                           >
                             Back to Home page
                           </button>{" "}
