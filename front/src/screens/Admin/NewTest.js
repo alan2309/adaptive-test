@@ -74,6 +74,7 @@ function NewTest() {
       setSid(ssid + 1);
     }
     let d;
+    let Wssid = sidFunc(ssid);
     if (location.state?.isUpdate) {
       d = location.state.data.data;
       setTName(location.state.data.test_name);
@@ -98,7 +99,6 @@ function NewTest() {
     // var d = res.data.data;
     setAxData(d);
     //For Aptitude
-    var Wssid = sidFunc(ssid);
     setSectionName(Wssid);
     setEasy(d[Wssid].easy);
     setHard(d[Wssid].hard);
