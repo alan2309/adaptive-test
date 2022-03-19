@@ -78,8 +78,8 @@ function NewTest() {
     if (location.state?.isUpdate) {
       d = location.state.data.data;
       setTName(location.state.data.test_name);
-      setSDate(location.state.data.test_start);
-      setEDate(location.state.data.test_end);
+      setSDate(new Date(location.state.data.test_start));
+      setEDate(new Date(location.state.data.test_end));
       setAWDic(location.state.data.awDic);
       setAptDic(location.state.data.aptDic);
       setPDic(location.state.data.pDic);

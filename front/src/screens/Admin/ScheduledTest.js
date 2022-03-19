@@ -181,28 +181,32 @@ function ScheduledTest() {
         : setDangerMsg("End date cannot be less than start date");
     }
   }
-  function del_upcoming_test() {
+  function del_upcoming_test(tid) {
     setIsloading(true);
     axiosInstance
-      .delete(`api/test/${testId}`, {
+      .delete(`api/test/${tid}`, {
         data: {
           name: header,
           start: valueStart,
           end: valueEnd,
           delete: true,
-          id: testId,
+          id: tid,
         },
       })
       .then((res) => {
+        let arr = utests.filter((test) => {
+          return test.id !== tid;
+        });
+        setUTests(arr);
         setIsloading(false);
-        window.location.reload();
       })
       .catch((e) => {
-        setIsloading(false);
         console.log(e);
+        setIsloading(false);
       });
   }
-  function delTest(e) {
+  function delTest(tid) {
+    setArgConfirmModal(tid);
     set_confirm_yes_func(() => del_upcoming_test);
     set_confirm_no_func(() => confirm_no);
     set_confirm_dialog_msg("Are you sure you want to delete this test");
@@ -214,11 +218,11 @@ function ScheduledTest() {
       axiosInstance
         .delete(`api/test/${idd}`)
         .then((res) => {
-          setIsloading(false);
           let arr = stests.filter((test) => {
             return test.id !== idd;
           });
           setSTests(arr);
+          setIsloading(false);
         })
         .catch((e) => {
           setIsloading(false);
@@ -294,6 +298,7 @@ function ScheduledTest() {
             <Loader />
           ) : (
             <>
+              {testId}
               <Alert
                 msg={successMsg}
                 setIsAlertMsgLoaded={setIsAlertMsgLoaded}
@@ -839,6 +844,19 @@ function ScheduledTest() {
                                   style={{
                                     backgroundColor: "white",
                                     color: "green",
+                                    float: "right",
+                                    marginRight: "15px",
+                                    marginTop: "10px",
+                                  }}
+                                ></i>
+                              </Col>
+                              <Col md={1}>
+                                <i
+                                  onClick={() => delTest(t.id)}
+                                  className="fa fa-trash"
+                                  style={{
+                                    backgroundColor: "white",
+                                    color: "red",
                                     float: "right",
                                     marginRight: "15px",
                                     marginTop: "10px",
