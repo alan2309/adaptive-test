@@ -838,7 +838,12 @@ function ScheduledTest() {
                               <Col md={1}>
                                 <i
                                   onClick={() => {
-                                    startTest(t.id);
+                                    if (t.live) {
+                                      startTest(t.id);
+                                    } else {
+                                      setIsAlertMsgLoaded(true);
+                                      setDangerMsg("Cannot preview draft");
+                                    }
                                   }}
                                   className={
                                     t.live ? "fa fa-eye" : "fa fa-eye-slash"

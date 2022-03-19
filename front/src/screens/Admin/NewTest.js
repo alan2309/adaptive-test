@@ -1452,7 +1452,7 @@ function NewTest() {
                             type="button"
                             onClick={(e) => navigate(-1)}
                           >
-                            Back to Home page
+                            Back
                           </button>{" "}
                           <button
                             style={{ color: "white" }}
