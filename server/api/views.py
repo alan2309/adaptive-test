@@ -297,7 +297,7 @@ def forgotpass(request):
 def getuserslist(request):
     if request.method == "GET":
         d = datetime.datetime.utcnow()
-        presentTest=Test.objects.filter(test_start__lte = d,test_end__gt=d)
+        presentTest=Test.objects.filter(test_start__lte = d,test_end__gt=d,live=True)
         if not presentTest.exists():   
             return JsonResponse({'exists':0},safe=False) 
         testx = presentTest[0]
@@ -357,7 +357,7 @@ def permission(request):
         if request.method == "POST":
             data=JSONParser().parse(request)['data']
             d = datetime.datetime.utcnow()
-            presentTest=Test.objects.filter(test_start__lte = d,test_end__gt=d)
+            presentTest=Test.objects.filter(test_start__lte = d,test_end__gt=d,live=True)
             if not presentTest.exists():   
                 return JsonResponse({'exists':0},safe=False)
             testx = presentTest[0]
