@@ -1430,12 +1430,19 @@ function NewTest() {
                         </div>
                         <Row>
                           <Col>
-                            <Form.Check
+                          <Form.Check
                               type={"checkbox"}
-                              label="Go live now"
+                              label="Click here to make the test live for all students."
                               checked={goLive}
                               onChange={(e) => {
                                 setGoLive(!goLive);
+                              }}
+                              style={{
+                                marginLeft:"90px",
+                                marginBottom: "40px",
+                                color:"#293e6f",
+                                cursor: "pointer",
+                                
                               }}
                             />
                           </Col>
