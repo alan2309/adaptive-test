@@ -362,8 +362,11 @@ function NewTest() {
       hard_len = hard.length;
       isPersonality = false;
     }
+    if (sid === 4) {
+      isPersonality = true
+    }
     let min_ = Math.min(easy_len, med_len, hard_len);
-    if (!isPersonality) {
+    if (!isPersonality && sid !== 6) {
       if (min_ === 0) {
         if (med_len > 0) {
           return 1;
@@ -436,7 +439,7 @@ function NewTest() {
             time: CurrentDic.time,
             avg: 30,
             maxQs: check_MaxQS_Db({
-              isPersonality: false,
+              isPersonality: true,
               easy: axData["Personality"].easy.length,
               medium: axData["Personality"].medium.length,
               hard: axData["Personality"].hard.length,
@@ -1127,161 +1130,161 @@ function NewTest() {
                               )}
                               {(parseInt(sid - 1) === 5 ||
                                 parseInt(sid) === 4) && (
-                                <>
-                                  <Row style={{ margin: "10px 0" }}>
-                                    <Col style={{ padding: "0px" }}>
-                                      <div
-                                        className="basicRec secNm timerComp"
-                                        style={{
-                                          width: "100%",
-                                          padding: "11px 10px",
-                                          height: "100%",
-                                        }}
-                                      >
-                                        <input
-                                          type="time"
-                                          title={"Minimum should be 20 seconds"}
-                                          showSeconds
-                                          className="timeFieldInput "
-                                          id="timeFieldInput1"
-                                          minTime="00:00:20"
-                                          step={1}
-                                          onChange={(e, value) => {
-                                            var hms = e.target.value; // your input string
-                                            var a = hms.split(":"); // split it at the colons
-                                            var seconds =
-                                              a[0] * 60 * 60 +
-                                              +a[1] * 60 +
-                                              +a[2];
-                                            if (seconds > 19) {
-                                              if (sid - 1 === 1) {
-                                                setCFDic({
-                                                  time: e.target.value,
-                                                  totalQs: CurrentDic.totalQs,
-                                                });
-                                                setAxData((prev) => ({
-                                                  ...prev,
-                                                  ["Computer Fundamentals"]: {
-                                                    ...prev[
-                                                      "Computer Fundamentals"
-                                                    ],
-                                                    time: e.target.value,
-                                                  },
-                                                }));
-                                              } else if (sid - 1 === 2) {
-                                                setDDic({
-                                                  time: e.target.value,
-                                                  totalQs: CurrentDic.totalQs,
-                                                });
-                                                setAxData((prev) => ({
-                                                  ...prev,
-                                                  ["Domain"]: {
-                                                    ...prev["Domain"],
-                                                    time: e.target.value,
-                                                  },
-                                                }));
-                                              } else if (sid - 1 === 3) {
-                                                setPDic({
-                                                  time: e.target.value,
-                                                  totalQs: CurrentDic.totalQs, //$,
-                                                });
-                                                setAxData((prev) => ({
-                                                  ...prev,
-                                                  ["Personality"]: {
-                                                    ...prev["Personality"],
-                                                    time: e.target.value,
-                                                  },
-                                                }));
-                                              } else if (sid - 1 == 4) {
-                                                setCDic({
-                                                  time: e.target.value,
-                                                  totalQs: CurrentDic.totalQs,
-                                                });
-                                                setAxData((prev) => ({
-                                                  ...prev,
-                                                  ["Coding"]: {
-                                                    ...prev["Coding"],
-                                                    time: e.target.value,
-                                                  },
-                                                }));
-                                              } else if (sid - 1 == 5) {
-                                                setAWDic({
-                                                  time: e.target.value,
-                                                  totalQs: CurrentDic.totalQs,
-                                                });
-                                                setAxData((prev) => ({
-                                                  ...prev,
-                                                  ["Analytical Writing"]: {
-                                                    ...prev[
-                                                      "Analytical Writing"
-                                                    ],
-                                                    time: e.target.value,
-                                                  },
-                                                }));
-                                              } else if (sid - 1 === 0) {
-                                                setAptDic({
-                                                  time: e.target.value,
-                                                  totalQs: CurrentDic.totalQs,
-                                                });
-                                                setAxData((prev) => ({
-                                                  ...prev,
-                                                  ["Aptitude"]: {
-                                                    ...prev["Aptitude"],
-                                                    time: e.target.value,
-                                                  },
-                                                }));
-                                              }
-                                              setCurrentDic({
-                                                time: e.target.value,
-                                                totalQs: CurrentDic.totalQs,
-                                              });
-                                            } else {
-                                              setIsAlertDangerMsgLoaded(true);
-                                              setDangerMsg(
-                                                "Minimum should be 20 seconds"
-                                              );
-                                            }
-                                          }}
+                                  <>
+                                    <Row style={{ margin: "10px 0" }}>
+                                      <Col style={{ padding: "0px" }}>
+                                        <div
+                                          className="basicRec secNm timerComp"
                                           style={{
-                                            paddingLeft: "3%",
-                                            textJustify: "auto",
                                             width: "100%",
-                                            color: "#293e6f",
-                                            border: "none",
-                                            height: "auto",
+                                            padding: "11px 10px",
+                                            height: "100%",
                                           }}
-                                          value={CurrentDic.time}
-                                        />
-                                      </div>
-                                    </Col>
-                                  </Row>
-                                  <Row>
-                                    <Col style={{ padding: "0px" }}>
-                                      <div
-                                        className="basicRec secNm"
-                                        style={{
-                                          padding: "11px 10px",
-                                          margin: "20px 0px 0px 15px",
-                                          width: "95%",
-                                        }}
-                                      >
-                                        Total number of questions:{" "}
-                                        <input
-                                          type="number"
+                                        >
+                                          <input
+                                            type="time"
+                                            title={"Minimum should be 20 seconds"}
+                                            showSeconds
+                                            className="timeFieldInput "
+                                            id="timeFieldInput1"
+                                            minTime="00:00:20"
+                                            step={1}
+                                            onChange={(e, value) => {
+                                              var hms = e.target.value; // your input string
+                                              var a = hms.split(":"); // split it at the colons
+                                              var seconds =
+                                                a[0] * 60 * 60 +
+                                                +a[1] * 60 +
+                                                +a[2];
+                                              if (seconds > 19) {
+                                                if (sid - 1 === 1) {
+                                                  setCFDic({
+                                                    time: e.target.value,
+                                                    totalQs: CurrentDic.totalQs,
+                                                  });
+                                                  setAxData((prev) => ({
+                                                    ...prev,
+                                                    ["Computer Fundamentals"]: {
+                                                      ...prev[
+                                                      "Computer Fundamentals"
+                                                      ],
+                                                      time: e.target.value,
+                                                    },
+                                                  }));
+                                                } else if (sid - 1 === 2) {
+                                                  setDDic({
+                                                    time: e.target.value,
+                                                    totalQs: CurrentDic.totalQs,
+                                                  });
+                                                  setAxData((prev) => ({
+                                                    ...prev,
+                                                    ["Domain"]: {
+                                                      ...prev["Domain"],
+                                                      time: e.target.value,
+                                                    },
+                                                  }));
+                                                } else if (sid - 1 === 3) {
+                                                  setPDic({
+                                                    time: e.target.value,
+                                                    totalQs: CurrentDic.totalQs, //$,
+                                                  });
+                                                  setAxData((prev) => ({
+                                                    ...prev,
+                                                    ["Personality"]: {
+                                                      ...prev["Personality"],
+                                                      time: e.target.value,
+                                                    },
+                                                  }));
+                                                } else if (sid - 1 == 4) {
+                                                  setCDic({
+                                                    time: e.target.value,
+                                                    totalQs: CurrentDic.totalQs,
+                                                  });
+                                                  setAxData((prev) => ({
+                                                    ...prev,
+                                                    ["Coding"]: {
+                                                      ...prev["Coding"],
+                                                      time: e.target.value,
+                                                    },
+                                                  }));
+                                                } else if (sid - 1 == 5) {
+                                                  setAWDic({
+                                                    time: e.target.value,
+                                                    totalQs: CurrentDic.totalQs,
+                                                  });
+                                                  setAxData((prev) => ({
+                                                    ...prev,
+                                                    ["Analytical Writing"]: {
+                                                      ...prev[
+                                                      "Analytical Writing"
+                                                      ],
+                                                      time: e.target.value,
+                                                    },
+                                                  }));
+                                                } else if (sid - 1 === 0) {
+                                                  setAptDic({
+                                                    time: e.target.value,
+                                                    totalQs: CurrentDic.totalQs,
+                                                  });
+                                                  setAxData((prev) => ({
+                                                    ...prev,
+                                                    ["Aptitude"]: {
+                                                      ...prev["Aptitude"],
+                                                      time: e.target.value,
+                                                    },
+                                                  }));
+                                                }
+                                                setCurrentDic({
+                                                  time: e.target.value,
+                                                  totalQs: CurrentDic.totalQs,
+                                                });
+                                              } else {
+                                                setIsAlertDangerMsgLoaded(true);
+                                                setDangerMsg(
+                                                  "Minimum should be 20 seconds"
+                                                );
+                                              }
+                                            }}
+                                            style={{
+                                              paddingLeft: "3%",
+                                              textJustify: "auto",
+                                              width: "100%",
+                                              color: "#293e6f",
+                                              border: "none",
+                                              height: "auto",
+                                            }}
+                                            value={CurrentDic.time}
+                                          />
+                                        </div>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col style={{ padding: "0px" }}>
+                                        <div
+                                          className="basicRec secNm"
                                           style={{
-                                            maxWidth: "60px",
-                                            background: "rgba(0,0,0,0)",
+                                            padding: "11px 10px",
+                                            margin: "20px 0px 0px 15px",
+                                            width: "95%",
                                           }}
-                                          onChange={(e) => {
-                                            checkMaxQs(e);
-                                          }}
-                                          value={CurrentDic.totalQs}
-                                        />
-                                      </div>
-                                    </Col>
-                                  </Row>
-                                </>
-                              )}
+                                        >
+                                          Total number of questions:{" "}
+                                          <input
+                                            type="number"
+                                            style={{
+                                              maxWidth: "60px",
+                                              background: "rgba(0,0,0,0)",
+                                            }}
+                                            onChange={(e) => {
+                                              checkMaxQs(e);
+                                            }}
+                                            value={CurrentDic.totalQs}
+                                          />
+                                        </div>
+                                      </Col>
+                                    </Row>
+                                  </>
+                                )}
                             </Col>
                           </Row>
                           {parseInt(sid - 1) !== 5 && parseInt(sid) !== 4 && (
@@ -1430,25 +1433,25 @@ function NewTest() {
                         </div>
                         <Row>
                           <Col>
-                          <label for="value">
-                          <Form.Check
-                              type={"checkbox"}
-                              label="Click here to make the test live for all students."
-                              checked={goLive}
-                              onChange={(e) => {
-                                setGoLive(!goLive);
-                              }}
-                              style={{
-                                marginLeft:"90px",
-                                marginBottom: "40px",
-                                color:"#293e6f",
-                                cursor: "pointer",
-                                
-                              }}
-                              id="value"
-                            />
-                          </label>
-                          
+                            <label for="value">
+                              <Form.Check
+                                type={"checkbox"}
+                                label="Click here to make the test live for all students."
+                                checked={goLive}
+                                onChange={(e) => {
+                                  setGoLive(!goLive);
+                                }}
+                                style={{
+                                  marginLeft: "90px",
+                                  marginBottom: "40px",
+                                  color: "#293e6f",
+                                  cursor: "pointer",
+
+                                }}
+                                id="value"
+                              />
+                            </label>
+
                           </Col>
                         </Row>
                       </div>
@@ -1475,8 +1478,8 @@ function NewTest() {
                           {goLive
                             ? "Go Live"
                             : location.state?.isUpdate
-                            ? "Update Draft"
-                            : "Save Draft"}
+                              ? "Update Draft"
+                              : "Save Draft"}
                         </button>
                       </div>
                     </Col>
@@ -1498,8 +1501,8 @@ function NewTest() {
                       typeQs === "Hard"
                         ? hard
                         : typeQs === "Medium"
-                        ? med
-                        : easy
+                          ? med
+                          : easy
                     }
                     sid={sid}
                     sectionName={sectionName}
