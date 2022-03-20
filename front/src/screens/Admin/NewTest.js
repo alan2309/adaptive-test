@@ -907,7 +907,7 @@ function NewTest() {
                                     <option value="1">
                                       Upload sample data
                                     </option>
-                                    <option value="2">Upload csvF</option>
+                                    <option value="2">Upload csv</option>
                                   </Form.Select>
                                   {!isChoose && !isSampleCsvData && (
                                     <CSVUploadCsv
@@ -1430,6 +1430,7 @@ function NewTest() {
                         </div>
                         <Row>
                           <Col>
+                          <label for="value">
                           <Form.Check
                               type={"checkbox"}
                               label="Click here to make the test live for all students."
@@ -1444,7 +1445,10 @@ function NewTest() {
                                 cursor: "pointer",
                                 
                               }}
+                              id="value"
                             />
+                          </label>
+                          
                           </Col>
                         </Row>
                       </div>
