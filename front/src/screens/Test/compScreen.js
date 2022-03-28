@@ -326,159 +326,161 @@ function CompScreen() {
     <div id="comp_screen">
       {isDesktopOrLaptop ? (
         <>
-          <Watermark text="Placement Portal DJSCE" opacity="0.3">
-            <Modal
-              show={show}
-              onHide={handleClose}
-              backdrop="static"
-              keyboard={false}
-            >
-              <Modal.Header>
-                <Modal.Title>Enter FullScreeen</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                {reload ? (
-                  <CustomTimer
-                    msg={`Please Enter Full Screen or Test will get auto submitted in`}
-                    onlyS={true}
-                    reset={md}
-                    time={10}
-                    start={show}
-                    setMd={setMd}
-                    nextpage={"result"}
-                  ></CustomTimer>
-                ) : (
-                  "Please enter Full Screen mode"
-                )}
-              </Modal.Body>
-              <Modal.Footer>
-                <Button
-                  variant="primary"
-                  onClick={(e) => {
-                    handleClose(e);
-                    GoInFullscreen(document.querySelector("#element"));
-                  }}
-                >
-                  Enter Full Screeen
-                </Button>
-              </Modal.Footer>
-            </Modal>
-            {countWindowAwayModal && (
-              <>
-                <div
+          <Modal
+            show={show}
+            onHide={handleClose}
+            backdrop="static"
+            keyboard={false}
+          >
+            <Modal.Header>
+              <Modal.Title>Enter FullScreeen</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              {reload ? (
+                <CustomTimer
+                  msg={`Please Enter Full Screen or Test will get auto submitted in`}
+                  onlyS={true}
+                  reset={md}
+                  time={10}
+                  start={show}
+                  setMd={setMd}
+                  nextpage={"result"}
+                ></CustomTimer>
+              ) : (
+                "Please enter Full Screen mode"
+              )}
+            </Modal.Body>
+            <Modal.Footer>
+              <Button
+                variant="primary"
+                onClick={(e) => {
+                  handleClose(e);
+                  GoInFullscreen(document.querySelector("#element"));
+                }}
+              >
+                Enter Full Screeen
+              </Button>
+            </Modal.Footer>
+          </Modal>
+          {countWindowAwayModal && (
+            <>
+              <div
+                style={{
+                  backgroundColor: "#F8D7DA",
+                  height: "fit-content",
+                  width: "95%",
+                  border: "1px #8A3C5B",
+                  borderRadius: "8px",
+                  textAlign: "center",
+                  margin: "10px 10px 10px 25px",
+                }}
+              >
+                <AiFillWarning
                   style={{
-                    backgroundColor: "#F8D7DA",
-                    height: "fit-content",
-                    width: "95%",
-                    border: "1px #8A3C5B",
-                    borderRadius: "8px",
+                    height: "30px",
+                    width: "30px",
                     textAlign: "center",
-                    margin: "10px 10px 10px 25px",
+                    margin: "20px 0",
+                    color: "#842029",
+                  }}
+                />
+                <p
+                  style={{
+                    color: "#842029",
+                    textAlign: "center",
                   }}
                 >
-                  <AiFillWarning
-                    style={{
-                      height: "30px",
-                      width: "30px",
-                      textAlign: "center",
-                      margin: "20px 0",
-                      color: "#842029",
-                    }}
-                  />
-                  <p
-                    style={{
-                      color: "#842029",
-                      textAlign: "center",
-                    }}
-                  >
-                    <b>{countWindowAway === 1 ? "1st" : "Last"} Warning</b>
-                  </p>
-                  <p
-                    style={{
-                      color: "#842029",
-                      fontWeight: "normal",
-                      fontSize: "14px",
-                      margin: "0 10px 10px 10px",
-                      textAlign: "center",
-                    }}
-                  >
-                    The screen has been changed.Test will get auto submitted if
-                    you try to change screen again{" "}
-                  </p>
-                  <Button
-                    onClick={(e) => handleCloseSChange(e)}
-                    style={{
-                      backgroundColor: "#842029",
-                      margin: "10px 0",
-                      color: "white",
-                      outline: "none",
-                      border: "none",
-                    }}
-                  >
-                    Continue
-                  </Button>
-                </div>
-              </>
-            )}
-            {passage !== undefined && (
-              <>
-                <Row className="verbalRHeader">
-                  <Col md={7}>
-                    {timeFF !== undefined && (
-                      <div
-                        style={{
-                          border: "0px solid black",
-                          paddingBottom: "7px",
-                        }}
-                      >
-                        <TestHeaderComp
-                          timer={timeFF}
-                          timeKey="Time"
-                          noTotal={true}
-                          header="Verbal Reasoning"
-                          nextpage={"result"}
-                          start={!testFinshBool}
-                          reset={testFinshBool}
-                          setMd={setMd}
-                        ></TestHeaderComp>
-                      </div>
-                    )}
-                  </Col>
-
-                  <Col md={5}>
-                    <button
-                      type="button"
-                      className="btn btn-success"
-                      onClick={(e) => {
-                        setTestFinishBool(true);
-                        setShow(false);
-                        setMd(true);
-                        navigate("/result");
-                        if (document.exitFullscreen) {
-                          document.exitFullscreen();
-                        } else if (document.webkitExitFullscreen) {
-                          document.webkitExitFullscreen();
-                        } else if (document.mozCancelFullScreen) {
-                          document.mozCancelFullScreen();
-                        } else if (document.msExitFullscreen) {
-                          document.msExitFullscreen();
-                        }
-                      }}
+                  <b>{countWindowAway === 1 ? "1st" : "Last"} Warning</b>
+                </p>
+                <p
+                  style={{
+                    color: "#842029",
+                    fontWeight: "normal",
+                    fontSize: "14px",
+                    margin: "0 10px 10px 10px",
+                    textAlign: "center",
+                  }}
+                >
+                  The screen has been changed.Test will get auto submitted if
+                  you try to change screen again{" "}
+                </p>
+                <Button
+                  onClick={(e) => handleCloseSChange(e)}
+                  style={{
+                    backgroundColor: "#842029",
+                    margin: "10px 0",
+                    color: "white",
+                    outline: "none",
+                    border: "none",
+                  }}
+                >
+                  Continue
+                </Button>
+              </div>
+            </>
+          )}
+          {passage !== undefined && (
+            <>
+              <Row className="verbalRHeader">
+                <Col md={7}>
+                  {timeFF !== undefined && (
+                    <div
                       style={{
-                        float: "right",
-                        backgroundColor: "#081466",
-                        width: "fit-content",
-                        borderRadius: "10px",
-                        marginRight: "30px",
-                        color: "white",
-                        padding: "7px 10px",
+                        border: "0px solid black",
+                        paddingBottom: "7px",
                       }}
                     >
-                      Finish Test
-                    </button>
-                  </Col>
-                </Row>
+                      <TestHeaderComp
+                        timer={timeFF}
+                        timeKey="Time"
+                        noTotal={true}
+                        header="Verbal Reasoning"
+                        nextpage={"result"}
+                        start={!testFinshBool}
+                        reset={testFinshBool}
+                        setMd={setMd}
+                      ></TestHeaderComp>
+                    </div>
+                  )}
+                </Col>
 
+                <Col md={5}>
+                  <button
+                    type="button"
+                    className="btn btn-success"
+                    onClick={(e) => {
+                      setTestFinishBool(true);
+                      setShow(false);
+                      setMd(true);
+                      navigate("/result");
+                      if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                      } else if (document.webkitExitFullscreen) {
+                        document.webkitExitFullscreen();
+                      } else if (document.mozCancelFullScreen) {
+                        document.mozCancelFullScreen();
+                      } else if (document.msExitFullscreen) {
+                        document.msExitFullscreen();
+                      }
+                    }}
+                    style={{
+                      float: "right",
+                      backgroundColor: "#081466",
+                      width: "fit-content",
+                      borderRadius: "10px",
+                      marginRight: "30px",
+                      color: "white",
+                      padding: "7px 10px",
+                    }}
+                  >
+                    Finish Test
+                  </button>
+                </Col>
+              </Row>
+              <Watermark
+                text={sessionStorage.getItem("username")}
+                opacity="0.3"
+              >
                 <Row style={{ height: "700px" }}>
                   <Col className="passage" style={{ overflow: "none" }}>
                     <div
@@ -613,9 +615,9 @@ function CompScreen() {
                     </div>
                   </Col>
                 </Row>
-              </>
-            )}
-          </Watermark>
+              </Watermark>
+            </>
+          )}
         </>
       ) : (
         <MobileWidth />

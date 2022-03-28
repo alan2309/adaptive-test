@@ -330,97 +330,100 @@ function PTestScreen() {
     <div>
       {isDesktopOrLaptop ? (
         <>
-          <Watermark text="Placement Portal DJSCE" opacity="0.3">
-            <Modal
-              show={show}
-              onHide={handleClose}
-              backdrop="static"
-              keyboard={false}
-            >
-              <Modal.Header>
-                <Modal.Title>Enter FullScreeen</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                {reload ? (
-                  <CustomTimer
-                    msg={`Please Enter Full Screen or Test will get auto submitted in`}
-                    onlyS={true}
-                    reset={md}
-                    time={10}
-                    start={show}
-                    setMd={setMd}
-                    nextpage={"result"}
-                  ></CustomTimer>
-                ) : (
-                  "Please enter Full Screen mode"
-                )}
-              </Modal.Body>
-              <Modal.Footer>
-                <Button
-                  variant="primary"
-                  onClick={(e) => {
-                    handleClose(e);
-                    GoInFullscreen(document.querySelector("#element"));
-                  }}
-                >
-                  Enter Full Screeen
-                </Button>
-              </Modal.Footer>
-            </Modal>
-            {
+          <Modal
+            show={show}
+            onHide={handleClose}
+            backdrop="static"
+            keyboard={false}
+          >
+            <Modal.Header>
+              <Modal.Title>Enter FullScreeen</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              {reload ? (
+                <CustomTimer
+                  msg={`Please Enter Full Screen or Test will get auto submitted in`}
+                  onlyS={true}
+                  reset={md}
+                  time={10}
+                  start={show}
+                  setMd={setMd}
+                  nextpage={"result"}
+                ></CustomTimer>
+              ) : (
+                "Please enter Full Screen mode"
+              )}
+            </Modal.Body>
+            <Modal.Footer>
+              <Button
+                variant="primary"
+                onClick={(e) => {
+                  handleClose(e);
+                  GoInFullscreen(document.querySelector("#element"));
+                }}
+              >
+                Enter Full Screeen
+              </Button>
+            </Modal.Footer>
+          </Modal>
+          {
+            <div>
               <div>
-                <div>
-                  <Row>
-                    <Col md="9">
-                      <div className="TestHeaderComp">
-                        {timeFF !== undefined && (
-                          <TestHeaderComp
-                            timer={timeFF}
-                            start={!testFinshBool}
-                            reset={testFinshBool}
-                            timeKey="Time"
-                            totalKey="Total"
-                            totalValue={ans.length}
-                            header="Personality"
-                            nextpage={"analytical"}
-                            setMd={setMd}
-                          ></TestHeaderComp>
-                        )}
-                      </div>
-                    </Col>
-                    <Col md="3">
-                      <button
-                        onClick={(e) => {
-                          setTestFinishBool(true);
-                          setShow(false);
-                          setMd(true);
-                          navigate("/result");
-                          if (document.exitFullscreen) {
-                            document.exitFullscreen();
-                          } else if (document.webkitExitFullscreen) {
-                            document.webkitExitFullscreen();
-                          } else if (document.mozCancelFullScreen) {
-                            document.mozCancelFullScreen();
-                          } else if (document.msExitFullscreen) {
-                            document.msExitFullscreen();
-                          }
-                        }}
-                        style={{
-                          backgroundColor: "#081466",
-                          fontWeight: "500",
-                          textAlign: "center",
-                          width: "100%",
-                          height: "60px",
-                          borderRadius: "14px",
-                          color: "white",
-                          boxShadow:
-                            "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
-                        }}
-                      >
-                        Finish Test
-                      </button>
-                    </Col>
-                  </Row>
+                <Row>
+                  <Col md="9">
+                    <div className="TestHeaderComp">
+                      {timeFF !== undefined && (
+                        <TestHeaderComp
+                          timer={timeFF}
+                          start={!testFinshBool}
+                          reset={testFinshBool}
+                          timeKey="Time"
+                          totalKey="Total"
+                          totalValue={ans.length}
+                          header="Personality"
+                          nextpage={"analytical"}
+                          setMd={setMd}
+                        ></TestHeaderComp>
+                      )}
+                    </div>
+                  </Col>
+                  <Col md="3">
+                    <button
+                      onClick={(e) => {
+                        setTestFinishBool(true);
+                        setShow(false);
+                        setMd(true);
+                        navigate("/result");
+                        if (document.exitFullscreen) {
+                          document.exitFullscreen();
+                        } else if (document.webkitExitFullscreen) {
+                          document.webkitExitFullscreen();
+                        } else if (document.mozCancelFullScreen) {
+                          document.mozCancelFullScreen();
+                        } else if (document.msExitFullscreen) {
+                          document.msExitFullscreen();
+                        }
+                      }}
+                      style={{
+                        backgroundColor: "#081466",
+                        fontWeight: "500",
+                        textAlign: "center",
+                        width: "100%",
+                        height: "60px",
+                        borderRadius: "14px",
+                        color: "white",
+                        boxShadow:
+                          "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+                      }}
+                    >
+                      Finish Test
+                    </button>
+                  </Col>
+                </Row>
+                <Watermark
+                  text={sessionStorage.getItem("username")}
+                  opacity="0.3"
+                >
                   <Row style={{ marginTop: "15px" }}>
                     <Col md="9">
                       <div
@@ -516,10 +519,10 @@ function PTestScreen() {
                       </div>
                     </Col>
                   </Row>
-                </div>
+                </Watermark>
               </div>
-            }
-          </Watermark>
+            </div>
+          }
         </>
       ) : (
         <MobileWidth />
