@@ -851,7 +851,7 @@ def marks(request,sid=0):
                         data=chartData(user,data['testId'],True)
                         if not user.is_staff :
                             token = str(uuid.uuid4())
-                            subject = "Your Forget Password Link"
+                            subject = "Result {0}".format(test.name)
                             email_from = settings.EMAIL_HOST_USER
                             recipient_list = [user.email]
                             # send_mail(subject,message,email_from,recipient_list)
