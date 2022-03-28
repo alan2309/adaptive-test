@@ -36,6 +36,7 @@ class MyUser(models.Model):
     takeFeedback=models.IntegerField(default=1)
     permission_token = models.CharField(max_length=400,null=True,blank=True)
     change_pass_token = models.CharField(max_length=400,null=True,blank=True)
+    view_result_token = models.CharField(max_length=400,null=True,blank=True)
 
     def __str__(self):
         return self.user.username

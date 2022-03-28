@@ -17,7 +17,7 @@
 }
 .radarCh .apexcharts-menu-icon,
 .modal-dialog .apexcharts-menu-icon {
-  display: none;
+  display: none !important;
 }
 
 .Para {

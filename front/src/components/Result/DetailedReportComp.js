@@ -250,15 +250,18 @@ function DetailedReportComp({
             <Col xs="4" md={4}>
               <Chart_score percent={mrksScoredPercent?.[2]} label="Domain" />
             </Col>
+            <div className="page-break" />
             <Col xs="6" md={6}>
               <Chart_score percent={mrksScoredPercent?.[3]} label="Coding" />
             </Col>
-            <Col xs="6" md={6}>
+
+            <Col xs="6" md={6} style={{ height: "100%" }}>
               <Chart_score
                 percent={mrksScoredPercent?.[4]}
                 label="Analytical Writing"
               />
             </Col>
+            <div className="page-break" />
             <p
               style={{
                 fontFamily: "Poppins",

@@ -28,6 +28,7 @@ import DetailPageModified from "./screens/DetailPageModified";
 import Feedback from "./screens/Admin/Feedback";
 import Permissions from "./screens/Admin/Permissions";
 import "./css/App.css";
+import ViewResult from "./screens/ViewResult";
 function App() {
   return (
     <div className="App" id="element">
@@ -351,6 +352,16 @@ function App() {
                 <Row style={{ margin: "20px 0 0 0" }}>
                   <Col style={{ padding: "10px 90px" }}>
                     <ChangePass />
+                  </Col>
+                </Row>
+              }
+            />
+            <Route
+              path="/viewresult"
+              element={
+                <Row style={{ margin: "20px 0 0 0" }}>
+                  <Col style={{ padding: "10px 90px" }}>
+                    <ViewResult />
                   </Col>
                 </Row>
               }

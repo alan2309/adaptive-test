@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { isExpired, decodeToken } from "react-jwt";
-import { useNavigate } from "react-router";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../axios";
 import { Col, Modal, Row, Form } from "react-bootstrap";
 import TestHeaderComp from "../components/TestScreeen/TestHeaderComp";
@@ -8,18 +8,17 @@ import Chart from "react-apexcharts";
 import "../css/ResultScreen.css";
 import { useReactToPrint } from "react-to-print";
 import DetailedReportComp from "../components/Result/DetailedReportComp";
-import Feedbackstar from "react-feedback-star-component";
 import Loader from "../components/Loader";
 import Alert from "../components/Admin/Alert";
 import { useMediaQuery } from "react-responsive";
 import MobileWidth from "../components/MobileWidth";
 
-function Result() {
+function ViewResult() {
   const isDesktopOrLaptop = useMediaQuery({
     query: "(min-width: 1024px)",
   });
   const navigate = useNavigate();
-  const [mrks, setmrks] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams();
   const [totalMarksScored, setTotalMarksScored] = useState(0);
   const [timeTaken, setTimeTaken] = useState();
   const [personalityData, setPersonalityData] = useState([]);
@@ -30,17 +29,13 @@ function Result() {
   const [opt1, setOpt1] = useState({});
   const [optRadar, setOptRadar] = useState({});
   const [show, setShow] = useState(false);
-  const [showFeedback, setShowFeedback] = useState(false);
-  const [feedBackOnLogout, setFeedBackOnLogout] = useState(false);
   const [idx, setIdx] = useState();
   const [userDetails, setUserDetails] = useState({});
   const [startTime, setStartTime] = useState("");
   const componentRef = useRef(null);
   const [isLoading, setIsloading] = useState(true);
-  const [feedback_star, set_feedback_star] = useState(0);
   const [successMsg, setSuccessMsg] = useState("");
   const [dangerMsg, setDangerMsg] = useState("");
-  const [feedback_comment, set_feedback_comment] = useState("");
   const [isAlertDangerMsgLoaded, setIsAlertDangerMsgLoaded] = useState(false);
   const [isAlertSuccessMsgLoaded, setIsAlertSuccessMsgLoaded] = useState(false);
   const [prediction, setPrediction] = useState(false);
@@ -51,13 +46,44 @@ function Result() {
   });
 
   useEffect(() => {
-    var t = sessionStorage.getItem("test");
-    var t2 = sessionStorage.getItem("test2");
-    var t3 = sessionStorage.getItem("test3");
-    var t4 = sessionStorage.getItem("test4");
-    var t5 = sessionStorage.getItem("test5");
-    var t6 = sessionStorage.getItem("test6");
+    var user = searchParams.get("user");
+    setIsloading(true);
+    for (const entry of searchParams.entries()) {
+      const [param, value] = entry;
+      console.log(param, value);
+    }
 
+    if (user && searchParams.get("viewRes")) {
+      axiosInstance
+        .get(`api/results/${user}`, {
+          params: {
+            testId: searchParams.get("testId"),
+            viewRes: searchParams.get("viewRes"),
+            viewToken: searchParams.get("viewToken"),
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          setMrksScored(res.data.mrksScored);
+          setAvgMarksArr(res.data.avgMarksArr);
+          setMrksScoredPercent(res.data.mrksScoredPercent);
+          setTotalMarksScored(res.data.totalMarksScored);
+          setTimeTaken(res.data.timeTaken);
+          setPersonalityData(res.data.personalityData);
+          setIdx(res.data.res_id);
+          setUserDetails(res.data.user_detail);
+          setStartTime(res.data.startTime);
+          setPrediction(res.data.prediction);
+          setIsloading(false);
+        })
+        .catch((e) => console.log(e));
+
+      setIsloading(false);
+    } else {
+      alert("in else");
+      // navigate('/logout')
+      setIsloading(false);
+    }
     setOptRadar({
       dataLabels: {
         enabled: true,
@@ -109,130 +135,6 @@ function Result() {
         },
       },
     });
-
-    var current, apiId, tNo;
-    if (t3 !== null) {
-      current = t3;
-      apiId = 6;
-      tNo = 3;
-    } else if (t !== null) {
-      current = t;
-      apiId = 1;
-      tNo = 1;
-    } else if (t2 !== null) {
-      current = t2;
-      apiId = 2;
-      tNo = 2;
-    } else if (t4 !== null) {
-      current = t4;
-      apiId = 3;
-      tNo = 4;
-    } else if (t5 !== null) {
-      current = t5;
-      apiId = 4;
-      tNo = 5;
-    } else if (t6 !== null) {
-      current = t6;
-      apiId = 5;
-      tNo = 6;
-    }
-
-    if (current !== undefined) {
-      let data = {};
-      if (current !== t6) {
-        let ax = JSON.parse(current);
-        let user = ax["username"];
-        let ar = ax["marks"];
-        let maxMarks = ax["maxMarks"];
-        let gotMarks = ax["marks"];
-        let total = 0;
-        for (let i = 0; i < ar.length; i++) {
-          if (ar[i] !== -1) total = total + ar[i];
-        }
-        data = {
-          username: user,
-          marks: total,
-          maxMarks: maxMarks,
-          gotMarks: gotMarks,
-          testId: sessionStorage.getItem("testId"),
-          check_result: 1,
-          name: sessionStorage.getItem("name"),
-          age: sessionStorage.getItem("age"),
-          gender: sessionStorage.getItem("gender"),
-        };
-      } else {
-        let ax = JSON.parse(current);
-        let user = ax["username"];
-        let total = ax["marks"];
-        data = {
-          username: user,
-          marks: total,
-          testId: sessionStorage.getItem("testId"),
-          check_result: 1,
-          name: sessionStorage.getItem("name"),
-          age: sessionStorage.getItem("age"),
-          gender: sessionStorage.getItem("gender"),
-        };
-      }
-      setIsloading(true);
-      axiosInstance
-        .post(`api/marks/${apiId}`, {
-          data: data,
-        })
-        .then((res) => {
-          sessionStorage.setItem("result", true);
-          if (tNo !== 1) {
-            sessionStorage.removeItem(`test${tNo}`);
-          } else {
-            sessionStorage.removeItem("test");
-          }
-          setMrksScored(res.data.mrksScored);
-          setAvgMarksArr(res.data.avgMarksArr);
-          setMrksScoredPercent(res.data.mrksScoredPercent);
-          setTotalMarksScored(res.data.totalMarksScored);
-          setTimeTaken(res.data.timeTaken);
-          setPersonalityData(res.data.personalityData);
-          setIdx(res.data.res_id);
-          setShowFeedback(res.data.takeFeedback);
-          setPrediction(res.data.prediction);
-          // sessionStorage.setItem('result',total)
-          setIsloading(false);
-        })
-        .catch((e) => console.log(e));
-    } else {
-      var user = sessionStorage.getItem("username");
-      setIsloading(true);
-      if (user) {
-        axiosInstance
-          .get(`api/results/${user}`, {
-            params: {
-              testId: sessionStorage.getItem("testId"),
-            },
-          })
-          .then((res) => {
-            setMrksScored(res.data.mrksScored);
-            setAvgMarksArr(res.data.avgMarksArr);
-            setMrksScoredPercent(res.data.mrksScoredPercent);
-            setTotalMarksScored(res.data.totalMarksScored);
-            setTimeTaken(res.data.timeTaken);
-            setPersonalityData(res.data.personalityData);
-            setIdx(res.data.res_id);
-            setUserDetails(res.data.user_detail);
-            setStartTime(res.data.startTime);
-            setShowFeedback(false);
-            setPrediction(res.data.prediction);
-            setIsloading(false);
-          })
-          .catch((e) => console.log(e));
-      }
-    }
-
-    const token = sessionStorage.getItem("access_token");
-    const isMyTokenExpired = isExpired(token);
-    if (isMyTokenExpired) {
-      navigate("/login");
-      return;
-    }
     setOpt({
       stroke: {
         width: [0, 4],
@@ -294,21 +196,10 @@ function Result() {
         "Analytical Writing",
       ],
     });
-    if (document.fullscreenElement !== null) {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
-      } else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
-      } else if (document.msExitFullscreen) {
-        document.msExitFullscreen();
-      }
-    }
   }, []);
 
   return (
-    <>
+    <div>
       {isDesktopOrLaptop ? (
         <>
           {isLoading ? (
@@ -327,106 +218,6 @@ function Result() {
                 isAlertMsgLoaded={isAlertDangerMsgLoaded}
                 type="danger"
               ></Alert>
-              <Modal
-                id="feedback"
-                show={feedBackOnLogout}
-                onHide={() => setShowFeedback(false)}
-                backdrop="static"
-                keyboard={false}
-                centered
-              >
-                <Modal.Body>
-                  <Form
-                    style={{ paddingTop: "15px" }}
-                    onSubmit={async (e) => {
-                      e.preventDefault();
-
-                      await axiosInstance
-                        .post("api/feedback", {
-                          data: {
-                            rating: feedback_star,
-                            comment: feedback_comment,
-                            username: sessionStorage.getItem("username"),
-                          },
-                        })
-                        .then((res) => {
-                          if (res.data.success) {
-                            setIsAlertSuccessMsgLoaded(true);
-                            setSuccessMsg("Thank you for your feedback");
-                            setShowFeedback(false);
-                            navigate("/logout");
-                          } else {
-                            setDangerMsg("Error Occured");
-                          }
-                        })
-                        .catch((e) => console.log(e));
-                    }}
-                  >
-                    <p
-                      style={{
-                        textAlign: "center",
-                        fontSize: "16px",
-                        textAlign: "center",
-                        color: "#081466",
-                      }}
-                    >
-                      <b>How do you feel about this portal? </b>
-                    </p>
-                    <Feedbackstar
-                      fontSizeStar="3vw"
-                      colorStar="#081466"
-                      sendFeedback={(e) => {
-                        set_feedback_star(e);
-                      }}
-                    ></Feedbackstar>
-                    <p
-                      style={{
-                        textAlign: "center",
-                        fontSize: "16px",
-                        textAlign: "center",
-                        color: "#788094",
-                      }}
-                    >
-                      Let us know if you have ideas for new features <br></br>or
-                      improvements below!
-                    </p>
-                    <Form.Group className="mb-3">
-                      <Form.Label
-                        style={{
-                          fontSize: "14px",
-                          textAlign: "center",
-                          color: "#081466",
-                        }}
-                      >
-                        {" "}
-                        <b>Feedback</b>
-                      </Form.Label>
-                      <Form.Control
-                        as="textarea"
-                        rows={5}
-                        onChange={(e) => {
-                          set_feedback_comment(e.target.value);
-                        }}
-                      />
-                    </Form.Group>
-                    <button
-                      className="btn"
-                      type="submit"
-                      disabled={feedback_star !== 0 ? false : true}
-                      style={{
-                        fontSize: "14px",
-                        textAlign: "center",
-                        backgroundColor: "#10b65c",
-                        color: "white",
-                        marginLeft: "190px",
-                      }}
-                    >
-                      {" "}
-                      Submit{" "}
-                    </button>
-                  </Form>
-                </Modal.Body>
-              </Modal>
               <Modal
                 id="result_page"
                 show={show}
@@ -784,42 +575,13 @@ function Result() {
                   </div>
                 </Col>
               </Row>
-              {sessionStorage.getItem("admin") === "admin" &&
-                idx !== undefined && (
-                  <button
-                    type="button"
-                    className="btn"
-                    onClick={async (e) => {
-                      sessionStorage.removeItem("submittedFeedback");
-                      sessionStorage.removeItem("testId");
-                      sessionStorage.removeItem("result");
-                      await axiosInstance
-                        .delete(`api/delres/${idx}`)
-                        .then((res) => {
-                          navigate("/admin/scheduledTest");
-                        })
-                        .catch((e) => console.log(e));
-                    }}
-                    style={{
-                      marginTop: "20px",
-                      backgroundColor: "red",
-                      color: "white",
-                      border: "none",
-                    }}
-                  >
-                    Back
-                  </button>
-                )}
+
               {sessionStorage.getItem("admin") === "user" && (
                 <button
                   type="button"
                   className="btn"
                   onClick={(e) => {
-                    if (showFeedback) {
-                      setFeedBackOnLogout(true);
-                    } else {
-                      navigate("/logout");
-                    }
+                    navigate("/logout");
                   }}
                   style={{
                     marginTop: "20px",
@@ -831,6 +593,24 @@ function Result() {
                   Logout
                 </button>
               )}
+              {sessionStorage.getItem("admin") !== "user" &&
+                sessionStorage.getItem("admin") !== "admin" && (
+                  <button
+                    type="button"
+                    className="btn"
+                    onClick={(e) => {
+                      navigate("/");
+                    }}
+                    style={{
+                      marginTop: "20px",
+                      backgroundColor: "#10b65c",
+                      color: "white",
+                      border: "none",
+                    }}
+                  >
+                    Home
+                  </button>
+                )}
               <button
                 type="button"
                 className="btn"
@@ -851,8 +631,8 @@ function Result() {
       ) : (
         <MobileWidth />
       )}
-    </>
+    </div>
   );
 }
 
-export default Result;
+export default ViewResult;

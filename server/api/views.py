@@ -568,7 +568,7 @@ class BlackListTokenView(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @csrf_exempt
-def results(request,name):
+def results(request,name=''):
     if request.headers.get('Authorization') and checkAuthorization(request.headers["Authorization"]):
         user = User.objects.get(username = name) 
         if request.method == 'POST':
@@ -607,12 +607,31 @@ def results(request,name):
                 return JsonResponse("User Doesn't exist",safe=False)
         elif request.method=='GET':
             if user:
+                if(request.GET.get('viewRes')):
+                    myuser=user.myuser
+                    if(myuser.view_result_token != request.GET.get('viewToken')):
+                        return HttpResponseBadRequest()
                 testId=request.GET.get('testId')
                 data=chartData(user,testId,False)
-            
             return JsonResponse(data,safe=False)
     else:
-        return HttpResponseBadRequest()
+        if request.method=='GET' and name != '':
+            user = User.objects.filter(username = name) 
+
+            if user.exists():
+                user=user[0]
+                if(request.GET.get('viewRes')):
+                    myuser=user.myuser
+                    if(myuser.view_result_token != request.GET.get('viewToken')):
+                        return HttpResponseBadRequest()
+                testId=request.GET.get('testId')
+                data=chartData(user,testId,False)
+                return JsonResponse(data,safe=False)
+            else:
+                return HttpResponseBadRequest()
+
+        else:
+            return HttpResponseBadRequest()
         
 @csrf_exempt
 def setresult(request,name):
@@ -794,7 +813,8 @@ def marks(request,sid=0):
             d = datetime.datetime.utcnow()
             user = User.objects.get(username = data['username'])
             if(user):
-                result = Results.objects.get(student = user,test=Test.objects.get(id=data['testId']))
+                test=Test.objects.get(id=data['testId'])
+                result = Results.objects.get(student = user,test=test)
                 
                 if(result):
                     if sid == 1:
@@ -829,6 +849,22 @@ def marks(request,sid=0):
                     result.save()
                     if data['check_result']:
                         data=chartData(user,data['testId'],True)
+                        if not user.is_staff :
+                            token = str(uuid.uuid4())
+                            subject = "Your Forget Password Link"
+                            email_from = settings.EMAIL_HOST_USER
+                            recipient_list = [user.email]
+                            # send_mail(subject,message,email_from,recipient_list)
+                            msg=EmailMultiAlternatives(subject=subject,from_email=email_from,to=recipient_list)
+                            args={}
+                            args['name']='{}'.format(user.first_name)
+                            args['url']='http://localhost:3000/viewresult?viewToken={0}&user={1}&viewRes={2}&testId={3}'.format(token,user.email,True,test.id)
+                            html_template=get_template("api/Result.html").render(args)
+                            msg.attach_alternative(html_template,"text/html")
+                            msg.send()
+                            myuser =user.myuser
+                            myuser.view_result_token = token
+                            myuser.save()
                     return JsonResponse(data,safe=False)
                 else:
                     return JsonResponse("Restart Test",safe=False)
