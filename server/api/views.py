@@ -149,9 +149,9 @@ def subqs(request,subject=0,tid=0):
 
 
 
-def predict():
-    regressor = pd.read_pickle(r'server\model.pickle') 
-    result = regressor.predict([[0,0,0,0,0]])
+def predict(percentArr):
+    regressor = pd.read_pickle('D:/CHAITANYA/web/React/2ndMarchAdaptive/adaptive-test/server/model.pickle') 
+    result = regressor.predict([percentArr])
     return int(result[0])
 
 def constdata(request):
@@ -738,7 +738,7 @@ def chartData(user,testId=-1,isPost=False):
         if isPost:
             takeFeedback=myUser.takeFeedback
         user_detail=MyUserSerializer(myUser).data
-    return {'startTime':resl.startTime,'endTime':resl.endTime,'personalityData':resl.marks['pGot'],'marks':resl.marks,'totalQs':totalQs,'avgMarksArr':a,'mrksScored':mrksScored,'mrksScoredPercent':mrksScoredPercent,'totalMarksScored':sum(mrksScored),'timeTaken':tdelta.seconds,'res_id':resl.id,'user_detail':user_detail,'takeFeedback':takeFeedback}
+    return {'startTime':resl.startTime,'endTime':resl.endTime,'personalityData':resl.marks['pGot'],'marks':resl.marks,'totalQs':totalQs,'avgMarksArr':a,'mrksScored':mrksScored,'mrksScoredPercent':mrksScoredPercent,'totalMarksScored':sum(mrksScored),'timeTaken':tdelta.seconds,'res_id':resl.id,'user_detail':user_detail,'takeFeedback':takeFeedback,'prediction':predict(mrksScoredPercent)}
 
 @csrf_exempt
 def takeFeedback(request):
@@ -851,7 +851,7 @@ def marks(request,sid=0):
                         data=chartData(user,data['testId'],True)
                         if not user.is_staff :
                             token = str(uuid.uuid4())
-                            subject = "Result {0}".format(test.name)
+                            subject = "Result {0}".format(test.test_name)
                             email_from = settings.EMAIL_HOST_USER
                             recipient_list = [user.email]
                             # send_mail(subject,message,email_from,recipient_list)
