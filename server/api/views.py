@@ -138,13 +138,12 @@ def subqs(request,subject=0,tid=0):
         else:
             a = ques_json.aw["medium"]
             b=[]
-            for i in range(3):
-                if(i < len(a)):
-                    med = random.randint(0,len(ques_json.aw["medium"])-1)
-                    b.append(a[med])
-                    del a[med:med+1]
-                else:
-                    break
+            option1, option2, option3 = random.sample(range(0, 3), 3)
+            med = random.randint(0,len(a)-1)
+            if a[option1]: b.append(a[option1])
+            if a[option2]: b.append(a[option2])
+            if a[option3]: b.append(a[option3])
+          
             return JsonResponse({'data':b,'time':test.aw['time']},safe=False)              
 
 
