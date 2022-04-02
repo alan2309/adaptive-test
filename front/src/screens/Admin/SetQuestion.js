@@ -137,30 +137,36 @@ function SetQuestion({
     e.preventDefault();
     var dictionary = {};
     if (parseInt(sid) === 6) {
-      dictionary["paraId"] = currentQsID;
-      let txtAreaEle = $("textarea");
-      dictionary["rightOptArrAnalytical"] = {};
-      dictionary["qsDict"] = {};
-      for (let y = 0; y < txtAreaEle.length; y++) {
-        if (txtAreaEle[y].name.includes("Qs")) {
-          let a = {};
-          dictionary[txtAreaEle[y].name] = txtAreaEle[y].value;
-          dictionary["rightOptArrAnalytical"][txtAreaEle[y].name] = "";
-          a["title"] = txtAreaEle[y].value;
-          a["options"] = [];
-          dictionary["qsDict"][txtAreaEle[y].name] = a;
-        } else {
-          dictionary[txtAreaEle[y].name] = txtAreaEle[y].value;
+      if (20 % para_qs.length === 0) {
+        dictionary["paraId"] = currentQsID;
+        let txtAreaEle = $("textarea");
+        dictionary["rightOptArrAnalytical"] = {};
+        dictionary["qsDict"] = {};
+        for (let y = 0; y < txtAreaEle.length; y++) {
+          if (txtAreaEle[y].name.includes("Qs")) {
+            let a = {};
+            dictionary[txtAreaEle[y].name] = txtAreaEle[y].value;
+            dictionary["rightOptArrAnalytical"][txtAreaEle[y].name] = "";
+            a["title"] = txtAreaEle[y].value;
+            a["options"] = [];
+            dictionary["qsDict"][txtAreaEle[y].name] = a;
+          } else {
+            dictionary[txtAreaEle[y].name] = txtAreaEle[y].value;
+          }
         }
-      }
-      let rightOptArr = $('input[name$="correctOpt"]:checked');
+        let rightOptArr = $('input[name$="correctOpt"]:checked');
 
-      for (let x = 0; x < rightOptArr.length; x++) {
-        if (rightOptArr[x] !== null) {
-          dictionary["rightOptArrAnalytical"][
-            rightOptArr[x].value.split("Option")[0]
-          ] = rightOptArr[x].value;
+        for (let x = 0; x < rightOptArr.length; x++) {
+          if (rightOptArr[x] !== null) {
+            dictionary["rightOptArrAnalytical"][
+              rightOptArr[x].value.split("Option")[0]
+            ] = rightOptArr[x].value;
+          }
         }
+      } else {
+        setIsAlertDangerMsgLoaded(true);
+        setDangerMsg("Number of questions should be divisible by 20");
+        return;
       }
     } else {
       dictionary[document.getElementById("qsSetQs").name] =

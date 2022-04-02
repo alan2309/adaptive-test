@@ -651,6 +651,10 @@ def setresult(request,name):
                 name=myUser.name
                 gender=myUser.gender
                 age=myUser.age
+                if user.is_staff:
+                    vb=Results.objects.filter(student=user)
+                    if vb.exists():
+                        vb.delete()
                 result = Results.objects.create(student = user,startTime = d,test=Test.objects.get(id=data['testId']),
                 marks={"ap":0,'cf':0,'c':0,'d':0,'p':0,'a':0,"avg_ap":avg_ap,'avg_cf':avg_cf,'avg_c':avg_c,'avg_d':avg_d,'avg_p':avg_p,'avg_a':avg_a,'apMax':[],'cfMax':[],'cMax':[],'dMax':[],'pMax':[],'aMax':[],'apGot':[],'cfGot':[],'cGot':[],'dGot':[],'pGot':[evaluate(request,{'Nick':name,'Sex':'Male','Age':21,'Q':[0]*(121),'Country':'India'})],'aGot':[]}
                 )
@@ -718,7 +722,7 @@ def chartData(user,testId=-1,isPost=False):
         if(sum(resl.marks['cMax'])>0):
             cMax=sum(resl.marks['cMax'])
         if(sum(resl.marks['aMax'])>0):
-            aMax=sum(resl.marks['aMax'])
+            aMax=60
         mrksScoredPercent=[round((resl.marks['ap']/apMax)*100,2),round((resl.marks['cf']/cfMax)*100,2),round((resl.marks['d']/dMax)*100,2),round((resl.marks['c']/cMax)*100,2),round((resl.marks['a']/aMax)*100,2)]
         mrksScored=[resl.marks['ap'],resl.marks['cf'],resl.marks['d'],resl.marks['c'],resl.marks['a']]
         FMT = '%H:%M:%S'

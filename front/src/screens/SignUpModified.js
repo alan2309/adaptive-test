@@ -227,7 +227,6 @@ function SignUpModified() {
                       <Form.Label> Age </Form.Label>
                       <Form.Control
                         type="number"
-                        type="text"
                         onChange={handleChange}
                         placeholder="age"
                         name="age"
@@ -267,7 +266,6 @@ function SignUpModified() {
                       <Form.Label> 10th percentage </Form.Label>
                       <Form.Control
                         type="number"
-                        type="text"
                         placeholder="10th percentage"
                         onChange={handleChange}
                         name="percent_10_std"
@@ -278,7 +276,6 @@ function SignUpModified() {
                       <Form.Label> 12th percentage </Form.Label>
                       <Form.Control
                         type="number"
-                        type="text"
                         placeholder="12th percentage"
                         onChange={handleChange}
                         name="percent_12_std"
@@ -333,7 +330,6 @@ function SignUpModified() {
                       <Form.Label> Average C.G.P.A </Form.Label>
                       <Form.Control
                         type="number"
-                        type="text"
                         placeholder=" C.G.P.A "
                         onChange={handleChange}
                         name="avgCGPA"
@@ -344,7 +340,6 @@ function SignUpModified() {
                       <Form.Label> Number of Backlogs </Form.Label>
                       <Form.Control
                         type="number"
-                        type="text"
                         placeholder=" Backlogs "
                         onChange={handleChange}
                         name="backlogs"
@@ -355,7 +350,6 @@ function SignUpModified() {
                       <Form.Label> Number of internships </Form.Label>
                       <Form.Control
                         type="number"
-                        type="text"
                         placeholder="internship"
                         onChange={handleChange}
                         name="internships"
