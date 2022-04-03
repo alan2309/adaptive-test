@@ -235,39 +235,67 @@ function NewTest() {
     e.preventDefault();
     let sx = new Date(sDate);
     let ex = new Date(eDate);
-    if (ex.getTime() > sx.getTime()) {
-      let objClash = clash(sx.getTime(), ex.getTime(), testId);
-      if (!objClash.bool) {
-        let creaTest = {
-          testName: tName,
-          sTime: sDate,
-          eTime: eDate,
-          goLive: goLive,
-        };
-        axiosInstance
-          .post(`api/createTest/${sessionStorage.getItem("username")}`, {
-            data: {
-              saveTest: axData,
-              createTest: creaTest,
-              isUpdate: location.state?.isUpdate || false,
-              tid: location.state?.data?.id || null,
-            },
-          })
-          .then((res) => {
-            setIsloading(false);
-            location.state?.isUpdate
-              ? navigate("/admin/scheduledTest")
-              : navigate("/admin/home");
-          });
+    if (
+      (AWDic.totalQs < 3 ||
+        CDic.totalQs < 3 ||
+        CFDic.totalQs === 0 ||
+        DDic.totalQs === 0 ||
+        aptDic.totalQs === 0 ||
+        PDic.totalQs === 0) &&
+      goLive
+    ) {
+      setIsloading(false);
+      setIsAlertDangerMsgLoaded(true);
+      let msg = "";
+      if (AWDic.totalQs < 3) {
+        msg = "There should be 3 questions in Analytical Writing";
+      } else if (CDic.totalQs < 3) {
+        msg = "There should be 3 questions in Coding";
+      } else if (PDic.totalQs === 0) {
+        msg = "Questions cannot be 0 in Personality";
+      } else if (DDic.totalQs === 0) {
+        msg = "Questions cannot be 0 in Domain";
+      } else if (CFDic.totalQs === 0) {
+        msg = "Questions cannot be 0 in Computer Fundamentals";
+      } else if (aptDic.totalQs === 0) {
+        msg = "Questions cannot be 0 in Aptitude";
+      }
+      setDangerMsg(msg);
+    } else {
+      if (ex.getTime() > sx.getTime()) {
+        let objClash = clash(sx.getTime(), ex.getTime(), testId);
+        if (!objClash.bool) {
+          let creaTest = {
+            testName: tName,
+            sTime: sDate,
+            eTime: eDate,
+            goLive: goLive,
+          };
+          axiosInstance
+            .post(`api/createTest/${sessionStorage.getItem("username")}`, {
+              data: {
+                saveTest: axData,
+                createTest: creaTest,
+                isUpdate: location.state?.isUpdate || false,
+                tid: location.state?.data?.id || null,
+              },
+            })
+            .then((res) => {
+              setIsloading(false);
+              location.state?.isUpdate
+                ? navigate("/admin/scheduledTest")
+                : navigate("/admin/home");
+            });
+        } else {
+          setIsloading(false);
+          setIsAlertDangerMsgLoaded(true);
+          setDangerMsg(objClash.msg);
+        }
       } else {
         setIsloading(false);
         setIsAlertDangerMsgLoaded(true);
-        setDangerMsg(objClash.msg);
+        setDangerMsg("End time must be greater than start time");
       }
-    } else {
-      setIsloading(false);
-      setIsAlertDangerMsgLoaded(true);
-      setDangerMsg("End time must be greater than start time");
     }
   }
   function clash(stx, etx, tId) {
@@ -367,14 +395,21 @@ function NewTest() {
     }
     let min_ = Math.min(easy_len, med_len, hard_len);
     if (!isPersonality && sid !== 6) {
-      if (min_ === 0) {
-        if (med_len > 0) {
-          return 1;
+      if (sid !== 5) {
+        if (min_ === 0) {
+          if (med_len > 0) {
+            return 1;
+          } else {
+            return 0;
+          }
         } else {
-          return 0;
+          return min_;
         }
       } else {
-        return min_;
+        let e = easy_len >= 1 ? 1 : 0;
+        let m = med_len >= 1 ? 1 : 0;
+        let h = hard_len >= 1 ? 1 : 0;
+        return e + m + h;
       }
     } else {
       return med_len;
@@ -447,40 +482,48 @@ function NewTest() {
           },
         }));
       } else if (sid - 1 == 4) {
-        setCDic({
-          time: CurrentDic.time,
-          totalQs: curr_value,
-        });
-        setAxData((prev) => ({
-          ...prev,
-          ["Coding"]: {
-            ...prev["Coding"],
-            qs: curr_value,
+        if (!(curr_value > 3)) {
+          setCDic({
             time: CurrentDic.time,
-            avg: 30,
-            maxQs: check_MaxQS_Db({
-              isPersonality: false,
-              easy: axData["Coding"].easy.length,
-              medium: axData["Coding"].medium.length,
-              hard: axData["Coding"].hard.length,
-            }),
-          },
-        }));
+            totalQs: curr_value,
+          });
+          setAxData((prev) => ({
+            ...prev,
+            ["Coding"]: {
+              ...prev["Coding"],
+              qs: curr_value,
+              time: CurrentDic.time,
+              avg: 30,
+              maxQs: check_MaxQS_Db({
+                isPersonality: false,
+                easy: axData["Coding"].easy.length,
+                medium: axData["Coding"].medium.length,
+                hard: axData["Coding"].hard.length,
+              }),
+            },
+          }));
+        } else {
+          return;
+        }
       } else if (sid - 1 == 5) {
-        setAWDic({
-          time: CurrentDic.time,
-          totalQs: curr_value,
-        });
-        setAxData((prev) => ({
-          ...prev,
-          ["Analytical Writing"]: {
-            ...prev["Analytical Writing"],
-            qs: curr_value,
+        if (!(curr_value > 3)) {
+          setAWDic({
             time: CurrentDic.time,
-            maxQs: 3,
-            avg: 30,
-          },
-        }));
+            totalQs: curr_value,
+          });
+          setAxData((prev) => ({
+            ...prev,
+            ["Analytical Writing"]: {
+              ...prev["Analytical Writing"],
+              qs: curr_value,
+              time: CurrentDic.time,
+              maxQs: 3,
+              avg: 30,
+            },
+          }));
+        } else {
+          return;
+        }
       } else if (sid - 1 === 0) {
         setAptDic({
           time: CurrentDic.time,
