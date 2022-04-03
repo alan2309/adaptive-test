@@ -1,3 +1,4 @@
+import os
 from posixpath import split
 from django.contrib.auth.hashers import make_password
 import json
@@ -150,7 +151,7 @@ def subqs(request,subject=0,tid=0):
 
 
 def predict(percentArr):
-    regressor = pd.read_pickle('D:/CHAITANYA/web/React/2ndMarchAdaptive/adaptive-test/server/model.pickle') 
+    regressor = pd.read_pickle(os.path.join(settings.BASE_DIR,os.path.basename('model.pickle'))) 
     result = regressor.predict([percentArr])
     return int(result[0])
 
