@@ -59,8 +59,9 @@ def converttosec(time):
 ########Create Test Functions###############    
 
 @csrf_exempt
-def createTest(request):
+def createTest(request,name):
     if request.method =="POST":
+        user = User.objects.get(username = name)
         data=JSONParser().parse(request)['data']
         data_apt = data['saveTest']['Aptitude']
         data_cf =data['saveTest']['Computer Fundamentals']
@@ -90,7 +91,7 @@ def createTest(request):
         test_p = {"qs": data_p["qs"], "time": data_p["time"], "avg": data_p["avg"], "maxQs": data_p["maxQs"]}
         if data['tid']:
             Test.objects.get(id=data['tid']).delete()
-        tst=Test(totalTestTime=total_time,test_name=data['createTest']['testName'],test_start=data['createTest']['sTime'],test_end=data['createTest']['eTime'],token=str(uuid.uuid4()),apt=test_apt,dom=test_d,c = test_c,cf=test_cf,aw=test_aw,p = test_p,live=data['createTest']['goLive'])
+        tst=Test(myuser = user.myuser,totalTestTime=total_time,test_name=data['createTest']['testName'],test_start=data['createTest']['sTime'],test_end=data['createTest']['eTime'],token=str(uuid.uuid4()),apt=test_apt,dom=test_d,c = test_c,cf=test_cf,aw=test_aw,p = test_p,live=data['createTest']['goLive'])
         tst.save()
 
         data_apt=loopdata(data_apt,"Aptitude")
@@ -223,16 +224,16 @@ def login(request):
             userr = User.objects.get(username=username)
             if userr.is_staff ==True:
                 if userr.is_superuser:
-                    return JsonResponse({"exist":1,"allowed":1,"admin":1,"super":1},safe=False)
-                return JsonResponse({"exist":1,"allowed":1,"admin":1,"super":0},safe=False)
+                    return JsonResponse({"exist":1,"allowed":1,"admin":1,"super":1,'myid':user.myuser.id},safe=False)
+                return JsonResponse({"exist":1,"allowed":1,"admin":1,"super":0,'myid':user.myuser.id},safe=False)
             else :
                 if int(data['mytid'])==-1:
-                    return JsonResponse({"exist":1,"allowed":1,"admin":0},safe=False)
+                    return JsonResponse({"exist":1,"allowed":1,"admin":0,'myid':user.myuser.id},safe=False)
                 testx = Test.objects.get(id=int(data['mytid']))
                 if testx.token == user.myuser.permission_token:
-                    return JsonResponse({"exist":1,"allowed":1,"admin":0},safe=False)
+                    return JsonResponse({"exist":1,"allowed":1,"admin":0,'myid':user.myuser.id},safe=False)
                 else:
-                    return JsonResponse({"exist":1,"allowed":0,"admin":0},safe=False)       
+                    return JsonResponse({"exist":1,"allowed":0,"admin":0,'myid':user.myuser.id},safe=False)       
         else:
             return JsonResponse({"exist":0},safe=False)
 
@@ -1218,14 +1219,17 @@ def getTests(request):
 def getTestsWithQsJson(request):
     if request.method == 'GET':
         d = datetime.datetime.utcnow()
+        alltest = Test.objects.all()
         stests = Test.objects.filter(Q(test_end__lte=d) | Q(test_start__lt=d))
         utests = Test.objects.filter(test_start__gt=d) 
         stestS = TestSerializer(stests,many=True)
+        alltest = TestSerializer(alltest,many=True)
         utestS = TestSerializer(utests,many=True)
         cc=[]
         for x in utests:
             c={}
             qsJson=QuestionJson.objects.get(test=x)
+            c['myuser'] = x.myuser.id
             c['id']=x.id
             c['live']=x.live
             c['test_name']=x.test_name
@@ -1246,7 +1250,7 @@ def getTestsWithQsJson(request):
             data['Analytical Writing']=qsJson.aw
             c['data']=data
             cc.append(c)
-        return JsonResponse({"stests":stestS.data,"utests":cc},safe=False)
+        return JsonResponse({"alltest":alltest.data,"stests":stestS.data,"utests":cc},safe=False)
 
 def durationBtwnDates(start_date_time,end_date_time):
     diff=end_date_time-start_date_time

@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
    #new urls
-   path('api/createTest',views.createTest),
+   path('api/createTest/<str:name>',views.createTest),
 
    #Authentication
    path('api/log',views.login),

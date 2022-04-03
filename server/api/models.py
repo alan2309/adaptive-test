@@ -2,22 +2,6 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
 
-class Test(models.Model):
-    test_name = models.CharField(max_length=150)
-    test_start = models.DateTimeField(blank=True,null=True)
-    test_end = models.DateTimeField(blank=True,null=True)
-    apt = models.JSONField(null=True, blank=True)
-    cf = models.JSONField(null=True, blank=True)
-    c = models.JSONField(null=True, blank=True)
-    dom = models.JSONField(null=True, blank=True)
-    p = models.JSONField(null=True, blank=True)
-    aw = models.JSONField(null=True, blank=True)
-    totalTestTime = models.CharField(max_length=40,null=True, blank=True)
-    token = models.CharField(max_length=400,null=True,blank=True)
-    live = models.BooleanField(default=False)
-    def __str__(self):
-        return self.test_name
-
 class MyUser(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
@@ -40,6 +24,23 @@ class MyUser(models.Model):
 
     def __str__(self):
         return self.user.username
+
+class Test(models.Model):
+    myuser = models.ForeignKey(MyUser,on_delete=models.CASCADE,null=True,blank=True)
+    test_name = models.CharField(max_length=150)
+    test_start = models.DateTimeField(blank=True,null=True)
+    test_end = models.DateTimeField(blank=True,null=True)
+    apt = models.JSONField(null=True, blank=True)
+    cf = models.JSONField(null=True, blank=True)
+    c = models.JSONField(null=True, blank=True)
+    dom = models.JSONField(null=True, blank=True)
+    p = models.JSONField(null=True, blank=True)
+    aw = models.JSONField(null=True, blank=True)
+    totalTestTime = models.CharField(max_length=40,null=True, blank=True)
+    token = models.CharField(max_length=400,null=True,blank=True)
+    live = models.BooleanField(default=False)
+    def __str__(self):
+        return self.test_name
 
 class Subject(models.Model):
    sub_name = models.CharField(max_length=255)

@@ -102,7 +102,7 @@ function Login() {
           let ong = res.data.ongoing_test;
           if (ong.length > 0) {
             setMyId(ong[0].id);
-            setMyTotalTestTime(ong[0]. totalTestTime);
+            setMyTotalTestTime(ong[0].totalTestTime);
             setTestStart(ong[0].start);
             setTestEnd(ong[0].endDate);
             ong[0]["ends_in"] = (
@@ -178,6 +178,7 @@ function Login() {
           if (res.data.allowed) {
             let adminn = res.data.admin;
             let superr = res.data.super;
+            let myuserid = res.data.myid;
             axiosInstance
               .post("token/", {
                 username: formData.username,
@@ -190,6 +191,7 @@ function Login() {
                 if (xx !== -1 || adminn) {
                   sessionStorage.setItem("testId", xx); //imp
                   sessionStorage.setItem("admin", "user");
+                  sessionStorage.setItem("myid", myuserid);
                   sessionStorage.setItem("access_token", res.data.access);
                   sessionStorage.setItem("username", formData.username);
                   sessionStorage.setItem("refresh_token", res.data.refresh);
@@ -217,8 +219,11 @@ function Login() {
                           }
                         } else {
                           setMd(true);
-                          sessionStorage.setItem("totalTestTime", myTotalTestTime);
-                          sessionStorage.setItem("start",testStart);
+                          sessionStorage.setItem(
+                            "totalTestTime",
+                            myTotalTestTime
+                          );
+                          sessionStorage.setItem("start", testStart);
                           sessionStorage.setItem("endDate", testEnd);
                           navigate("/details");
                         }

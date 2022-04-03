@@ -68,12 +68,11 @@ function ScheduledTest() {
     const data = async () => {
       setIsloading(true);
       await axiosInstance
-        .get("api/admin/testsData")
+        .get(`api/admin/testsData`)
         .then((res) => {
-          let ar = [];
           setSTests(res.data.stests);
           setUTests(res.data.utests);
-          setTests(ar.concat(res.data.stests, res.data.utests));
+          setTests(res.data.alltest);
         })
         .catch((e) => {
           console.log(e);
@@ -727,6 +726,12 @@ function ScheduledTest() {
                             >
                               <Col>
                                 <button
+                                  disabled={
+                                    parseInt(sessionStorage.getItem("myid")) ==
+                                    t.myuser
+                                      ? false
+                                      : true
+                                  }
                                   type="button"
                                   onClick={(e) => {
                                     navigate("/admin/viewScheduledTest", {
@@ -751,17 +756,20 @@ function ScheduledTest() {
                                 </button>
                               </Col>
                               <Col md={1}>
-                                <i
-                                  onClick={() => delSTest(t.id)}
-                                  className="fa fa-trash"
-                                  style={{
-                                    backgroundColor: "white",
-                                    color: "red",
-                                    float: "right",
-                                    marginRight: "15px",
-                                    marginTop: "10px",
-                                  }}
-                                ></i>
+                                {parseInt(sessionStorage.getItem("myid")) ==
+                                  t.myuser && (
+                                  <i
+                                    onClick={() => delSTest(t.id)}
+                                    className="fa fa-trash"
+                                    style={{
+                                      backgroundColor: "white",
+                                      color: "red",
+                                      float: "right",
+                                      marginRight: "15px",
+                                      marginTop: "10px",
+                                    }}
+                                  ></i>
+                                )}
                               </Col>
                             </Row>
                           );
@@ -812,6 +820,12 @@ function ScheduledTest() {
                             >
                               <Col>
                                 <button
+                                  disabled={
+                                    parseInt(sessionStorage.getItem("myid")) ==
+                                    t.myuser
+                                      ? false
+                                      : true
+                                  }
                                   type="button"
                                   onClick={(e) => {
                                     // upcomingTest(e, t);
@@ -836,44 +850,55 @@ function ScheduledTest() {
                                 </button>
                               </Col>
                               <Col md={1}>
-                                <i
-                                  onClick={() => {
-                                    if (t.live) {
-                                      startTest(t.id);
-                                    } else {
-                                      setIsAlertMsgLoaded(true);
-                                      setDangerMsg("Cannot preview draft");
+                                {parseInt(sessionStorage.getItem("myid")) ==
+                                  t.myuser && (
+                                  <i
+                                    onClick={() => {
+                                      if (
+                                        t.live &&
+                                        parseInt(
+                                          sessionStorage.getItem("myid")
+                                        ) == t.myuser
+                                      ) {
+                                        startTest(t.id);
+                                      } else {
+                                        setIsAlertMsgLoaded(true);
+                                        setDangerMsg("Cannot preview draft");
+                                      }
+                                    }}
+                                    className={
+                                      t.live ? "fa fa-eye" : "fa fa-eye-slash"
                                     }
-                                  }}
-                                  className={
-                                    t.live ? "fa fa-eye" : "fa fa-eye-slash"
-                                  }
-                                  title={
-                                    t.live
-                                      ? "Preview test"
-                                      : "Cannot preview draft"
-                                  }
-                                  style={{
-                                    backgroundColor: "white",
-                                    color: t.live ? "green" : "red",
-                                    float: "right",
-                                    marginRight: "15px",
-                                    marginTop: "10px",
-                                  }}
-                                ></i>
+                                    title={
+                                      t.live
+                                        ? "Preview test"
+                                        : "Cannot preview draft"
+                                    }
+                                    style={{
+                                      backgroundColor: "white",
+                                      color: t.live ? "green" : "red",
+                                      float: "right",
+                                      marginRight: "15px",
+                                      marginTop: "10px",
+                                    }}
+                                  ></i>
+                                )}
                               </Col>
                               <Col md={1}>
-                                <i
-                                  onClick={() => delTest(t.id)}
-                                  className="fa fa-trash"
-                                  style={{
-                                    backgroundColor: "white",
-                                    color: "red",
-                                    float: "right",
-                                    marginRight: "15px",
-                                    marginTop: "10px",
-                                  }}
-                                ></i>
+                                {parseInt(sessionStorage.getItem("myid")) ==
+                                  t.myuser && (
+                                  <i
+                                    onClick={() => delTest(t.id)}
+                                    className="fa fa-trash"
+                                    style={{
+                                      backgroundColor: "white",
+                                      color: "red",
+                                      float: "right",
+                                      marginRight: "15px",
+                                      marginTop: "10px",
+                                    }}
+                                  ></i>
+                                )}
                               </Col>
                             </Row>
                           );
