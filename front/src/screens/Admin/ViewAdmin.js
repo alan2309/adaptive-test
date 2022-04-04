@@ -46,7 +46,8 @@ function ViewAdmin() {
   const popover = (
     <Popover id="popover-basic">
       <Popover.Body>
-        All admins are listed here and create new admin.
+        Here all the recent actions of admin's are listed. All admin's details
+        are listed here and can create a new admin.
       </Popover.Body>
     </Popover>
   );
