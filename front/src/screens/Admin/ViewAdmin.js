@@ -38,7 +38,7 @@ function ViewAdmin() {
       sort: "disabled",
     },
     {
-      label: "user",
+      label: "Admin",
       field: "user",
       sort: "disabled",
     },
@@ -59,7 +59,7 @@ function ViewAdmin() {
   const navigate = useNavigate();
   useEffect(() => {
     setIsloading(false);
-    if (`${sessionStorage.getItem("super")}` === "True") {
+    if (`${sessionStorage.getItem("super")}` === "true") {
       axiosInstance
         .get("/api/getAllAdmin")
         .then((res) => {

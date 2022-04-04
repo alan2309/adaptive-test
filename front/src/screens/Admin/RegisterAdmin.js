@@ -101,7 +101,7 @@ function RegisterAdmin() {
           setDepartments(res.data.departments);
         })
         .catch((e) => console.log(e));
-    if (`${sessionStorage.getItem("super")}` === "True") {
+    if (`${sessionStorage.getItem("super")}` === "true") {
       list();
     } else {
       navigate(-1);
