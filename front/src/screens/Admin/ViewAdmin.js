@@ -5,13 +5,9 @@ import MobileWidth from "../../components/MobileWidth";
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../../axios";
 import { MDBDataTableV5 } from "mdbreact";
-
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import Alert from "../../components/Admin/Alert";
 import Loader from "../../components/Loader";
-import createFilterOptions from "react-select-fast-filter-options";
-import Select from "react-select";
-import getGraduationYears from "../../components/TestScreeen/graduationYears";
 import ConfirmDialogBox from "../../components/ConfirmDialogBox";
 import { Row, Col } from "react-bootstrap";
 
@@ -21,11 +17,6 @@ function ViewAdmin() {
   const [isAlertMsgLoaded, setIsAlertMsgLoaded] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
   const [dangerMsg, setDangerMsg] = useState("");
-  const [colleges, setColleges] = useState([]);
-  const [departments, setDepartments] = useState([]);
-  const [isAlertDangerMsgLoaded, setIsAlertDangerMsgLoaded] = useState(false);
-
-  const [rows, setRows] = useState([]);
   const [data, setTData] = useState({ columns: [], rows: [] });
   const isDesktopOrLaptop = useMediaQuery({
     query: "(min-width: 1024px)",
@@ -68,15 +59,18 @@ function ViewAdmin() {
   const navigate = useNavigate();
   useEffect(() => {
     setIsloading(false);
-    axiosInstance
-      .get("/api/getAllAdmin")
-      .then((res) => {
-        setTData({ columns: columns, rows: res.data.ls });
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-
+    if (`${sessionStorage.getItem("super")}` === "True") {
+      axiosInstance
+        .get("/api/getAllAdmin")
+        .then((res) => {
+          setTData({ columns: columns, rows: res.data.ls });
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    } else {
+      navigate(-1);
+    }
     return () => {};
   }, []);
 
