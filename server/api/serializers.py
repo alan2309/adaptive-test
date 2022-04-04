@@ -62,4 +62,10 @@ class LogEntrySerializer(serializers.ModelSerializer):
         data = super().to_representation(instance)
         if data['change_message'] == "" or data['change_message'] == "[]":
             data['change_message'] = "Deleted"
+        if data['action_time']:
+            date_time_arr=data['action_time'].split('.')[0]
+            spilt_date_time_arr=date_time_arr.split('T')
+            date=spilt_date_time_arr[0]
+            time=spilt_date_time_arr[1]
+            data['action_time']="{0}     {1}".format(time,date)
         return data
