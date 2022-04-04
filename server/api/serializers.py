@@ -1,6 +1,8 @@
+from email.policy import default
 from rest_framework import serializers
 from .models import CodingTest, MyUser, Results, Subject,Questions,Test,Paraopt,Para,Feedback,Options
 from django.contrib.auth.models import User
+from django.contrib.admin.models import LogEntry
 
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
@@ -50,3 +52,14 @@ class FeedbackSerializer(serializers.ModelSerializer):
     class Meta:
         model = Feedback
         fields='__all__'        
+class LogEntrySerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source='user.email')
+    class Meta:
+        model = LogEntry
+        fields=['action_time','change_message','object_repr','user']    
+        
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        if data['change_message'] == "" or data['change_message'] == "[]":
+            data['change_message'] = "Deleted"
+        return data

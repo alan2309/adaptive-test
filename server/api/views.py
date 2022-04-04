@@ -1,3 +1,4 @@
+from email.policy import default
 import os
 from posixpath import split
 from django.contrib.auth.hashers import make_password
@@ -15,7 +16,7 @@ from django.contrib.auth.models import User
 import datetime
 from rest_framework.parsers import JSONParser
 import random
-from .serializers import CodingTestSerializer, MyUserSerializer, OptSerializer, SubjectSerializer,QuestionSerializer, TestSerializer ,ResultSerializer,OptionSerializer,AllUserSerializer
+from .serializers import CodingTestSerializer, MyUserSerializer, OptSerializer, SubjectSerializer,QuestionSerializer, TestSerializer ,ResultSerializer,OptionSerializer,AllUserSerializer,LogEntrySerializer
 import math
 from django.db.models import Q
 from dateutil import tz
@@ -28,7 +29,7 @@ from django.conf import settings
 import uuid
 CFG = {'DB': None}
 import pandas as pd
-
+from django.contrib.admin.models import LogEntry
 ##########Create Test Functions###############
 def createCloud(img,section):
     imgId=None
@@ -1128,6 +1129,16 @@ def saveTest(request):
     else:
         return HttpResponseBadRequest()
 @csrf_exempt
+def getAllAdmin(request):
+    if request.headers.get('Authorization') and checkAuthorization(request.headers["Authorization"]):  
+        if request.method == 'GET':
+            ls=LogEntrySerializer(LogEntry.objects.filter(user__is_staff=True),many=True,default='Delete').data
+            return JsonResponse({'ls':ls},safe=False) 
+
+    else:
+        return HttpResponseBadRequest()  
+            
+@csrf_exempt
 def tests(request,idd=0):
     if request.headers.get('Authorization') and checkAuthorization(request.headers["Authorization"]):  
         if request.method == 'POST':
@@ -1215,7 +1226,7 @@ def getTests(request):
             c['duration']=dicTime['duration']
             c['starts_in']=durationBtwnDates(datetime.datetime(d.year,d.month,d.day,d.hour,d.minute,d.second),datetime.datetime(x.test_start.year,x.test_start.month,x.test_start.day,x.test_start.hour,x.test_start.minute,x.test_start.second))['total_seconds']
             cc.append(c)
-        return JsonResponse({"stests":stestS.data,"utests":utestS.data,'upcoming_test':cc,'ongoing_test':bb},safe=False)
+        return JsonResponse({"stests":stestS.data,"utests":utestS.data,'upcoming_test':cc,'ongoing_test':bb,'ls':ls},safe=False)
 @csrf_exempt    
 def getTestsWithQsJson(request):
     if request.method == 'GET':

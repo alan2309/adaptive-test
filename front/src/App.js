@@ -29,6 +29,7 @@ import Feedback from "./screens/Admin/Feedback";
 import Permissions from "./screens/Admin/Permissions";
 import "./css/App.css";
 import ViewResult from "./screens/ViewResult";
+import ViewAdmin from "./screens/Admin/ViewAdmin";
 function App() {
   return (
     <div className="App" id="element">
@@ -82,12 +83,23 @@ function App() {
               }
             />
             <Route
-              path="/admin/RegisterAdmin"
+              path="/admin/registerAdmin"
               exact
               element={
                 <Row style={{ margin: "0px" }}>
                   <Col style={{ padding: "0px" }}>
                     <RegisterAdmin />
+                  </Col>
+                </Row>
+              }
+            />
+            <Route
+              path="/admin/registeredAdmin"
+              exact
+              element={
+                <Row style={{ margin: "0px" }}>
+                  <Col style={{ padding: "0px" }}>
+                    <ViewAdmin />
                   </Col>
                 </Row>
               }

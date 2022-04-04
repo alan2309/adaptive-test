@@ -167,7 +167,7 @@ function AdminHome() {
                 {`${sessionStorage.getItem("super")}` === "true" && (
                   <ListGroup.Item
                     action
-                    href="/admin/RegisterAdmin"
+                    href="/admin/registeredAdmin"
                     style={{
                       width: "50%",
                       height: "75px",
