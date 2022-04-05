@@ -744,6 +744,7 @@ def chartData(user,testId=-1,isPost=False):
         if(sum(resl.marks['aMax'])>0):
             aMax=60
         mrksScoredPercent=[round((resl.marks['ap']/apMax)*100,2),round((resl.marks['cf']/cfMax)*100,2),round((resl.marks['d']/dMax)*100,2),round((resl.marks['c']/cMax)*100,2),round((resl.marks['a']/aMax)*100,2)]
+        mrksScoredPercentPrediction=[round((resl.marks['ap']/apMax)*100,2),round((resl.marks['a']/aMax)*100,2),round((resl.marks['d']/dMax)*100,2),round((resl.marks['cf']/cfMax)*100,2),round((resl.marks['c']/cMax)*100,2)]
         mrksScored=[resl.marks['ap'],resl.marks['cf'],resl.marks['d'],resl.marks['c'],resl.marks['a']]
         FMT = '%H:%M:%S'
         s1 = "{}:{}:{}".format(str(resl.endTime.hour),str(resl.endTime.minute),str(resl.endTime.second))
@@ -761,7 +762,7 @@ def chartData(user,testId=-1,isPost=False):
         if isPost:
             takeFeedback=myUser.takeFeedback
         user_detail=MyUserSerializer(myUser).data
-    return {'startTime':resl.startTime,'endTime':resl.endTime,'personalityData':resl.marks['pGot'],'marks':resl.marks,'totalQs':totalQs,'avgMarksArr':a,'mrksScored':mrksScored,'mrksScoredPercent':mrksScoredPercent,'totalMarksScored':sum(mrksScored),'timeTaken':tdelta.seconds,'res_id':resl.id,'user_detail':user_detail,'takeFeedback':takeFeedback,'prediction':predict(mrksScoredPercent)}
+    return {'startTime':resl.startTime,'endTime':resl.endTime,'personalityData':resl.marks['pGot'],'marks':resl.marks,'totalQs':totalQs,'avgMarksArr':a,'mrksScored':mrksScored,'mrksScoredPercent':mrksScoredPercent,'totalMarksScored':sum(mrksScored),'timeTaken':tdelta.seconds,'res_id':resl.id,'user_detail':user_detail,'takeFeedback':takeFeedback,'prediction':predict(mrksScoredPercentPrediction)}
 
 @csrf_exempt
 def takeFeedback(request):

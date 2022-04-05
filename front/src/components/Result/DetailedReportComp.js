@@ -654,8 +654,7 @@ function DetailedReportComp({
                 Aptitude
               </p>
               <BulletChartSection
-                secId={0}
-                score={SE < LO ? 30 : SE >= LO && SE <= HI ? 60 : 85}
+                score={mrksScoredPercent?.[0]}
               ></BulletChartSection>
 
               <p
@@ -667,7 +666,7 @@ function DetailedReportComp({
                 className="factor_5_modal_result"
               >
                 {" "}
-                {SE < LO && (
+                {parseInt(mrksScoredPercent?.[0]) < 40 && (
                   <p>
                     {" "}
                     Your score on Extraversion is low, indicating you are
@@ -676,21 +675,22 @@ function DetailedReportComp({
                     to a few close friends.{" "}
                   </p>
                 )}
-                {SE >= LO && SE <= HI && (
-                  <>
-                    <br />{" "}
-                    <p>
-                      {" "}
-                      <em>
+                {parseInt(mrksScoredPercent?.[0]) >= 40 &&
+                  parseInt(mrksScoredPercent?.[0]) <= 75 && (
+                    <>
+                      <br />{" "}
+                      <p>
                         {" "}
-                        Your score on Extraversion is average, indicating you
-                        are neither a subdued loner nor a jovial chatterbox. You
-                        enjoy time with others but also time alone.{" "}
-                      </em>{" "}
-                    </p>
-                  </>
-                )}
-                {SE > HI && (
+                        <em>
+                          {" "}
+                          Your score on Extraversion is average, indicating you
+                          are neither a subdued loner nor a jovial chatterbox.
+                          You enjoy time with others but also time alone.{" "}
+                        </em>{" "}
+                      </p>
+                    </>
+                  )}
+                {parseInt(mrksScoredPercent?.[0]) > 75 && (
                   <>
                     <br />{" "}
                     <p>
@@ -713,8 +713,7 @@ function DetailedReportComp({
                 Fundamentals
               </p>
               <BulletChartSection
-                secId={1}
-                score={SA < LO ? 30 : SA >= LO && SA <= HI ? 60 : 85}
+                score={mrksScoredPercent?.[1]}
               ></BulletChartSection>
               <p
                 style={{
@@ -725,7 +724,7 @@ function DetailedReportComp({
                 className="factor_5_modal_result"
               >
                 {" "}
-                {SA < LO && (
+                {parseInt(mrksScoredPercent?.[1]) < 40 && (
                   <p>
                     {" "}
                     Your score on Agreeableness is low, indicating less concern
@@ -733,15 +732,16 @@ function DetailedReportComp({
                     tough, critical, and uncompromising.{" "}
                   </p>
                 )}
-                {SA >= LO && SA <= HI && (
-                  <p>
-                    {" "}
-                    Your level of Agreeableness is average, indicating some
-                    concern with others' Needs, but, generally, unwillingness to
-                    sacrifice yourself for others.{" "}
-                  </p>
-                )}
-                {SA > HI && (
+                {parseInt(mrksScoredPercent?.[1]) >= 40 &&
+                  parseInt(mrksScoredPercent?.[1]) <= 75 && (
+                    <p>
+                      {" "}
+                      Your level of Agreeableness is average, indicating some
+                      concern with others' Needs, but, generally, unwillingness
+                      to sacrifice yourself for others.{" "}
+                    </p>
+                  )}
+                {parseInt(mrksScoredPercent?.[1]) > 75 && (
                   <p>
                     {" "}
                     Your high level of Agreeableness indicates a strong interest
@@ -757,8 +757,7 @@ function DetailedReportComp({
                 Domain
               </p>
               <BulletChartSection
-                secId={2}
-                score={SC < LO ? 30 : SC >= LO && SC <= HI ? 60 : 85}
+                score={mrksScoredPercent?.[2]}
               ></BulletChartSection>
               <p
                 style={{
@@ -769,20 +768,21 @@ function DetailedReportComp({
                 className="factor_5_modal_result"
               >
                 {" "}
-                {SC < LO && (
+                {parseInt(mrksScoredPercent?.[2]) < 40 && (
                   <p>
                     Your score on Conscientiousness is low, indicating you like
                     to live for the moment and do what feels good now. Your work
                     tends to be careless and disorganized.
                   </p>
                 )}
-                {SC >= LO && SC <= HI && (
-                  <p>
-                    Your score on Conscientiousness is average. This means you
-                    are reasonably reliable, organized, and self-controlled.
-                  </p>
-                )}
-                {SC > HI && (
+                {parseInt(mrksScoredPercent?.[2]) >= 40 &&
+                  parseInt(mrksScoredPercent?.[2]) <= 75 && (
+                    <p>
+                      Your score on Conscientiousness is average. This means you
+                      are reasonably reliable, organized, and self-controlled.
+                    </p>
+                  )}
+                {parseInt(mrksScoredPercent?.[2]) > 75 && (
                   <p>
                     Your score on Conscientiousness is high. This means you set
                     clear goals and pursue them with determination. People
@@ -803,7 +803,7 @@ function DetailedReportComp({
               </p>
               <BulletChartSection
                 secId={3}
-                score={SN < LO ? 30 : SN >= LO && SN <= HI ? 60 : 85}
+                score={mrksScoredPercent?.[3]}
               ></BulletChartSection>
               <p
                 style={{
@@ -814,7 +814,7 @@ function DetailedReportComp({
                 className="factor_5_modal_result"
               >
                 {" "}
-                {SN < LO && (
+                {parseInt(mrksScoredPercent?.[3]) < 40 && (
                   <p>
                     Your score on Neuroticism is low, indicating that you are
                     exceptionally calm, composed and unflappable. You do not
@@ -822,16 +822,17 @@ function DetailedReportComp({
                     people would describe as stressful.
                   </p>
                 )}
-                {SN >= LO && SN <= HI && (
-                  <p>
-                    Your score on Neuroticism is average, indicating that your
-                    level of emotional reactivity is typical of the general
-                    population. Stressful and frustrating situations are
-                    somewhat upsetting to you, but you are generally able to get
-                    over these feelings and cope with these situations.
-                  </p>
-                )}
-                {SN > HI && (
+                {parseInt(mrksScoredPercent?.[3]) >= 40 &&
+                  parseInt(mrksScoredPercent?.[3]) <= 75 && (
+                    <p>
+                      Your score on Neuroticism is average, indicating that your
+                      level of emotional reactivity is typical of the general
+                      population. Stressful and frustrating situations are
+                      somewhat upsetting to you, but you are generally able to
+                      get over these feelings and cope with these situations.
+                    </p>
+                  )}
+                {parseInt(mrksScoredPercent?.[3]) > 75 && (
                   <p>
                     Your score on Neuroticism is high, indicating that you are
                     easily upset, even by what most people consider the normal
@@ -850,7 +851,7 @@ function DetailedReportComp({
 
               <BulletChartSection
                 secId={4}
-                score={SO < LO ? 30 : SO >= LO && SO <= HI ? 60 : 85}
+                score={mrksScoredPercent?.[4]}
               ></BulletChartSection>
               <p
                 style={{
@@ -860,7 +861,7 @@ function DetailedReportComp({
                 }}
                 className="factor_5_modal_result"
               >
-                {SO < LO && (
+                {parseInt(mrksScoredPercent?.[4]) < 40 && (
                   <p>
                     Your score on Openness to Experience is low, indicating you
                     like to think in plain and simple terms. Others describe you
@@ -868,16 +869,18 @@ function DetailedReportComp({
                   </p>
                 )}
 
-                {SO >= LO && SO <= HI && (
-                  <p>
-                    Your score on Openness to Experience is average, indicating
-                    you enjoy tradition but are willing to try new things. Your
-                    thinking is neither simple nor complex. To others you appear
-                    to be a well-educated person but not an intellectual.{" "}
-                  </p>
-                )}
+                {parseInt(mrksScoredPercent?.[4]) >= 40 &&
+                  parseInt(mrksScoredPercent?.[4]) <= 75 && (
+                    <p>
+                      Your score on Openness to Experience is average,
+                      indicating you enjoy tradition but are willing to try new
+                      things. Your thinking is neither simple nor complex. To
+                      others you appear to be a well-educated person but not an
+                      intellectual.{" "}
+                    </p>
+                  )}
 
-                {SO > HI && (
+                {parseInt(mrksScoredPercent?.[4]) > 75 && (
                   <p>
                     Your score on Openness to Experience is high, indicating you
                     enjoy novelty, variety, and change. You are curious,
