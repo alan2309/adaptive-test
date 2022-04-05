@@ -1226,7 +1226,7 @@ def getTests(request):
             c['duration']=dicTime['duration']
             c['starts_in']=durationBtwnDates(datetime.datetime(d.year,d.month,d.day,d.hour,d.minute,d.second),datetime.datetime(x.test_start.year,x.test_start.month,x.test_start.day,x.test_start.hour,x.test_start.minute,x.test_start.second))['total_seconds']
             cc.append(c)
-        return JsonResponse({"stests":stestS.data,"utests":utestS.data,'upcoming_test':cc,'ongoing_test':bb,'ls':ls},safe=False)
+        return JsonResponse({"stests":stestS.data,"utests":utestS.data,'upcoming_test':cc,'ongoing_test':bb},safe=False)
 @csrf_exempt    
 def getTestsWithQsJson(request):
     if request.method == 'GET':

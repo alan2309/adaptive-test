@@ -50,6 +50,7 @@
     "react-to-print": "^2.14.4",
     "screen-size-detector": "^1.0.4",
     "speed-test": "^3.0.0",
+    "toastr": "^2.1.4",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
