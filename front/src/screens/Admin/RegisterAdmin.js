@@ -353,7 +353,7 @@ function RegisterAdmin() {
                       marginLeft: "120px",
                     }}
                   >
-                    Login
+                    Register
                   </button>
                 </div>
               </Form>

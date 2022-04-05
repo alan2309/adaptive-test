@@ -22,6 +22,7 @@ import { BsFillFileEarmarkPersonFill } from "react-icons/bs";
 import { RiLogoutCircleFill } from "react-icons/ri";
 import { RiAdminFill } from "react-icons/ri";
 import { AiFillControl } from "react-icons/ai";
+import {FaHistory } from "react-icons/fa";
 import MobileWidth from "../../components/MobileWidth";
 import { useMediaQuery } from "react-responsive";
 
@@ -167,7 +168,7 @@ function AdminHome() {
                 {`${sessionStorage.getItem("super")}` === "true" && (
                   <ListGroup.Item
                     action
-                    href="/admin/registeredAdmin"
+                    href="/admin/registerAdmin"
                     style={{
                       width: "50%",
                       height: "75px",
@@ -200,6 +201,45 @@ function AdminHome() {
                       }}
                     >
                       Register Admin
+                    </p>
+                  </ListGroup.Item>
+                )}
+                {`${sessionStorage.getItem("super")}` === "true" && (
+                  <ListGroup.Item
+                    action
+                    href="/admin/ViewHistory"
+                    style={{
+                      width: "50%",
+                      height: "75px",
+                      padding: "25px 0px",
+                      display: "block",
+                      textAlign: "center",
+                      color: "#666666",
+                      backgroundColor: "#ffffff",
+                      fontSize: "0.85em",
+                      borderRight: "2px solid rgba(0,0,0,0.07)",
+                      textDecoration: "none",
+                      borderTop: "none",
+                      borderBottom: "none",
+                      borderLeft: "none",
+                    }}
+                  >
+                    <FaHistory
+                      style={{
+                        width: "20px",
+                        height: "35px",
+                        marginTop: "-30px",
+                        color: "#293e6f",
+                      }}
+                    />
+                    <p
+                      style={{
+                        marginTop: "-2px",
+                        textAlign: "center",
+                        fontSize: "11.9px",
+                      }}
+                    >
+                      Admin History
                     </p>
                   </ListGroup.Item>
                 )}
