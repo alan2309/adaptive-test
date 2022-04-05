@@ -1,5 +1,5 @@
 import toastr from "toastr";
-import "toastr/build/toastr.min.css";
+import "../css/toastr.min.css";
 const toastrFunc = (type, msg) => {
   toastr.options = {
     positionClass: "toast-top-right",
