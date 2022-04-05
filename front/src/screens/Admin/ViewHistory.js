@@ -46,8 +46,7 @@ function ViewAdmin() {
   const popover = (
     <Popover id="popover-basic">
       <Popover.Body>
-        Here all the recent actions of admin's are listed. All admin's details
-        are listed here and can create a new admin.
+        In this section all the changes made by the admin as the adims who are registered are displayed. 
       </Popover.Body>
     </Popover>
   );
@@ -130,7 +129,7 @@ function ViewAdmin() {
                     marginLeft: "30px",
                   }}
                 >
-                  Admin{" "}
+                  Admin History{" "}
                   <OverlayTrigger
                     trigger="hover"
                     placement="bottom"
