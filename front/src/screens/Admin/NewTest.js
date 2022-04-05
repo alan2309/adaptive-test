@@ -258,9 +258,10 @@ function NewTest() {
       // setDangerMsg(msg);
       toastrFunc("error", msg);
     } else {
-      if (ex.getTime() > sx.getTime()) {
+      
+      if (ex.getTime() > sx.getTime() || !goLive) {
         let objClash = clash(sx.getTime(), ex.getTime(), testId);
-        if (!objClash.bool) {
+        if (!objClash.bool || !goLive) {
           let creaTest = {
             testName: tName,
             sTime: sDate,
@@ -286,13 +287,13 @@ function NewTest() {
           setIsloading(false);
           // setIsAlertDangerMsgLoaded(true);
           // setDangerMsg(objClash.msg);
-          toastrFunc("danger", objClash.msg);
+          toastrFunc("error", objClash.msg);
         }
       } else {
         setIsloading(false);
         // setIsAlertDangerMsgLoaded(true);
         // setDangerMsg("End time must be greater than start time");
-        toastrFunc("danger", "End time must be greater than start time");
+        toastrFunc("error", "End time must be greater than start time");
       }
     }
   }
@@ -1257,7 +1258,7 @@ function NewTest() {
                                               //   "Minimum should be 20 seconds"
                                               // );
                                               toastrFunc(
-                                                "danger",
+                                                "error",
                                                 "Minimum should be 20 seconds"
                                               );
                                             }
@@ -1412,7 +1413,7 @@ function NewTest() {
                                         //   "Minimum time should be greater than 20 seconds"
                                         // );
                                         toastrFunc(
-                                          "danger",
+                                          "error",
                                           "Minimum time should be greater than 20 seconds"
                                         );
                                       }
