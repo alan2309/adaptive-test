@@ -185,16 +185,26 @@ def newuser(request):
 
     if request.method=="POST":
         data=JSONParser().parse(request)['data']
-        if User.objects.filter(username = data['email']).exists():
-            return JsonResponse({"msg":"Failed","created":False,'exists':1},safe=False)
-        user = User.objects.create(first_name=data['name'],username = data['email'],email=data['email'],password=make_password(data['pass']))  
+        u=User.objects.filter(username = data['email'])
+        print(u.exists())
+        if u.exists():
+            u=u[0]
+            uu=MyUser.objects.filter(user=u)
+            u.first_name=data['name']
+            u.username = data['email']
+            u.email=data['email']
+            u.password=make_password(data['pass'])
+            if uu.exists():
+                return JsonResponse({"msg":"Failed","created":False,'exists':1},safe=False)
+        else:
+            u = User.objects.create(first_name=data['name'],username = data['email'],email=data['email'],password=make_password(data['pass']))  
         feedback=1
         if data['admin']:
             feedback=0
-            user.is_staff = True
+            u.is_staff = True
             if data['superuser']:
-                user.is_superuser = True     
-        myuser = MyUser.objects.filter(user=user)
+                u.is_superuser = True     
+        myuser = MyUser.objects.filter(user=u)
         if(myuser.exists()):
             myuser[0].delete()
         if int(data['gender'])==1:
@@ -203,16 +213,16 @@ def newuser(request):
             gender="Female"
         else:
             gender="Other"
-        newuser = MyUser(user=user,name=data['name'],email=data['email'],
+        newuser = MyUser(user=u,name=data['name'],email=data['email'],
                         age=int(data['age']),gender=gender,mobile=int(data['mobileNo']),
                         percent_10_std=int(data['percent_10_std']),percent_12_std=int(data['percent_12_std']),
                         avgCGPA=float(data['avgCGPA']),backlogs=int(data['backlogs']),
                         internships=int(data['internships']),branch=data['branch'],
                         college=data['college'],year=data['graduationYear'],takeFeedback=feedback
                         )
-        user.save()
+        u.save()
         newuser.save()
-        return JsonResponse({"msg":"Success","created":True,'exists':0},safe=False)     
+        return JsonResponse({"msg":"Success","created":True,'exists':0,'myid':newuser.id},safe=False)     
 
 @csrf_exempt
 def login(request):
@@ -225,9 +235,16 @@ def login(request):
             auth.login(request,user)
             userr = User.objects.get(username=username)
             if userr.is_staff ==True:
-                if userr.is_superuser:
-                    return JsonResponse({"exist":1,"allowed":1,"admin":1,"super":1,'myid':user.myuser.id},safe=False)
-                return JsonResponse({"exist":1,"allowed":1,"admin":1,"super":0,'myid':user.myuser.id},safe=False)
+                uu=MyUser.objects.filter(user=userr)
+                if uu.exists():
+                    if userr.is_superuser:
+                        return JsonResponse({"exist":1,"allowed":1,"admin":1,"super":1,'myid':user.myuser.id,'newadmin':0},safe=False)
+                    return JsonResponse({"exist":1,"allowed":1,"admin":1,"super":0,'myid':user.myuser.id,'newadmin':0},safe=False)
+                else:
+                    if userr.is_superuser:
+                        return JsonResponse({"exist":1,"allowed":1,"admin":1,"super":1,'newadmin':1},safe=False)
+                    return JsonResponse({"exist":1,"allowed":1,"admin":1,"super":0,'newadmin':1},safe=False)
+
             else :
                 if int(data['mytid'])==-1:
                     return JsonResponse({"exist":1,"allowed":1,"admin":0,'myid':user.myuser.id},safe=False)
@@ -1138,6 +1155,41 @@ def getAllAdmin(request):
     else:
         return HttpResponseBadRequest()  
             
+@csrf_exempt
+def sendMailAdmin(request):
+    if request.headers.get('Authorization') and checkAuthorization(request.headers["Authorization"]):  
+        if request.method == 'POST':
+            data=JSONParser().parse(request)['data']
+            
+            user=User.objects.filter(email=data['email'])
+            if user.exists():
+                return JsonResponse({'statuscode':0,'msg':'Email already exists'},safe=False)
+            else: 
+                user=User(email=data['email'],username=data['email'],password=make_password('ABCD@1234'),is_staff=True,is_superuser=bool(data['superuser']))
+                
+                print(user)
+                recipient_list = [data['email']]
+                subject = "Admin register"
+                email_from = settings.EMAIL_HOST_USER
+                # send_mail(subject,message,email_from,recipient_list)
+                msg=EmailMultiAlternatives(subject=subject,from_email=email_from,to=recipient_list)
+                args={}
+                args['name']='{}'.format(data['email'])
+                args['url']='http://localhost:3000/login'
+                args['password']='{}'.format('ABCD@1234')
+                html_template=get_template("api/AdminRegister.html").render(args)
+                msg.attach_alternative(html_template,"text/html")
+
+                msg.send()
+                user.save()
+                # myuser =user[0].myuser
+                # myuser.change_pass_token = token
+                # myuser.save()
+                return JsonResponse({'statuscode':1,'msg':'Created'},safe=False) 
+    else:
+        return HttpResponseBadRequest()  
+
+
 @csrf_exempt
 def tests(request,idd=0):
     if request.headers.get('Authorization') and checkAuthorization(request.headers["Authorization"]):  

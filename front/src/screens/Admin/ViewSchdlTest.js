@@ -125,12 +125,15 @@ function ViewSchdlTest() {
 
   useEffect(() => {
     setIsloading(true);
+    if (`${sessionStorage.getItem("myid")}` === "undefined") {
+      setIsloading(false);
+      navigate("/admin/registerAdmin");
+    }
     if (location.state !== null) {
       axiosInstance
         .get(`/api/admin/resultTest/${location.state.id}`)
         .then((res) => {
           setRows(res.data.studentNameArr);
-          console.log(res.data);
           setTData({
             columns: columns,
             rows: res.data.studentNameArr.map((v, index) => ({

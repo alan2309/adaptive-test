@@ -62,6 +62,9 @@ function NewTest() {
   useEffect(() => {
     setIsloading(true);
     var ssid;
+    if (`${sessionStorage.getItem("myid")}` === "undefined") {
+      navigate("/admin/registerAdmin");
+    }
     if (sessionStorage.getItem("isNewTestReload") !== null) {
       ssid = 0;
       setSid(ssid + 1);
@@ -258,7 +261,6 @@ function NewTest() {
       // setDangerMsg(msg);
       toastrFunc("error", msg);
     } else {
-      
       if (ex.getTime() > sx.getTime() || !goLive) {
         let objClash = clash(sx.getTime(), ex.getTime(), testId);
         if (!objClash.bool || !goLive) {

@@ -72,6 +72,7 @@ function RegisterAdmin() {
             setIsAlertDangerMsgLoaded(true);
             setDangerMsg("The user is already registered");
           } else {
+            sessionStorage.setItem("myid", res.data.myid);
             navigate("/admin/home");
           }
         })
@@ -101,11 +102,14 @@ function RegisterAdmin() {
           setDepartments(res.data.departments);
         })
         .catch((e) => console.log(e));
-    if (`${sessionStorage.getItem("super")}` === "true") {
-      list();
-    } else {
-      navigate(-1);
-    }
+    list();
+    updateFormData({
+      ...formData,
+      email:
+        sessionStorage.getItem("myid") === "undefined"
+          ? sessionStorage.getItem("username")
+          : "",
+    });
     setIsloading(false);
   }, []);
   return (
@@ -132,6 +136,10 @@ function RegisterAdmin() {
               border: "none",
               marginTop: "40px",
               marginLeft: "50px",
+              display:
+                sessionStorage.getItem("myid") === "undefined"
+                  ? "none"
+                  : "inline-block",
             }}
             className="btn btn-secondary"
             onClick={(e) => navigate("/admin/home")}
@@ -210,8 +218,15 @@ function RegisterAdmin() {
                     type="email"
                     placeholder="Enter email"
                     onChange={handleChange}
+                    disabled={
+                      sessionStorage.getItem("myid") === "undefined" ? true : false
+                    }
                     required
-                    value={formData.email}
+                    value={
+                      sessionStorage.getItem("myid") === "undefined"
+                        ? sessionStorage.getItem("username")
+                        : formData.email
+                    }
                   />
                   <Form.Text className="text-muted">
                     We'll never share your email with anyone else.
@@ -314,25 +329,6 @@ function RegisterAdmin() {
                   />
                 </Form.Group>
                 <div style={{ display: "flex", justifyContent: "center" }}>
-                  <Form.Check
-                    style={{
-                      border: "1px black",
-                      marginTop: "20px",
-                      marginBottom: "20px",
-                    }}
-                    value={formData.superuser}
-                    name="superuser"
-                    onChange={(e) => {
-                      updateFormData({
-                        ...formData,
-                        ["superuser"]: !formData.superuser,
-                      });
-                    }}
-                    type="checkbox"
-                    class="custom-control-label"
-                    id="custom-switch"
-                    label="Make this user superadmin?"
-                  />
                   <button
                     type="submit"
                     style={{

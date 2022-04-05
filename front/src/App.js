@@ -95,7 +95,7 @@ function App() {
               }
             />
             <Route
-              path="/admin/registerAdmin"
+              path="/admin/registeredAdmin"
               exact
               element={
                 <Row style={{ margin: "0px" }}>

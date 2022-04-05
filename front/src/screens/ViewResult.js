@@ -50,7 +50,6 @@ function ViewResult() {
     setIsloading(true);
     for (const entry of searchParams.entries()) {
       const [param, value] = entry;
-      console.log(param, value);
     }
 
     if (user && searchParams.get("viewRes")) {
@@ -63,7 +62,6 @@ function ViewResult() {
           },
         })
         .then((res) => {
-          console.log(res.data);
           setMrksScored(res.data.mrksScored);
           setAvgMarksArr(res.data.avgMarksArr);
           setMrksScoredPercent(res.data.mrksScoredPercent);

@@ -14,10 +14,12 @@ function Profile() {
   const [formData, updateFormData] = useState({});
 
   useEffect(() => {
+    if (`${sessionStorage.getItem("myid")}` === "undefined") {
+      navigate("/admin/registerAdmin");
+    }
     axiosInstance
       .get(`api/getUserData/${sessionStorage.getItem("username")}`)
       .then((res) => {
-        console.log(res.data.user);
         let data = res.data.user;
         updateFormData(data);
       });

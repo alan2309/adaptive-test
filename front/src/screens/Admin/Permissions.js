@@ -74,6 +74,9 @@ function Permissions() {
   ];
 
   useEffect(() => {
+    if (`${sessionStorage.getItem("myid")}` === "undefined") {
+      navigate("/admin/registerAdmin");
+    }
     const data = async () =>
       await axiosInstance
         .get("api/getuserslist")

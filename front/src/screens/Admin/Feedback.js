@@ -43,6 +43,9 @@ function Feedback() {
   }
   useEffect(() => {
     setIsloading(true);
+    if (`${sessionStorage.getItem("myid")}` === "undefined") {
+      navigate("/admin/registerAdmin");
+    }
 
     axiosInstance
       .get("api/feedback")

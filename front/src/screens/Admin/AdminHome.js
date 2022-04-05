@@ -22,7 +22,7 @@ import { BsFillFileEarmarkPersonFill } from "react-icons/bs";
 import { RiLogoutCircleFill } from "react-icons/ri";
 import { RiAdminFill } from "react-icons/ri";
 import { AiFillControl } from "react-icons/ai";
-import {FaHistory } from "react-icons/fa";
+import { FaHistory } from "react-icons/fa";
 import MobileWidth from "../../components/MobileWidth";
 import { useMediaQuery } from "react-responsive";
 
@@ -30,12 +30,15 @@ function AdminHome() {
   const isDesktopOrLaptop = useMediaQuery({
     query: "(min-width: 1024px)",
   });
+  const navigate = useNavigate();
   useEffect(() => {
     if (sessionStorage.getItem("isNewTestReload") !== undefined) {
       sessionStorage.removeItem("isNewTestReload");
     }
+    if (`${sessionStorage.getItem("myid")}` === "undefined") {
+      navigate("/admin/registerAdmin");
+    }
   }, []);
-  const navigate = useNavigate();
   return (
     <div className="AdminHomeScreen">
       {isDesktopOrLaptop ? (
@@ -168,7 +171,7 @@ function AdminHome() {
                 {`${sessionStorage.getItem("super")}` === "true" && (
                   <ListGroup.Item
                     action
-                    href="/admin/registerAdmin"
+                    href="/admin/registeredAdmin"
                     style={{
                       width: "50%",
                       height: "75px",

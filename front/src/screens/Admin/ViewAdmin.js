@@ -9,18 +9,19 @@ import { OverlayTrigger, Popover } from "react-bootstrap";
 import Alert from "../../components/Admin/Alert";
 import Loader from "../../components/Loader";
 import ConfirmDialogBox from "../../components/ConfirmDialogBox";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Modal, Form } from "react-bootstrap";
 
 function ViewAdmin() {
   const [isLoading, setIsloading] = useState(true);
   const [isAlertSuccessMsgLoaded, setIsAlertSuccessMsgLoaded] = useState(false);
-  const [isAlertMsgLoaded, setIsAlertMsgLoaded] = useState(false);
+  const [isAlertDangerMsgLoaded, setIsAlertDangerMsgLoaded] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
   const [dangerMsg, setDangerMsg] = useState("");
   const [data, setTData] = useState({ columns: [], rows: [] });
   const isDesktopOrLaptop = useMediaQuery({
     query: "(min-width: 1024px)",
   });
+  const [formData2, updateFormData2] = useState({ email: "", superuser: "" });
   const columns = [
     {
       label: "Action Time",
@@ -51,6 +52,7 @@ function ViewAdmin() {
       </Popover.Body>
     </Popover>
   );
+  const [show, setShow] = useState(false);
   const [showConfirmDialogBox, setShowConfirmDialogBox] = useState(false);
   const [argConfirmModal, setArgConfirmModal] = useState();
   const [confirm_yes_func, set_confirm_yes_func] = useState();
@@ -79,23 +81,150 @@ function ViewAdmin() {
     <>
       {isDesktopOrLaptop ? (
         <>
+          <Alert
+            msg={successMsg}
+            setIsAlertMsgLoaded={setIsAlertSuccessMsgLoaded}
+            isAlertMsgLoaded={isAlertSuccessMsgLoaded}
+            type="success"
+          ></Alert>
+          <Alert
+            msg={dangerMsg}
+            setIsAlertMsgLoaded={setIsAlertDangerMsgLoaded}
+            isAlertMsgLoaded={isAlertDangerMsgLoaded}
+            type="danger"
+          ></Alert>
+
           {isLoading ? (
             <Loader />
           ) : (
             <>
-              <Alert
-                msg={successMsg}
-                setIsAlertMsgLoaded={setIsAlertMsgLoaded}
-                isAlertMsgLoaded={isAlertMsgLoaded}
-                type="success"
-              ></Alert>
-              <Alert
-                msg={dangerMsg}
-                setIsAlertMsgLoaded={setIsAlertMsgLoaded}
-                isAlertMsgLoaded={isAlertMsgLoaded}
-                type="danger"
-              ></Alert>
-              <div className="SchdlTest">
+              <Modal
+                id="Login_page"
+                show={show}
+                onHide={() => setShow(false)}
+                centered
+              >
+                <Modal.Body
+                  style={{
+                    textAlign: "center",
+                    padding: "20px 20px 15px 20px",
+                  }}
+                >
+                  <p
+                    style={{
+                      fontFamily: "Poppins",
+                      fontStyle: "normal",
+                      fontWeight: "600",
+                      fontSize: "16px",
+                      color: "#293E6F",
+                      textAlign: "center",
+                    }}
+                  >
+                    Did someone forget their password?
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: "Poppins",
+                      fontStyle: "normal",
+                      fontWeight: "normal",
+                      fontSize: "14px",
+                      color: "#293E6F",
+                      textAlign: "center",
+                    }}
+                  >
+                    That's ok
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: "Poppins",
+                      fontStyle: "normal",
+                      fontWeight: "normal",
+                      fontSize: "14px",
+                      color: "#293E6F",
+                      textAlign: "center",
+                    }}
+                  >
+                    Just enter the email address you've used to register with us
+                    and we'll send you a reset link
+                  </p>
+
+                  <Form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      axiosInstance
+                        .post("api/sendMailAdmin", {
+                          data: {
+                            email: formData2.email,
+                            superuser: formData2.superuser,
+                          },
+                        })
+                        .then((res) => {
+                          console.log(res.data);
+                          if (parseInt(res.data.statuscode) === 1) {
+                            setShow(false);
+                            setIsAlertSuccessMsgLoaded(true);
+                            setSuccessMsg("Mail sent successfully");
+                          } else {
+                            setIsAlertDangerMsgLoaded(true);
+                            setDangerMsg(res.data.msg);
+                          }
+                        })
+                        .catch((e) => console.log(e));
+                    }}
+                  >
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                      <Form.Control
+                        onChange={(e) => {
+                          updateFormData2({
+                            ...formData2,
+                            email: e.target.value,
+                          });
+                        }}
+                        name="email"
+                        type="email"
+                        placeholder="Email Id"
+                        style={{ width: "100%" }}
+                        required
+                        value={formData2.email}
+                      />
+                    </Form.Group>
+                    <Form.Check
+                      style={{
+                        border: "1px black",
+                        marginTop: "20px",
+                        marginBottom: "20px",
+                        textAlign: "left",
+                      }}
+                      value={formData2.superuser}
+                      name="superuser"
+                      onChange={(e) => {
+                        updateFormData2({
+                          ...formData2,
+                          ["superuser"]: !formData2.superuser,
+                        });
+                      }}
+                      type="checkbox"
+                      class="custom-control-label"
+                      id="custom-switch"
+                      label="Make this user superadmin?"
+                    />
+                    <button
+                      style={{
+                        backgroundColor: "#10B65C",
+                        width: "100px",
+                        border: "none",
+                        marginTop: "20px",
+                      }}
+                      type="submit"
+                      className="btn btn-primary"
+                    >
+                      Send
+                    </button>
+                  </Form>
+                </Modal.Body>
+              </Modal>
+
+              <div className="SchdlTest" style={{ paddingTop: "50px" }}>
                 <ConfirmDialogBox
                   showConfirmDialogBox={showConfirmDialogBox}
                   setShowConfirmDialogBox={setShowConfirmDialogBox}
@@ -112,7 +241,7 @@ function ViewAdmin() {
                     backgroundColor: "#293E6F",
                     borderRadius: "5px",
                     border: "none",
-                    marginTop:"2%",
+                    marginTop: "2%",
                   }}
                   className="btn btn-secondary"
                   onClick={(e) => navigate("/admin/home")}
@@ -157,7 +286,7 @@ function ViewAdmin() {
                   </OverlayTrigger>
                 </p>
                 <Row style={{ margin: "0 0 0 10%" }}>
-                <Col md={12} style={{ marginRight: "0%" }}>
+                  <Col md={12} style={{ marginRight: "0%" }}>
                     <div
                       style={{
                         width: "90%",
@@ -280,7 +409,8 @@ function ViewAdmin() {
                       <button
                         className="btn"
                         type="button"
-                        onClick={(e) => navigate("/admin/registerAdmin")}
+                        // onClick={(e) => navigate("/admin/registerAdmin")}
+                        onClick={(e) => setShow(true)}
                         style={{
                           backgroundColor: "#10B65C",
                           borderRadius: "100px",
@@ -288,53 +418,14 @@ function ViewAdmin() {
                           marginLeft: "91%",
                         }}
                       >
-                        <i className="fa fa-add" style={{ color: "white" }}></i>
+                        <i
+                          className="fa fa-add"
+                          title="Add new admin"
+                          style={{ color: "white" }}
+                        ></i>
                       </button>
                     </div>
                   </Col>
-                  <Col md={12} style={{ marginRight: "0%" }}>
-                    <div
-                      style={{
-                        height: "100%",
-                        width: "90%",
-                        fontSize: "13.6px",
-                        background: "#FFFFFF",
-                        border: "2px solid #E5E5E5",
-                        boxSizing: "border-box",
-                        borderRadius: "14px",
-                        marginBottom: "40px",
-                      }}
-                    >
-                      <h4
-                        style={{
-                          paddingTop: "10px",
-                          fontSize: "15.6px",
-                          textAlign: "center",
-                        }}
-                      >
-                        Recent Actions
-                      </h4>
-                      <div className="scrollbar" id="style-4">
-                        <MDBDataTableV5
-                          className="viewScdlTestTable"
-                          responsive
-                          fixed
-                          striped
-                          bordered
-                          noBottomColumns
-                          hover
-                          exportToCSV={true}
-                          entries={5}
-                          entriesOptions={[5, 15, 30, 50]}
-                          data={data}
-                          style={{ marginTop: "5px", marginBottom: "0" }}
-                          fullPagination
-                          materialSearch
-                        />
-                      </div>
-                    </div>
-                  </Col>
-                 
                 </Row>
               </div>
             </>

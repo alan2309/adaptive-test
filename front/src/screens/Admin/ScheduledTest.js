@@ -65,6 +65,9 @@ function ScheduledTest() {
   const [confirm_dialog_msg, set_confirm_dialog_msg] = useState("");
 
   useEffect(() => {
+    if (`${sessionStorage.getItem("myid")}` === "undefined") {
+      navigate("/admin/registerAdmin");
+    }
     const data = async () => {
       setIsloading(true);
       await axiosInstance

@@ -179,6 +179,7 @@ function Login() {
             let adminn = res.data.admin;
             let superr = res.data.super;
             let myuserid = res.data.myid;
+            let newadmin = res.data.newadmin;
             axiosInstance
               .post("token/", {
                 username: formData.username,
@@ -237,7 +238,11 @@ function Login() {
                     sessionStorage.setItem("admin", "admin");
                     sessionStorage.removeItem("testId");
                     setMd(true);
-                    navigate("/admin/home");
+                    if (parseInt(newadmin) === 1) {
+                      navigate("/admin/registerAdmin");
+                    } else {
+                      navigate("/admin/home");
+                    }
                   } else {
                     datax();
                   }
