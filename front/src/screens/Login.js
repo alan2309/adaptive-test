@@ -12,10 +12,11 @@ import AdminProtectUrl from "../components/Admin/AdminProtectUrl";
 import Loader from "../components/Loader";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
 import { FcGoogle } from "react-icons/fc";
+import Alert from "../components/Admin/Alert";
 import forgotPass from "../img/forgotPass.png";
 import MobileWidth from "../components/MobileWidth";
 import { useMediaQuery } from "react-responsive";
-import toastrFunc from "../components/toastrFunc";
+
 function Login() {
   const isDesktopOrLaptop = useMediaQuery({
     query: "(min-width: 1024px)",
@@ -30,6 +31,10 @@ function Login() {
   const [myTotalTestTime, setMyTotalTestTime] = useState();
   const [testStart, setTestStart] = useState();
   const [testEnd, setTestEnd] = useState();
+  const [successMsg, setSuccessMsg] = useState("");
+  const [dangerMsg, setDangerMsg] = useState("");
+  const [isAlertDangerMsgLoaded, setIsAlertDangerMsgLoaded] = useState(false);
+  const [isAlertSuccessMsgLoaded, setIsAlertSuccessMsgLoaded] = useState(false);
   const [myid, setMyId] = useState(-1);
   const columnsP = [
     {
@@ -206,12 +211,8 @@ function Login() {
                             navigate("/result");
                           } else {
                             setMd(true);
-                            // setIsAlertDangerMsgLoaded(true);
-                            // setDangerMsg(
-                            //   "Test is ongoing on a different device"
-                            // );
-                            toastrFunc(
-                              "error",
+                            setIsAlertDangerMsgLoaded(true);
+                            setDangerMsg(
                               "Test is ongoing on a different device"
                             );
                             sessionStorage.clear();
@@ -242,25 +243,19 @@ function Login() {
                   }
                 } else {
                   setIsloading(false);
-                  // setIsAlertDangerMsgLoaded(true);
-                  // setDangerMsg("Test has not started yet, Please wait!");
-                  toastrFunc("error", "Test has not started yet, Please wait!");
+                  setIsAlertDangerMsgLoaded(true);
+                  setDangerMsg("Test has not started yet, Please wait!");
                 }
               });
           } else {
             setIsloading(false);
-            // setIsAlertDangerMsgLoaded(true);
-            // setDangerMsg("You need permission from admin to attempt this test");
-            toastrFunc(
-              "error",
-              "You need permission from admin to attempt this test"
-            );
+            setIsAlertDangerMsgLoaded(true);
+            setDangerMsg("You need permission from admin to attempt this test");
           }
         } else {
           setIsloading(false);
-          // setIsAlertDangerMsgLoaded(true);
-          // setDangerMsg("Invalid username or password");
-          toastrFunc("error", "Invalid username or password");
+          setIsAlertDangerMsgLoaded(true);
+          setDangerMsg("Invalid username or password");
         }
       });
   };
@@ -270,15 +265,26 @@ function Login() {
   };
   const error = (res) => {
     if (res.error === "idpiframe_initialization_failed") return;
-    // setIsAlertDangerMsgLoaded(true);
-    // setDangerMsg("Attempt to log in failed");
-    toastrFunc("error", "Attempt to log in failed");
+    setIsAlertDangerMsgLoaded(true);
+    setDangerMsg("Attempt to log in failed");
   };
 
   return (
     <>
       {isDesktopOrLaptop ? (
         <>
+          <Alert
+            msg={successMsg}
+            setIsAlertMsgLoaded={setIsAlertSuccessMsgLoaded}
+            isAlertMsgLoaded={isAlertSuccessMsgLoaded}
+            type="success"
+          ></Alert>
+          <Alert
+            msg={dangerMsg}
+            setIsAlertMsgLoaded={setIsAlertDangerMsgLoaded}
+            isAlertMsgLoaded={isAlertDangerMsgLoaded}
+            type="danger"
+          ></Alert>
           {isLoading ? (
             <Loader />
           ) : (
@@ -347,13 +353,11 @@ function Login() {
                         .then((res) => {
                           if (res.data.exists) {
                             setShow(false);
-                            // setIsAlertSuccessMsgLoaded(true);
-                            // setSuccessMsg("Mail sent successfully");
-                            toastrFunc("success", "Mail sent successfully");
+                            setIsAlertSuccessMsgLoaded(true);
+                            setSuccessMsg("Mail sent successfully");
                           } else {
-                            // setIsAlertDangerMsgLoaded(true);
-                            // setDangerMsg("An Error occured");
-                            toastrFunc("error", "An Error occured");
+                            setIsAlertDangerMsgLoaded(true);
+                            setDangerMsg("An Error occured");
                           }
                         })
                         .catch((e) => console.log(e));

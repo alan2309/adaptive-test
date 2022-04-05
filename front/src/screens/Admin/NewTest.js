@@ -9,7 +9,6 @@ import SampleCSVFormat from "../../components/Admin/SampleCSVFormat";
 import DateTimePicker from "react-datetime-picker";
 import axiosInstance from "../../axios";
 import Loader from "../../components/Loader";
-import Alert from "../../components/Admin/Alert";
 import MobileWidth from "../../components/MobileWidth";
 import { useMediaQuery } from "react-responsive";
 import { quesData } from "./sampleJSON";
@@ -17,6 +16,7 @@ import { quesSampleData } from "./SampleDBJSON";
 import SetQuestion from "./SetQuestion";
 import CSVUploadCsv from "../../components/Admin/CSVUploadCsv";
 import { CSVLink } from "react-csv";
+import toastrFunc from "../../components/toastrFunc";
 
 function NewTest() {
   const isDesktopOrLaptop = useMediaQuery({
@@ -29,10 +29,6 @@ function NewTest() {
   const [qs, setQs] = useState(0);
   const [axData, setAxData] = useState({});
   const [tests, setTests] = useState([]);
-  const [successMsg, setSuccessMsg] = useState("");
-  const [dangerMsg, setDangerMsg] = useState("");
-  const [isAlertDangerMsgLoaded, setIsAlertDangerMsgLoaded] = useState(false);
-  const [isAlertSuccessMsgLoaded, setIsAlertSuccessMsgLoaded] = useState(false);
   const [aptDic, setAptDic] = useState({ time: "00:00:20", totalQs: 0 });
   const [CFDic, setCFDic] = useState({ time: "00:00:20", totalQs: 0 });
   const [DDic, setDDic] = useState({ time: "00:00:20", totalQs: 0 });
@@ -245,7 +241,6 @@ function NewTest() {
       goLive
     ) {
       setIsloading(false);
-      setIsAlertDangerMsgLoaded(true);
       let msg = "";
       if (AWDic.totalQs < 3) {
         msg = "There should be 3 questions in Analytical Writing";
@@ -260,7 +255,8 @@ function NewTest() {
       } else if (aptDic.totalQs === 0) {
         msg = "Questions cannot be 0 in Aptitude";
       }
-      setDangerMsg(msg);
+      // setDangerMsg(msg);
+      toastrFunc("error", msg);
     } else {
       if (ex.getTime() > sx.getTime()) {
         let objClash = clash(sx.getTime(), ex.getTime(), testId);
@@ -288,13 +284,15 @@ function NewTest() {
             });
         } else {
           setIsloading(false);
-          setIsAlertDangerMsgLoaded(true);
-          setDangerMsg(objClash.msg);
+          // setIsAlertDangerMsgLoaded(true);
+          // setDangerMsg(objClash.msg);
+          toastrFunc("danger", objClash.msg);
         }
       } else {
         setIsloading(false);
-        setIsAlertDangerMsgLoaded(true);
-        setDangerMsg("End time must be greater than start time");
+        // setIsAlertDangerMsgLoaded(true);
+        // setDangerMsg("End time must be greater than start time");
+        toastrFunc("danger", "End time must be greater than start time");
       }
     }
   }
@@ -610,18 +608,6 @@ function NewTest() {
     <>
       {isDesktopOrLaptop ? (
         <>
-          <Alert
-            msg={successMsg}
-            setIsAlertMsgLoaded={setIsAlertSuccessMsgLoaded}
-            isAlertMsgLoaded={isAlertSuccessMsgLoaded}
-            type="success"
-          ></Alert>
-          <Alert
-            msg={dangerMsg}
-            setIsAlertMsgLoaded={setIsAlertDangerMsgLoaded}
-            isAlertMsgLoaded={isAlertDangerMsgLoaded}
-            type="danger"
-          ></Alert>
           {isLoading ? (
             <Loader />
           ) : (
@@ -865,10 +851,6 @@ function NewTest() {
                                   {!isChoose && !isSampleCsvData && (
                                     <CSVUploadCsv
                                       setCsvJsonData={setCsvJsonData}
-                                      setIsAlertDangerMsgLoaded={
-                                        setIsAlertDangerMsgLoaded
-                                      }
-                                      setDangerMsg={setDangerMsg}
                                       csvJsonData={csvJsonData}
                                       subjectName={sidFunc(sid - 1)}
                                     />
@@ -896,10 +878,6 @@ function NewTest() {
                                   {!isChoose && !isSampleCsvData && (
                                     <CSVUploadCsv
                                       setCsvJsonData={setCsvJsonData}
-                                      setIsAlertDangerMsgLoaded={
-                                        setIsAlertDangerMsgLoaded
-                                      }
-                                      setDangerMsg={setDangerMsg}
                                       csvJsonData={csvJsonData}
                                       subjectName={sidFunc(sid - 1)}
                                     />
@@ -927,10 +905,6 @@ function NewTest() {
                                   {!isChoose && !isSampleCsvData && (
                                     <CSVUploadCsv
                                       setCsvJsonData={setCsvJsonData}
-                                      setIsAlertDangerMsgLoaded={
-                                        setIsAlertDangerMsgLoaded
-                                      }
-                                      setDangerMsg={setDangerMsg}
                                       csvJsonData={csvJsonData}
                                       subjectName={sidFunc(sid - 1)}
                                     />
@@ -958,10 +932,6 @@ function NewTest() {
                                   {!isChoose && !isSampleCsvData && (
                                     <CSVUploadCsv
                                       setCsvJsonData={setCsvJsonData}
-                                      setIsAlertDangerMsgLoaded={
-                                        setIsAlertDangerMsgLoaded
-                                      }
-                                      setDangerMsg={setDangerMsg}
                                       csvJsonData={csvJsonData}
                                       subjectName={sidFunc(sid - 1)}
                                     />
@@ -1282,8 +1252,12 @@ function NewTest() {
                                                 totalQs: CurrentDic.totalQs,
                                               });
                                             } else {
-                                              setIsAlertDangerMsgLoaded(true);
-                                              setDangerMsg(
+                                              // setIsAlertDangerMsgLoaded(true);
+                                              // setDangerMsg(
+                                              //   "Minimum should be 20 seconds"
+                                              // );
+                                              toastrFunc(
+                                                "danger",
                                                 "Minimum should be 20 seconds"
                                               );
                                             }
@@ -1433,8 +1407,12 @@ function NewTest() {
                                           totalQs: CurrentDic.totalQs,
                                         });
                                       } else {
-                                        setIsAlertDangerMsgLoaded(true);
-                                        setDangerMsg(
+                                        // setIsAlertDangerMsgLoaded(true);
+                                        // setDangerMsg(
+                                        //   "Minimum time should be greater than 20 seconds"
+                                        // );
+                                        toastrFunc(
+                                          "danger",
                                           "Minimum time should be greater than 20 seconds"
                                         );
                                       }

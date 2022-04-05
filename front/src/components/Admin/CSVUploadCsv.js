@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
 import Papa from "papaparse";
+import toastrFunc from "../toastrFunc";
 
 function CSVUploadCsv({
   setCsvJsonData,
   csvJsonData,
   subjectName,
-  setDangerMsg,
-  setIsAlertDangerMsgLoaded,
 }) {
   return (
     <>
@@ -68,15 +67,15 @@ function CSVUploadCsv({
                       "Option2" in first_row_data
                     ) {
                       if (first_row_data["Question"] === "") {
-                        setIsAlertDangerMsgLoaded(true);
-                        setDangerMsg(
+                        // setIsAlertDangerMsgLoaded(true);
+                        toastrFunc('error',
                           "Empty Question at row index = " +
                             parseInt(countRowId + 2)
                         );
                         parser.abort();
                       } else if (first_row_data["type"] === "") {
-                        setIsAlertDangerMsgLoaded(true);
-                        setDangerMsg(
+                        // setIsAlertDangerMsgLoaded(true);
+                       toastrFunc('error',
                           "Empty type at row index = " +
                             parseInt(countRowId + 2)
                         );
@@ -134,15 +133,16 @@ function CSVUploadCsv({
                         stringLine += "Option2 is missing \n";
                       }
                       allKeyNotPresent = true;
-                      setIsAlertDangerMsgLoaded(true);
-                      setDangerMsg(stringLine);
+                      // setIsAlertDangerMsgLoaded(true);
+                      // setDangerMsg(stringLine);
+                      toastrFunc("error",stringLine)
                       parser.abort();
                     }
                   } else if (subjectName === "Personality") {
                     if ("Question" in first_row_data) {
                       if (first_row_data["Question"] === "") {
-                        setIsAlertDangerMsgLoaded(true);
-                        setDangerMsg(
+                        // setIsAlertDangerMsgLoaded(true);
+                        toastrFunc("error",
                           "Empty Question at row index = " +
                             parseInt(countRowId + 2)
                         );
@@ -157,8 +157,8 @@ function CSVUploadCsv({
                       }
                     } else {
                       allKeyNotPresent = true;
-                      setIsAlertDangerMsgLoaded(true);
-                      setDangerMsg("Question is missing \n");
+                      // setIsAlertDangerMsgLoaded(true);
+                      toastrFunc("error","Question is missing \n");
                       parser.abort();
                     }
                   }
