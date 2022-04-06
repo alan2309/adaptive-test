@@ -146,7 +146,7 @@ function ViewResult() {
         "Computer Fund.",
         "Domain",
         "Coding",
-        "Analytical Writing",
+        "Verbal Reasoning",
       ],
 
       yaxis: [
@@ -191,7 +191,7 @@ function ViewResult() {
         "Computer Fund.",
         "Domain",
         "Coding",
-        "Analytical Writing",
+        "Verbal Reasoning",
       ],
     });
   }, []);

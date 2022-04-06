@@ -171,7 +171,7 @@ export const quesSampleData = {
       avg: 0,
       time: "00:00:20",
     },
-    "Analytical Writing": {
+    "Verbal Reasoning": {
       easy: [],
       medium: [
         {

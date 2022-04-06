@@ -46,7 +46,7 @@ function ViewAdmin() {
   const popover = (
     <Popover id="popover-basic">
       <Popover.Body>
-        In this section all the changes made by the admin as the adims who are registered are displayed. 
+        In this section, all the changes made by the admin as well as the admins who are registered are displayed. 
       </Popover.Body>
     </Popover>
   );

@@ -10,7 +10,7 @@ function sidFunc(sid) {
   } else if (sid === 4) {
     return "Coding";
   } else if (sid === 5) {
-    return "Analytical Writing";
+    return "Verbal Reasoning";
   }
 }
 export default sidFunc;

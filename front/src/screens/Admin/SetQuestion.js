@@ -257,7 +257,7 @@ function SetQuestion({
         dictionary["image"] = base64EncodedImagee;
       }
       let data;
-      if (sectionName !== "Coding" && sectionName !== "Analytical Writing") {
+      if (sectionName !== "Coding" && sectionName !== "Verbal Reasoning") {
         let optss = [];
         let qs = "";
         for (var key in dictionary) {

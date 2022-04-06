@@ -259,7 +259,7 @@ function DetailedReportComp({
             <Col xs="6" md={6} style={{ height: "100%" }}>
               <Chart_score
                 percent={mrksScoredPercent?.[4]}
-                label="Analytical Writing"
+                label="Verbal Reasoning"
               />
             </Col>
             <div className="page-break" />
@@ -594,7 +594,7 @@ function DetailedReportComp({
               </p>
             </div>
           </Row>
-
+          
           <div className="page-break" />
           <div
             style={{
@@ -613,35 +613,23 @@ function DetailedReportComp({
                 paddingTop: "5px",
               }}
             >
-              Section Score Analysis
+              In depth score analysis
             </p>
           </div>
           <Row>
-            <div
-              style={{
-                fontSize: "13.6px",
-                marginLeft: "30px",
-                marginTop: "40px",
-                paddingRight: "90px",
-              }}
-            >
-              <p>
-                A personality test is a tool that can help you figure out who
-                you are. This is critical for a business because people with
-                different personalities approach tasks in different ways.{" "}
-              </p>
-              <p>
-                The chart below categorizes your personality based on the "Big
-                Five" personality traits. Remember that a low score does not
-                imply poor performance, and a high score does not imply
-                excellent performance, because personality has no concept of
-                performance.
-              </p>
-              <p>
-                The personality map below depicts your position in relation to
-                the general population for various personality traits.
-              </p>
-            </div>
+          <div
+            style={{
+              fontSize: "13.6px",
+              marginLeft: "30px",
+              marginTop: "40px",
+              paddingRight: "90px",
+            }}
+          >
+            <p>
+              In depth report on each skill aspect with descriptions of your
+              strengths, practice and training needs along with improvement tips.{" "}
+            </p>{" "}
+          </div>
             <div>
               <p
                 style={{
@@ -669,10 +657,14 @@ function DetailedReportComp({
                 {parseInt(mrksScoredPercent?.[0]) < 40 && (
                   <p>
                     {" "}
-                    Your score on Extraversion is low, indicating you are
-                    introverted, reserved, and quiet. You enjoy solitude and
-                    solitary activities. Your socializing tends to be restricted
-                    to a few close friends.{" "}
+                    Being good in Aptitude is necessary for job roles like
+                    Analytics, Software Development, Operations amongst others.
+                    In fact, being good with numbers has its benefits across all
+                    job roles. While your score in Aptitude is below average you
+                    can further improve. You should start by looking at specific
+                    topics you can improve and learning related concepts and
+                    their application. You should also keep practising to
+                    improve your speed and accuracy levels.{" "}
                   </p>
                 )}
                 {parseInt(mrksScoredPercent?.[0]) >= 40 &&
@@ -683,9 +675,15 @@ function DetailedReportComp({
                         {" "}
                         <em>
                           {" "}
-                          Your score on Extraversion is average, indicating you
-                          are neither a subdued loner nor a jovial chatterbox.
-                          You enjoy time with others but also time alone.{" "}
+                          Being good in Aptitude is necessary for job roles like
+                          Analytics, Software Development, Operations amongst
+                          others. In fact, being good with numbers has its
+                          benefits across all job roles. While your score in
+                          Aptitude is average you can further improve. You
+                          should start by looking at specific topics you can
+                          improve and learning related concepts and their
+                          application. You should also keep practising to
+                          improve your speed and accuracy levels.
                         </em>{" "}
                       </p>
                     </>
@@ -697,15 +695,23 @@ function DetailedReportComp({
                       {" "}
                       <em>
                         {" "}
-                        Your score on Extraversion is high, indicating you are
-                        sociable, outgoing, energetic, and lively. You prefer to
-                        be around people much of the time.{" "}
+                        Being good in Aptitude is necessary for job roles like
+                        Analytics, Software Development, Operations amongst
+                        others. In fact, being good with numbers has its
+                        benefits across all job roles. While your score in
+                        Aptitude is above average you can further improve. You
+                        should start by looking at specific topics you can
+                        improve and learning related concepts and their
+                        application. You should also keep practising to improve
+                        your speed and accuracy levels.{" "}
                       </em>{" "}
                     </p>
                   </>
                 )}
               </p>
+              <p>
 
+              </p>
               <p
                 style={{ fontSize: "13.6px", marginLeft: "30px" }}
                 className="factor_5_modal"
@@ -727,26 +733,42 @@ function DetailedReportComp({
                 {parseInt(mrksScoredPercent?.[1]) < 40 && (
                   <p>
                     {" "}
-                    Your score on Agreeableness is low, indicating less concern
-                    with others' needs than with your own. People see you as
-                    tough, critical, and uncompromising.{" "}
+                    Knowledge of Computer Fundamentals is a must have for job
+                    roles like Software Engineer, Network Engineer and Software
+                    Tester. Basic familiarity with elements of computer hardware
+                    and software is a hygiene factor for many job roles today.
+                    Your score in Computer Fundamentals section is below average
+                    which means that your knowledge of computers is very poor.
+                    Since many companies look for this, you should keep learning
+                    and updating your knowledge about computers.{" "}
                   </p>
                 )}
                 {parseInt(mrksScoredPercent?.[1]) >= 40 &&
                   parseInt(mrksScoredPercent?.[1]) <= 75 && (
                     <p>
                       {" "}
-                      Your level of Agreeableness is average, indicating some
-                      concern with others' Needs, but, generally, unwillingness
-                      to sacrifice yourself for others.{" "}
+                      Knowledge of Computer Fundamentals is a must have for job
+                      roles like Software Engineer, Network Engineer and
+                      Software Tester. Basic familiarity with elements of
+                      computer hardware and software is a hygiene factor for
+                      many job roles today. Your score in Computer Fundamentals
+                      section is average which means that your knowledge of
+                      computers is acceptable. Since many companies look for
+                      this, you should keep learning and updating your knowledge
+                      about computers.{" "}
                     </p>
                   )}
                 {parseInt(mrksScoredPercent?.[1]) > 75 && (
                   <p>
                     {" "}
-                    Your high level of Agreeableness indicates a strong interest
-                    in others' needs and well-being. You are pleasant,
-                    sympathetic, and cooperative.{" "}
+                    Knowledge of Computer Fundamentals is a must have for job
+                    roles like Software Engineer, Network Engineer and Software
+                    Tester. Basic familiarity with elements of computer hardware
+                    and software is a hygiene factor for many job roles today.
+                    Your score in Computer Fundamentals section is above average
+                    which means that your knowledge of computers is very good.
+                    Since many companies look for this, you should keep learning
+                    and updating your knowledge about computers.{" "}
                   </p>
                 )}
               </p>
@@ -770,23 +792,45 @@ function DetailedReportComp({
                 {" "}
                 {parseInt(mrksScoredPercent?.[2]) < 40 && (
                   <p>
-                    Your score on Conscientiousness is low, indicating you like
-                    to live for the moment and do what feels good now. Your work
-                    tends to be careless and disorganized.
+                    Domain knowledge is a must have for core Engineering job
+                    roles like R and D Engineer and Core Plant Engineer. Domain
+                    knowledge is also valued by employers as it validates your
+                    academic performance during B.Tech. While your score in
+                    domain is below average you need to improve your knowledge
+                    in specific areas of your engineering domain. You should
+                    first identify those areas, start reading about them and
+                    their applications. If you are focusing on R and D roles you
+                    must focus on use and application of concepts so that you
+                    can generate new insights.
                   </p>
                 )}
                 {parseInt(mrksScoredPercent?.[2]) >= 40 &&
                   parseInt(mrksScoredPercent?.[2]) <= 75 && (
                     <p>
-                      Your score on Conscientiousness is average. This means you
-                      are reasonably reliable, organized, and self-controlled.
+                      Domain knowledge is a must have for core Engineering job
+                      roles like R and D Engineer and Core Plant Engineer.
+                      Domain knowledge is also valued by employers as it
+                      validates your academic performance during B.Tech. While
+                      your score in domain is average you need to improve your
+                      knowledge in specific areas of your engineering domain.
+                      You should first identify those areas, start reading about
+                      them and their applications. If you are focusing on R and
+                      D roles you must focus on use and application of concepts
+                      so that you can generate new insights.
                     </p>
                   )}
                 {parseInt(mrksScoredPercent?.[2]) > 75 && (
                   <p>
-                    Your score on Conscientiousness is high. This means you set
-                    clear goals and pursue them with determination. People
-                    regard you as reliable and hard-working.
+                    Domain knowledge is a must have for core Engineering job
+                    roles like R and D Engineer and Core Plant Engineer. Domain
+                    knowledge is also valued by employers as it validates your
+                    academic performance during B.Tech. While your score in
+                    domain is above average you need to improve your knowledge
+                    in specific areas of your engineering domain. You should
+                    first identify those areas, start reading about them and
+                    their applications. If you are focusing on R and D roles you
+                    must focus on use and application of concepts so that you
+                    can generate new insights.
                   </p>
                 )}
               </p>
@@ -816,28 +860,46 @@ function DetailedReportComp({
                 {" "}
                 {parseInt(mrksScoredPercent?.[3]) < 40 && (
                   <p>
-                    Your score on Neuroticism is low, indicating that you are
-                    exceptionally calm, composed and unflappable. You do not
-                    react with intense emotions, even to situations that most
-                    people would describe as stressful.
+                    Coding is a must have skill for Software Development roles
+                    and it is also required by many organisations in other roles
+                    such as Software Engineer, Analyst, etc. It is a valuable
+                    skill due to its applicability across multiple sought after
+                    technology roles. Your score in coding is below average
+                    which means you need to considerably improve in terms of
+                    understanding and application of basic programming language
+                    elements to solve problems. You should start by learning
+                    basic concepts through textbooks, or a good course, while
+                    also implementing these by writing code regularly.
                   </p>
                 )}
                 {parseInt(mrksScoredPercent?.[3]) >= 40 &&
                   parseInt(mrksScoredPercent?.[3]) <= 75 && (
                     <p>
-                      Your score on Neuroticism is average, indicating that your
-                      level of emotional reactivity is typical of the general
-                      population. Stressful and frustrating situations are
-                      somewhat upsetting to you, but you are generally able to
-                      get over these feelings and cope with these situations.
+                      Coding is a must have skill for Software Development roles
+                      and it is also required by many organisations in other
+                      roles such as Software Engineer, Analyst, etc. It is a
+                      valuable skill due to its applicability across multiple
+                      sought after technology roles. Your score in coding is
+                      average which means you need to considerably improve in
+                      terms of understanding and application of basic
+                      programming language elements to solve problems. You
+                      should start by learning basic concepts through textbooks,
+                      or a good course, while also implementing these by writing
+                      code regularly.
                     </p>
                   )}
                 {parseInt(mrksScoredPercent?.[3]) > 75 && (
                   <p>
-                    Your score on Neuroticism is high, indicating that you are
-                    easily upset, even by what most people consider the normal
-                    demands of living. People consider you to be sensitive and
-                    emotional.
+                    Coding is a must have skill for Software Development roles
+                    and it is also required by many organisations in other roles
+                    such as Software Engineer, Analyst, etc. It is a valuable
+                    skill due to its applicability across multiple sought after
+                    technology roles. Your score in coding is average which
+                    means you can improve more in terms of understanding and
+                    application of basic programming language elements to solve
+                    problems. You should start by learning basic concepts
+                    through textbooks, or a good course, while also implementing
+                    these by writing code regularly.
                   </p>
                 )}
               </p>
@@ -846,7 +908,7 @@ function DetailedReportComp({
                 style={{ fontSize: "13.6px", marginLeft: "30px" }}
                 className="factor_5_modal"
               >
-                Analytical Writing
+                Verbal Reasoning
               </p>
 
               <BulletChartSection
@@ -863,28 +925,35 @@ function DetailedReportComp({
               >
                 {parseInt(mrksScoredPercent?.[4]) < 40 && (
                   <p>
-                    Your score on Openness to Experience is low, indicating you
-                    like to think in plain and simple terms. Others describe you
-                    as down-to-earth, practical, and conservative.
+                    Being able to read and interpret English is necessary for
+                    almost all the job roles. In fact, it is a basic requirement
+                    today with the language being used globally to transact
+                    business. Your score in Verbal Reasoning is below average which means you
+                    are not proficient in English usage. Keep practicing by reading
+                    and writing on a regular basis.
                   </p>
                 )}
 
                 {parseInt(mrksScoredPercent?.[4]) >= 40 &&
                   parseInt(mrksScoredPercent?.[4]) <= 75 && (
                     <p>
-                      Your score on Openness to Experience is average,
-                      indicating you enjoy tradition but are willing to try new
-                      things. Your thinking is neither simple nor complex. To
-                      others you appear to be a well-educated person but not an
-                      intellectual.{" "}
+                      Being able to read and interpret English is necessary for
+                      almost all the job roles. In fact, it is a basic requirement
+                      today with the language being used globally to transact
+                      business. Your score in Verbal Reasoning is average which means you
+                      are little proficient in English usage. Keep practicing by reading
+                      and writing on a regular basis.{" "}
                     </p>
                   )}
 
                 {parseInt(mrksScoredPercent?.[4]) > 75 && (
                   <p>
-                    Your score on Openness to Experience is high, indicating you
-                    enjoy novelty, variety, and change. You are curious,
-                    imaginative, and creative.
+                    Being able to read and interpret English is necessary for
+                    almost all the job roles. In fact, it is a basic requirement
+                    today with the language being used globally to transact
+                    business. Your score in Verbal Reasoning is above average which means you
+                    are very proficient in English usage. Keep practicing by reading
+                    and writing on a regular basis.
                   </p>
                 )}
               </p>

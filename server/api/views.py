@@ -69,7 +69,7 @@ def createTest(request,name):
         data_cf =data['saveTest']['Computer Fundamentals']
         data_d = data['saveTest']['Domain']
         data_c = data['saveTest']['Coding']
-        data_aw = data['saveTest']['Analytical Writing']
+        data_aw = data['saveTest']['Verbal Reasoning']
         data_p = data['saveTest']['Personality']
         totaltime = converttosec(data_apt["time"])+converttosec(data_cf["time"])+converttosec(data_d["time"])+converttosec(data_c["time"])+converttosec(data_aw["time"])+converttosec(data_p["time"])
         hh = int(totaltime/3600)
@@ -436,7 +436,7 @@ def permission(request):
 #                 avg =test.p['avg'] 
 #                 time=test.p['time'] 
 #                 qsno=test.p['qs']  
-#             elif sub.sub_name == 'Analytical Writing':
+#             elif sub.sub_name == 'Verbal Reasoning':
 #                 avg =test.aw['avg']
 #                 time=test.aw['time']
 #                 qsno=test.aw['qs']
@@ -513,13 +513,13 @@ def subs(request):
                     op['options'] =OptionSerializer(options,many=True).data
                     qs.append(op)
                 x['questions'] = qs 
-                f['Analytical Writing']['medium'].append(x)  
+                f['Verbal Reasoning']['medium'].append(x)  
                 
 
             qs=Questions.objects.all()
             for q in qs:
                 a={} 
-                if str(q.subject.sub_name)!='Coding' and str(q.subject.sub_name)!='Analytical Writing':
+                if str(q.subject.sub_name)!='Coding' and str(q.subject.sub_name)!='Verbal Reasoning':
                     a['ques']=q.title
                     a['id']=q.id
                     a['imgId']=q.imgId
@@ -718,15 +718,15 @@ def chartData(user,testId=-1,isPost=False):
     #         avgMarks=math.ceil(avgMarks)
     #         aa[sub.sub_name]=avgMarks
 
-    # a=[aa['Aptitude'],aa['Computer Fundamentals'],aa['Domain'],aa['Coding'],aa['Analytical Writing']]
+    # a=[aa['Aptitude'],aa['Computer Fundamentals'],aa['Domain'],aa['Coding'],aa['Verbal Reasoning']]
     try:
         resl=Results.objects.get(student = user,test=Test.objects.get(id=testId))     
         aa['Aptitude']=resl.marks['avg_ap']
         aa['Computer Fundamentals']=resl.marks['avg_cf']
         aa['Domain']=resl.marks['avg_d']
         aa['Coding']=resl.marks['avg_c']
-        aa['Analytical Writing']=resl.marks['avg_a']
-        a=[aa['Aptitude'],aa['Computer Fundamentals'],aa['Domain'],aa['Coding'],aa['Analytical Writing']]
+        aa['Verbal Reasoning']=resl.marks['avg_a']
+        a=[aa['Aptitude'],aa['Computer Fundamentals'],aa['Domain'],aa['Coding'],aa['Verbal Reasoning']]
         apMax=1
         cfMax=1
         dMax=1
@@ -927,7 +927,7 @@ def addQs(request):
     if request.headers.get('Authorization') and checkAuthorization(request.headers["Authorization"]):
         if request.method == 'POST':
             data=JSONParser().parse(request)['data']
-            if str(data['sectionName'])!='Coding' and str(data['sectionName'])!='Analytical Writing':
+            if str(data['sectionName'])!='Coding' and str(data['sectionName'])!='Verbal Reasoning':
                 if data['action']=='Save':
                     if data['image']!=None: 
                         if data['image']!='':
@@ -1012,7 +1012,7 @@ def addQs(request):
                         f.test_case_input=test_case_input
                         f.test_case_output=test_case_output
                         f.save()
-            elif str(data['sectionName'])=='Analytical Writing':
+            elif str(data['sectionName'])=='Verbal Reasoning':
                 rightOptArrAnalytical=data['rightOptArrAnalytical']
                 paragraphTitle=data['paragraphTitle']
                 paragraph=data['paragraph']
@@ -1086,7 +1086,7 @@ def saveTest(request):
             totalTestTime=datetime.timedelta(hours=0,minutes=0,seconds=0)
             for x in range(0,len(data['saveTest'])):
                 avgMrk=0
-                if str(data['saveTest'][x]['sub'])=='Coding' or str(data['saveTest'][x]['sub'])=='Analytical Writing':
+                if str(data['saveTest'][x]['sub'])=='Coding' or str(data['saveTest'][x]['sub'])=='Verbal Reasoning':
                     avgMrk=30
                 else:
                     avgMrk=math.ceil(int(data['saveTest'][x]['totalQs'])*2*0.7) # 70% average
@@ -1313,7 +1313,7 @@ def getTestsWithQsJson(request):
             data['Domain']=qsJson.dom
             data['Coding']=qsJson.code
             data['Personality']=qsJson.personality
-            data['Analytical Writing']=qsJson.aw
+            data['Verbal Reasoning']=qsJson.aw
             a['data']=data
             aa.append(a)
             
@@ -1339,7 +1339,7 @@ def getTestsWithQsJson(request):
             data['Domain']=qsJson.dom
             data['Coding']=qsJson.code
             data['Personality']=qsJson.personality
-            data['Analytical Writing']=qsJson.aw
+            data['Verbal Reasoning']=qsJson.aw
             c['data']=data
             cc.append(c)
         return JsonResponse({"alltest":alltest.data,"stests":stestS.data,"utests":cc+aa},safe=False)

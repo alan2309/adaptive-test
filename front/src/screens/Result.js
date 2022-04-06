@@ -246,7 +246,7 @@ function Result() {
         "Computer Fund.",
         "Domain",
         "Coding",
-        "Analytical Writing",
+        "Verbal Reasoning",
       ],
 
       yaxis: [
@@ -291,7 +291,7 @@ function Result() {
         "Computer Fund.",
         "Domain",
         "Coding",
-        "Analytical Writing",
+        "Verbal Reasoning",
       ],
     });
     if (document.fullscreenElement !== null) {

@@ -246,7 +246,7 @@ function NewTest() {
       setIsloading(false);
       let msg = "";
       if (AWDic.totalQs < 3) {
-        msg = "There should be 3 questions in Analytical Writing";
+        msg = "There should be 3 questions in Verbal Reasoning";
       } else if (CDic.totalQs < 3) {
         msg = "There should be 3 questions in Coding";
       } else if (PDic.totalQs === 0) {
@@ -514,8 +514,8 @@ function NewTest() {
           });
           setAxData((prev) => ({
             ...prev,
-            ["Analytical Writing"]: {
-              ...prev["Analytical Writing"],
+            ["Verbal Reasoning"]: {
+              ...prev["Verbal Reasoning"],
               qs: curr_value,
               time: CurrentDic.time,
               maxQs: 3,
@@ -805,7 +805,7 @@ function NewTest() {
                               className="sectionClick"
                               onClick={(e) => secOnCLick(e, 5)}
                             >
-                              Analytical Writing
+                              Verbal Reasoning
                             </div>
                           </Col>
                         </Row>
@@ -1230,9 +1230,9 @@ function NewTest() {
                                                 });
                                                 setAxData((prev) => ({
                                                   ...prev,
-                                                  ["Analytical Writing"]: {
+                                                  ["Verbal Reasoning"]: {
                                                     ...prev[
-                                                      "Analytical Writing"
+                                                      "Verbal Reasoning"
                                                     ],
                                                     time: e.target.value,
                                                   },
@@ -1387,8 +1387,8 @@ function NewTest() {
                                           });
                                           setAxData((prev) => ({
                                             ...prev,
-                                            ["Analytical Writing"]: {
-                                              ...prev["Analytical Writing"],
+                                            ["Verbal Reasoning"]: {
+                                              ...prev["Verbal Reasoning"],
                                               time: e.target.value,
                                             },
                                           }));
