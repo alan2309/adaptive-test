@@ -1166,7 +1166,7 @@ def sendMailAdmin(request):
             if user.exists():
                 return JsonResponse({'statuscode':0,'msg':'Email already exists'},safe=False)
             else: 
-                user=User(email=data['email'],username=data['email'],password=make_password('ABCD@1234'),is_staff=True,is_superuser=bool(data['superuser']))
+                user=User(email=data['email'],username=data['email'],password=make_password('pass@123'),is_staff=True,is_superuser=bool(data['superuser']))
                 
                 print(user)
                 recipient_list = [data['email']]
@@ -1177,7 +1177,7 @@ def sendMailAdmin(request):
                 args={}
                 args['name']='{}'.format(data['email'])
                 args['url']='http://localhost:3000/login'
-                args['password']='{}'.format('ABCD@1234')
+                args['password']='{}'.format('pass@123')
                 html_template=get_template("api/AdminRegister.html").render(args)
                 msg.attach_alternative(html_template,"text/html")
 
