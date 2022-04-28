@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "http://127.0.0.1:8000/";
+const baseURL = "http://localhost:8000/";
 const access_token = sessionStorage.getItem("access_token");
 
 const axiosInstance = axios.create({
