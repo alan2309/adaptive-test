@@ -417,7 +417,7 @@ function Login() {
                         fontColor: "#788094",
                       }}
                     >
-                      Placement Test tttt Portal
+                      Placement Test Portal
                     </h5>
                     <p
                       style={{

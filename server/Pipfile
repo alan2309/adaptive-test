@@ -12,6 +12,7 @@ djangorestframework-simplejwt = "*"
 djangorestframework = "*"
 python-dateutil = "*"
 pandas = "*"
+sklearn = "*"
 
 [dev-packages]
 
