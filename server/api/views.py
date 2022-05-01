@@ -303,7 +303,7 @@ def forgotpass(request):
             msg=EmailMultiAlternatives(subject=subject,from_email=email_from,to=recipient_list)
             args={}
             args['name']='{}'.format(user[0].first_name)
-            args['url']='https://newadapt.herokuapp.com/change-pass?token={0}&user={1}'.format(token,user[0].email)
+            args['url']='https://fascinating-eclair-7e9eca.netlify.app/change-pass?token={0}&user={1}'.format(token,user[0].email)
             html_template=get_template("api/ChangePassword.html").render(args)
             msg.attach_alternative(html_template,"text/html")
             msg.send()
@@ -882,7 +882,7 @@ def marks(request,sid=0):
                             msg=EmailMultiAlternatives(subject=subject,from_email=email_from,to=recipient_list)
                             args={}
                             args['name']='{}'.format(user.first_name)
-                            args['url']='https://newadapt.herokuapp.com/viewresult?viewToken={0}&user={1}&viewRes={2}&testId={3}'.format(token,user.email,True,test.id)
+                            args['url']='https://fascinating-eclair-7e9eca.netlify.app/viewresult?viewToken={0}&user={1}&viewRes={2}&testId={3}'.format(token,user.email,True,test.id)
                             html_template=get_template("api/Result.html").render(args)
                             msg.attach_alternative(html_template,"text/html")
                             msg.send()
@@ -1176,7 +1176,7 @@ def sendMailAdmin(request):
                 msg=EmailMultiAlternatives(subject=subject,from_email=email_from,to=recipient_list)
                 args={}
                 args['name']='{}'.format(data['email'])
-                args['url']='https://newadapt.herokuapp.com/login'
+                args['url']='https://fascinating-eclair-7e9eca.netlify.app/login'
                 args['password']='{}'.format('pass@123')
                 html_template=get_template("api/AdminRegister.html").render(args)
                 msg.attach_alternative(html_template,"text/html")
