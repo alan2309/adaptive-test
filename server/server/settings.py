@@ -19,7 +19,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','localhost','newadapt.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1','localhost','https://newadapt.herokuapp.com/','newadapt.herokuapp.com']
 
 
 # Application definition
@@ -73,12 +73,22 @@ WSGI_APPLICATION = 'server.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+DATABASES = {  
+    'default': {  
+        'ENGINE': 'django.db.backends.mysql',  
+        'NAME': 'database-1',  
+        'USER': 'admin',  
+        'PASSWORD': 'abcd1234',  
+        'HOST': 'database-1.c1cfape2fuwv.us-east-1.rds.amazonaws.com',  
+        'PORT': '3306',  
+    }  
+}  
 
 
 # Password validation
