@@ -333,6 +333,7 @@ function SignUpModified() {
                         placeholder=" C.G.P.A "
                         onChange={handleChange}
                         name="avgCGPA"
+                        step="0.01"
                         required
                       />
                     </Form.Group>

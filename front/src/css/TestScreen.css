@@ -74,12 +74,6 @@ input:focus {
   margin-right: auto !important;
 }
 
-.App .navBrandMain {
-  display: flex !important;
-  align-items: center !important;
-  margin-left: 40px !important;
-}
-
 .logoTitle {
   border-left: 3px solid #e5e5e5;
   padding-left: 15px;
@@ -128,39 +122,6 @@ input:focus {
   font-weight: 600;
   font-family: "Poppins";
   color: #293e6f;
-}
-
-@media screen and (max-width: 1198px) {
-  .App.navBrandMain {
-    display: flex !important;
-    align-items: center !important;
-    margin-left: 0px !important;
-  }
-  .App.navBrandMain.logoImage {
-    display: none !important;
-  }
-  .navBrandMain {
-    padding: 0px !important;
-  }
-  .App.navBrandMain.logoTitle {
-    border-left: none;
-    padding-left: 0px;
-    margin-left: 10px;
-  }
-  .navButtons {
-    text-align: start !important;
-    width: 100% !important;
-    border-top: 1px solid #e5e5e5 !important;
-    margin-right: 0px !important;
-    margin-left: 0px !important;
-    padding-left: 15px !important;
-  }
-  .App.navBrandMain.djsce {
-    font-size: 15px;
-  }
-  .App.navBrandMain.it {
-    font-size: 15px;
-  }
 }
 
 /* webkit requires explicit width, height = 100% of sceeen */
