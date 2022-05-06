@@ -266,6 +266,7 @@ function SignUpModified() {
                       <Form.Label> 10th percentage </Form.Label>
                       <Form.Control
                         type="number"
+                        step="0.01"
                         placeholder="10th percentage"
                         onChange={handleChange}
                         name="percent_10_std"
@@ -276,6 +277,7 @@ function SignUpModified() {
                       <Form.Label> 12th percentage </Form.Label>
                       <Form.Control
                         type="number"
+                        step="0.01"
                         placeholder="12th percentage"
                         onChange={handleChange}
                         name="percent_12_std"
