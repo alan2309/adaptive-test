@@ -295,9 +295,7 @@ function Profile() {
                         marginBottom: "20px",
                         textAlign: "left",
                       }}
-                      defaultChecked={
-                        formData.user_is_staff === "True" ? true : false
-                      }
+                      checked={formData.user_is_staff === "True" ? true : false}
                       name="user_is_staff"
                       onChange={(e) => {
                         updateFormData({
@@ -320,7 +318,7 @@ function Profile() {
                         marginBottom: "20px",
                         textAlign: "left",
                       }}
-                      defaultChecked={
+                      checked={
                         formData.user_is_superuser === "True" ? true : false
                       }
                       name="user_is_superuser"
