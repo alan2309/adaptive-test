@@ -31,7 +31,7 @@ function Profile() {
       .get(`api/getUserData/${location.state.username}`)
       .then((res) => {
         let data = res.data.user;
-        console.log(data);
+
         updateFormData(data);
       });
     const list = async () =>
@@ -252,10 +252,15 @@ function Profile() {
                     onChange={(e) => {
                       updateFormData({
                         ...formData,
-                        ["gender"]: e.target.value,
+                        ["gender"]:
+                          e.target.value === "1"
+                            ? "Male"
+                            : e.target.value === "2"
+                            ? "Female"
+                            : "Other",
                       });
                     }}
-                    value={formData.gender}
+                    defaultValue={formData.gender}
                     disabled={location.state.update ? false : true}
                     name="gender"
                     required
@@ -290,12 +295,16 @@ function Profile() {
                         marginBottom: "20px",
                         textAlign: "left",
                       }}
-                      checked={formData.user_is_staff === "True" ? true : false}
-                      name="staff"
+                      defaultChecked={
+                        formData.user_is_staff === "True" ? true : false
+                      }
+                      name="user_is_staff"
                       onChange={(e) => {
                         updateFormData({
                           ...formData,
-                          ["user_is_staff"]: formData.user_is_staff,
+                          ["user_is_staff"]: e.target.checked
+                            ? "True"
+                            : "False",
                         });
                       }}
                       type="checkbox"
@@ -303,6 +312,7 @@ function Profile() {
                       id="custom-switch"
                       label="Make this user staff?"
                     />
+
                     <Form.Check
                       style={{
                         border: "1px black",
@@ -310,21 +320,24 @@ function Profile() {
                         marginBottom: "20px",
                         textAlign: "left",
                       }}
-                      checked={
+                      defaultChecked={
                         formData.user_is_superuser === "True" ? true : false
                       }
-                      name="superuser"
+                      name="user_is_superuser"
                       onChange={(e) => {
                         updateFormData({
                           ...formData,
-                          ["user_is_superuser"]: formData.user_is_superuser,
+                          ["user_is_superuser"]: e.target.checked
+                            ? "True"
+                            : "False",
                         });
                       }}
                       type="checkbox"
                       class="custom-control-label"
-                      id="custom-switch"
+                      id="custom-switch-1"
                       label="Make this user superadmin?"
                     />
+
                     <button
                       className="btn"
                       style={{ backgroundColor: "#10B65C", color: "white" }}
