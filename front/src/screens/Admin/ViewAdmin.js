@@ -9,6 +9,7 @@ import { OverlayTrigger, Popover } from "react-bootstrap";
 import Alert from "../../components/Admin/Alert";
 import Loader from "../../components/Loader";
 import ConfirmDialogBox from "../../components/ConfirmDialogBox";
+import { MDBDataTable } from "mdbreact";
 import { Row, Col, Modal, Form } from "react-bootstrap";
 
 function ViewAdmin() {
@@ -24,23 +25,33 @@ function ViewAdmin() {
   const [formData2, updateFormData2] = useState({ email: "", superuser: "" });
   const columns = [
     {
-      label: "Action Time",
-      field: "action_time",
+      label: "Email",
+      field: "email",
       sort: "disabled",
     },
     {
-      label: "Change message",
-      field: "change_message",
+      label: "First Name",
+      field: "first_name",
       sort: "disabled",
     },
     {
-      label: "Object",
-      field: "object_repr",
+      label: "Last Name",
+      field: "last_name",
       sort: "disabled",
     },
     {
-      label: "Admin",
-      field: "user",
+      label: "Staff Status",
+      field: "is_staff",
+      sort: "disabled",
+    },
+    {
+      label: "Super Staff Status",
+      field: "is_superuser",
+      sort: "disabled",
+    },
+    {
+      label: "Edit",
+      field: "editBtn",
       sort: "disabled",
     },
   ];
@@ -64,9 +75,61 @@ function ViewAdmin() {
     setIsloading(false);
     if (`${sessionStorage.getItem("super")}` === "true") {
       axiosInstance
-        .get("/api/getAllAdmin")
+        .get("/api/getAllAdminData")
         .then((res) => {
-          setTData({ columns: columns, rows: res.data.ls });
+          setTData({
+            columns: columns,
+            rows: res.data.data.map((v, index) => ({
+              ...v,
+              editBtn: (
+                <button
+                  style={{
+                    border: "none",
+                    backgroundColor: "none",
+                    display:
+                      v.is_superuser === "True" &&
+                      !(v.username === sessionStorage.getItem("username"))
+                        ? "none"
+                        : "block",
+                  }}
+                  onClick={() => {
+                    // deleteRow(v.id)
+                    // console.log(v.username)
+                    navigate("/admin/updateProfile", {
+                      state: { username: v.username, update: 1 },
+                    });
+                  }}
+                  disabled={
+                    v.is_superuser === "True" &&
+                    !(v.username === sessionStorage.getItem("username"))
+                      ? true
+                      : false
+                  }
+                >
+                  {" "}
+                  <i className="fa fa-edit" style={{ color: "#10B65C" }}></i>
+                </button>
+              ),
+              is_staff: (
+                <i
+                  className={
+                    v.is_staff === "True" ? "fa fa-check" : "fa fa-times"
+                  }
+                  style={{ color: v.is_staff === "True" ? "#10B65C" : "red" }}
+                ></i>
+              ),
+              is_superuser: (
+                <i
+                  className={
+                    v.is_superuser === "True" ? "fa fa-check" : "fa fa-times"
+                  }
+                  style={{
+                    color: v.is_superuser === "True" ? "#10B65C" : "red",
+                  }}
+                ></i>
+              ),
+            })),
+          });
         })
         .catch((e) => {
           console.log(e);
@@ -234,7 +297,6 @@ function ViewAdmin() {
                   arg={argConfirmModal}
                   msg={confirm_dialog_msg}
                 />
-
                 <button
                   style={{
                     marginLeft: "10%",
@@ -296,116 +358,18 @@ function ViewAdmin() {
                         boxSizing: "border-box",
                         borderRadius: "14px",
                         marginBottom: "40px",
+                        padding: "10px 10px 0 10px",
                       }}
                     >
-                      <h4
-                        style={{
-                          paddingTop: "10px",
-                          fontSize: "15.6px",
-                          textAlign: "center",
-                        }}
-                      >
-                        Admin
-                      </h4>
-                      <div className="lineThrough"></div>
-                      <div className="scrollbar" id="style-4">
-                        {/* {utests.map((t, index) => {
-                          return (
-                            <Row
-                              style={{
-                                backgroundColor: "white",
-                                borderColor: "#F0F0F0",
-                                marginBottom: "1px",
-                                border: "1px solid #E5E5E5",
-                                borderRadius: "10px",
-                              }}
-                            >
-                              <Col>
-                                <button
-                                  disabled={
-                                    parseInt(sessionStorage.getItem("myid")) ==
-                                    t.myuser
-                                      ? false
-                                      : true
-                                  }
-                                  type="button"
-                                  onClick={(e) => {
-                                    // upcomingTest(e, t);
-                                    navigate("/admin/updateTest", {
-                                      state: {
-                                        isUpdate: true,
-                                        data: t,
-                                        sid: 0,
-                                      },
-                                    });
-                                  }}
-                                  style={{
-                                    width: "100%",
-                                    backgroundColor: "white",
-                                    borderColor: "#F0F0F0",
-                                    marginBottom: "1px",
-                                    border: "none",
-                                  }}
-                                  key={index}
-                                >
-                                  {t.test_name}
-                                </button>
-                              </Col>
-                              <Col md={1}>
-                                {parseInt(sessionStorage.getItem("myid")) ==
-                                  t.myuser && (
-                                  <i
-                                    onClick={() => {
-                                      if (
-                                        t.live &&
-                                        parseInt(
-                                          sessionStorage.getItem("myid")
-                                        ) == t.myuser
-                                      ) {
-                                        startTest(t.id);
-                                      } else {
-                                        setIsAlertMsgLoaded(true);
-                                        setDangerMsg("Cannot preview draft");
-                                      }
-                                    }}
-                                    className={
-                                      t.live ? "fa fa-eye" : "fa fa-eye-slash"
-                                    }
-                                    title={
-                                      t.live
-                                        ? "Preview test"
-                                        : "Cannot preview draft"
-                                    }
-                                    style={{
-                                      backgroundColor: "white",
-                                      color: t.live ? "green" : "red",
-                                      float: "right",
-                                      marginRight: "15px",
-                                      marginTop: "10px",
-                                    }}
-                                  ></i>
-                                )}
-                              </Col>
-                              <Col md={1}>
-                                {parseInt(sessionStorage.getItem("myid")) ==
-                                  t.myuser && (
-                                  <i
-                                    onClick={() => delTest(t.id)}
-                                    className="fa fa-trash"
-                                    style={{
-                                      backgroundColor: "white",
-                                      color: "red",
-                                      float: "right",
-                                      marginRight: "15px",
-                                      marginTop: "10px",
-                                    }}
-                                  ></i>
-                                )}
-                              </Col>
-                            </Row>
-                          );
-                        })} */}
-                      </div>
+                      <MDBDataTable
+                        striped
+                        bordered
+                        noBottomColumns
+                        hover
+                        displayEntries={false}
+                        noRecordsFoundLabel={"No Upcoming Test"}
+                        data={data}
+                      />
                       <button
                         className="btn"
                         type="button"
@@ -415,14 +379,11 @@ function ViewAdmin() {
                           backgroundColor: "#10B65C",
                           borderRadius: "100px",
                           margin: "10px",
-                          marginLeft: "91%",
+                          marginLeft: "96%",
                         }}
+                        title="Add new admin"
                       >
-                        <i
-                          className="fa fa-add"
-                          title="Add new admin"
-                          style={{ color: "white" }}
-                        ></i>
+                        <i className="fa fa-add" style={{ color: "white" }}></i>
                       </button>
                     </div>
                   </Col>

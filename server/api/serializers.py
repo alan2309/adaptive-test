@@ -31,6 +31,40 @@ class CodingTestSerializer(serializers.ModelSerializer):
     class Meta:
         model = CodingTest
         fields='__all__'      
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields=['date_joined','email','first_name','id','is_staff','is_superuser','last_login','last_name']  
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        if data['is_staff'] == True:
+            data['is_staff'] = "True"
+        elif not data['is_staff']:
+            data['is_staff'] = "False"
+
+        if data['is_superuser'] == True:
+            data['is_superuser'] = "True"
+        elif not data['is_superuser']:
+            data['is_superuser'] = "False"
+            
+        return data    
+class UserMiniSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields=['email','first_name','id','is_staff','is_superuser','last_name','username']  
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        if data['is_staff'] == True:
+            data['is_staff'] = "True"
+        elif not data['is_staff']:
+            data['is_staff'] = "False"
+
+        if data['is_superuser'] == True:
+            data['is_superuser'] = "True"
+        elif not data['is_superuser']:
+            data['is_superuser'] = "False"
+            
+        return data  
 class OptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Paraopt
@@ -41,9 +75,13 @@ class ParaSerializer(serializers.ModelSerializer):
         model = Para
         fields='__all__'     
 class MyUserSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source='user.email')
+    user_is_superuser = serializers.CharField(source='user.is_superuser')
+    user_is_staff = serializers.CharField(source='user.is_staff')
     class Meta:
         model = MyUser
-        fields='__all__'     
+        fields='__all__'  
+    
 class AllUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

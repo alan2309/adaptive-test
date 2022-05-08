@@ -39,6 +39,7 @@ urlpatterns = [
    path('api/getuserslist',views.getuserslist),
    path('api/permission',views.permission),
    path('api/getAllAdmin',views.getAllAdmin),
+   path('api/getAllAdminData',views.getAllAdminData),
    path('api/sendMailAdmin',views.sendMailAdmin),
    path('api/send_custom_mail',views.send_custom_mail),
    path('api/getUserData/<str:username>',views.getUserData),

@@ -323,7 +323,15 @@ function AdminHome() {
                 </ListGroup.Item>
                 <ListGroup.Item
                   action
-                  href="/admin/Profile"
+                  onClick={(e) => {
+                    navigate("/admin/Profile", {
+                      state: {
+                        id: sessionStorage.getItem("myid"),
+                        username: sessionStorage.getItem("username"),
+                        update: 0,
+                      },
+                    });
+                  }}
                   style={{
                     width: "50%",
                     height: "75px",

@@ -106,6 +106,17 @@ function App() {
               }
             />
             <Route
+              path="/admin/updateProfile"
+              exact
+              element={
+                <Row style={{ margin: "0px" }}>
+                  <Col style={{ padding: "0px" }}>
+                    <Profile />
+                  </Col>
+                </Row>
+              }
+            />
+            <Route
               path="/admin/ViewHistory"
               exact
               element={

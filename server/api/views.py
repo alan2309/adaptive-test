@@ -16,7 +16,7 @@ from django.contrib.auth.models import User
 import datetime
 from rest_framework.parsers import JSONParser
 import random
-from .serializers import CodingTestSerializer, MyUserSerializer, OptSerializer, SubjectSerializer,QuestionSerializer, TestSerializer ,ResultSerializer,OptionSerializer,AllUserSerializer,LogEntrySerializer
+from .serializers import CodingTestSerializer, MyUserSerializer, OptSerializer, SubjectSerializer,QuestionSerializer,UserMiniSerializer, TestSerializer ,ResultSerializer,UserSerializer,OptionSerializer,AllUserSerializer,LogEntrySerializer
 import math
 from django.db.models import Q
 from dateutil import tz
@@ -186,18 +186,18 @@ def newuser(request):
     if request.method=="POST":
         data=JSONParser().parse(request)['data']
         u=User.objects.filter(username = data['email'])
-        print(u.exists())
         if u.exists():
             u=u[0]
             uu=MyUser.objects.filter(user=u)
-            u.first_name=data['name']
+            u.first_name=data['fname']
             u.username = data['email']
+            u.last_name = data['lname']
             u.email=data['email']
             u.password=make_password(data['pass'])
             if uu.exists():
                 return JsonResponse({"msg":"Failed","created":False,'exists':1},safe=False)
         else:
-            u = User.objects.create(first_name=data['name'],username = data['email'],email=data['email'],password=make_password(data['pass']))  
+            u = User.objects.create(first_name=data['fname'],last_name=data['lname'],username = data['email'],email=data['email'],password=make_password(data['pass']))  
         feedback=1
         if data['admin']:
             feedback=0
@@ -213,7 +213,7 @@ def newuser(request):
             gender="Female"
         else:
             gender="Other"
-        newuser = MyUser(user=u,name=data['name'],email=data['email'],
+        newuser = MyUser(user=u,name='{0} {1}'.format(data['fname'],data['lname']),email=data['email'],
                         age=int(data['age']),gender=gender,mobile=int(data['mobileNo']),
                         percent_10_std=int(data['percent_10_std']),percent_12_std=int(data['percent_12_std']),
                         avgCGPA=float(data['avgCGPA']),backlogs=int(data['backlogs']),
@@ -303,7 +303,7 @@ def forgotpass(request):
             msg=EmailMultiAlternatives(subject=subject,from_email=email_from,to=recipient_list)
             args={}
             args['name']='{}'.format(user[0].first_name)
-            args['url']='https://fascinating-eclair-7e9eca.netlify.app/change-pass?token={0}&user={1}'.format(token,user[0].email)
+            args['url']='https://placement-portal-test.netlify.app/change-pass?token={0}&user={1}'.format(token,user[0].email)
             html_template=get_template("api/ChangePassword.html").render(args)
             msg.attach_alternative(html_template,"text/html")
             msg.send()
@@ -346,7 +346,11 @@ def getUserData(request,username):
         if request.method == "GET":
             user=MyUser.objects.filter(user__username=username)
             user=MyUserSerializer(user,many=True).data
-        return JsonResponse({'user':user[0]},safe=False)
+            if(len(user)>0):
+                user=user[0]
+            else:
+                user=0
+            return JsonResponse({'user':user},safe=False)
 
 @csrf_exempt
 def send_custom_mail(request):
@@ -882,7 +886,7 @@ def marks(request,sid=0):
                             msg=EmailMultiAlternatives(subject=subject,from_email=email_from,to=recipient_list)
                             args={}
                             args['name']='{}'.format(user.first_name)
-                            args['url']='https://fascinating-eclair-7e9eca.netlify.app/viewresult?viewToken={0}&user={1}&viewRes={2}&testId={3}'.format(token,user.email,True,test.id)
+                            args['url']='https://placement-portal-test.netlify.app/viewresult?viewToken={0}&user={1}&viewRes={2}&testId={3}'.format(token,user.email,True,test.id)
                             html_template=get_template("api/Result.html").render(args)
                             msg.attach_alternative(html_template,"text/html")
                             msg.send()
@@ -1147,6 +1151,16 @@ def saveTest(request):
     else:
         return HttpResponseBadRequest()
 @csrf_exempt
+def getAllAdminData(request):
+    if request.headers.get('Authorization') and checkAuthorization(request.headers["Authorization"]):  
+        if request.method == 'GET':
+            ls=UserSerializer(User.objects.filter(is_staff=True).order_by('-is_superuser'),many=True).data
+            ls1=UserMiniSerializer(User.objects.filter(is_staff=True).order_by('-is_superuser'),many=True).data
+            return JsonResponse({'data_detailed':ls,'data':ls1},safe=False) 
+    else:
+        return HttpResponseBadRequest()  
+
+@csrf_exempt
 def getAllAdmin(request):
     if request.headers.get('Authorization') and checkAuthorization(request.headers["Authorization"]):  
         if request.method == 'GET':
@@ -1166,9 +1180,7 @@ def sendMailAdmin(request):
             if user.exists():
                 return JsonResponse({'statuscode':0,'msg':'Email already exists'},safe=False)
             else: 
-                user=User(email=data['email'],username=data['email'],password=make_password('pass@123'),is_staff=True,is_superuser=bool(data['superuser']))
-                
-                print(user)
+                user=User(email=data['email'],username=data['email'],password=make_password('pass@123'),is_staff=True,is_superuser=bool(data['superuser']))                
                 recipient_list = [data['email']]
                 subject = "Admin register"
                 email_from = settings.EMAIL_HOST_USER
@@ -1176,7 +1188,7 @@ def sendMailAdmin(request):
                 msg=EmailMultiAlternatives(subject=subject,from_email=email_from,to=recipient_list)
                 args={}
                 args['name']='{}'.format(data['email'])
-                args['url']='https://fascinating-eclair-7e9eca.netlify.app/login'
+                args['url']='https://placement-portal-test.netlify.app/login'
                 args['password']='{}'.format('pass@123')
                 html_template=get_template("api/AdminRegister.html").render(args)
                 msg.attach_alternative(html_template,"text/html")

@@ -43,7 +43,8 @@ function RegisterAdmin() {
   const initialFormData = Object.freeze({
     pass: "",
     cpass: "",
-    name: "",
+    fname: "",
+    lname: "",
     email: "",
     age: "",
     gender: "",
@@ -219,7 +220,9 @@ function RegisterAdmin() {
                     placeholder="Enter email"
                     onChange={handleChange}
                     disabled={
-                      sessionStorage.getItem("myid") === "undefined" ? true : false
+                      sessionStorage.getItem("myid") === "undefined"
+                        ? true
+                        : false
                     }
                     required
                     value={
@@ -233,14 +236,25 @@ function RegisterAdmin() {
                   </Form.Text>
                 </Form.Group>
                 <Form.Group className="mb-3" style={{ marginTop: "25px" }}>
-                  <Form.Label> Name </Form.Label>
+                  <Form.Label> First Name </Form.Label>
                   <Form.Control
-                    name="name"
+                    name="fname"
                     type="text"
-                    placeholder="Name"
+                    placeholder="First Name"
                     onChange={handleChange}
                     required
-                    value={formData.name}
+                    value={formData.fname}
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3" style={{ marginTop: "25px" }}>
+                  <Form.Label> Last Name </Form.Label>
+                  <Form.Control
+                    name="lname"
+                    type="text"
+                    placeholder="Last Name"
+                    onChange={handleChange}
+                    required
+                    value={formData.lname}
                   />
                 </Form.Group>
                 <Form.Group className="mb-3" style={{ marginTop: "25px" }}>
