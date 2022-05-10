@@ -195,6 +195,7 @@ function Result() {
           setIdx(res.data.res_id);
           setShowFeedback(res.data.takeFeedback);
           setPrediction(res.data.prediction);
+          setUserDetails(res.data.user_detail);
           // sessionStorage.setItem('result',total)
           setIsloading(false);
         })
@@ -451,7 +452,7 @@ function Result() {
                 </Modal.Header>
                 <Modal.Body>
                   {personalityData[0] !== undefined &&
-                    userDetails !== undefined &&
+                    userDetails !== {} &&
                     timeTaken !== undefined &&
                     totalMarksScored !== undefined &&
                     startTime !== undefined && (

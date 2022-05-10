@@ -240,7 +240,7 @@ function ViewResult() {
                 </Modal.Header>
                 <Modal.Body>
                   {personalityData[0] !== undefined &&
-                    userDetails !== undefined &&
+                    userDetails !== {} &&
                     timeTaken !== undefined &&
                     totalMarksScored !== undefined &&
                     startTime !== undefined && (

@@ -119,10 +119,11 @@ function DetailedReportComp({
             <Col xs="6" md="6">
               <p style={{ marginLeft: "30px" }}>
                 <b>Candidate Name :</b>{" "}
-                {user_detail?.first_name + " " + user_detail?.last_name}
+                {user_detail !== {} &&
+                  user_detail.first_name + " " + user_detail?.last_name}
               </p>
               <p style={{ marginLeft: "30px" }}>
-                <b>Email :</b> {user_detail?.email}
+                <b>Email :</b> {user_detail !== {} && user_detail?.email}
               </p>
             </Col>
             <Col xs="6" md="6">
