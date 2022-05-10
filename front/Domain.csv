@@ -1,0 +1,16 @@
+﻿Question,Type,CorrectOption,Option1,Option2,Option3,Option4
+Time complexity of Depth First Traversal of is,1,1,Θ(|V|+|E|), Θ(|V|),Θ(|E|), Θ(|V|*|E|)
+Re-balancing of AVL tree costs,1,2,Ο(1),Ο(log n),Ο(n), Ο(n2)
+Which of the following algorithm does not divide the list,1,1, linear search,binary search,merge sort,quick sort
+"If there's no base criteria in a recursive program, the program will",1,3,not be executed.,execute until all conditions match., execute infinitely.,obtain progressive approach.
+What data structure is used for breadth first traversal of a graph?,1,1,queue,stack,list,none of these
+Consider a situation where a client receives packets from a server. There may be differences in speed of the client and the server. Which data structure is best suited for synchronization?,2,2,list,queue,stack,Priority Queue
+Which among the following data structures is best suited for storing very large numbers (numbers that cannot be stored in long long int). Following are the operations needed for these large numbers.,2,2,array,list,tree,hash
+"If h is chosen from a universal collection of hash functions and is used to hash n keys into a table of size m, where n ≤ m, the expected number of collisions involving a particular key x is less than _______.",2,1,1,1/n,1/m,n/m
+"The minimum number of scalar multiplication required, for parenthesization of a matrix-chain product whose sequence of dimensions for four matrices is <5, 10, 3, 12, 5> is",2,3,630,580,480,405
+Consider the following statements: S1: A queue can be implemented using two stacks. S2: A stack can be implemented using two queues. Which of the following is correct?,2,3,S1 is correct and S2 is not correct.,S1 is not correct and S2 is correct,Both S1 and S2 are correct,Both S1 and S2 are incorrect
+"The inorder and preorder traversal of a binary tree are d b e a f c g and a b d e c f g, respectively. The postorder traversal of the binary tree is:",3,1,d e b f g c a,e d b g f c a,e d b f g c a,d e f g b c a
+Which of the following pairs of traversals is not sufficient to build a binary tree from the given traversals?,3,2,Preorder and Inorder,Preorder and Postorder,Inorder and Postorder,None of the Above
+"When searching for the key value 60 in a binary search tree, nodes containing the key values 10, 20, 40, 50, 70 80, 90 are traversed, not necessarily in the order given. How many different orders are possible in which these key values can occur on the search path from the root to the node containing the value 60?",3,1,35,64,128,5040
+"A complete n-ary tree is one in which every node has 0 or n sons. If x is the number of internal nodes of a complete n-ary tree, the number of leaves in it is given by",3,1,x(n-1)+1,xn-1,xn+1,"	x(n+1)"
+"The post-order traversal of a binary search tree is given by 2, 7, 6, 10, 9, 8, 15, 17, 20, 19, 16, 12. Then the pre-order traversal of this tree is:",3,4,"2, 6, 7, 8, 9, 10, 12, 15, 16, 17, 19, 20","7, 6, 2, 10, 9, 8, 15, 16, 17, 20, 19, 12","7, 2, 6, 8, 9, 10, 20, 17, 19, 15, 16, 12","12, 8, 6, 2, 7, 9, 10, 16, 15, 19, 17, 20"

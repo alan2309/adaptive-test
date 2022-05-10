@@ -1,0 +1,18 @@
+﻿Question,Type,CorrectOption,Option1,Option2,Option3,Option4
+A computer program that converts assembly language to machine language is,1,3,Compiler, Interpreter,Assembler, Comparator
+ A large number of computers in a wide geographical area can be efficiently connected using,1,3,Twisted pair lines,Coaxial cables,Communications satellites,All of the above
+The application layer of the OSI model is,1,4,Four layer,Five layer,Six layer, Seven layer
+The attacker using a network of compromised devices is known as _____________,1,2,Internet,Botnet,Telnet,D-net
+Packet sniffers involve ____________,1,2,Active receiver, Passive receiver, Legal receiver, Partially-active receiver
+Which type of topology is best suited for large businesses which must carefully control and coordinate the operation of distributed branch outlets?,2,1, Star,Local area,Hierarchical,Ring
+Which of the following transmission directions listed is not a legitimate channel?,2,2, Half Duplex,Double Duplex,Simplex, Full Duplex
+Parity bits” are used for which of the following purposes?,2,3,To identify the user,Encryption of data,error detection,To transmit faster
+The length of an IPv6 address is?,2,3,64 bits,32 bits,128 bits,128 bits
+How many versions available of IP?,2,1, 2 version, 6 version,4 version,1 version
+ What kind of transmission medium is most appropriate to carry data in a computer network that is exposed to electrical interferences?,3,4,Unshielded twisted pair,Coaxial cable,Microwave,Optical fiber
+Which of the following is correct IPv4 address?,3,3,01.200.128.123,300.142.210.64,128.64.0.0,124.201.3.1.52
+Software programs that allow you to legally copy files and give them away at no cost are called which of the following?,3,4,Probe ware,Shareware,Timeshare,Public domain
+Which of the following statements could be valid with respect to the ICMP (Internet Control Message Protocol)?,3,3,It reports all errors which occur during transmission.,It informs routers when an incorrect path has been taken.,A redirect message is used when a router notices that a packet seems to have been routed wrongly,The “destination unreachable” type message is used when a router cannot locate the destination.
+The IP network 192.168.50.0 is to be divided into 10 equal sized subnets. Which of the following subnet masks can be used for the above requirement?,3,1,255.255.255.0,255.243.240,255.255.255,255.255.0
+,,,,,,
+,,,,,,

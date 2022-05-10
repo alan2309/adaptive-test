@@ -2,11 +2,7 @@ import React, { useEffect } from "react";
 import Papa from "papaparse";
 import toastrFunc from "../toastrFunc";
 
-function CSVUploadCsv({
-  setCsvJsonData,
-  csvJsonData,
-  subjectName,
-}) {
+function CSVUploadCsv({ setCsvJsonData, csvJsonData, subjectName }) {
   return (
     <>
       <label class="custom-file-upload">
@@ -68,14 +64,16 @@ function CSVUploadCsv({
                     ) {
                       if (first_row_data["Question"] === "") {
                         // setIsAlertDangerMsgLoaded(true);
-                        toastrFunc('error',
+                        toastrFunc(
+                          "error",
                           "Empty Question at row index = " +
                             parseInt(countRowId + 2)
                         );
                         parser.abort();
                       } else if (first_row_data["type"] === "") {
                         // setIsAlertDangerMsgLoaded(true);
-                       toastrFunc('error',
+                        toastrFunc(
+                          "error",
                           "Empty type at row index = " +
                             parseInt(countRowId + 2)
                         );
@@ -95,7 +93,11 @@ function CSVUploadCsv({
                               d["id"] = count;
                               d["marks"] =
                                 first_row_data["CorrectOption"] === optionId
-                                  ? 10
+                                  ? parseInt(first_row_data["type"]) === 1
+                                    ? 1
+                                    : parseInt(first_row_data["type"]) === 2
+                                    ? 2
+                                    : 5
                                   : 0;
                               d["title"] = first_row_data[key];
                               c.push(d);
@@ -135,14 +137,15 @@ function CSVUploadCsv({
                       allKeyNotPresent = true;
                       // setIsAlertDangerMsgLoaded(true);
                       // setDangerMsg(stringLine);
-                      toastrFunc("error",stringLine)
+                      toastrFunc("error", stringLine);
                       parser.abort();
                     }
                   } else if (subjectName === "Personality") {
                     if ("Question" in first_row_data) {
                       if (first_row_data["Question"] === "") {
                         // setIsAlertDangerMsgLoaded(true);
-                        toastrFunc("error",
+                        toastrFunc(
+                          "error",
                           "Empty Question at row index = " +
                             parseInt(countRowId + 2)
                         );
@@ -158,7 +161,7 @@ function CSVUploadCsv({
                     } else {
                       allKeyNotPresent = true;
                       // setIsAlertDangerMsgLoaded(true);
-                      toastrFunc("error","Question is missing \n");
+                      toastrFunc("error", "Question is missing \n");
                       parser.abort();
                     }
                   }
