@@ -119,11 +119,10 @@ function DetailedReportComp({
             <Col xs="6" md="6">
               <p style={{ marginLeft: "30px" }}>
                 <b>Candidate Name :</b>{" "}
-                {user_detail?.name || "Chaitanya Kumbhar"}
+                {user_detail?.first_name + " " + user_detail?.last_name}
               </p>
               <p style={{ marginLeft: "30px" }}>
-                <b>Email :</b>{" "}
-                {user_detail?.email || "kchaitanya1911@gmail.com"}
+                <b>Email :</b> {user_detail?.email}
               </p>
             </Col>
             <Col xs="6" md="6">
@@ -132,7 +131,7 @@ function DetailedReportComp({
                 <CustomTimer start={false} time={timeTaken || "00:00:20"} />{" "}
               </p>
               <p style={{ textAlign: "right", marginRight: "130px" }}>
-                <b>Marks Scored :</b> {totalMarksScored || 45}
+                <b>Marks Scored :</b> {totalMarksScored}
               </p>
             </Col>
           </Row>
@@ -594,7 +593,6 @@ function DetailedReportComp({
               </p>
             </div>
           </Row>
-          
           <div className="page-break" />
           <div
             style={{
@@ -617,19 +615,20 @@ function DetailedReportComp({
             </p>
           </div>
           <Row>
-          <div
-            style={{
-              fontSize: "13.6px",
-              marginLeft: "30px",
-              marginTop: "40px",
-              paddingRight: "90px",
-            }}
-          >
-            <p>
-              In depth report on each skill aspect with descriptions of your
-              strengths, practice and training needs along with improvement tips.{" "}
-            </p>{" "}
-          </div>
+            <div
+              style={{
+                fontSize: "13.6px",
+                marginLeft: "30px",
+                marginTop: "40px",
+                paddingRight: "90px",
+              }}
+            >
+              <p>
+                In depth report on each skill aspect with descriptions of your
+                strengths, practice and training needs along with improvement
+                tips.{" "}
+              </p>{" "}
+            </div>
             <div>
               <p
                 style={{
@@ -708,9 +707,6 @@ function DetailedReportComp({
                     </p>
                   </>
                 )}
-              </p>
-              <p>
-
               </p>
               <p
                 style={{ fontSize: "13.6px", marginLeft: "30px" }}
@@ -928,9 +924,9 @@ function DetailedReportComp({
                     Being able to read and interpret English is necessary for
                     almost all the job roles. In fact, it is a basic requirement
                     today with the language being used globally to transact
-                    business. Your score in Verbal Reasoning is below average which means you
-                    are not proficient in English usage. Keep practicing by reading
-                    and writing on a regular basis.
+                    business. Your score in Verbal Reasoning is below average
+                    which means you are not proficient in English usage. Keep
+                    practicing by reading and writing on a regular basis.
                   </p>
                 )}
 
@@ -938,11 +934,12 @@ function DetailedReportComp({
                   parseInt(mrksScoredPercent?.[4]) <= 75 && (
                     <p>
                       Being able to read and interpret English is necessary for
-                      almost all the job roles. In fact, it is a basic requirement
-                      today with the language being used globally to transact
-                      business. Your score in Verbal Reasoning is average which means you
-                      are little proficient in English usage. Keep practicing by reading
-                      and writing on a regular basis.{" "}
+                      almost all the job roles. In fact, it is a basic
+                      requirement today with the language being used globally to
+                      transact business. Your score in Verbal Reasoning is
+                      average which means you are little proficient in English
+                      usage. Keep practicing by reading and writing on a regular
+                      basis.{" "}
                     </p>
                   )}
 
@@ -951,9 +948,9 @@ function DetailedReportComp({
                     Being able to read and interpret English is necessary for
                     almost all the job roles. In fact, it is a basic requirement
                     today with the language being used globally to transact
-                    business. Your score in Verbal Reasoning is above average which means you
-                    are very proficient in English usage. Keep practicing by reading
-                    and writing on a regular basis.
+                    business. Your score in Verbal Reasoning is above average
+                    which means you are very proficient in English usage. Keep
+                    practicing by reading and writing on a regular basis.
                   </p>
                 )}
               </p>
