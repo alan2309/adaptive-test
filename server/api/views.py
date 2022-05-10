@@ -1527,10 +1527,9 @@ def evaluate_api(request,data=0):
                 if data['Q'][i-1]!=-1:
                     Q[i]=data['Q'][i-1]
                 else :
-                    Q[i]=0
+                    Q[i]=3
             else:
-                Q[i]=(i-1)%2
-
+                Q[i]=3
     Q = list(map(int, Q))
 
     # Score facet scales
@@ -1809,40 +1808,8 @@ def evaluate_api(request,data=0):
     LO = 45
     HI = 55
 
-    if "results_api" not in request.build_absolute_uri('?'):  # hack
-        return SEP, SEFP, LO, HI, SE, SAP, SAFP, SA, SC, SCP, SCFP, flev, SOP, \
-                SOFP, SO, Nick, Country, SNP, SNFP, Category, SN, Sex, Age, Q
-    else:  # treat as an api call.
-        m = {}
-
-        labels = ['EXTRAVERSION', 'Friendliness', 'Gregariousness', 'Assertiveness', 'Activity Level', 'Excitement-Seeking', 'Cheerfulness']
-        m[labels[0]] = SEP
-        for i in range(1, len(labels)):
-            m[labels[i]] = SEFP[i]
-
-        labels =  ['AGREEABLENESS', 'Trust', 'Morality', 'Altruism', 'Cooperation', 'Modesty', 'Sympathy']
-        m[labels[0]] = SAP
-        for i in range(1, len(labels)):
-            m[labels[i]] = SAFP[i]
-
-        labels = ['CONSCIENTIOUSNESS', 'Self-Efficacy', 'Orderliness', 'Dutifulness', 'Achievement-Striving', 'Self-Discipline', 'Cautiousness']
-        m[labels[0]] = SCP
-        for i in range(1, len(labels)):
-            m[labels[i]] = SCFP[i]
-
-        labels = ['NEUROTICISM', 'Anxiety', 'Anger', 'Depression', 'Self-Consciousness', 'Immoderation', 'Vulnerability']
-        m[labels[0]] = SNP
-        for i in range(1, len(labels)):
-            m[labels[i]] = SNFP[i]
-
-        labels = ['OPENNESS', 'Imagination', 'Artistic Interests', 'Emotionality', 'Adventurousness', 'Intellect', 'Liberalism']
-        m[labels[0]] = SOP
-        for i in range(1, len(labels)):
-            m[labels[i]] = SOFP[i]
-
-        # od = collections.OrderedDict(sorted(m.items()))
-        return json.dumps(m)
-
+    return SEP, SEFP, LO, HI, SE, SAP, SAFP, SA, SC, SCP, SCFP, flev, SOP, \
+            SOFP, SO, Nick, Country, SNP, SNFP, Category, SN, Sex, Age, Q
 
 def evaluate(request, data=0):
 
