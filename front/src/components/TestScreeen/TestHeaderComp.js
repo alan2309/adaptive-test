@@ -17,7 +17,7 @@ function TestHeaderComp({
   return (
     <div id="testHeaderComp">
       <Row>
-        <Col md="4" style={{ textAlign: "center", fontSize: "18px" }}>
+        <Col md="4" style={{ fontSize: "18px" }}>
           <div>{header}</div>
         </Col>
         {noTotal ? (
