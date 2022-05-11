@@ -99,6 +99,7 @@ function SetQuestion({
         setCurrentQs(temp[0].ques);
         setOpt(temp[0].options);
         setImgDb(temp[0].imgId);
+        setPreviewSource(temp[0].imgId);
       } else if (sid === 5) {
         setCurrentQsID(0);
         setCurrentQs(temp[0].question || "");
@@ -920,18 +921,23 @@ function SetQuestion({
                       <Row>
                         <div style={{ margin: "10px 0" }}>
                           <div className="form-group">
-                            <label for="selectSetQs">Image :</label>
-                            <input
-                              id="fileInput"
-                              type="file"
-                              name="image"
-                              style={{ marginLeft: "20px" }}
-                              onChange={handleFileInputChange}
-                              value={fileInputState}
-                              disabled={!isUpdate}
-                              className="form-input"
-                              accept="image/png, image/jpeg"
-                            />
+                            {isUpdate && (
+                              <>
+                                {" "}
+                                <label for="selectSetQs">Image :</label>
+                                <input
+                                  id="fileInput"
+                                  type="file"
+                                  name="image"
+                                  style={{ marginLeft: "20px" }}
+                                  onChange={handleFileInputChange}
+                                  value={fileInputState}
+                                  disabled={!isUpdate}
+                                  className="form-input"
+                                  accept="image/png, image/jpeg"
+                                />
+                              </>
+                            )}
                             {previewSource && (
                               <div id="zoomImg">
                                 <Zoom>
@@ -983,7 +989,7 @@ function SetQuestion({
                               </button>
                             </Col>
                           )}
-                          <Col>
+                          {/* <Col>
                             {imgDB !== null && (
                               <div style={{ margin: "10px 0" }}>
                                 <div id="zoomImg" className="form-group">
@@ -1002,7 +1008,7 @@ function SetQuestion({
                                 </div>
                               </div>
                             )}
-                          </Col>
+                          </Col> */}
                         </Row>
                       )}
 
