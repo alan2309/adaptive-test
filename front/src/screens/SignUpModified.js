@@ -23,7 +23,8 @@ function SignUpModified() {
   const initialFormData = Object.freeze({
     pass: "",
     cpass: "",
-    name: "",
+    fname: "",
+    lname: "",
     email: "",
     age: "",
     gender: "",
@@ -191,14 +192,25 @@ function SignUpModified() {
                       </Form.Text>
                     </Form.Group>
                     <Form.Group className="mb-3" style={{ marginTop: "25px" }}>
-                      <Form.Label> Name </Form.Label>
+                      <Form.Label> First Name </Form.Label>
                       <Form.Control
-                        name="name"
+                        name="fname"
                         type="text"
                         placeholder="Name"
                         onChange={handleChange}
                         required
-                        value={formData.name}
+                        defaultValue={formData.fname}
+                      />
+                    </Form.Group>
+                    <Form.Group className="mb-3" style={{ marginTop: "25px" }}>
+                      <Form.Label> Last Name </Form.Label>
+                      <Form.Control
+                        name="lname"
+                        type="text"
+                        placeholder="Name"
+                        onChange={handleChange}
+                        required
+                        defaultValue={formData.lname}
                       />
                     </Form.Group>
                     <Form.Group className="mb-3" style={{ marginTop: "25px" }}>
@@ -363,7 +375,8 @@ function SignUpModified() {
                       <button
                         type="submit"
                         style={{
-                          marginTop: "5%",
+                          marginTop: "9%",
+                          marginBottom: "10px",
                           border: "none",
                           outline: "none",
                           borderRadius: "5px",
