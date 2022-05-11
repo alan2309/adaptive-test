@@ -31,7 +31,7 @@ function Profile() {
       .get(`api/getUserData/${location.state.username}`)
       .then((res) => {
         let data = res.data.user;
-
+ 
         updateFormData(data);
       });
     const list = async () =>
@@ -50,14 +50,18 @@ function Profile() {
     setShowConfirmDialogBox(false);
   }
   function confirm_del_yes() {
-    console.log(formData);
-    alert("Update here");
-    //logic here
+    axiosInstance.put(`api/getUserData/${location.state.username}`,{data:formData})
+    .then(res=>{
+      navigate('/admin/registeredAdmin')
+    })
+    .catch(e=>console.log(e))
   }
   function confirm_del_yes_1() {
-    console.log(formData);
-    alert("Delete here");
-    //logic here
+    axiosInstance.delete(`api/getUserData/${location.state.username}`)
+    .then(res=>{
+      navigate('/admin/registeredAdmin')
+    })
+    .catch(e=>console.log(e))
   }
   function onSubmit(e) {
     e.preventDefault();

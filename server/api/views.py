@@ -352,6 +352,40 @@ def getUserData(request,username):
                 user=0
             return JsonResponse({'user':user},safe=False)
 
+        if request.method == "DELETE":
+            user=User.objects.filter(username=username)
+            if(len(user)>0):
+                user.delete()
+            else:
+                return JsonResponse("User doesnt exist",safe=False)
+            return JsonResponse("Deleted",safe=False)
+
+        if request.method == "PUT":
+            data=JSONParser().parse(request)['data']
+            user=User.objects.filter(username=username)
+            if(len(user)>0):
+                user = user[0]
+                user.username = data['email']
+                user.email = data['email']
+                user.first_name = data['name']
+                user.is_staff = data['user_is_staff']
+                user.is_superuser = data['user_is_superuser']
+                user.save()
+                
+                myuser = user.myuser
+                myuser.email = data['email']
+                myuser.name = data['name']
+                myuser.branch = data['branch']
+                myuser.mobile = int(data['mobile'])
+                myuser.college = data['college']
+                myuser.age = int(data['age'])
+                myuser.gender = data['gender']
+
+                myuser.save()
+            else:
+                return JsonResponse("User doesn't exists",safe=False) 
+            return JsonResponse("updated",safe=False)        
+
 @csrf_exempt
 def send_custom_mail(request):
     if request.headers.get('Authorization') and checkAuthorization(request.headers["Authorization"]):
