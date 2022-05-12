@@ -183,8 +183,9 @@ function ViewAdmin() {
                       textAlign: "center",
                     }}
                   >
-                    Did someone forget their password?
+                    Add new admin?
                   </p>
+
                   <p
                     style={{
                       fontFamily: "Poppins",
@@ -195,20 +196,9 @@ function ViewAdmin() {
                       textAlign: "center",
                     }}
                   >
-                    That's ok
-                  </p>
-                  <p
-                    style={{
-                      fontFamily: "Poppins",
-                      fontStyle: "normal",
-                      fontWeight: "normal",
-                      fontSize: "14px",
-                      color: "#293E6F",
-                      textAlign: "center",
-                    }}
-                  >
-                    Just enter the email address you've used to register with us
-                    and we'll send you a reset link
+                    Enter the email address of the person you want as an admin
+                    and if you want the person to be superadmin, Click on the
+                    checkbox and send a mail.
                   </p>
 
                   <Form
