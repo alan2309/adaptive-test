@@ -646,6 +646,7 @@ function SetQuestion({
   }
   function confirm_yes() {
     setDelImage(true);
+    setPreviewSource("");
   }
   function confirm_discard_yes() {
     window.location.reload();
