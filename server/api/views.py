@@ -215,7 +215,7 @@ def newuser(request):
             gender="Other"
         newuser = MyUser(user=u,name='{0} {1}'.format(data['fname'],data['lname']),email=data['email'],
                         age=int(data['age']),gender=gender,mobile=int(data['mobileNo']),
-                        percent_10_std=int(data['percent_10_std']),percent_12_std=int(data['percent_12_std']),
+                        percent_10_std=float(data['percent_10_std']),percent_12_std=float(data['percent_12_std']),
                         avgCGPA=float(data['avgCGPA']),backlogs=int(data['backlogs']),
                         internships=int(data['internships']),branch=data['branch'],
                         college=data['college'],year=data['graduationYear'],takeFeedback=feedback

@@ -242,6 +242,8 @@ function SignUpModified() {
                         onChange={handleChange}
                         placeholder="age"
                         name="age"
+                        min={10}
+                        max={90}
                         required
                       />
                     </Form.Group>
@@ -278,10 +280,12 @@ function SignUpModified() {
                       <Form.Label> 10th percentage </Form.Label>
                       <Form.Control
                         type="number"
-                        step="0.01"
+                        step={0.01}
                         placeholder="10th percentage"
                         onChange={handleChange}
                         name="percent_10_std"
+                        min={1}
+                        max={100}
                         required
                       />
                     </Form.Group>
@@ -289,10 +293,12 @@ function SignUpModified() {
                       <Form.Label> 12th percentage </Form.Label>
                       <Form.Control
                         type="number"
-                        step="0.01"
+                        step={0.01}
                         placeholder="12th percentage"
                         onChange={handleChange}
                         name="percent_12_std"
+                        min={1}
+                        max={100}
                         required
                       />
                     </Form.Group>
@@ -347,7 +353,9 @@ function SignUpModified() {
                         placeholder=" C.G.P.A "
                         onChange={handleChange}
                         name="avgCGPA"
-                        step="0.01"
+                        step={0.01}
+                        min={0}
+                        max={10}
                         required
                       />
                     </Form.Group>
@@ -358,6 +366,7 @@ function SignUpModified() {
                         placeholder=" Backlogs "
                         onChange={handleChange}
                         name="backlogs"
+                        min={0}
                         required
                       />
                     </Form.Group>
@@ -368,6 +377,7 @@ function SignUpModified() {
                         placeholder="internship"
                         onChange={handleChange}
                         name="internships"
+                        min={0}
                         required
                       />
                     </Form.Group>

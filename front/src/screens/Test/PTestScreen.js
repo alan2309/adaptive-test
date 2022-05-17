@@ -420,12 +420,12 @@ function PTestScreen() {
                     </button>
                   </Col>
                 </Row>
-                <Watermark
-                  text={sessionStorage.getItem("username")}
-                  opacity="0.3"
-                >
-                  <Row style={{ marginTop: "15px" }}>
-                    <Col md="9">
+                <Row style={{ marginTop: "15px" }}>
+                  <Col md="9">
+                    <Watermark
+                      text={sessionStorage.getItem("username")}
+                      opacity="0.3"
+                    >
                       <div
                         className="QuestionComp"
                         style={{ minHeight: "50px", backgroundColor: "black" }}
@@ -507,19 +507,19 @@ function PTestScreen() {
                           )}
                         </form>
                       </div>
-                    </Col>
-                    <Col md="3">
-                      <div
-                        className="QuestionNavigatorComp"
-                        style={{ minHeight: "550px", backgroundColor: "black" }}
-                      >
-                        <QuestionNavigatorComp
-                          attempted={ans}
-                        ></QuestionNavigatorComp>
-                      </div>
-                    </Col>
-                  </Row>
-                </Watermark>
+                    </Watermark>
+                  </Col>
+                  <Col md="3">
+                    <div
+                      className="QuestionNavigatorComp"
+                      style={{ minHeight: "550px", backgroundColor: "black" }}
+                    >
+                      <QuestionNavigatorComp
+                        attempted={ans}
+                      ></QuestionNavigatorComp>
+                    </div>
+                  </Col>
+                </Row>
               </div>
             </div>
           }

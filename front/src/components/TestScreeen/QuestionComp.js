@@ -94,6 +94,7 @@ function QuestionComp({
                       width: "95%",
                       marginLeft: "15px",
                       fontWeight: "400",
+                      fontSize: "18px",
                     }}
                   >
                     Very Inaccurate
@@ -118,6 +119,7 @@ function QuestionComp({
                       width: "95%",
                       marginLeft: "15px",
                       fontWeight: "400",
+                      fontSize: "18px",
                     }}
                   >
                     Moderately Inaccurate
@@ -142,6 +144,7 @@ function QuestionComp({
                       width: "95%",
                       marginLeft: "15px",
                       fontWeight: "400",
+                      fontSize: "18px",
                     }}
                   >
                     Neither Accurate nor Inaccurate
@@ -166,6 +169,7 @@ function QuestionComp({
                       width: "95%",
                       marginLeft: "15px",
                       fontWeight: "400",
+                      fontSize: "18px",
                     }}
                   >
                     Moderately Accurate
@@ -190,6 +194,7 @@ function QuestionComp({
                       width: "95%",
                       marginLeft: "15px",
                       fontWeight: "400",
+                      fontSize: "18px",
                     }}
                   >
                     Very Accurate
