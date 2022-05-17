@@ -12,6 +12,7 @@ import "../css/Home.css";
 
 function Home() {
   const navigate = useNavigate();
+  const cloudName = process.env.REACT_APP_CLOUDINARY_CLOUD_NAME;
   return (
     <div>
       <Row className="welcomeDiv">
@@ -51,9 +52,9 @@ function Home() {
               light={false}
               pip={false}
               muted={true}
-              playbackRate={1}
+              playbackRate={1.5}
               loop={true}
-              url="https://vimeo.com/76979871"
+              url={`https://res.cloudinary.com/${cloudName}/video/upload/v1652769219/adaptive_test/landing_video/Placement_Test_Portal_DJSCE_noszdl.mp4`}
               config={{ youtube: { playerVars: { disablekb: 1, fs: 0 } } }}
             />
           </div>
@@ -91,15 +92,15 @@ function Home() {
           </Row>
         </Container>
         <Container>
-          <Row id='middleLogoRow'>
-            <Col className='first_col' sm={12} md={5} lg={4}>
+          <Row id="middleLogoRow">
+            <Col className="first_col" sm={12} md={5} lg={4}>
               <img
                 alt="logo"
                 src={illustration2}
                 className="welcomeImage3"
               ></img>
             </Col>
-            <Col className='second_col' sm={12} md={7} lg={8}>
+            <Col className="second_col" sm={12} md={7} lg={8}>
               <div className="landingPara1">
                 <label className="subHeadingsProfile1">
                   Why should I attempt these tests?
