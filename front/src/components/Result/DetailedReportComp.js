@@ -120,7 +120,9 @@ function DetailedReportComp({
               <p style={{ marginLeft: "30px" }}>
                 <b>Candidate Name :</b>{" "}
                 {user_detail !== {} &&
-                  user_detail.first_name + " " + user_detail?.last_name}
+                sessionStorage.getItem("admin") === "user"
+                  ? user_detail.name
+                  : user_detail?.first_name + " " + user_detail?.last_name}
               </p>
               <p style={{ marginLeft: "30px" }}>
                 <b>Email :</b> {user_detail !== {} && user_detail?.email}
