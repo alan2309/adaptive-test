@@ -920,6 +920,9 @@ def marks(request,sid=0):
                             msg=EmailMultiAlternatives(subject=subject,from_email=email_from,to=recipient_list)
                             args={}
                             args['name']='{}'.format(user.first_name)
+                            args['test_name']='{}'.format(test.test_name)
+                            # args['test_start']='{}'.format(test.test_start)
+                            # args['test_end']='{}'.format(test.test_end)
                             args['url']='https://placement-portal-test.netlify.app/viewresult?viewToken={0}&user={1}&viewRes={2}&testId={3}'.format(token,user.email,True,test.id)
                             html_template=get_template("api/Result.html").render(args)
                             msg.attach_alternative(html_template,"text/html")
