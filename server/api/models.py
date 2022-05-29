@@ -90,6 +90,7 @@ class Results(models.Model):
     startTime = models.DateTimeField(blank=True,null=True)
     endTime = models.DateTimeField(blank=True,null=True)
     marks = models.JSONField(null=True, blank=True)
+    prediction=models.IntegerField(null=True, blank=True)
     student = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     test=models.ForeignKey(Test,on_delete=models.CASCADE)
 

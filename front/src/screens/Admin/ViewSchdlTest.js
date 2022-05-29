@@ -105,6 +105,11 @@ function ViewSchdlTest() {
       sort: "asc",
     },
     {
+      label: "Prediction",
+      field: "prediction",
+      sort: "asc",
+    },
+    {
       label: "",
       field: "addBtn",
       sort: "disabled",
@@ -120,6 +125,7 @@ function ViewSchdlTest() {
     { label: "Domain", key: "dom" },
     { label: "Analytical", key: "analy" },
     { label: "Marks", key: "marks" },
+    { label: "Prediction", key: "prediction" },
     { label: "Delete", key: "addBtn" },
   ];
 

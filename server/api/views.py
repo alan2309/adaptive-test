@@ -800,7 +800,13 @@ def chartData(user,testId=-1,isPost=False):
         if isPost:
             takeFeedback=myUser.takeFeedback
         user_detail=MyUserSerializer(myUser).data
-    return {'startTime':resl.startTime,'endTime':resl.endTime,'personalityData':resl.marks['pGot'],'marks':resl.marks,'totalQs':totalQs,'avgMarksArr':a,'mrksScored':mrksScored,'mrksScoredPercent':mrksScoredPercent,'totalMarksScored':sum(mrksScored),'timeTaken':tdelta.seconds,'res_id':resl.id,'user_detail':user_detail,'takeFeedback':takeFeedback,'prediction':predict(mrksScoredPercentPrediction)}
+    resltPrediction=predict()
+    if resl.prediction == None:
+        resl.prediction=resltPrediction
+        resl.save()
+    else:
+        resltPrediction=resl.prediction
+    return {'startTime':resl.startTime,'endTime':resl.endTime,'personalityData':resl.marks['pGot'],'marks':resl.marks,'totalQs':totalQs,'avgMarksArr':a,'mrksScored':mrksScored,'mrksScoredPercent':mrksScoredPercent,'totalMarksScored':sum(mrksScored),'timeTaken':tdelta.seconds,'res_id':resl.id,'user_detail':user_detail,'takeFeedback':takeFeedback,'prediction':resltPrediction}
 
 @csrf_exempt
 def takeFeedback(request):
@@ -860,6 +866,11 @@ def resultTest(request,id):
             c['dom'] = x['marks']['d']
             c['analy'] = x['marks']['a']
             c['marks']=x['marks']['ap']+x['marks']['cf']+x['marks']['c']+x['marks']['d']+x['marks']['a']
+            if int(x['prediction']):
+                resltPrediction='Good to go'
+            else:
+                resltPrediction='Need to work on skills'
+            c['prediction']=resltPrediction
             cc.append(c)
 
         return JsonResponse({'testData':a.data,'studentNameArr':cc},safe=False)
