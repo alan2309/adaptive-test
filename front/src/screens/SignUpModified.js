@@ -27,6 +27,7 @@ function SignUpModified() {
     lname: "",
     email: "",
     age: "",
+    dob: "",
     gender: "",
     mobileNo: "",
     percent_10_std: "",
@@ -92,6 +93,12 @@ function SignUpModified() {
     e.preventDefault();
     if (formData.pass === formData.cpass) {
       setIsloading(false);
+      let dobx = new Date(formData.dob);
+      let month_diff = Date.now() - dobx.getTime();
+      let age_dt = new Date(month_diff);
+      let year = age_dt.getUTCFullYear();
+      let myage = Math.abs(year - 1970);
+      formData.age = myage;
       axiosInstance
         .post(`api/newuser`, { data: formData })
         .then((res) => {
@@ -236,14 +243,13 @@ function SignUpModified() {
                       />
                     </Form.Group>
                     <Form.Group className="mb-3" style={{ marginTop: "25px" }}>
-                      <Form.Label> Age </Form.Label>
+                      <Form.Label> Date Of Birth </Form.Label>
                       <Form.Control
-                        type="number"
+                        type="date"
                         onChange={handleChange}
-                        placeholder="age"
-                        name="age"
-                        min={10}
-                        max={90}
+                        placeholder="DOB"
+                        name="dob"
+                        minDate={new Date("01/01/1970")}
                         required
                       />
                     </Form.Group>
