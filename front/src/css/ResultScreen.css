@@ -31,6 +31,15 @@
   max-width: 900px !important;
   margin: 1.75rem auto;
 }
+
+@media (max-width: 750px) {
+  #testHId {
+    text-align: center !important;
+  }
+  #colPad {
+    padding: 10px 10px !important;
+  }
+}
 @media all {
   .page-break {
     overflow: hidden;

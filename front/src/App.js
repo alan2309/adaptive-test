@@ -154,7 +154,7 @@ function App() {
               exact
               element={
                 <Row style={{ margin: "20px 0 0 0" }}>
-                  <Col style={{ padding: "10px 90px" }}>
+                  <Col id="colPad" style={{ padding: "10px 90px" }}>
                     <Result />
                   </Col>
                 </Row>
@@ -395,7 +395,7 @@ function App() {
               path="/viewresult"
               element={
                 <Row style={{ margin: "20px 0 0 0" }}>
-                  <Col style={{ padding: "10px 90px" }}>
+                  <Col id="colPad" style={{ padding: "10px 90px" }}>
                     <ViewResult />
                   </Col>
                 </Row>

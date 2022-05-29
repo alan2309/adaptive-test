@@ -17,11 +17,17 @@ function TestHeaderComp({
   return (
     <div id="testHeaderComp">
       <Row>
-        <Col md="4" style={{ fontSize: "18px", textAlign: "left" }}>
+        <Col
+          id="testHId"
+          sm="12"
+          md="4"
+          style={{ fontSize: "18px", textAlign: "left" }}
+        >
           <div>{header}</div>
         </Col>
         {noTotal ? (
           <Col
+            sm="12"
             md={noTotal ? 8 : 6}
             style={{
               whiteSpace: "nowrap",
@@ -31,17 +37,20 @@ function TestHeaderComp({
             }}
           >
             {timeKey}:
-            <CustomTimer
-              style={{ fontSize: "18px" }}
-              start={start}
-              reset={reset}
-              time={timer}
-              nextpage={nextpage}
-              setMd={setMd}
-            ></CustomTimer>
+            <b>
+              <CustomTimer
+                style={{ fontSize: "18px" }}
+                start={start}
+                reset={reset}
+                time={timer}
+                nextpage={nextpage}
+                setMd={setMd}
+              ></CustomTimer>
+            </b>
           </Col>
         ) : (
           <Col
+            sm="12"
             md={noTotal ? 8 : 6}
             style={{
               whiteSpace: "nowrap",
@@ -51,13 +60,15 @@ function TestHeaderComp({
             }}
           >
             {timeKey}:
-            <CustomTimer
-              start={start}
-              reset={reset}
-              time={timer}
-              nextpage={nextpage}
-              setMd={setMd}
-            ></CustomTimer>
+            <b>
+              <CustomTimer
+                start={start}
+                reset={reset}
+                time={timer}
+                nextpage={nextpage}
+                setMd={setMd}
+              ></CustomTimer>
+            </b>
           </Col>
         )}
         {!noTotal && (

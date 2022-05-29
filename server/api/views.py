@@ -800,7 +800,7 @@ def chartData(user,testId=-1,isPost=False):
         if isPost:
             takeFeedback=myUser.takeFeedback
         user_detail=MyUserSerializer(myUser).data
-    resltPrediction=predict()
+    resltPrediction=predict(mrksScoredPercentPrediction)
     if resl.prediction == None:
         resl.prediction=resltPrediction
         resl.save()

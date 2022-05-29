@@ -840,7 +840,6 @@ function DetailedReportComp({
                   </p>
                 )}
               </p>
-              <div className="page-break" />
               <p
                 style={{
                   fontSize: "13.6px",

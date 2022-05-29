@@ -296,7 +296,7 @@ function SignUpModified() {
                       />
                     </Form.Group>
                     <Form.Group className="mb-3" style={{ marginTop: "25px" }}>
-                      <Form.Label> 12th percentage </Form.Label>
+                      <Form.Label> 12th / Diploma percentage </Form.Label>
                       <Form.Control
                         type="number"
                         step={0.01}
