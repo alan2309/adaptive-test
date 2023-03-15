@@ -142,7 +142,7 @@ function Login() {
   function showHide(e) {
     $(e.target).toggleClass("fa-eye fa-eye-slash");
     var input = $($(e.target).attr("toggle"));
-    if (input.attr("type") == "password") {
+    if (input.attr("type") === "password") {
       input.attr("type", "text");
     } else {
       input.attr("type", "password");

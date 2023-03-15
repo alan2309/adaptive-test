@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import TestHeaderComp from "../../components/TestScreeen/TestHeaderComp";
 import QuestionComp from "../../components/TestScreeen/QuestionComp";
 import { Col, Modal, Button, Row } from "react-bootstrap";
 import QuestionNavigatorComp from "../../components/TestScreeen/QuestionNavigatorComp";
 import "../../css/TestScreen.css";
 import { useNavigate } from "react-router";
-import { isExpired, decodeToken } from "react-jwt";
+import { isExpired } from "react-jwt";
 import CustomTimer from "../Admin/CustomTimer";
 import getCurrentTime from "../../components/TestScreeen/dateCalc";
 import axiosInstance from "../../axios";
@@ -20,10 +19,8 @@ function PTestScreen() {
   const isDesktopOrLaptop = useMediaQuery({
     query: "(min-width: 1024px)",
   });
-  const [hard, setHard] = useState([]);
   const [medium, setMedium] = useState([]);
-  const [easy, setEasy] = useState([]);
-  const [current, setCurrent] = useState(2);
+  const [current, setCurrent] = useState();
   const [qs, setQs] = useState([]);
   const [total, setTotal] = useState(0);
   const [ans, setAns] = useState([]);
@@ -38,9 +35,7 @@ function PTestScreen() {
   const [countWindowAway, setCountWindowAway] = useState(0);
   const [countWindowAwayModal, setCountWindowAwayModal] = useState(false);
   const [testFinshBool, setTestFinishBool] = useState(false);
-  const [time, setTime] = useState();
   const [md, setMd] = useState(false);
-  const [newScreen, setNewScreen] = useState(false);
   const [timeFF, setTimeFF] = useState();
   const activityDetector = createActivityDetector({
     timeToIdle: 6000000000000000_0000,
@@ -51,20 +46,21 @@ function PTestScreen() {
   });
 
   useEffect(() => {
+    setCurrent(2)
     window.onkeydown = function (e) {
-      if (e.keyCode == 123) {
+      if (e.keyCode === 123) {
         return false;
       }
-      if (e.ctrlKey && e.shiftKey && e.keyCode == "I".charCodeAt(0)) {
+      if (e.ctrlKey && e.shiftKey && e.keyCode === "I".charCodeAt(0)) {
         return false;
       }
-      if (e.ctrlKey && e.shiftKey && e.keyCode == "C".charCodeAt(0)) {
+      if (e.ctrlKey && e.shiftKey && e.keyCode === "C".charCodeAt(0)) {
         return false;
       }
-      if (e.ctrlKey && e.shiftKey && e.keyCode == "J".charCodeAt(0)) {
+      if (e.ctrlKey && e.shiftKey && e.keyCode === "J".charCodeAt(0)) {
         return false;
       }
-      if (e.ctrlKey && e.keyCode == "U".charCodeAt(0)) {
+      if (e.ctrlKey && e.keyCode === "U".charCodeAt(0)) {
         return false;
       }
     };
@@ -292,7 +288,6 @@ function PTestScreen() {
       myans = pair[1];
     }
     setTotal(total + parseInt(myans));
-    var x;
     ans[qsno] = parseInt(myans);
     setAns(ans);
     var test = JSON.parse(sessionStorage.getItem("test6"));

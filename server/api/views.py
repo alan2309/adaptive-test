@@ -63,7 +63,9 @@ def converttosec(time):
 @csrf_exempt
 def createTest(request,name):
     if request.method =="POST":
+        print("rec")
         user = User.objects.get(username = name)
+        print(user.myuser.name)
         data=JSONParser().parse(request)['data']
         data_apt = data['saveTest']['Aptitude']
         data_cf =data['saveTest']['Computer Fundamentals']
@@ -222,7 +224,8 @@ def newuser(request):
                         )
         u.save()
         newuser.save()
-        return JsonResponse({"msg":"Success","created":True,'exists':0,'myid':newuser.id},safe=False)     
+        print(newuser)
+        return JsonResponse({"msg":"Success","created":True,'exists':0,'myid':newuser["id"]},safe=False)     
 
 @csrf_exempt
 def login(request):
@@ -249,7 +252,7 @@ def login(request):
                 if int(data['mytid'])==-1:
                     return JsonResponse({"exist":1,"allowed":1,"admin":0,'myid':user.myuser.id},safe=False)
                 testx = Test.objects.get(id=int(data['mytid']))
-                if testx.token == user.myuser.permission_token:
+                if (testx.token == user.myuser.permission_token) or True: # test available for all user
                     return JsonResponse({"exist":1,"allowed":1,"admin":0,'myid':user.myuser.id},safe=False)
                 else:
                     return JsonResponse({"exist":1,"allowed":0,"admin":0,'myid':user.myuser.id},safe=False)       
@@ -316,11 +319,11 @@ def forgotpass(request):
 def getuserslist(request):
     if request.method == "GET":
         d = datetime.datetime.utcnow()
-        presentTest=Test.objects.filter(test_start__lte = d,test_end__gt=d,live=True)
+        presentTest=Test.objects.filter(test_start__lte = d,test_end__gt=d,live__in=[True])
         if not presentTest.exists():   
             return JsonResponse({'exists':0},safe=False) 
         testx = presentTest[0]
-        myusers = MyUser.objects.filter(user__is_staff = False)
+        myusers = MyUser.objects.filter(user__is_staff__in = [False])
         allowed =myusers.filter(permission_token = testx.token)
         notallowed = myusers.exclude(permission_token = testx.token)
         bb=[]
@@ -414,7 +417,7 @@ def permission(request):
         if request.method == "POST":
             data=JSONParser().parse(request)['data']
             d = datetime.datetime.utcnow()
-            presentTest=Test.objects.filter(test_start__lte = d,test_end__gt=d,live=True)
+            presentTest=Test.objects.filter(test_start__lte = d,test_end__gt=d,live__in=[True])
             if not presentTest.exists():   
                 return JsonResponse({'exists':0},safe=False)
             testx = presentTest[0]
@@ -612,17 +615,6 @@ def qs(request):
     else:
         return HttpResponseBadRequest()
 
-class BlackListTokenView(APIView):
-    permission_classes=[AllowAny]
-
-    def post(self,request):
-        try:
-            refresh_token=request.data['refresh_token']
-            token=RefreshToken(refresh_token)
-            token.blacklist()
-            return Response(status=status.HTTP_205_RESET_CONTENT)
-        except Exception as e:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @csrf_exempt
 def results(request,name=''):
@@ -1202,8 +1194,8 @@ def saveTest(request):
 def getAllAdminData(request):
     if request.headers.get('Authorization') and checkAuthorization(request.headers["Authorization"]):  
         if request.method == 'GET':
-            ls=UserSerializer(User.objects.filter(is_staff=True).order_by('-is_superuser'),many=True).data
-            ls1=UserMiniSerializer(User.objects.filter(is_staff=True).order_by('-is_superuser'),many=True).data
+            ls=UserSerializer(User.objects.filter(is_staff__in=[True]).order_by('-is_superuser'),many=True).data
+            ls1=UserMiniSerializer(User.objects.filter(is_staff__in=[True]).order_by('-is_superuser'),many=True).data
             return JsonResponse({'data_detailed':ls,'data':ls1},safe=False) 
     else:
         return HttpResponseBadRequest()  
@@ -1212,7 +1204,7 @@ def getAllAdminData(request):
 def getAllAdmin(request):
     if request.headers.get('Authorization') and checkAuthorization(request.headers["Authorization"]):  
         if request.method == 'GET':
-            ls=LogEntrySerializer(LogEntry.objects.filter(user__is_staff=True),many=True,default='Delete').data
+            ls=LogEntrySerializer(LogEntry.objects.filter(user__is_staff__in=[True]),many=True,default='Delete').data
             return JsonResponse({'ls':ls},safe=False) 
 
     else:
@@ -1307,13 +1299,16 @@ def tests(request,idd=0):
 def getTests(request):
     if request.method == 'GET':
         d = datetime.datetime.utcnow()
-        stests = Test.objects.filter(Q(test_end__lte=d) | Q(test_start__lt=d),live=True)
-        utests = Test.objects.filter(test_start__gt=d,live=True) 
+        stests = Test.objects.filter(Q(test_end__lte=d) | Q(test_start__lt=d),live__in=[True])
+        utests = Test.objects.filter(test_start__gt=d,live__in=[True]) 
         stestS = TestSerializer(stests,many=True)
         utestS = TestSerializer(utests,many=True)
-        presentTest=Test.objects.filter(test_start__lte = d,test_end__gt=d,live=True)
+        presentTest=Test.objects.filter(test_start= d,test_end=d,live__in=[True])
+        print("---1")
+        print(presentTest)
+        print("---2")
         bb=[]
-        if(presentTest.exists()):
+        if presentTest.exists():
             b={}
             b['id'] = presentTest[0].id
             b['name']=presentTest[0].test_name
@@ -1345,8 +1340,8 @@ def getTestsWithQsJson(request):
     if request.method == 'GET':
         d = datetime.datetime.utcnow()
         alltest = Test.objects.all()
-        stests = Test.objects.filter(Q(test_end__lte=d) | Q(test_start__lt=d),live=True)
-        stestsx =  Test.objects.filter(Q(test_end__lte=d) | Q(test_start__lt=d),live=False)
+        stests = Test.objects.filter(Q(test_end__lte=d) | Q(test_start__lt=d),live__in=[True])
+        stestsx =  Test.objects.filter(Q(test_end__lte=d) | Q(test_start__lt=d),live__in=[False])
         utests = Test.objects.filter(test_start__gt=d) 
         stestS = TestSerializer(stests,many=True)
         alltest = TestSerializer(alltest,many=True)
@@ -1524,7 +1519,7 @@ def feedback(request):
                 flag=True
             return JsonResponse({'success':flag},safe=False)    
         elif request.method=="GET":
-            users=User.objects.filter(is_staff=False)
+            users=User.objects.filter(is_staff__in=[False])
             newArr=[]
             takeFeedback=True
             for user in users:

@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const baseURL = "https://newadapt.herokuapp.com/";
-// const baseURL = "http://localhost:8000/";
+// const baseURL = "https://newadapt.herokuapp.com/";
+const baseURL = "http://localhost:8000/";
 const access_token = sessionStorage.getItem("access_token");
 
 const axiosInstance = axios.create({

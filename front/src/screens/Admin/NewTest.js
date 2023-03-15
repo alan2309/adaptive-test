@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Row, Form, Modal } from "react-bootstrap";
+import { Col, Row, Form, Modal } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router";
 import "../../css/AdminHomeScreen.css";
@@ -26,7 +26,6 @@ function NewTest() {
   const [easy, setEasy] = useState([]);
   const [med, setMed] = useState([]);
   const [hard, setHard] = useState([]);
-  const [qs, setQs] = useState(0);
   const [axData, setAxData] = useState({});
   const [tests, setTests] = useState([]);
   const [aptDic, setAptDic] = useState({ time: "00:00:20", totalQs: 0 });
@@ -104,7 +103,6 @@ function NewTest() {
     setEasy(d[Wssid].easy);
     setHard(d[Wssid].hard);
     setMed(d[Wssid].medium);
-    setQs(d[Wssid].qs);
     const getTest = async () => {
       await axiosInstance
         .get("api/admin/tests")
@@ -140,12 +138,12 @@ function NewTest() {
         time: CurrentDic.time,
         totalQs: 0, //$,
       });
-    } else if (sid - 1 == 4) {
+    } else if (sid - 1 === 4) {
       setCDic({
         time: CurrentDic.time,
         totalQs: 0,
       });
-    } else if (sid - 1 == 5) {
+    } else if (sid - 1 === 5) {
       setAWDic({
         time: CurrentDic.time,
         totalQs: 0,
@@ -325,7 +323,6 @@ function NewTest() {
     setEasy(d[Wssid].easy);
     setHard(d[Wssid].hard);
     setMed(d[Wssid].medium);
-    setQs(d[Wssid].qs);
 
     if (d[Wssid].medium.length > 0) {
       if (index === 1) {
@@ -334,9 +331,9 @@ function NewTest() {
         setCurrentDic(DDic);
       } else if (index === 3) {
         setCurrentDic(PDic);
-      } else if (index == 4) {
+      } else if (index === 4) {
         setCurrentDic(CDic);
-      } else if (index == 5) {
+      } else if (index === 5) {
         setCurrentDic(AWDic);
       } else if (index === 0) {
         setCurrentDic(aptDic);
@@ -348,9 +345,9 @@ function NewTest() {
         setCurrentDic({ time: DDic.time, totalQs: 0 });
       } else if (index === 3) {
         setCurrentDic({ time: PDic.time, totalQs: 0 });
-      } else if (index == 4) {
+      } else if (index === 4) {
         setCurrentDic({ time: CDic.time, totalQs: 0 });
-      } else if (index == 5) {
+      } else if (index === 5) {
         setCurrentDic({ time: AWDic.time, totalQs: 0 });
       } else if (index === 0) {
         setCurrentDic({ time: aptDic.time, totalQs: 0 });
@@ -482,7 +479,7 @@ function NewTest() {
             }),
           },
         }));
-      } else if (sid - 1 == 4) {
+      } else if (sid - 1 === 4) {
         if (!(curr_value > 3)) {
           setCDic({
             time: CurrentDic.time,
@@ -506,7 +503,7 @@ function NewTest() {
         } else {
           return;
         }
-      } else if (sid - 1 == 5) {
+      } else if (sid - 1 === 5) {
         if (!(curr_value > 3)) {
           setAWDic({
             time: CurrentDic.time,
@@ -1211,7 +1208,7 @@ function NewTest() {
                                                     time: e.target.value,
                                                   },
                                                 }));
-                                              } else if (sid - 1 == 4) {
+                                              } else if (sid - 1 === 4) {
                                                 setCDic({
                                                   time: e.target.value,
                                                   totalQs: CurrentDic.totalQs,
@@ -1223,7 +1220,7 @@ function NewTest() {
                                                     time: e.target.value,
                                                   },
                                                 }));
-                                              } else if (sid - 1 == 5) {
+                                              } else if (sid - 1 === 5) {
                                                 setAWDic({
                                                   time: e.target.value,
                                                   totalQs: CurrentDic.totalQs,
@@ -1368,7 +1365,7 @@ function NewTest() {
                                               time: e.target.value,
                                             },
                                           }));
-                                        } else if (sid - 1 == 4) {
+                                        } else if (sid - 1 === 4) {
                                           setCDic({
                                             time: e.target.value,
                                             totalQs: CurrentDic.totalQs,
@@ -1380,7 +1377,7 @@ function NewTest() {
                                               time: e.target.value,
                                             },
                                           }));
-                                        } else if (sid - 1 == 5) {
+                                        } else if (sid - 1 === 5) {
                                           setAWDic({
                                             time: e.target.value,
                                             totalQs: CurrentDic.totalQs,

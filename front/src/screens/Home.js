@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Container, Row, Col, Button, Modal } from "react-bootstrap";
+import React from "react";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import illustration1 from "../img/illustration1.svg";
 import illustration2 from "../img/illustration2.svg";

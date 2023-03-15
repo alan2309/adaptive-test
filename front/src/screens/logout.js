@@ -11,9 +11,9 @@ export default function Logout() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axiosInstance.post("logout/blacklist/", {
-      refresh_token: sessionStorage.getItem("refresh_token"),
-    });
+    //axiosInstance.post("logout/blacklist/", {
+    //  refresh_token: sessionStorage.getItem("refresh_token"),
+    //});
     sessionStorage.clear();
     axiosInstance.defaults.headers["Authorization"] = null;
     navigate("/login");

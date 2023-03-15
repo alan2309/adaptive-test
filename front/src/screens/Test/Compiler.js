@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Row, Modal, Button, Tabs, Tab } from "react-bootstrap";
 import CodingQsComp from "../../components/TestScreeen/CodingQsComp";
 import TestHeaderComp from "../../components/TestScreeen/TestHeaderComp";
@@ -22,7 +22,6 @@ export default function Compiler() {
   const isDesktopOrLaptop = useMediaQuery({
     query: "(min-width: 1024px)",
   });
-  const [inputT, setInput] = useState();
   const [inputT_question_1, setInput_question_1] = useState();
   const [inputT_question_2, setInput_question_2] = useState();
   const [inputT_question_3, setInput_question_3] = useState();
@@ -127,7 +126,6 @@ export default function Compiler() {
     useState();
 
   //three qs
-  const [db_data, set_db_data] = useState();
   const [question_1, set_question_1] = useState({});
   const [question_2, set_question_2] = useState();
   const [question_3, set_question_3] = useState();
@@ -164,20 +162,21 @@ export default function Compiler() {
   });
 
   useEffect(() => {
+    setSuccessMsg("")
     window.onkeydown = function (e) {
-      if (e.keyCode == 123) {
+      if (e.keyCode === 123) {
         return false;
       }
-      if (e.ctrlKey && e.shiftKey && e.keyCode == "I".charCodeAt(0)) {
+      if (e.ctrlKey && e.shiftKey && e.keyCode === "I".charCodeAt(0)) {
         return false;
       }
-      if (e.ctrlKey && e.shiftKey && e.keyCode == "C".charCodeAt(0)) {
+      if (e.ctrlKey && e.shiftKey && e.keyCode === "C".charCodeAt(0)) {
         return false;
       }
-      if (e.ctrlKey && e.shiftKey && e.keyCode == "J".charCodeAt(0)) {
+      if (e.ctrlKey && e.shiftKey && e.keyCode === "J".charCodeAt(0)) {
         return false;
       }
-      if (e.ctrlKey && e.keyCode == "U".charCodeAt(0)) {
+      if (e.ctrlKey && e.keyCode === "U".charCodeAt(0)) {
         return false;
       }
     };
@@ -299,7 +298,6 @@ export default function Compiler() {
               var hourDiff = (timeEnd - timeStart) / 1000;
               setTimeFF(tf - hourDiff);
 
-              set_db_data(res.data.cQs);
               data = res.data.cQs;
               //from db
 
@@ -335,7 +333,6 @@ export default function Compiler() {
               }
             });
           getData();
-          setInput(JSON.parse(sessionStorage.getItem("test4"))["input_1"]);
           setInput_question_1(
             JSON.parse(sessionStorage.getItem("test4"))["input_1"]
           );
@@ -407,7 +404,6 @@ export default function Compiler() {
         code += "\n";
       }
     }
-    setInput(code);
     let test = JSON.parse(sessionStorage.getItem("test4"));
     test[`input_${current_qs}`] = code;
     sessionStorage.setItem("test4", JSON.stringify(test));
@@ -571,8 +567,8 @@ export default function Compiler() {
             jsonGetSolution.stderr === null &&
             jsonGetSolution.compile_output === null
           ) {
-            var b = new Buffer(jsonGetSolution.stdout, "base64");
-            const output = b.toString();
+            var bb = new Buffer(jsonGetSolution.stdout, "base64");
+            const output = bb.toString();
             if (current_qs === 1) {
               set_q1_testCase_Current_output(
                 `${output}\n\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`
@@ -620,8 +616,8 @@ export default function Compiler() {
               sessionStorage.setItem("test4", JSON.stringify(test));
             }
           } else if (jsonGetSolution.stderr) {
-            var b = new Buffer(jsonGetSolution.stderr, "base64");
-            const error = b.toString();
+            var bc = new Buffer(jsonGetSolution.stderr, "base64");
+            const error = bc.toString();
             if (current_qs === 1) {
               set_q1_testCase_Current_output(`Error :${error}`);
               set_q1_run_output(`Error :${error}`);
@@ -657,8 +653,8 @@ export default function Compiler() {
               sessionStorage.setItem("test4", JSON.stringify(test));
             }
           } else {
-            var b = new Buffer(jsonGetSolution.compile_output, "base64");
-            const compilation_error = b.toString();
+            var bd = new Buffer(jsonGetSolution.compile_output, "base64");
+            const compilation_error = bd.toString();
             if (current_qs === 1) {
               set_q1_testCase_Current_output(`\n Error :${compilation_error}`);
               set_q1_run_output(`\n Error :${compilation_error}`);
@@ -952,8 +948,8 @@ export default function Compiler() {
             jsonGetSolution.submissions[y].stderr === null &&
             jsonGetSolution.submissions[y].compile_output === null
           ) {
-            var b = new Buffer(jsonGetSolution.submissions[y].stdout, "base64");
-            const output = b.toString();
+            var be = new Buffer(jsonGetSolution.submissions[y].stdout, "base64");
+            const output = be.toString();
 
             if (jsonGetSolution.submissions[y].status.id === 3) {
               if (current_qs === 1) {
@@ -980,7 +976,7 @@ export default function Compiler() {
                   );
                   t3Output = `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
                 }
-              } else if (current_qs == 2) {
+              } else if (current_qs === 2) {
                 if (y === 0) {
                   set_q2_testCase_1_output(
                     `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
@@ -1004,7 +1000,7 @@ export default function Compiler() {
                   );
                   t3Output = `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
                 }
-              } else if (current_qs == 3) {
+              } else if (current_qs === 3) {
                 if (y === 0) {
                   set_q3_testCase_1_output(
                     `${output}\nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`
@@ -1061,7 +1057,7 @@ export default function Compiler() {
                   t3Output = `Wrong Answer\nYour Output:\n${output}\nExpected Output:\n${q1_testCase_3_expected_output}
             \nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
                 }
-              } else if (current_qs == 2) {
+              } else if (current_qs === 2) {
                 if (y === 0) {
                   set_q2_testCase_1_output_error(true);
                   set_q2_testCase_1_output(
@@ -1091,7 +1087,7 @@ export default function Compiler() {
                   t3Output = `Wrong Answer\nYour Output:\n${output}\nExpected Output:\n${q2_testCase_2_expected_output}
             \nExecution Time : ${jsonGetSolution.submissions[y].time} Secs\nMemory used : ${jsonGetSolution.submissions[y].memory} bytes\n`;
                 }
-              } else if (current_qs == 3) {
+              } else if (current_qs === 3) {
                 if (y === 0) {
                   set_q3_testCase_1_output(
                     `Wrong Answer\nYour Output:\n${output}\nExpected Output:\n${q3_testCase_1_expected_output}
@@ -1125,8 +1121,8 @@ export default function Compiler() {
               }
             }
           } else if (jsonGetSolution.submissions[y].stderr) {
-            var b = new Buffer(jsonGetSolution.submissions[y].stderr, "base64");
-            const error = b.toString();
+            var bz = new Buffer(jsonGetSolution.submissions[y].stderr, "base64");
+            const error = bz.toString();
             if (current_qs === 1) {
               if (y === 0) {
                 set_q1_testCase_1_output(`Error :${error}`);
@@ -1137,7 +1133,7 @@ export default function Compiler() {
                 set_q1_testCase_2_output(`Error :${error}`);
                 t2Output = `Error :${error}`;
                 set_q1_testCase_2_output_error(true);
-              } else if (y == 2) {
+              } else if (y === 2) {
                 set_q1_testCase_3_output(`Error :${error}`);
                 t3Output = `Error :${error}`;
                 set_q1_testCase_3_output_error(true);
@@ -1152,7 +1148,7 @@ export default function Compiler() {
                 set_q2_testCase_2_output(`Error :${error}`);
                 t2Output = `Error :${error}`;
                 set_q2_testCase_2_output_error(true);
-              } else if (y == 2) {
+              } else if (y === 2) {
                 set_q2_testCase_3_output(`Error :${error}`);
                 t3Output = `Error :${error}`;
                 set_q2_testCase_3_output_error(true);
@@ -1167,18 +1163,18 @@ export default function Compiler() {
                 set_q3_testCase_2_output(`Error :${error}`);
                 t2Output = `Error :${error}`;
                 set_q3_testCase_2_output_error(true);
-              } else if (y == 2) {
+              } else if (y === 2) {
                 set_q3_testCase_3_output(`Error :${error}`);
                 t3Output = `Error :${error}`;
                 set_q3_testCase_3_output_error(true);
               }
             }
           } else {
-            var b = new Buffer(
+            var bf = new Buffer(
               jsonGetSolution.submissions[y].compile_output,
               "base64"
             );
-            const compilation_error = b.toString();
+            const compilation_error = bf.toString();
             if (current_qs === 1) {
               if (y === 0) {
                 set_q1_testCase_1_output(`Error :${compilation_error}`);
@@ -1266,7 +1262,6 @@ export default function Compiler() {
   }
 
   $(document).ready(function () {
-    "use strict";
     let eleQ1 = document.getElementById("uncontrolled-tab-example-tab-Q1");
     if (eleQ1) {
       if (submitCode_qs1) {
@@ -1689,7 +1684,6 @@ export default function Compiler() {
                         set_current_qs(parseInt(qsNo));
                         if (parseInt(qsNo) === 1) {
                           set_question_current(question_1);
-                          setInput(inputT_question_1);
                           document.getElementById("editor").value =
                             inputT_question_1;
                           document.getElementsByClassName(
@@ -1725,7 +1719,6 @@ export default function Compiler() {
                           }
                         } else if (parseInt(qsNo) === 2) {
                           set_question_current(question_2);
-                          setInput(inputT_question_2);
                           document.getElementById("editor").value =
                             inputT_question_2;
                           document.getElementsByClassName(
@@ -1761,7 +1754,6 @@ export default function Compiler() {
                           }
                         } else if (parseInt(qsNo) === 3) {
                           set_question_current(question_3);
-                          setInput(inputT_question_3);
                           document.getElementById("editor").value =
                             inputT_question_3;
                           document.getElementsByClassName(

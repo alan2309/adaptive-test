@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
-import { isExpired, decodeToken } from "react-jwt";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../axios";
-import { Col, Modal, Row, Form } from "react-bootstrap";
+import { Col, Modal, Row } from "react-bootstrap";
 import TestHeaderComp from "../components/TestScreeen/TestHeaderComp";
 import Chart from "react-apexcharts";
 import "../css/ResultScreen.css";
@@ -11,14 +10,13 @@ import DetailedReportComp from "../components/Result/DetailedReportComp";
 import Loader from "../components/Loader";
 import Alert from "../components/Admin/Alert";
 import { useMediaQuery } from "react-responsive";
-import MobileWidth from "../components/MobileWidth";
 
 function ViewResult() {
   const isDesktopOrLaptop = useMediaQuery({
     query: "(min-width: 1024px)",
   });
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams= useSearchParams();
   const [totalMarksScored, setTotalMarksScored] = useState(0);
   const [timeTaken, setTimeTaken] = useState();
   const [personalityData, setPersonalityData] = useState([]);
@@ -29,7 +27,6 @@ function ViewResult() {
   const [opt1, setOpt1] = useState({});
   const [optRadar, setOptRadar] = useState({});
   const [show, setShow] = useState(false);
-  const [idx, setIdx] = useState();
   const [userDetails, setUserDetails] = useState({});
   const [startTime, setStartTime] = useState("");
   const componentRef = useRef(null);
@@ -46,11 +43,11 @@ function ViewResult() {
   });
 
   useEffect(() => {
+    setSuccessMsg("")
+    setDangerMsg("")
     var user = searchParams.get("user");
     setIsloading(true);
-    for (const entry of searchParams.entries()) {
-      const [param, value] = entry;
-    }
+
 
     if (user && searchParams.get("viewRes")) {
       axiosInstance
@@ -68,7 +65,6 @@ function ViewResult() {
           setTotalMarksScored(res.data.totalMarksScored);
           setTimeTaken(res.data.timeTaken);
           setPersonalityData(res.data.personalityData);
-          setIdx(res.data.res_id);
           setUserDetails(res.data.user_detail);
           setStartTime(res.data.startTime);
           setPrediction(res.data.prediction);

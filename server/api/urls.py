@@ -43,5 +43,5 @@ urlpatterns = [
    path('api/sendMailAdmin',views.sendMailAdmin),
    path('api/send_custom_mail',views.send_custom_mail),
    path('api/getUserData/<str:username>',views.getUserData),
-   re_path(r'/?',views.error_404)
+   re_path(r'api/?',views.error_404)
 ]

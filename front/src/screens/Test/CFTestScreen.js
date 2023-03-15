@@ -40,9 +40,7 @@ function CFTestScreen() {
   const [countWindowAway, setCountWindowAway] = useState(0);
   const [countWindowAwayModal, setCountWindowAwayModal] = useState(false);
   const [testFinshBool, setTestFinishBool] = useState(false);
-  const [time, setTime] = useState();
   const [md, setMd] = useState(false);
-  const [newScreen, setNewScreen] = useState(false);
   const [timeFF, setTimeFF] = useState();
   const activityDetector = createActivityDetector({
     timeToIdle: 6000000000000000_0000,
@@ -54,19 +52,19 @@ function CFTestScreen() {
 
   useEffect(() => {
     window.onkeydown = function (e) {
-      if (e.keyCode == 123) {
+      if (e.keyCode === 123) {
         return false;
       }
-      if (e.ctrlKey && e.shiftKey && e.keyCode == "I".charCodeAt(0)) {
+      if (e.ctrlKey && e.shiftKey && e.keyCode === "I".charCodeAt(0)) {
         return false;
       }
-      if (e.ctrlKey && e.shiftKey && e.keyCode == "C".charCodeAt(0)) {
+      if (e.ctrlKey && e.shiftKey && e.keyCode === "C".charCodeAt(0)) {
         return false;
       }
-      if (e.ctrlKey && e.shiftKey && e.keyCode == "J".charCodeAt(0)) {
+      if (e.ctrlKey && e.shiftKey && e.keyCode === "J".charCodeAt(0)) {
         return false;
       }
-      if (e.ctrlKey && e.keyCode == "U".charCodeAt(0)) {
+      if (e.ctrlKey && e.keyCode === "U".charCodeAt(0)) {
         return false;
       }
     };

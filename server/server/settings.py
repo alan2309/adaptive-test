@@ -34,7 +34,6 @@ INSTALLED_APPS = [
     'api.apps.ApiConfig',
     'rest_framework',
     'corsheaders',
-    'rest_framework_simplejwt.token_blacklist',
 ]
 
 MIDDLEWARE = [
@@ -73,22 +72,19 @@ WSGI_APPLICATION = 'server.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-DATABASES = {  
-    'default': {  
-        'ENGINE': 'django.db.backends.mysql',  
-        'NAME': 'database-1',  
-        'USER': 'admin',  
-        'PASSWORD': 'abcd1234',  
-        'HOST': 'database-1.c1cfape2fuwv.us-east-1.rds.amazonaws.com',  
-        'PORT': '3306',  
-    }  
-}  
+DATABASES = {
+    #'default': {
+    #    'ENGINE': 'django.db.backends.sqlite3',
+    #    'NAME': BASE_DIR / 'db.sqlite3',
+    #},
+    'default': {
+            'ENGINE': os.environ.get('DB_ENGINE'),
+            'NAME': os.environ.get('DB_NAME'),
+            'ENFORCE_SCHEMA': False,
+            'CLIENT': {
+                'host':os.environ.get('DB_HOST') }  
+        }
+}
 
 
 # Password validation

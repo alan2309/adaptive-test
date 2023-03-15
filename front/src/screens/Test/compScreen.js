@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Row, Col, Modal, Button } from "react-bootstrap";
 import "../../css/Comprehension.css";
 import TestHeaderComp from "../../components/TestScreeen/TestHeaderComp";
@@ -8,7 +7,7 @@ import { useNavigate } from "react-router";
 import CustomTimer from "../Admin/CustomTimer";
 import getCurrentTime from "../../components/TestScreeen/dateCalc";
 import axiosInstance from "../../axios";
-import { isExpired, decodeToken } from "react-jwt";
+import { isExpired } from "react-jwt";
 import ProtectUrl from "../../components/TestScreeen/ProtectUrl";
 import MobileWidth from "../../components/MobileWidth";
 import { useMediaQuery } from "react-responsive";
@@ -47,19 +46,19 @@ function CompScreen() {
 
   useEffect(() => {
     window.onkeydown = function (e) {
-      if (e.keyCode == 123) {
+      if (e.keyCode === 123) {
         return false;
       }
-      if (e.ctrlKey && e.shiftKey && e.keyCode == "I".charCodeAt(0)) {
+      if (e.ctrlKey && e.shiftKey && e.keyCode === "I".charCodeAt(0)) {
         return false;
       }
-      if (e.ctrlKey && e.shiftKey && e.keyCode == "C".charCodeAt(0)) {
+      if (e.ctrlKey && e.shiftKey && e.keyCode === "C".charCodeAt(0)) {
         return false;
       }
-      if (e.ctrlKey && e.shiftKey && e.keyCode == "J".charCodeAt(0)) {
+      if (e.ctrlKey && e.shiftKey && e.keyCode === "J".charCodeAt(0)) {
         return false;
       }
-      if (e.ctrlKey && e.keyCode == "U".charCodeAt(0)) {
+      if (e.ctrlKey && e.keyCode === "U".charCodeAt(0)) {
         return false;
       }
     };
@@ -102,7 +101,6 @@ function CompScreen() {
         if (sessionStorage.getItem("test6")) {
           let ax = JSON.parse(sessionStorage.getItem("test6"));
           let ar = ax["marks"];
-          let total = 0;
           axiosInstance
             .post("api/marks/5", {
               data: {
@@ -313,15 +311,7 @@ function CompScreen() {
     e.target.reset();
   }
 
-  function finish() {
-    setTestFinishBool(true);
-    setShow(false);
-    setMd(true);
-    navigate("/result");
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    }
-  }
+  
   return (
     <div id="comp_screen">
       {isDesktopOrLaptop ? (
@@ -528,7 +518,6 @@ function CompScreen() {
                         fontSize: "17.5px",
                         width: "100%",
                         height: "400px",
-                        fontSize: "17.5px",
                         lineHeight: "22px",
                         backgroundColor: "#F7F7F7",
                         contentEditable: false,

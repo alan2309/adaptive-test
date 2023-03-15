@@ -1,4 +1,4 @@
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FiInfo } from "react-icons/fi";
 import { useMediaQuery } from "react-responsive";
 import MobileWidth from "../../components/MobileWidth";
@@ -13,10 +13,8 @@ import {
   Popover,
 } from "react-bootstrap";
 import Alert from "../../components/Admin/Alert";
-import Loader from "../../components/Loader";
 import createFilterOptions from "react-select-fast-filter-options";
 import Select from "react-select";
-import getGraduationYears from "../../components/TestScreeen/graduationYears";
 
 function RegisterAdmin() {
   const [isLoading, setIsloading] = useState(true);

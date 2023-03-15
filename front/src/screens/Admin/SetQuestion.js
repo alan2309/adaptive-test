@@ -221,9 +221,9 @@ function SetQuestion({
           }
           dictionary[e.target[x].name] = e.target[x].value;
         } else {
-          if (e.target[x].value == "Easy") {
+          if (e.target[x].value === "Easy") {
             dictionary["type"] = 1;
-          } else if (e.target[x].value == "Medium") {
+          } else if (e.target[x].value === "Medium") {
             dictionary["type"] = 2;
           } else {
             dictionary["type"] = 3;
@@ -352,7 +352,7 @@ function SetQuestion({
                   title: dictionary[key],
                   marks:
                     key === questions[i].copt
-                      ? qslen % 2 == 0
+                      ? qslen % 2 === 0
                         ? 20 / qslen
                         : Math.floor(20 / qslen)
                       : 0,
@@ -691,7 +691,7 @@ function SetQuestion({
             <input
               name="action"
               value={
-                (isNew && currentQsNo == navArray.length) ||
+                (isNew && currentQsNo === navArray.length) ||
                 navArray.length === 0
                   ? "Save"
                   : "Update"
@@ -1171,7 +1171,7 @@ function SetQuestion({
                                   className="form-control form-field style-4"
                                   disabled={!isUpdate}
                                   defaultValue={
-                                    isNew && currentQsNo == navArray.length
+                                    isNew && currentQsNo === navArray.length
                                       ? ""
                                       : constraints
                                   }
@@ -1927,7 +1927,7 @@ function SetQuestion({
                     className="btn scTest flashBut"
                     id="actionBut"
                   >
-                    {(isNew && currentQsNo == navArray.length) ||
+                    {(isNew && currentQsNo === navArray.length) ||
                     navArray.length === 0
                       ? "Save"
                       : "Update"}

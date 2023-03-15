@@ -12,14 +12,10 @@ function CustomTimer({
   isLogin = false,
 }) {
   const [timer, setTimer] = useState(0);
-  const [isActive, setIsActive] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
   const increment = useRef(null);
   const navigate = useNavigate();
 
   const handleStart = () => {
-    setIsActive(true);
-    setIsPaused(true);
     increment.current = setInterval(() => {
       setTimer(function (timer) {
         if (timer > 1) {
@@ -36,22 +32,18 @@ function CustomTimer({
     }, 1000);
   };
 
-  const handlePause = () => {
-    clearInterval(increment.current);
-    setIsPaused(false);
-  };
+  // const handlePause = () => {
+  //   clearInterval(increment.current);
+  // };
 
-  const handleResume = () => {
-    setIsPaused(true);
-    increment.current = setInterval(() => {
-      setTimer((timer) => timer - 1);
-    }, 1000);
-  };
+  // const handleResume = () => {
+  //   increment.current = setInterval(() => {
+  //     setTimer((timer) => timer - 1);
+  //   }, 1000);
+  // };
 
   const handleReset = () => {
     clearInterval(increment.current);
-    setIsActive(false);
-    setIsPaused(false);
     setTimer(0);
   };
 
@@ -66,10 +58,10 @@ function CustomTimer({
     var m = Math.floor((seconds % 3600) / 60);
     var s = Math.floor(seconds % 60);
 
-    var dDisplay = d > 0 ? d + (d == 1 ? " day " : " days ") : "";
-    var hDisplay = h > 0 ? h + (h == 1 ? " hr " : " hrs ") : "";
-    var mDisplay = m > 0 ? m + (m == 1 ? " min " : " mins ") : "";
-    var sDisplay = s > 0 ? s + (s == 1 ? " sec" : " secs") : "";
+    var dDisplay = d > 0 ? d + (d === 1 ? " day " : " days ") : "";
+    var hDisplay = h > 0 ? h + (h === 1 ? " hr " : " hrs ") : "";
+    var mDisplay = m > 0 ? m + (m === 1 ? " min " : " mins ") : "";
+    var sDisplay = s > 0 ? s + (s === 1 ? " sec" : " secs") : "";
     if (!onlyS) {
       return `${getHours} : ${getMinutes} : ${getSeconds}`;
     } else if (isLogin) {

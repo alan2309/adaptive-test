@@ -1,8 +1,6 @@
 from tabnanny import verbose
 from django.contrib import admin
 from .models import (QuestionJson,CodingTest, Feedback, MyUser, Questions,Options,Results,Subject,Test,Paraqs,Paraopt,Para,MyUser,ConstData)
-from rest_framework_simplejwt import token_blacklist
-from rest_framework_simplejwt.token_blacklist.admin import OutstandingTokenAdmin,OutstandingToken
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
 
@@ -30,9 +28,10 @@ class CustomizedUserAdmin(UserAdmin):
 
 admin.site.unregister(User)
 admin.site.register(User,CustomizedUserAdmin)    
+admin.site.register(MyUser)
 
-class OutstandingTokenAdmin(OutstandingTokenAdmin):
-    def has_delete_permission(self, *args, **kwargs):
-        return True
-admin.site.unregister(OutstandingToken)
-admin.site.register(OutstandingToken, OutstandingTokenAdmin)
+#class OutstandingTokenAdmin(OutstandingTokenAdmin):
+#    def has_delete_permission(self, *args, **kwargs):
+#        return True
+#admin.site.unregister(OutstandingToken)
+#admin.site.register(OutstandingToken, OutstandingTokenAdmin)

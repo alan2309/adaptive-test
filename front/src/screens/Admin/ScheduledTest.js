@@ -861,7 +861,7 @@ function ScheduledTest() {
                                         t.live &&
                                         parseInt(
                                           sessionStorage.getItem("myid")
-                                        ) == t.myuser
+                                        ) === t.myuser
                                       ) {
                                         startTest(t.id);
                                       } else {

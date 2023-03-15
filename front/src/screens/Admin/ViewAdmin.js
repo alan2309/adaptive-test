@@ -1,10 +1,9 @@
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FiInfo } from "react-icons/fi";
 import { useMediaQuery } from "react-responsive";
 import MobileWidth from "../../components/MobileWidth";
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../../axios";
-import { MDBDataTableV5 } from "mdbreact";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import Alert from "../../components/Admin/Alert";
 import Loader from "../../components/Loader";

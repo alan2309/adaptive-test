@@ -21,14 +21,12 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-from api.views import BlackListTokenView
 
 
 urlpatterns = [
     path('admin/', admin.site.urls), # to remove this line on production
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('logout/blacklist/',BlackListTokenView.as_view(),name='blacklist'),
     path('',include('api.urls')),
     
 ]
