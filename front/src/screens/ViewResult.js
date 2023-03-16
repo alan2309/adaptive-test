@@ -16,7 +16,7 @@ function ViewResult() {
     query: "(min-width: 1024px)",
   });
   const navigate = useNavigate();
-  const searchParams= useSearchParams();
+  let [searchParams, setSearchParams] = useSearchParams();
   const [totalMarksScored, setTotalMarksScored] = useState(0);
   const [timeTaken, setTimeTaken] = useState();
   const [personalityData, setPersonalityData] = useState([]);
@@ -43,11 +43,10 @@ function ViewResult() {
   });
 
   useEffect(() => {
-    setSuccessMsg("")
-    setDangerMsg("")
+    setSuccessMsg("");
+    setDangerMsg("");
     var user = searchParams.get("user");
     setIsloading(true);
-
 
     if (user && searchParams.get("viewRes")) {
       axiosInstance

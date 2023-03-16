@@ -6,7 +6,7 @@ import json
 from django.http import HttpResponseBadRequest, HttpResponseForbidden
 from django.http.response import JsonResponse
 from rest_framework.views import APIView
-from api.models import Questions,Options,Results,Subject,Test,CodingTest,Para,Paraopt,Paraqs,MyUser,Feedback,ConstData,QuestionJson
+from .models import *
 from rest_framework_simplejwt.tokens import RefreshToken,AccessToken
 from rest_framework import status
 from rest_framework.permissions import AllowAny
@@ -16,7 +16,7 @@ from django.contrib.auth.models import User
 import datetime
 from rest_framework.parsers import JSONParser
 import random
-from .serializers import CodingTestSerializer, MyUserSerializer, OptSerializer, SubjectSerializer,QuestionSerializer,UserMiniSerializer, TestSerializer ,ResultSerializer,UserSerializer,OptionSerializer,AllUserSerializer,LogEntrySerializer
+from .serializers import *
 import math
 from django.db.models import Q
 from dateutil import tz
@@ -63,7 +63,6 @@ def converttosec(time):
 @csrf_exempt
 def createTest(request,name):
     if request.method =="POST":
-        print("rec")
         user = User.objects.get(username = name)
         data=JSONParser().parse(request)['data']
         data_apt = data['saveTest']['Aptitude']
@@ -95,27 +94,22 @@ def createTest(request,name):
         if data['tid']:
             Test.objects.get(id=data['tid']).delete()
         try:
-            print(user)
             tst=Test.objects.create(myuser = user.myuser,totalTestTime=total_time,test_name=data['createTest']['testName'],test_start=data['createTest']['sTime'],test_end=data['createTest']['eTime'],token=str(uuid.uuid4()),apt=test_apt,dom=test_d,c = test_c,cf=test_cf,aw=test_aw,p = test_p,live=data['createTest']['goLive'])
             tst.save()
-            print("done 0")
         except Exception as e:
             print(e)
-            print("-----0")
             return JsonResponse(e,safe=False)
 
         data_apt=loopdata(data_apt,"Aptitude")
         data_cf=loopdata(data_cf,"Computer Fundamentals")
         data_d=loopdata(data_d,"Domain")
-        print(tst)
         try:
             qs = QuestionJson(apt=data_apt,cf=data_cf,dom=data_d,code=data_c,aw=data_aw,personality=data_p,test=tst)
             qs.save()
             return JsonResponse("",safe=False)
         except Exception as e:
             print(e)
-            print("-----1")
-            #return JsonResponse("Error",safe=False)
+            return JsonResponse("Error",safe=False)
         
 
 @csrf_exempt
@@ -237,7 +231,6 @@ def newuser(request):
         try:
             u.save()
             newuser.save()
-            print(newuser)
             return JsonResponse({"msg":"Success","created":True,'exists':0,'myid':newuser.id},safe=False)     
         except Exception as e:
             print(e)
@@ -312,24 +305,27 @@ def forgotpass(request):
         data=JSONParser().parse(request)['data']
         user=User.objects.filter(email=data['email'])
         if not user.exists():
-            return JsonResponse({'exists':0},safe=False)
+            return JsonResponse({'exists':0,"status_msg":"Account does not exists"},safe=False)
         else:
-            token = str(uuid.uuid4())
-            subject = "Your Forget Password Link"
-            email_from = settings.EMAIL_HOST_USER
-            recipient_list = [user[0].email]
-            # send_mail(subject,message,email_from,recipient_list)
-            msg=EmailMultiAlternatives(subject=subject,from_email=email_from,to=recipient_list)
-            args={}
-            args['name']='{}'.format(user[0].first_name)
-            args['url']='https://placement-portal-test.netlify.app/change-pass?token={0}&user={1}'.format(token,user[0].email)
-            html_template=get_template("api/ChangePassword.html").render(args)
-            msg.attach_alternative(html_template,"text/html")
-            msg.send()
-            myuser =user[0].myuser
-            myuser.change_pass_token = token
-            myuser.save()
-            return JsonResponse({'exists':1},safe=False)
+            if data["email"]!="test@test.com":
+                token = str(uuid.uuid4())
+                subject = "Your Forget Password Link"
+                email_from = settings.EMAIL_HOST_USER
+                recipient_list = [user[0].email]
+                # send_mail(subject,message,email_from,recipient_list)
+                msg=EmailMultiAlternatives(subject=subject,from_email=email_from,to=recipient_list)
+                args={}
+                args['name']='{}'.format(user[0].first_name)
+                args['url']='https://placement-portal-test.netlify.app/change-pass?token={0}&user={1}'.format(token,user[0].email)
+                html_template=get_template("api/ChangePassword.html").render(args)
+                msg.attach_alternative(html_template,"text/html")
+                msg.send()
+                myuser =user[0].myuser
+                myuser.change_pass_token = token
+                myuser.save()
+                return JsonResponse({'exists':1,"status_msg":"Success"},safe=False)
+            else:
+                return JsonResponse({'exists':0,"status_msg":"Can not change the password of this account"},safe=False)
 
 @csrf_exempt
 def getuserslist(request):
@@ -645,7 +641,7 @@ def results(request,name=''):
                 gender=myUser.gender
                 age=myUser.age
                 try:
-                    if name != 'a' and user.is_staff!=True:
+                    if user.username != 'test@test.com' and user.is_staff!=True:
                         rr=Results.objects.get(student = user,test=test)
                         if rr:
                             if rr.endTime!=None:
@@ -1319,10 +1315,7 @@ def getTests(request):
         utests = Test.objects.filter(test_start__gt=d,live__in=[True]) 
         stestS = TestSerializer(stests,many=True)
         utestS = TestSerializer(utests,many=True)
-        presentTest=Test.objects.filter(test_start= d,test_end=d,live__in=[True])
-        print("---1")
-        print(presentTest)
-        print("---2")
+        presentTest=Test.objects.filter(test_start__lt= d,test_end__gt=d,live__in=[True])
         bb=[]
         if presentTest.exists():
             b={}

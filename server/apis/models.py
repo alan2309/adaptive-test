@@ -18,11 +18,13 @@ class MyUser(models.Model):
     college=models.CharField(max_length=100,default=None)
     year=models.CharField(max_length=6,default=0)
     takeFeedback=models.IntegerField(default=1)
+    allowTestAlways=models.BooleanField(default=False,null=True,blank=True)
     permission_token = models.CharField(max_length=400,null=True,blank=True)
     change_pass_token = models.CharField(max_length=400,null=True,blank=True)
     view_result_token = models.CharField(max_length=400,null=True,blank=True)
 
-
+    def __str__(self):
+        return self.user.username
 
 class Test(models.Model):
     myuser = models.ForeignKey(MyUser,on_delete=models.CASCADE,null=True,blank=True)
@@ -90,7 +92,7 @@ class Results(models.Model):
     endTime = models.DateTimeField(blank=True,null=True)
     marks = models.JSONField(null=True, blank=True)
     prediction=models.IntegerField(null=True, blank=True)
-    student = models.ForeignKey(User,on_delete=models.CASCADE)
+    student = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     test=models.ForeignKey(Test,on_delete=models.CASCADE)
 
     def __str__(self):

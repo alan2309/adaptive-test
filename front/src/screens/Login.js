@@ -362,7 +362,7 @@ function Login() {
                             setSuccessMsg("Mail sent successfully");
                           } else {
                             setIsAlertDangerMsgLoaded(true);
-                            setDangerMsg("An Error occured");
+                            setDangerMsg(res.data?.status_msg);
                           }
                         })
                         .catch((e) => console.log(e));

@@ -27,6 +27,6 @@ urlpatterns = [
     path('admin/', admin.site.urls), # to remove this line on production
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('',include('api.urls')),
+    path('',include('apis.urls')),
     
 ]

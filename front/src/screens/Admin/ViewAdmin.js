@@ -211,7 +211,6 @@ function ViewAdmin() {
                           },
                         })
                         .then((res) => {
-                          console.log(res.data);
                           if (parseInt(res.data.statuscode) === 1) {
                             setShow(false);
                             setIsAlertSuccessMsgLoaded(true);
