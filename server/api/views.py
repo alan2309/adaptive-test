@@ -166,9 +166,13 @@ def subqs(request,subject=0,tid=0):
 
 
 def predict(percentArr):
-    regressor = pd.read_pickle(os.path.join(settings.BASE_DIR,os.path.basename('model.pickle'))) 
-    result = regressor.predict([percentArr])
-    return int(result[0])
+    try:
+        regressor = pd.read_pickle(os.path.join(settings.BASE_DIR,os.path.basename('model.pickle'))) 
+        result = regressor.predict([percentArr])
+        return int(result[0])
+    except:
+        return 0
+
 
 def constdata(request):
     if request.method == "GET":
