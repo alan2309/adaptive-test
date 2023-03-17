@@ -1,0 +1,14 @@
+@media (max-width: 1500px) {
+
+.customLoginBorder{
+    height: 100% !important;
+}
+}
+@media (max-width: 700px) {
+#signupDiv{
+    margin:2% 5% !important;
+}
+.customLoginBorder{
+    height: 100% !important;
+}
+}

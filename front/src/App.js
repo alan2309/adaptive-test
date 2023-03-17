@@ -143,7 +143,7 @@ function App() {
               exact
               element={
                 <Row style={{ margin: "20px 0 0 0" }}>
-                  <Col style={{ padding: "10px 90px" }}>
+                  <Col>
                     <SignUpModified />
                   </Col>
                 </Row>

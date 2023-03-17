@@ -163,14 +163,31 @@
   text-align: center;
   color: #0f1420;
 }
-@media (max-width: 991px) {
+@media (max-width: 1080px) {
+    .videoPlayer {
+      margin-right: 40px !important;
+      width: 95% !important;
+    }
+    .videoPlayer div {
+      width: 100% !important;
+    }
+    .user {
+      height: 150px;
+      width: 150px;
+    }
+  }
+@media (max-width: 995px) {
   .welcomeDiv {
     height: 1000px;
     padding-left: 0;
   }
   .videoPlayer {
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 15%;
+    margin-right: 10%;
+    width: 70% !important;
+  }
+  .videoPlayer div video{
+    height: 400px !important;
   }
 
   .titleDiv {
@@ -241,7 +258,8 @@
   }
 }
 
-@media (max-width: 612px) {
+
+@media (max-width: 700px) {
   .videoPlayer {
     margin-left: 10px !important;
     margin-right: 10px !important;
@@ -255,3 +273,24 @@
     width: 150px;
   }
 }
+@media (max-width: 300px) {
+    .logoTitle {
+      margin: 0px !important;
+      padding-left: 5px !important;
+  
+    }
+    
+    .all_content{
+      margin:0 15px !important;
+    }
+    .videoPlayer{
+      height: 200px;
+    }
+    .videoPlayer div {
+      width: 100% !important;
+  }
+    .videoPlayer div video{
+      height: 200px !important;
+  }
+  
+  }

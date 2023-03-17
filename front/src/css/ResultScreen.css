@@ -40,6 +40,11 @@
     padding: 10px 10px !important;
   }
 }
+@media (max-width: 750px) {
+  #resultMainDiv{
+    padding:0 5% !important;
+  }
+}
 @media all {
   .page-break {
     overflow: hidden;

@@ -43,7 +43,7 @@ function Home() {
             </Button>
           </Row>
         </Col>
-        <Col sm={12} lg={7}>
+        <Col sm={12} lg={7} id="videoplayerColId">
           <div className="videoPlayer">
             <ReactPlayer
               style={{ borderRadius: "10px" }}

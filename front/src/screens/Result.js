@@ -314,7 +314,7 @@ function Result() {
         {isLoading ? (
           <Loader />
         ) : (
-          <div>
+          <div id="resultMainDiv">
             <Alert
               msg={successMsg}
               setIsAlertMsgLoaded={setIsAlertSuccessMsgLoaded}
@@ -372,13 +372,23 @@ function Result() {
                   >
                     <b>How do you feel about this portal? </b>
                   </p>
-                  <Feedbackstar
-                    fontSizeStar="3vw"
-                    colorStar="#081466"
-                    sendFeedback={(e) => {
-                      set_feedback_star(e);
-                    }}
-                  ></Feedbackstar>
+                  {isDesktopOrLaptop ? (
+                    <Feedbackstar
+                      fontSizeStar="3vw"
+                      colorStar="#081466"
+                      sendFeedback={(e) => {
+                        set_feedback_star(e);
+                      }}
+                    ></Feedbackstar>
+                  ) : (
+                    <Feedbackstar
+                      fontSizeStar="8vw"
+                      colorStar="#081466"
+                      sendFeedback={(e) => {
+                        set_feedback_star(e);
+                      }}
+                    ></Feedbackstar>
+                  )}
                   <p
                     style={{
                       textAlign: "center",
@@ -771,31 +781,32 @@ function Result() {
                 </div>
               </Col>
             </Row>
-            {sessionStorage.getItem("admin") === "admin" && idx !== undefined && (
-              <button
-                type="button"
-                className="btn"
-                onClick={async (e) => {
-                  sessionStorage.removeItem("submittedFeedback");
-                  sessionStorage.removeItem("testId");
-                  sessionStorage.removeItem("result");
-                  await axiosInstance
-                    .delete(`api/delres/${idx}`)
-                    .then((res) => {
-                      navigate("/admin/scheduledTest");
-                    })
-                    .catch((e) => console.log(e));
-                }}
-                style={{
-                  marginTop: "20px",
-                  backgroundColor: "red",
-                  color: "white",
-                  border: "none",
-                }}
-              >
-                Back
-              </button>
-            )}
+            {sessionStorage.getItem("admin") === "admin" &&
+              idx !== undefined && (
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={async (e) => {
+                    sessionStorage.removeItem("submittedFeedback");
+                    sessionStorage.removeItem("testId");
+                    sessionStorage.removeItem("result");
+                    await axiosInstance
+                      .delete(`api/delres/${idx}`)
+                      .then((res) => {
+                        navigate("/admin/scheduledTest");
+                      })
+                      .catch((e) => console.log(e));
+                  }}
+                  style={{
+                    marginTop: "20px",
+                    backgroundColor: "red",
+                    color: "white",
+                    border: "none",
+                  }}
+                >
+                  Back
+                </button>
+              )}
             {sessionStorage.getItem("admin") === "user" && (
               <button
                 type="button"
