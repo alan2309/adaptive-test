@@ -30,7 +30,7 @@ function CompScreen() {
   const [countWindowAwayModal, setCountWindowAwayModal] = useState(false);
   const [testFinshBool, setTestFinishBool] = useState(false);
   const [md, setMd] = useState(false);
-  const [timeFF, setTimeFF] = useState();
+  const [timeFF, setTimeFF] = useState(600);
   const [passage, setPassage] = useState();
   const [qsno, setQsNo] = useState(0);
   const [parano, setParano] = useState(0);
@@ -164,16 +164,10 @@ function CompScreen() {
                   var s = (ob.getSeconds() < 10 ? "0" : "") + ob.getSeconds();
 
                   var timeStart = new Date(
-                    new Date().toLocaleDateString() + " " + test["strtTime"]
+                    ob.toLocaleDateString() + " " + test["strtTime"]
                   );
                   var timeEnd = new Date(
-                    new Date().toLocaleDateString() +
-                      " " +
-                      h +
-                      ":" +
-                      m +
-                      ":" +
-                      s
+                    ob.toLocaleDateString() + " " + h + ":" + m + ":" + s
                   );
                   var hourDiff = (timeEnd - timeStart) / 1000;
                   setTimeFF(tf - hourDiff);
@@ -311,7 +305,6 @@ function CompScreen() {
     e.target.reset();
   }
 
-  
   return (
     <div id="comp_screen">
       {isDesktopOrLaptop ? (
