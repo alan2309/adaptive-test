@@ -1352,6 +1352,7 @@ def getTests(request):
             c['start']=c['start'][0]
             dicTime=durationBtwnDates(x.test_start,x.test_end)
             c['duration']=dicTime['duration']
+            c['totalTestTime']=x.totalTestTime
             c['starts_in']=durationBtwnDates(datetime.datetime(d.year,d.month,d.day,d.hour,d.minute,d.second),datetime.datetime(x.test_start.year,x.test_start.month,x.test_start.day,x.test_start.hour,x.test_start.minute,x.test_start.second))['total_seconds']
             cc.append(c)
         return JsonResponse({"stests":stestS.data,"utests":utestS.data,'upcoming_test':cc,'ongoing_test':bb},safe=False)

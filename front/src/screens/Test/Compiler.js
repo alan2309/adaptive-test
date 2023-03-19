@@ -151,7 +151,7 @@ export default function Compiler() {
   const [countWindowAwayModal, setCountWindowAwayModal] = useState(false);
   const [testFinshBool, setTestFinishBool] = useState(false);
   const [md, setMd] = useState(false);
-  const [timeFF, setTimeFF] = useState();
+  const [timeFF, setTimeFF] = useState(600);
   const [isValidPath, setIsValidPath] = useState(false);
   const activityDetector = createActivityDetector({
     timeToIdle: 6000000000000000_0000,

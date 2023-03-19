@@ -47,7 +47,7 @@ function Login() {
     },
     {
       label: "Duration",
-      field: "duration",
+      field: "totalTestTime",
     },
 
     {
@@ -66,7 +66,7 @@ function Login() {
     },
     {
       label: "Duration",
-      field: "duration",
+      field: "totalTestTime",
     },
 
     {
