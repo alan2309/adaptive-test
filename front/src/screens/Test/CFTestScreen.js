@@ -241,22 +241,29 @@ function CFTestScreen() {
                     setQsno(test["currentQsNo"] - 1);
                     setQs(test["question"]);
                     var ob = new Date();
-                    var h = (ob.getHours() < 10 ? "0" : "") + ob.getHours();
-                    var m = (ob.getMinutes() < 10 ? "0" : "") + ob.getMinutes();
-                    var s = (ob.getSeconds() < 10 ? "0" : "") + ob.getSeconds();
-
-                    var timeStart = new Date(
-                      new Date().toLocaleDateString() + " " + test["strtTime"]
-                    );
-                    var timeEnd = new Date(
-                      new Date().toLocaleDateString() +
-                        " " +
-                        h +
-                        ":" +
-                        m +
-                        ":" +
-                        s
-                    );
+                  let ssdate = test["strtTime"].split(":");
+                  let h1 = (ssdate[0] < 10 ? "0" : "") + ssdate[0];
+                  let h2 = (ssdate[1] < 10 ? "0" : "") + ssdate[1];
+                  let h3 = (ssdate[2] < 10 ? "0" : "") + ssdate[2];
+                  var h = (ob.getHours() < 10 ? "0" : "") + ob.getHours();
+                  var m = (ob.getMinutes() < 10 ? "0" : "") + ob.getMinutes();
+                  var s = (ob.getSeconds() < 10 ? "0" : "") + ob.getSeconds();
+                  var timeStart = new Date(
+                    ob.getFullYear(),
+                    ob.getMonth(),
+                    ob.getDate(),
+                    h1,
+                    h2,
+                    h3
+                  );
+                  var timeEnd = new Date(
+                    ob.getFullYear(),
+                    ob.getMonth(),
+                    ob.getDate(),
+                    h,
+                    m,
+                    s
+                  );
                     var hourDiff = (timeEnd - timeStart) / 1000;
                     setTimeFF(tf - hourDiff);
                   }
